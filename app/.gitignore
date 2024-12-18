@@ -1,0 +1,4 @@
+*.parquet
+*.pmtiles
+*.db
+
