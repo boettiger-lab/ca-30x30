@@ -538,10 +538,6 @@ def get_pmtiles_style_llm(paint, ids):
 
 ##### Chatbot stuff 
 
-# langchain can also talk to this connection and see the table:
-from langchain_community.utilities import SQLDatabase
-db = SQLDatabase(eng, view_support=True)
-
 
 from pydantic import BaseModel, Field
 class SQLResponse(BaseModel):
