@@ -538,17 +538,6 @@ def get_pmtiles_style_llm(paint, ids):
 
 ##### Chatbot stuff 
 
-
-# create sharable low-level connection, see: https://github.com/Mause/duckdb_engine
-import sqlalchemy
-
-connect_args = {'preload_extensions':['spatial']}
-eng = sqlalchemy.create_engine("duckdb:///:memory:",connect_args = connect_args)
-
-# ibis can talk to this connection and create the VIEW
-con = ibis.duckdb.from_connection(eng.raw_connection())
-tbl = con.read_parquet(ca_parquet, "mydata")
-
 # langchain can also talk to this connection and see the table:
 from langchain_community.utilities import SQLDatabase
 db = SQLDatabase(eng, view_support=True)
@@ -710,8 +699,8 @@ from langchain_openai import ChatOpenAI
 
 llm = ChatOpenAI(model="gpt-4", temperature=0)
 
-managers = tbl.sql("SELECT DISTINCT manager FROM mydata;").execute()
-names = tbl.sql("SELECT name FROM mydata GROUP BY name HAVING SUM(acres) >10000;").execute()
+managers = ca.sql("SELECT DISTINCT manager FROM mydata;").execute()
+names = ca.sql("SELECT name FROM mydata GROUP BY name HAVING SUM(acres) >10000;").execute()
 
 from langchain_core.prompts import ChatPromptTemplate
 prompt = ChatPromptTemplate.from_messages([
@@ -740,7 +729,7 @@ def run_sql(query,color_choice):
         return pd.DataFrame({'id' : []})
         
 
-    result = tbl.sql(sql_query).execute()
+    result = ca.sql(sql_query).execute()
     if result.empty :
         explanation = "This query did not return any results. Please try again with a different query."
         st.warning(explanation, icon="⚠️")
