@@ -37,7 +37,9 @@ con = ibis.duckdb.connect(extensions=["spatial"])
 #    con.create_table("mydata", tbl)
 #ca = con.table("mydata")
 
-ca = con.read_parquet("cpad-stats.parquet")
+# cached version, must use model repo and requires manual updates to this sha
+path = os.path.expanduser("~/.cache/huggingface/hub/models--cboettig--test/snapshots/c56e93fa5681994d3d1657ef84b434777e8ad030/cpad-stats.parquet")
+ca = con.read_parquet(path)
 
 for key in [
     'richness', 'rsr', 'irrecoverable_carbon', 'manageable_carbon',
