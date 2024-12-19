@@ -1,4 +1,4 @@
-name: Sync to Hugging Face hub
+name: Preview on Hugging Face
 on: 
   pull_request:
   # to run this workflow manually from the Actions tab
@@ -17,6 +17,6 @@ jobs:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           git remote add preview https://cboettig:$HF_TOKEN@huggingface.co/spaces/boettiger-lab/preview-ca-30x30 
-          git push --set-upstream preview HEAD:main
+          git push -f --set-upstream preview HEAD:main
           git remote rm preview
 
