@@ -23,14 +23,15 @@ from utils import *
 # Create the duckdb connection directly from the sqlalchemy engine instead. 
 # Not as elegant as `ibis.duckdb.connect()` but shares connection with sqlalchemy.
 ## Create the engine
+connect_args = {'preload_extensions':['spatial']}
+eng = sqlalchemy.create_engine("duckdb:///:memory:",connect_args = connect_args)
 #cwd = pathlib.Path.cwd()
-#connect_args = {'preload_extensions':['spatial']}
 #eng = sqlalchemy.create_engine(f"duckdb:///{cwd}/duck.db",connect_args = connect_args)
-#con = ibis.duckdb.from_connection(eng.raw_connection())
+con = ibis.duckdb.from_connection(eng.raw_connection())
 
 ## Create the table from remote parquet only if it doesn't already exist on disk
 
-con = ibis.duckdb.connect(extensions=["spatial"])
+#con = ibis.duckdb.connect(extensions=["spatial"])
 #current_tables = con.list_tables()
 #if "mydata" not in set(current_tables):
 #    tbl = con.read_parquet(ca_parquet)
