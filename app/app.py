@@ -23,9 +23,11 @@ from utils import *
 # Create the duckdb connection directly from the sqlalchemy engine instead. 
 # Not as elegant as `ibis.duckdb.connect()` but shares connection with sqlalchemy.
 ## Create the engine
+import duckdb
+duckdb.install_extension("spatial")
 connect_args = {'preload_extensions':['spatial']}
 eng = sqlalchemy.create_engine("duckdb:///:memory:",connect_args = connect_args)
-#cwd = pathlib.Path.cwd()
+#cwd = pathlib.Path.cwd() # for persistent storage
 #eng = sqlalchemy.create_engine(f"duckdb:///{cwd}/duck.db",connect_args = connect_args)
 con = ibis.duckdb.from_connection(eng.raw_connection())
 
