@@ -16,5 +16,8 @@ jobs:
       - name: Push to hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: git push -f https://cboettig:$HF_TOKEN@huggingface.co/spaces/boettiger-lab/preview-ca-30x30 main
+        run: |
+          git remote add preview https://cboettig:$HF_TOKEN@huggingface.co/spaces/boettiger-lab/preview-ca-30x30 
+          git push --set-upstream preview ${GITHUB_REF}:main
+          git remote rm preview
 
