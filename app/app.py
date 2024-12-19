@@ -23,20 +23,26 @@ from utils import *
 # Create the duckdb connection directly from the sqlalchemy engine instead. 
 # Not as elegant as `ibis.duckdb.connect()` but shares connection with sqlalchemy.
 ## Create the engine
-#cwd = pathlib.Path.cwd()
-#connect_args = {'preload_extensions':['spatial']}
+import duckdb
+duckdb.install_extension("spatial")
+connect_args = {'preload_extensions':['spatial']}
+eng = sqlalchemy.create_engine("duckdb:///:memory:",connect_args = connect_args)
+#cwd = pathlib.Path.cwd() # for persistent storage
 #eng = sqlalchemy.create_engine(f"duckdb:///{cwd}/duck.db",connect_args = connect_args)
-#con = ibis.duckdb.from_connection(eng.raw_connection())
+con = ibis.duckdb.from_connection(eng.raw_connection())
 
 ## Create the table from remote parquet only if it doesn't already exist on disk
 
-con = ibis.duckdb.connect(extensions=["spatial"])
-current_tables = con.list_tables()
-if "mydata" not in set(current_tables):
-    tbl = con.read_parquet(ca_parquet)
-    con.create_table("mydata", tbl)
-ca = con.table("mydata")
+#con = ibis.duckdb.connect(extensions=["spatial"])
+#current_tables = con.list_tables()
+#if "mydata" not in set(current_tables):
+#    tbl = con.read_parquet(ca_parquet)
+#    con.create_table("mydata", tbl)
+#ca = con.table("mydata")
 
+# cached version, must use model repo and requires manual updates to this sha
+path = os.path.expanduser("~/.cache/huggingface/hub/models--cboettig--test/snapshots/c56e93fa5681994d3d1657ef84b434777e8ad030/cpad-stats.parquet")
+ca = con.read_parquet(path, "mydata")
 
 for key in [
     'richness', 'rsr', 'irrecoverable_carbon', 'manageable_carbon',
