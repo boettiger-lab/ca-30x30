@@ -30,7 +30,7 @@ from utils import *
 
 ## Create the table from remote parquet only if it doesn't already exist on disk
 
-con = ibis.duckdb.connect(extensions=["spatial"])
+con = ibis.duckdb.connect("duck.db", extensions=["spatial"])
 current_tables = con.list_tables()
 if "mydata" not in set(current_tables):
     tbl = con.read_parquet(ca_parquet)
