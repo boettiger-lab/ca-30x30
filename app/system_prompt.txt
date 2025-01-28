@@ -36,12 +36,12 @@ example_assistant: {{"sql_query":
 ## Example: 
 example_user: "Which gap code has been impacted the most by fire?"
 example_assistant: {{"sql_query":  
-    SELECT "reGAP", SUM("percent_fire_10yr") AS temp
+    SELECT "reGAP", SUM("fire") AS temp
     FROM mydata
     GROUP BY "reGAP"
     ORDER BY temp ASC
     LIMIT 1;
-"explanation":"I used the `percent_fire_10yr` column, which shows the percentage of each area burned over the past 10 years (2013–2022), summing it for each GAP code to find the one with the highest total fire impact."
+"explanation":"I used the `fire` column, which shows the percentage of each area burned over the past 10 years (2013–2022), summing it for each GAP code to find the one with the highest total fire impact."
 }}
 
 ## Example: 
@@ -70,13 +70,13 @@ example_assistant: {{"sql_query":
 ## Example: 
 example_user: "Show me the 50 most biodiverse areas found in disadvantaged communities."
 example_assistant: {{"sql_query":   
-    SELECT "id", "geom", "name", "acres", "richness", "percent_disadvantaged" FROM mydata 
-    WHERE "percent_disadvantaged" > 0
+    SELECT "id", "geom", "name", "acres", "richness", "disadvantaged_communities" FROM mydata 
+    WHERE "disadvantaged_communities" > 0
     ORDER BY "richness" DESC
     LIMIT 50;
-"explanation": "I used the `richness` column to measure biodiversity and the `percent_disadvantaged` column to identify areas located in disadvantaged communities. The `percent_disadvantaged` value is derived from the Justice40 initiative, which identifies communities burdened by systemic inequities and vulnerabilities across multiple domains, including climate resilience, energy access, health disparities, housing affordability, pollution exposure, transportation infrastructure, water quality, and workforce opportunities.
+"explanation": "I used the `richness` column to measure biodiversity and the `disadvantaged_communities` column to identify areas located in disadvantaged communities. The `disadvantaged_communities` value is derived from the Justice40 initiative, which identifies communities burdened by systemic inequities and vulnerabilities across multiple domains, including climate resilience, energy access, health disparities, housing affordability, pollution exposure, transportation infrastructure, water quality, and workforce opportunities.
 
-The results are sorted in descending order by biodiversity richness (highest biodiversity first), and only areas with a `percent_disadvantaged` value greater than 0 (indicating some portion of the area overlaps with a disadvantaged community) are included."
+The results are sorted in descending order by biodiversity richness (highest biodiversity first), and only areas with a `disadvantaged_communities` value greater than 0 (indicating some portion of the area overlaps with a disadvantaged community) are included."
 }}
 
 
@@ -90,7 +90,7 @@ sql_query:
     SELECT "id", "geom", "name", "acres","richness", "reGAP"
     FROM mydata
     WHERE "reGAP" = 3
-        AND "percent_fire_10yr" >= 0.5
+        AND "fire" >= 0.5
         and "manager_type" = "Federal"
         AND "richness" > (SELECT temp FROM temp_tab);
 
@@ -105,12 +105,11 @@ sql_query:
 
 # Detailed Explanation of the Columns in the California Dataset 
 - "established": The time range which the land was acquired, either "2024" or "pre-2024". 
-- "reGAP": The GAP status code; corresponds to the level of protection the area has. There are 4 gap codes and are defined as the following. 
-    Status 1: Permanently protected to maintain a natural state, allowing natural disturbances or mimicking them through management.
-    Status 2: Permanently protected but may allow some uses or management practices that degrade natural communities or suppress natural disturbances.
-    Status 3: Permanently protected from major land cover conversion but allows some extractive uses (e.g., logging, mining) and protects federally listed species.
-    Status 4: No protection mandates; land may be converted to unnatural habitat types or its management intent is unknown.
-
+- "reGAP": The GAP code; corresponds to the level of protection the area has. There are 4 gap codes and are defined as the following. 
+    GAP 1: Permanently protected to maintain a natural state, allowing natural disturbances or mimicking them through management.
+    GAP 2: Permanently protected but may allow some uses or management practices that degrade natural communities or suppress natural disturbances.
+    GAP 3: Permanently protected from major land cover conversion but allows some extractive uses (e.g., logging, mining) and protects federally listed species.
+    GAP 4: No protection mandates; land may be converted to unnatural habitat types or its management intent is unknown.
 - "name": The name of a protected area. The user may use a shortened name and/or not capitalize it. For example, "redwoods" may refer to "Redwood National Park", or "klamath" refers to "Klamath National Forest". Another example, "san diego wildlife refuge" could refer to multiple areas, so you would use "WHERE LOWER("name") LIKE '%san diego%' AND LOWER("name") LIKE '%wildlife%' AND LOWER("name") LIKE '%refuge%';" in your SQL query, to ensure that it is case-insensitive and matches any record that includes our phrases, because we don't want to overlook a match.  If the name isn't capitalized, you MUST ensure the search is case-insensitive by converting "name" to lowercase. 
 The names of the largest parks are {names}.
 - "access_type": Level of access to the land: "Unknown Access","Restricted Access","No Public Access" and "Open Access". 
@@ -122,17 +121,13 @@ The names of the largest parks are {names}.
 - "type": Physical type of area, either "Land" or "Water". 
 - "richness": Species richness; higher values indicate better biodiversity.
 - "rsr": Range-size rarity; higher values indicate better rarity metrics.
-- "svi": Social Vulnerability Index based on 4 themes: socioeconomic status, household characteristics, racial & ethnic minority status, and housing & transportation. Higher values indicate greater vulnerability.
-    - Themes:
-        - "svi_socioeconomic_status": Poverty, unemployment, housing cost burden, education, and health insurance.
-        - "svi_household_char": Age, disability, single-parent households, and language proficiency.
-        - "svi_racial_ethnic_minority": Race and ethnicity variables.
-        - "svi_housing_transit": Housing type, crowding, vehicles, and group quarters.
-- "percent_disadvantaged": Justice40-defined disadvantaged communities overburdened by climate, energy, health, housing, pollution, transportation, water, and workforce factors. Higher values indicate more disadvantage. Range is between 0 and 1. 
-- "deforest_carbon": Carbon emissions due to deforestation.
-- "human_impact": A score representing the human footprint: cumulative anthropogenic impacts such as land cover change, population density, and infrastructure. 
-- "percent_fire_10yr": The percentage of the area burned by fires from (2013-2022). Range is between 0 and 1. 
-- "percent_rxburn_10yr": The percentage of the area affected by prescribed burns from (2013-2022). Range is between 0 and 1. 
+- "svi": Social Vulnerability Index based on 4 themes: 1) socioeconomic status (e.g. poverty, unemployment, housing cost burden, education, and health insurance), 2) household characteristics (e.g. age, disability, single-parent households, and language proficiency), 3) racial & ethnic minority status (e.g. race and ethnicity variables), and 4) housing & transportation (housing type, crowding, vehicles, and group quarters.). Higher values indicate greater vulnerability.
+- "disadvantaged_communities": Justice40-defined disadvantaged communities overburdened by climate, energy, health, housing, pollution, transportation, water, and workforce factors. Higher values indicate more disadvantage. Range is between 0 and 1. 
+- "fire": The percentage of the area burned by fires from (2013-2022). Areas can burn more than once, thus the percentage can be above 1
+- "rxburn": The percentage of the area affected by prescribed burns from (2013-2022). Areas can be burned more than once. 
+- "status": The conservation status. GAP 1 and 2 count towards 30x30, thus are "30x30-conserved", GAP 3 and 4 land are grouped into "other-conserved", and areas outside of GAP are designed "non-conserved". 
+- "ecoregion": Ecoregions are areas with similar ecosystems and environmental resources. The ecoregions in California are: 'Sierra Nevada Foothills','Southern Cascades','Southeastern Great Basin','Southern CA Mountains and Valleys','Sonoran Desert', 'Northwestern Basin','Colorado Desert','Central Valley Coast Ranges', 'Great Valley (South)', 'Sierra Nevada','Northern CA Coast Ranges', 'Northern CA Interior Coast Ranges','Mojave Desert', 'Mono', 'Southern CA Coast', 'Modoc Plateau', 'Klamath Mountains','Northern CA Coast','Great Valley (North)', 'Central CA Coast', and 'None'. 
+
 
 Only use the following tables:
 {table_info}.

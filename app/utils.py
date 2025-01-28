@@ -26,16 +26,10 @@ def get_summary(ca, combined_filter, column, colors=None): #summary stats, based
                        mean_rsr = (_.rsr * _.acres).sum() / _.acres.sum(),
                        mean_irrecoverable_carbon = (_.irrecoverable_carbon * _.acres).sum() / _.acres.sum(),
                        mean_manageable_carbon = (_.manageable_carbon * _.acres).sum() / _.acres.sum(),
-                       mean_percent_fire_10yr = (_.percent_fire_10yr *_.acres).sum()/_.acres.sum(),
-                       mean_percent_rxburn_10yr = (_.percent_rxburn_10yr *_.acres).sum()/_.acres.sum(),
-                       mean_percent_disadvantaged =  (_.percent_disadvantaged * _.acres).sum() / _.acres.sum(),
+                       mean_fire = (_.fire *_.acres).sum()/_.acres.sum(),
+                       mean_rxburn = (_.rxburn *_.acres).sum()/_.acres.sum(),
+                       mean_disadvantaged_communities =  (_.disadvantaged_communities * _.acres).sum() / _.acres.sum(),
                        mean_svi =  (_.svi * _.acres).sum() / _.acres.sum(),
-                       mean_svi_socioeconomic_status =  (_.svi_socioeconomic_status * _.acres).sum() / _.acres.sum(),
-                       mean_svi_household_char =  (_.svi_household_char * _.acres).sum() / _.acres.sum(),
-                       mean_svi_racial_ethnic_minority =  (_.svi_racial_ethnic_minority * _.acres).sum() / _.acres.sum(),
-                       mean_svi_housing_transit =  (_.svi_housing_transit * _.acres).sum() / _.acres.sum(),
-                       mean_carbon_lost = (_.deforest_carbon * _.acres).sum() / _.acres.sum(),
-                       mean_human_impact =  (_.human_impact * _.acres).sum() / _.acres.sum(),
                       )
             .mutate(percent_protected=_.percent_protected.round(1))
          )
@@ -58,6 +52,11 @@ def summary_table(ca, column, colors, filter_cols, filter_vals,colorby_vals): # 
         filter_cols.append(column)
         filters.append(getattr(_, column).isin(colorby_vals[column])) 
     combined_filter = reduce(lambda x, y: x & y, filters) #combining all the filters into ibis filter expression 
+    print(column)
+    print(combined_filter)
+    if column == "status":
+        combined_filter = (combined_filter) | (_.status.isin(['30x30-conserved','other-conserved','non-conserved']))
+    print(combined_filter)
     df = get_summary(ca, combined_filter, [column], colors) # df used for charts 
     df_tab = get_summary(ca, combined_filter, filter_cols, colors = None) #df used for printed table
     return df, df_tab 
@@ -84,9 +83,12 @@ def area_plot(df, column): #percent protected pie chart
 def bar_chart(df, x, y, title): #display summary stats for color_by column 
 
     #axis label angles / chart size
-    if x == "manager_type": #labels are too long, making vertical 
+    if x in ["manager_type", 'ecoregion','status']: #labels are too long, making vertical 
         angle = 270
         height = 373
+        if x == 'ecoregion':
+            height = 430
+
     else: #other labels are horizontal
         angle = 0
         height = 310
@@ -106,7 +108,7 @@ def bar_chart(df, x, y, title): #display summary stats for color_by column
         access_label=f"replace(datum.{x}, ' Access', '')"  #omit access from access_type labels so it fits in frame
         ).encode(
         x=alt.X("access_label:N",
-                axis=alt.Axis(labelAngle=angle, title=x_title),
+                axis=alt.Axis(labelAngle=angle, title=x_title, labelLimit = 200),
                         sort=sort),  
         y=alt.Y(y, axis=alt.Axis()), 
         color=alt.Color('color').scale(None)
@@ -219,6 +221,9 @@ def get_pmtiles_style(paint, alpha, filter_cols, filter_vals):
     for col, val in zip(filter_cols, filter_vals):
         filters.append(["match", ["get", col], val, True, False])
     combined_filters = ["all"] + filters
+    if paint['property'] == "status": #show non-conserved and other-conserved areas 
+        conserved = ['match', ['get', 'status'], ['30x30-conserved', 'other-conserved', 'non-conserved'], True, False]
+        combined_filters = ['any']+ [combined_filters] + [conserved]
     style = {
         "version": 8,
         "sources": {
@@ -231,7 +236,7 @@ def get_pmtiles_style(paint, alpha, filter_cols, filter_vals):
             {
                 "id": "ca30x30",
                 "source": "ca",
-                "source-layer": "layer",
+                "source-layer": "ca_30x30_stats",
                 "type": "fill",
                 "filter": combined_filters,
                 "paint": {
@@ -257,7 +262,7 @@ def get_pmtiles_style_llm(paint, ids):
             {
                 "id": "ca30x30",
                 "source": "ca",
-                "source-layer": "layer",
+                "source-layer": "ca_30x30_stats",
                 "type": "fill",
                 "filter": combined_filters,
                 "paint": {
