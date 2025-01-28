@@ -52,11 +52,8 @@ def summary_table(ca, column, colors, filter_cols, filter_vals,colorby_vals): # 
         filter_cols.append(column)
         filters.append(getattr(_, column).isin(colorby_vals[column])) 
     combined_filter = reduce(lambda x, y: x & y, filters) #combining all the filters into ibis filter expression 
-    print(column)
-    print(combined_filter)
     if column == "status":
         combined_filter = (combined_filter) | (_.status.isin(['30x30-conserved','other-conserved','non-conserved']))
-    print(combined_filter)
     df = get_summary(ca, combined_filter, [column], colors) # df used for charts 
     df_tab = get_summary(ca, combined_filter, filter_cols, colors = None) #df used for printed table
     return df, df_tab 
