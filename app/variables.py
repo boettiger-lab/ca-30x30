@@ -1,6 +1,6 @@
-# urls for main layer 
-ca_pmtiles = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/cpad-stats.pmtiles"
-ca_parquet = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/cpad-stats.parquet"
+# # urls for main layer 
+ca_pmtiles = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/bdce1e6767e799abd0d828ebc7208537af6246df/ca-30x30.pmtiles"
+ca_parquet = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/dd69c8cbaee47ea2b64c19963177edb6635be5d9/ca-30x30.parquet"
 
 ca_area_acres = 1.014e8 #acres 
 style_choice = "GAP Status Code"
