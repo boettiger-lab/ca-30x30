@@ -18,20 +18,10 @@ from functools import reduce
 from variables import *
 from utils import *
 
-
-
-# Create the duckdb connection directly from the sqlalchemy engine instead. 
-# Not as elegant as `ibis.duckdb.connect()` but shares connection with sqlalchemy.
-## Create the engine
-#cwd = pathlib.Path.cwd()
-#connect_args = {'preload_extensions':['spatial']}
-#eng = sqlalchemy.create_engine(f"duckdb:///{cwd}/duck.db",connect_args = connect_args)
-#con = ibis.duckdb.from_connection(eng.raw_connection())
-
 ## Create the table from remote parquet only if it doesn't already exist on disk
-
 con = ibis.duckdb.connect("duck.db", extensions=["spatial"])
 current_tables = con.list_tables()
+
 if "mydata" not in set(current_tables):
     tbl = con.read_parquet(ca_parquet)
     con.create_table("mydata", tbl)
@@ -45,7 +35,6 @@ for key in [
     'svi']:
     if key not in st.session_state:
         st.session_state[key] = False
-    
 
 st.set_page_config(layout="wide", page_title="CA Protected Areas Explorer", page_icon=":globe:")
 
@@ -184,12 +173,11 @@ def run_sql(query,color_choice):
     output = few_shot_structured_llm.invoke(query)
     sql_query = output.sql_query
     explanation =output.explanation
-    
+
     if not sql_query: # if the chatbot can't generate a SQL query.
         st.success(explanation)
         return pd.DataFrame({'id' : []})
         
-
     result = ca.sql(sql_query).execute()
     if result.empty :
         explanation = "This query did not return any results. Please try again with a different query."
@@ -204,11 +192,17 @@ def run_sql(query,color_choice):
     elif ("id" and "geom" in result.columns): 
         style = get_pmtiles_style_llm(style_options[color_choice], result["id"].tolist())
         legend_d = {cat: color for cat, color in style_options[color_choice]['stops']}
+
+        # shorten legend for ecoregions 
+        if color_choice == "Ecoregion":
+            legend_d = {key.replace("California", "CA"): value for key, value in legend_d.items()} 
+            
         m.add_legend(legend_dict=legend_d, position='bottom-left')
         m.add_pmtiles(ca_pmtiles, style=style, opacity=alpha, tooltip=True, fit_bounds=True)
         m.fit_bounds(result.total_bounds.tolist())    
         result = result.drop('geom',axis = 1) #printing to streamlit so I need to drop geom
     else:   
+
         st.write(result)  # if we aren't mapping, just print out the data  
 
     with st.popover("Explanation"):
@@ -230,8 +224,9 @@ def summary_table_sql(ca, column, colors, ids): # get df for charts + df_tab for
 chatbot_toggles = {key: False for key in [
     'richness', 'rsr', 'irrecoverable_carbon', 'manageable_carbon',
     'fire', 'rxburn', 'disadvantaged_communities',
-    'svi'
+    'svi', 
 ]}
+
 
 
 #############
@@ -243,7 +238,6 @@ with st.sidebar:
 
     color_choice = st.radio("Group by:", style_options, key = "color", help = "Select a category to change map colors and chart groupings.")      
     colorby_vals = getColorVals(style_options, color_choice) #get options for selected color_by column 
-    # alpha = st.slider("transparency", 0.0, 1.0, 0.7) 
     alpha = 0.8
     st.divider()
 
@@ -312,7 +306,6 @@ with st.sidebar:
         
         if show_richness:
             m.add_tile_layer(url_sr, name="MOBI Species Richness",opacity=a_bio)
-            
         if show_rsr:           
             m.add_tile_layer(url_rsr, name="MOBI Range-Size Rarity", opacity=a_bio)
 
@@ -329,10 +322,6 @@ with st.sidebar:
            m.add_cog_layer(url_man_carbon, palette="purples", name="Manageable Carbon", opacity = a_climate, fit_bounds=False)
             
 
-    # # Justice40 Section 
-    # with st.expander("🌱 Climate & Economic Justice"):
-    #     a_justice = st.slider("transparency", 0.0, 1.0, 0.07, key = "social justice")
-
     # People Section 
     with st.expander("🏡 People"):
         a_people = st.slider("transparency", 0.0, 1.0, 0.1, key = "SVI")
@@ -348,15 +337,15 @@ with st.sidebar:
     # Fire Section
     with st.expander("🔥 Fire"):
         a_fire = st.slider("transparency", 0.0, 1.0, 0.15, key = "calfire")
-        show_fire_10 = st.toggle("Fires (2013-2023)", key = "fire", value=chatbot_toggles['fire'])
+        show_fire = st.toggle("Fires (2013-2023)", key = "fire", value=chatbot_toggles['fire'])
 
-        show_rx_10 = st.toggle("Prescribed Burns (2013-2023)", key = "rxburn", value=chatbot_toggles['rxburn'])
+        show_rxburn = st.toggle("Prescribed Burns (2013-2023)", key = "rxburn", value=chatbot_toggles['rxburn'])
 
 
-        if show_fire_10:
+        if show_fire:
             m.add_pmtiles(url_calfire, style=fire_style, name="CALFIRE Fire Polygons (2013-2023)", opacity=a_fire, tooltip=False, fit_bounds = False)
 
-        if show_rx_10:
+        if show_rxburn:
             m.add_pmtiles(url_rxburn, style=rx_style, name="CAL FIRE Prescribed Burns (2013-2023)", opacity=a_fire, tooltip=False, fit_bounds = False)
                     
 
@@ -384,7 +373,6 @@ with st.sidebar:
     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' class='bi bi-github ' style='height:1em;width:1em;fill:currentColor;vertical-align:-0.125em;margin-right:4px;'  aria-hidden='true' role='img'><path d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z'></path></svg>Source Code: </p> <a href='https://github.com/boettiger-lab/ca-30x30' target='_blank'>https://github.com/boettiger-lab/ca-30x30</a>
     """, unsafe_allow_html=True)# adding github logo 
 
-    
 # Display CA 30x30 Data
 if 'out' not in locals():
     style = get_pmtiles_style(style_options[color_choice], alpha, filter_cols, filter_vals)
@@ -395,9 +383,10 @@ if 'out' not in locals():
         legend_d = {key.replace("California", "CA"): value for key, value in legend_d.items()} 
         
     m.add_legend(legend_dict = legend_d, position = 'bottom-left')
-    m.add_pmtiles(ca_pmtiles, style=style, name="CA", opacity=alpha, tooltip=True, fit_bounds = True)
+    m.add_pmtiles(ca_pmtiles, style=style, name="CA", opacity=alpha, tooltip=True, fit_bounds=True)
+    
 
-
+    
 column = select_column[color_choice]
 
 select_colors = {
@@ -434,7 +423,7 @@ irr_carbon_chart = bar_chart(df, column, 'mean_irrecoverable_carbon', "Irrecover
 man_carbon_chart = bar_chart(df, column, 'mean_manageable_carbon', "Manageable Carbon (2018)")
 fire_10_chart = bar_chart(df, column, 'mean_fire', "Fires (2013-2023)")
 rx_10_chart = bar_chart(df, column, 'mean_rxburn',"Prescribed Burns (2013-2023)")
-justice40_chart = bar_chart(df, column, 'mean_disadvantaged', "Disadvantaged Communities (2020)")
+justice40_chart = bar_chart(df, column, 'mean_disadvantaged', "Disadvantaged Communities (2021)")
 svi_chart = bar_chart(df, column, 'mean_svi', "Social Vulnerability Index (2022)")
 
 
@@ -474,10 +463,10 @@ with main:
             if show_sv:
                 st.altair_chart(svi_chart, use_container_width=True)
 
-            if show_fire_10:
+            if show_fire:
                 st.altair_chart(fire_10_chart, use_container_width=True)
                 
-            if show_rx_10:
+            if show_rxburn:
                 st.altair_chart(rx_10_chart, use_container_width=True)
 
  
@@ -486,8 +475,6 @@ with main:
 st.caption("***The label 'established' is inferred from the California Protected Areas Database, which may introduce artifacts. For details on our methodology, please refer to our code: https://github.com/boettiger-lab/ca-30x30.") 
 
 st.caption("***Under California’s 30x30 framework, only GAP codes 1 and 2 are counted toward the conservation goal.") 
-
-
 
 st.divider()
 
