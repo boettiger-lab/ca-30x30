@@ -1,6 +1,6 @@
 # urls for main layer 
 ca_parquet = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/1bc81f4f0678143421f73645f0ba830aa1cb8617/ca-30x30.parquet"
-ca_pmtiles = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/c08b22b9b506d444d0429a82f96f13e214341912/ca-30x30.pmtiles"
+ca_pmtiles = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/c58913a279d13c414722c4299b0e0867e923946a/ca-30x30.pmtiles"
 
 
 ca_area_acres = 1.014e8 #acres 
@@ -123,7 +123,7 @@ ecoregion = {
         ['Southeastern Great Basin', "#2ca02c"],
         ['Southern California Mountains and Valleys', "#d62728"],
         ['Sonoran Desert', "#9467bd"],
-        ['Northwestern Basin', "#8c564b"],
+        ['Northwestern Basin and Range', "#8c564b"],
         ['Colorado Desert', "#e377c2"],
         ['Central Valley Coast Ranges', "#7f7f7f"],
         ['Great Valley (South)', "#bcbd22"],
@@ -140,8 +140,6 @@ ecoregion = {
         ['Central California Coast', "#9edae5"],
     ]
 }
-
-
 
 
 style_options = {
