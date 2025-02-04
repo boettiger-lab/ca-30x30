@@ -1,23 +1,20 @@
 # urls for main layer 
-# ca_pmtiles = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/cpad-stats.pmtiles"
-# ca_parquet = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/cpad-stats.parquet"
+ca_parquet = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/1bc81f4f0678143421f73645f0ba830aa1cb8617/ca-30x30.parquet"
+ca_pmtiles = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/c08b22b9b506d444d0429a82f96f13e214341912/ca-30x30.pmtiles"
 
-ca_pmtiles = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/ca_30x30_stats.pmtiles"
-ca_parquet = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/ca_30x30_stats.parquet"
 
 ca_area_acres = 1.014e8 #acres 
 style_choice = "GAP Status Code"
-
 
 # urls for additional data layers 
 url_sr = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/species-richness-ca/{z}/{x}/{y}.png"
 url_rsr = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/range-size-rarity/{z}/{x}/{y}.png"
 url_irr_carbon = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/ca_irrecoverable_c_2018_cog.tif"
 url_man_carbon = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/ca_manageable_c_2018_cog.tif"
-url_svi = "https://data.source.coop/cboettig/social-vulnerability/svi2020_us_county.pmtiles"
 url_justice40 = "https://data.source.coop/cboettig/justice40/disadvantaged-communities.pmtiles"
-url_calfire = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/cal_fire_2022.pmtiles"
-url_rxburn = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/cal_rxburn_2022.pmtiles"
+url_calfire = 'https://minio.carlboettiger.info/public-fire/calfire-2023.pmtiles'
+url_rxburn = 'https://minio.carlboettiger.info/public-fire/calfire-rxburn-2023.pmtiles'
+url_svi = 'https://minio.carlboettiger.info/public-data/social-vulnerability/2022/SVI2022_US_tract.pmtiles'
 
 # colors for plotting 
 private_access_color = "#DE881E" # orange 
@@ -63,7 +60,6 @@ manager = {
         ['Tribal', tribal_color],
         ['Private', private_color],
         ['HOA', hoa_color],
-        # ['None',white]
     ]
 }
 
@@ -73,7 +69,6 @@ easement = {
     'stops': [
         ['True', private_access_color],
         ['False', public_access_color],
-        # ['None', white]
     ]
 }
 
@@ -83,7 +78,6 @@ year = {
     'stops': [
         ['pre-2024', year2023_color],
         ['2024', year2024_color],
-        # ['None',white]
     ]
 }
 
@@ -95,8 +89,6 @@ access = {
         ['No Public Access', private_access_color],
         ['Unknown Access', "#bbbbbb"],
         ['Restricted Access', tribal_color],
-        # ['None', white]
-
     ]
 }
 
@@ -117,38 +109,10 @@ status = {
     'stops': [
         ['30x30-conserved', "#26633d"],
         ['other-conserved', "#879647"],
-        ['non-conserved', "#A9A9A9"]
+        ['non-conserved', white]
     ]
 }
 
-
-# ecoregion = {
-#     'property': 'ecoregion',
-#     'type': 'categorical',
-#     'stops': [
-#         ['Sierra Nevada Foothills', "#1f77b4"],
-#         ['Southern Cascades', "#ff7f0e"],
-#         ['Southeastern Great Basin', "#2ca02c"],
-#         ['Southern California Mountains and Valleys', "#d62728"],
-#         ['Sonoran Desert', "#9467bd"],
-#         ['Northwestern Basin', "#8c564b"],
-#         ['Colorado Desert', "#e377c2"],
-#         ['Central Valley Coast Ranges', "#7f7f7f"],
-#         ['Great Valley (South)', "#bcbd22"],
-#         ['Sierra Nevada', "#17becf"],
-#         ['Northern California Coast Ranges', "#aec7e8"],
-#         ['Northern California Interior Coast Ranges', "#ffbb78"],
-#         ['Mojave Desert', "#98df8a"],
-#         ['Mono', "#ff9896"],
-#         ['Southern California Coast', "#c5b0d5"],
-#         ['Modoc Plateau', "#c49c94"],
-#         ['Klamath Mountains', "#f7b6d2"],
-#         ['Northern California Coast', "#c7c7c7"],
-#         ['Great Valley (North)', "#dbdb8d"],
-#         ['Central California Coast', "#9edae5"],
-#         ['None', "#A9A9A9"]
-#     ]
-# }
 
 ecoregion = {
     'property': 'ecoregion',
@@ -157,33 +121,33 @@ ecoregion = {
         ['Sierra Nevada Foothills', "#1f77b4"],
         ['Southern Cascades', "#ff7f0e"],
         ['Southeastern Great Basin', "#2ca02c"],
-        ['Southern CA Mountains and Valleys', "#d62728"],
+        ['Southern California Mountains and Valleys', "#d62728"],
         ['Sonoran Desert', "#9467bd"],
         ['Northwestern Basin', "#8c564b"],
         ['Colorado Desert', "#e377c2"],
         ['Central Valley Coast Ranges', "#7f7f7f"],
         ['Great Valley (South)', "#bcbd22"],
         ['Sierra Nevada', "#17becf"],
-        ['Northern CA Coast Ranges', "#aec7e8"],
-        ['Northern CA Interior Coast Ranges', "#ffbb78"],
+        ['Northern California Coast Ranges', "#aec7e8"],
+        ['Northern California Interior Coast Ranges', "#ffbb78"],
         ['Mojave Desert', "#98df8a"],
         ['Mono', "#ff9896"],
-        ['Southern CA Coast', "#c5b0d5"],
+        ['Southern California Coast', "#c5b0d5"],
         ['Modoc Plateau', "#c49c94"],
         ['Klamath Mountains', "#f7b6d2"],
-        ['Northern CA Coast', "#c7c7c7"],
+        ['Northern California Coast', "#c7c7c7"],
         ['Great Valley (North)', "#dbdb8d"],
-        ['Central CA Coast', "#9edae5"],
-        ['None', "#A9A9A9"]
+        ['Central California Coast', "#9edae5"],
     ]
 }
+
 
 
 
 style_options = {
     "Year": year,
     "GAP Code": gap,
-    "Status": status,
+    "30x30 Status": status,
     "Ecoregion": ecoregion,
     "Manager Type": manager,
     "Easement": easement,
@@ -221,11 +185,78 @@ justice40_style = {
         }
     ]
 }
+fire_style = {"version": 8,
+    "sources": {
+        "source1": {
+            "type": "vector",
+            "url": "pmtiles://" + url_calfire,
+            "attribution": "CAL FIRE"
+        }
+    },
+    "layers": [
+        {
+            "id": "fire",
+            "source": "source1",
+            "source-layer": 'calfire2023',
+            "filter": [">=", ["get", "YEAR_"], 2013],
+
+            "type": "fill",
+            "paint": {
+                "fill-color": "#D22B2B",
+            }
+        }
+    ]
+}
+rx_style = {
+    "version": 8,
+    "sources": {
+        "source2": {
+            "type": "vector",
+            "url": "pmtiles://" + url_rxburn,
+            "attribution": "CAL FIRE"
+        }
+    },
+    "layers": [
+        {
+            "id": "rxburn",
+            "source": "source2",
+            "source-layer": 'calfirerxburn2023',
+            "filter": [">=", ["get", "YEAR_"], 2013],
+            "type": "fill",
+            "paint": {
+                "fill-color": "#702963",
+            }
+        }
+    ]
+}
+
+
+svi_style = {
+        "layers": [
+            {
+                "id": "svi",
+                "source": "svi",
+                "source-layer": "svi",
+                "filter": ["match", ["get", "ST_ABBR"], "CA", True, False],
+                "type": "fill",
+                "paint": {
+                    "fill-color": [
+                        "interpolate", ["linear"], ["get", "RPL_THEMES"],
+                        0, white,
+                        1, svi_color
+                    ]
+                }
+            }
+        ]
+    }
+
+
+    
 
 select_column = {
     "Year": "established",
     "GAP Code": "gap_code",
-    "Status":  "status",
+    "30x30 Status":  "status",
     "Ecoregion":  "ecoregion",
     "Manager Type": "manager_type",
     "Easement": "easement",

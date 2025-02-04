@@ -35,14 +35,14 @@ current_tables = con.list_tables()
 if "mydata" not in set(current_tables):
     tbl = con.read_parquet(ca_parquet)
     con.create_table("mydata", tbl)
+    
 ca = con.table("mydata")
 
-
+    
 for key in [
     'richness', 'rsr', 'irrecoverable_carbon', 'manageable_carbon',
     'fire', 'rxburn', 'disadvantaged_communities',
-    'svi'
-]:
+    'svi']:
     if key not in st.session_state:
         st.session_state[key] = False
     
@@ -161,12 +161,13 @@ llm = ChatOpenAI(model="gpt-4", temperature=0)
 
 managers = ca.sql("SELECT DISTINCT manager FROM mydata;").execute()
 names = ca.sql("SELECT name FROM mydata GROUP BY name HAVING SUM(acres) >10000;").execute()
+ecoregions = ca.sql("SELECT DISTINCT ecoregion FROM mydata;").execute()
 
 from langchain_core.prompts import ChatPromptTemplate
 prompt = ChatPromptTemplate.from_messages([
     ("system", template),
     ("human", "{input}")
-]).partial(dialect="duckdb", table_info = ca.schema(), managers = managers, names = names)
+]).partial(dialect="duckdb", table_info = ca.schema(), managers = managers, names = names, ecoregions = ecoregions)
 
 structured_llm = llm.with_structured_output(SQLResponse)
 few_shot_structured_llm = prompt | structured_llm
@@ -328,21 +329,21 @@ with st.sidebar:
            m.add_cog_layer(url_man_carbon, palette="purples", name="Manageable Carbon", opacity = a_climate, fit_bounds=False)
             
 
-    # Justice40 Section 
-    with st.expander("🌱 Climate & Economic Justice"):
-        a_justice = st.slider("transparency", 0.0, 1.0, 0.07, key = "social justice")
+    # # Justice40 Section 
+    # with st.expander("🌱 Climate & Economic Justice"):
+    #     a_justice = st.slider("transparency", 0.0, 1.0, 0.07, key = "social justice")
+
+    # People Section 
+    with st.expander("🏡 People"):
+        a_people = st.slider("transparency", 0.0, 1.0, 0.1, key = "SVI")
         show_justice40 = st.toggle("Disadvantaged Communities (Justice40)", key = "disadvantaged_communities", value=chatbot_toggles['disadvantaged_communities'])
-   
-        if show_justice40:
-            m.add_pmtiles(url_justice40, style=justice40_style, name="Justice40", opacity=a_justice, tooltip=False, fit_bounds = False)
-
-    # SVI Section 
-    with st.expander("🏡 Social Vulnerability"):
-        a_svi = st.slider("transparency", 0.0, 1.0, 0.1, key = "SVI")
         show_sv = st.toggle("Social Vulnerability Index (SVI)", key = "svi", value=chatbot_toggles['svi'])
-
+        
+        if show_justice40:
+            m.add_pmtiles(url_justice40, style=justice40_style, name="Justice40", opacity=a_people, tooltip=False, fit_bounds = False)
+            
         if show_sv:
-            m.add_pmtiles(url_svi, style = get_sv_style("RPL_THEMES"), opacity=a_svi, tooltip=False, fit_bounds = False)
+            m.add_pmtiles(url_svi, style = svi_style, opacity=a_people, tooltip=False, fit_bounds = False)
         
     # Fire Section
     with st.expander("🔥 Fire"):
@@ -353,10 +354,10 @@ with st.sidebar:
 
 
         if show_fire_10:
-            m.add_pmtiles(url_calfire, style=fire_style("layer2"), name="CALFIRE Fire Polygons (2013-2023)", opacity=a_fire, tooltip=False, fit_bounds = True)
+            m.add_pmtiles(url_calfire, style=fire_style, name="CALFIRE Fire Polygons (2013-2023)", opacity=a_fire, tooltip=False, fit_bounds = False)
 
         if show_rx_10:
-            m.add_pmtiles(url_rxburn, style=rx_style("layer2"), name="CAL FIRE Prescribed Burns (2013-2023)", opacity=a_fire, tooltip=False, fit_bounds = True)
+            m.add_pmtiles(url_rxburn, style=rx_style, name="CAL FIRE Prescribed Burns (2013-2023)", opacity=a_fire, tooltip=False, fit_bounds = False)
                     
 
     st.divider()
@@ -388,9 +389,13 @@ with st.sidebar:
 if 'out' not in locals():
     style = get_pmtiles_style(style_options[color_choice], alpha, filter_cols, filter_vals)
     legend_d = {cat: color for cat, color in style_options[color_choice]['stops']}
+
+    # shorten legend for ecoregions 
+    if color_choice == "Ecoregion":
+        legend_d = {key.replace("California", "CA"): value for key, value in legend_d.items()} 
+        
     m.add_legend(legend_dict = legend_d, position = 'bottom-left')
     m.add_pmtiles(ca_pmtiles, style=style, name="CA", opacity=alpha, tooltip=True, fit_bounds = True)
-
 
 
 column = select_column[color_choice]
@@ -398,7 +403,7 @@ column = select_column[color_choice]
 select_colors = {
     "Year": year["stops"],
     "GAP Code": gap["stops"],
-    "Status": status["stops"],
+    "30x30 Status": status["stops"],
     "Ecoregion": ecoregion["stops"],
     "Manager Type": manager["stops"],
     "Easement": easement["stops"],
@@ -423,14 +428,14 @@ total_percent = df.percent_protected.sum().round(2)
 
 
 # charts displayed based on color_by variable
-richness_chart = bar_chart(df, column, 'mean_richness', "Species Richness")
-rsr_chart = bar_chart(df, column, 'mean_rsr', "Range-Size Rarity")
-irr_carbon_chart = bar_chart(df, column, 'mean_irrecoverable_carbon', "Irrecoverable Carbon")
-man_carbon_chart = bar_chart(df, column, 'mean_manageable_carbon', "Manageable Carbon")
+richness_chart = bar_chart(df, column, 'mean_richness', "Species Richness (2022)")
+rsr_chart = bar_chart(df, column, 'mean_rsr', "Range-Size Rarity (2022)")
+irr_carbon_chart = bar_chart(df, column, 'mean_irrecoverable_carbon', "Irrecoverable Carbon (2018)")
+man_carbon_chart = bar_chart(df, column, 'mean_manageable_carbon', "Manageable Carbon (2018)")
 fire_10_chart = bar_chart(df, column, 'mean_fire', "Fires (2013-2023)")
 rx_10_chart = bar_chart(df, column, 'mean_rxburn',"Prescribed Burns (2013-2023)")
-justice40_chart = bar_chart(df, column, 'mean_disadvantaged_communities', "Disadvantaged Communities (Justice40) ")
-svi_chart = bar_chart(df, column, 'mean_svi', "Social Vulnerability Index (2023)")
+justice40_chart = bar_chart(df, column, 'mean_disadvantaged', "Disadvantaged Communities (2020)")
+svi_chart = bar_chart(df, column, 'mean_svi', "Social Vulnerability Index (2022)")
 
 
 main = st.container()
@@ -441,7 +446,7 @@ with main:
     with map_col:
         m.to_streamlit(height=650)
         if 'out' not in locals():
-            st.dataframe(df_tab, use_container_width = True)
+            st.dataframe(df_tab, use_container_width = True)  
         else:
             st.dataframe(out, use_container_width = True)
 
@@ -463,18 +468,18 @@ with main:
             if show_manageable_carbon:
                 st.altair_chart(man_carbon_chart, use_container_width=True)
 
+            if show_justice40:
+                st.altair_chart(justice40_chart, use_container_width=True)
+                
+            if show_sv:
+                st.altair_chart(svi_chart, use_container_width=True)
+
             if show_fire_10:
                 st.altair_chart(fire_10_chart, use_container_width=True)
                 
             if show_rx_10:
                 st.altair_chart(rx_10_chart, use_container_width=True)
 
-            if show_justice40:
-                st.altair_chart(justice40_chart, use_container_width=True)
-                
-            if show_sv:
-                st.altair_chart(svi_chart, use_container_width=True)
-                
  
 
 
