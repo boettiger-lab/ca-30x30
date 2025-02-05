@@ -27,7 +27,7 @@ Ensure the response contains only this JSON object, with no additional text, for
 ## Example:
 example_user: "Show me all non-profit land."
 example_assistant: {{"sql_query": 
-    SELECT id, geom, name, acres
+    SELECT "id", "geom", "name", "acres"
     FROM mydata 
     WHERE "manager_type" = "Non Profit";
 "explanation":"I selected all data where `manager_type` is 'Non Profit'."
@@ -101,6 +101,18 @@ sql_query:
     SELECT SUM("acres") AS total_acres
     FROM mydata
     WHERE "easement" = "True";
+
+
+## Example: 
+example_user: "Show me land where irrecoverable carbon is in the top 10%"
+sql_query:  
+    WITH temp_tab AS (
+        SELECT PERCENTILE_CONT(0.90) WITHIN GROUP (ORDER BY "irrecoverable_carbon") AS temp
+        FROM mydata
+    )
+    SELECT "id", "geom", "name", "acres", "irrecoverable_carbon"
+    FROM mydata
+    WHERE "irrecoverable_carbon" > (SELECT temp FROM temp_tab);
 
 
 # Detailed Explanation of the Columns in the California Dataset 
