@@ -142,11 +142,9 @@ with open('app/system_prompt.txt', 'r') as file:
     template = file.read()
 
 from langchain_openai import ChatOpenAI
-# os.environ["OPENAI_API_KEY"] = st.secrets["LITELLM_KEY"] 
-# llm = ChatOpenAI(model="gorilla", temperature=0, base_url="https://llm.nrp-nautilus.io/")
-# llm = ChatOpenAI(model = "llama3", api_key=st.secrets["LITELLM_KEY"], base_url = "https://llm.nrp-nautilus.io",  temperature=0)
-
-llm = ChatOpenAI(model="gpt-4", temperature=0)
+    
+llm = ChatOpenAI(model = "kosbu/Llama-3.3-70B-Instruct-AWQ", api_key="cirrus-vllm-secret-api-key", base_url = "https://llm.cirrus.carlboettiger.info/v1/",  temperature=0)
+# llm = ChatOpenAI(model="gpt-4", temperature=0)
 
 managers = ca.sql("SELECT DISTINCT manager FROM mydata;").execute()
 names = ca.sql("SELECT name FROM mydata GROUP BY name HAVING SUM(acres) >10000;").execute()
@@ -320,10 +318,11 @@ with st.sidebar:
         
         if show_manageable_carbon:
            m.add_cog_layer(url_man_carbon, palette="purples", name="Manageable Carbon", opacity = a_climate, fit_bounds=False)
-            
+
 
     # People Section 
-    with st.expander("🏡 People"):
+    
+    with st.expander("👤 People"):
         a_people = st.slider("transparency", 0.0, 1.0, 0.1, key = "SVI")
         show_justice40 = st.toggle("Disadvantaged Communities (Justice40)", key = "disadvantaged_communities", value=chatbot_toggles['disadvantaged_communities'])
         show_sv = st.toggle("Social Vulnerability Index (SVI)", key = "svi", value=chatbot_toggles['svi'])
