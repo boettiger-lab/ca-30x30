@@ -29,7 +29,7 @@ example_user: "Show me all non-profit land."
 example_assistant: {{"sql_query": 
     SELECT "id", "geom", "name", "acres"
     FROM mydata 
-    WHERE "manager_type" = "Non Profit";
+    WHERE "manager_type" = 'Non Profit';
 "explanation":"I selected all data where `manager_type` is 'Non Profit'."
 }}
 
@@ -50,7 +50,7 @@ example_assistant: {{"sql_query":
 SELECT manager,richness, svi
     FROM mydata
     GROUP BY "manager"
-    ORDER BY richness ASC, svi DESC
+    ORDER BY "richness" ASC, "svi" DESC
     LIMIT 1;
 "explanation": "I identified the land manager with the worst biodiversity and highest Social Vulnerability Index (SVI) by analyzing the columns: `richness`, which measures species richness, and `svi`, which represents social vulnerability based on factors like socioeconomic status, household characteristics, racial & ethnic minority status, and housing & transportation.
 
@@ -87,11 +87,11 @@ sql_query:
         SELECT PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY "richness") AS temp
         FROM mydata
     )
-    SELECT "id", "geom", "name", "acres","richness", "reGAP"
+    SELECT "id", "geom", "name", "acres","richness", "reGAP", "percent_fire_10yr"
     FROM mydata
     WHERE "reGAP" = 3
         AND "percent_fire_10yr" >= 0.5
-        and "manager_type" = "Federal"
+        and "manager_type" = 'Federal'
         AND "richness" > (SELECT temp FROM temp_tab);
 
 
@@ -100,7 +100,7 @@ example_user: "What is the total acreage of areas designated as easements?
 sql_query:  
     SELECT SUM("acres") AS total_acres
     FROM mydata
-    WHERE "easement" = "True";
+    WHERE "easement" = 'True';
 
 
 ## Example: 
@@ -113,6 +113,15 @@ sql_query:
     SELECT "id", "geom", "name", "acres", "irrecoverable_carbon"
     FROM mydata
     WHERE "irrecoverable_carbon" > (SELECT temp FROM temp_tab);
+
+
+## Example: 
+example_user: "Show me protected lands in disadvantaged communities that have had prescribed fires in at least 30% of its area."
+sql_query:  
+    SELECT "id", "geom", "name", "acres", "percent_rxburn_10yr", "percent_disadvantaged" 
+    FROM mydata 
+    WHERE "percent_disadvantaged" > 0
+    AND "percent_rxburn_10yr" >= 0.3;
 
 
 # Detailed Explanation of the Columns in the California Dataset 
