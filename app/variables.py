@@ -1,22 +1,19 @@
-# # urls for main layer 
-ca_pmtiles = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/bdce1e6767e799abd0d828ebc7208537af6246df/ca-30x30.pmtiles"
-ca_parquet = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/dd69c8cbaee47ea2b64c19963177edb6635be5d9/ca-30x30.parquet"
+# urls for main layer 
+ca_parquet = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/8d5d938c04d3206e6bfb04055b5e779c4c28222f/ca-30x30.parquet"
+ca_pmtiles = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/c58913a279d13c414722c4299b0e0867e923946a/ca-30x30.pmtiles"
 
 ca_area_acres = 1.014e8 #acres 
 style_choice = "GAP Status Code"
-
 
 # urls for additional data layers 
 url_sr = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/species-richness-ca/{z}/{x}/{y}.png"
 url_rsr = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/range-size-rarity/{z}/{x}/{y}.png"
 url_irr_carbon = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/ca_irrecoverable_c_2018_cog.tif"
 url_man_carbon = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/ca_manageable_c_2018_cog.tif"
-url_svi = "https://data.source.coop/cboettig/social-vulnerability/svi2020_us_county.pmtiles"
 url_justice40 = "https://data.source.coop/cboettig/justice40/disadvantaged-communities.pmtiles"
-url_loss_carbon = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/deforest-carbon-ca/{z}/{x}/{y}.png"
-url_hi = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/ca_human_impact_cog.tif"
-url_calfire = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/cal_fire_2022.pmtiles"
-url_rxburn = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/cal_rxburn_2022.pmtiles"
+url_calfire = 'https://minio.carlboettiger.info/public-fire/calfire-2023.pmtiles'
+url_rxburn = 'https://minio.carlboettiger.info/public-fire/calfire-rxburn-2023.pmtiles'
+url_svi = 'https://minio.carlboettiger.info/public-data/social-vulnerability/2022/SVI2022_US_tract.pmtiles'
 
 # colors for plotting 
 private_access_color = "#DE881E" # orange 
@@ -41,6 +38,7 @@ white =  "#FFFFFF"
 
 # gap codes 3 and 4 are off by default. 
 default_gap = {
+    0: False,
     3: False,
     4: False,
 }
@@ -60,7 +58,7 @@ manager = {
         ['Joint', joint_color],
         ['Tribal', tribal_color],
         ['Private', private_color],
-        ['HOA', hoa_color]
+        ['HOA', hoa_color],
     ]
 }
 
@@ -69,7 +67,7 @@ easement = {
     'type': 'categorical',
     'stops': [
         ['True', private_access_color],
-        ['False', public_access_color]
+        ['False', public_access_color],
     ]
 }
 
@@ -78,7 +76,7 @@ year = {
     'type': 'categorical',
     'stops': [
         ['pre-2024', year2023_color],
-        ['2024', year2024_color]
+        ['2024', year2024_color],
     ]
 }
 
@@ -89,12 +87,12 @@ access = {
         ['Open Access', public_access_color],
         ['No Public Access', private_access_color],
         ['Unknown Access', "#bbbbbb"],
-        ['Restricted Access', tribal_color]
+        ['Restricted Access', tribal_color],
     ]
 }
 
 gap = {
-    'property': 'reGAP',
+    'property': 'gap_code',
     'type': 'categorical',
     'stops': [
         [1, "#26633d"],
@@ -104,9 +102,50 @@ gap = {
     ]
 }
 
+status = {
+    'property': 'status',
+    'type': 'categorical',
+    'stops': [
+        ['30x30-conserved', "#26633d"],
+        ['other-conserved', "#879647"],
+        ['non-conserved', white]
+    ]
+}
+
+
+ecoregion = {
+    'property': 'ecoregion',
+    'type': 'categorical',
+    'stops': [
+        ['Sierra Nevada Foothills', "#1f77b4"],
+        ['Southern Cascades', "#ff7f0e"],
+        ['Southeastern Great Basin', "#2ca02c"],
+        ['Southern California Mountains and Valleys', "#d62728"],
+        ['Sonoran Desert', "#9467bd"],
+        ['Northwestern Basin and Range', "#8c564b"],
+        ['Colorado Desert', "#e377c2"],
+        ['Central Valley Coast Ranges', "#7f7f7f"],
+        ['Great Valley (South)', "#bcbd22"],
+        ['Sierra Nevada', "#17becf"],
+        ['Northern California Coast Ranges', "#aec7e8"],
+        ['Northern California Interior Coast Ranges', "#ffbb78"],
+        ['Mojave Desert', "#98df8a"],
+        ['Mono', "#ff9896"],
+        ['Southern California Coast', "#c5b0d5"],
+        ['Modoc Plateau', "#c49c94"],
+        ['Klamath Mountains', "#f7b6d2"],
+        ['Northern California Coast', "#c7c7c7"],
+        ['Great Valley (North)', "#dbdb8d"],
+        ['Central California Coast', "#9edae5"],
+    ]
+}
+
+
 style_options = {
     "Year": year,
-    "GAP Status Code": gap,
+    "GAP Code": gap,
+    "30x30 Status": status,
+    "Ecoregion": ecoregion,
     "Manager Type": manager,
     "Easement": easement,
     "Access Type": access,
@@ -143,12 +182,82 @@ justice40_style = {
         }
     ]
 }
+fire_style = {"version": 8,
+    "sources": {
+        "source1": {
+            "type": "vector",
+            "url": "pmtiles://" + url_calfire,
+            "attribution": "CAL FIRE"
+        }
+    },
+    "layers": [
+        {
+            "id": "fire",
+            "source": "source1",
+            "source-layer": 'calfire2023',
+            "filter": [">=", ["get", "YEAR_"], 2013],
+
+            "type": "fill",
+            "paint": {
+                "fill-color": "#D22B2B",
+            }
+        }
+    ]
+}
+rx_style = {
+    "version": 8,
+    "sources": {
+        "source2": {
+            "type": "vector",
+            "url": "pmtiles://" + url_rxburn,
+            "attribution": "CAL FIRE"
+        }
+    },
+    "layers": [
+        {
+            "id": "rxburn",
+            "source": "source2",
+            "source-layer": 'calfirerxburn2023',
+            "filter": [">=", ["get", "YEAR_"], 2013],
+            "type": "fill",
+            "paint": {
+                "fill-color": "#702963",
+            }
+        }
+    ]
+}
+
+
+svi_style = {
+        "layers": [
+            {
+                "id": "svi",
+                "source": "svi",
+                "source-layer": "svi",
+                "filter": ["match", ["get", "ST_ABBR"], "CA", True, False],
+                "type": "fill",
+                "paint": {
+                    "fill-color": [
+                        "interpolate", ["linear"], ["get", "RPL_THEMES"],
+                        0, white,
+                        1, svi_color
+                    ]
+                }
+            }
+        ]
+    }
+
+
+    
 
 select_column = {
     "Year": "established",
-    "GAP Status Code": "reGAP",
+    "GAP Code": "gap_code",
+    "30x30 Status":  "status",
+    "Ecoregion":  "ecoregion",
     "Manager Type": "manager_type",
     "Easement": "easement",
-    "Access Type": "access_type",
+    "Access Type": "access_type"
+
 }
 
