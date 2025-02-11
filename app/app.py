@@ -18,36 +18,23 @@ from functools import reduce
 from variables import *
 from utils import *
 
-
-
-# Create the duckdb connection directly from the sqlalchemy engine instead. 
-# Not as elegant as `ibis.duckdb.connect()` but shares connection with sqlalchemy.
-## Create the engine
-#cwd = pathlib.Path.cwd()
-#connect_args = {'preload_extensions':['spatial']}
-#eng = sqlalchemy.create_engine(f"duckdb:///{cwd}/duck.db",connect_args = connect_args)
-#con = ibis.duckdb.from_connection(eng.raw_connection())
-
 ## Create the table from remote parquet only if it doesn't already exist on disk
-
 con = ibis.duckdb.connect("duck.db", extensions=["spatial"])
 current_tables = con.list_tables()
+
 if "mydata" not in set(current_tables):
     tbl = con.read_parquet(ca_parquet)
     con.create_table("mydata", tbl)
+    
 ca = con.table("mydata")
 
-
+    
 for key in [
     'richness', 'rsr', 'irrecoverable_carbon', 'manageable_carbon',
-    'percent_fire_10yr', 'percent_rxburn_10yr', 'percent_disadvantaged',
-    'svi', 'svi_socioeconomic_status', 'svi_household_char',
-    'svi_racial_ethnic_minority', 'svi_housing_transit',
-    'deforest_carbon', 'human_impact'
-]:
+    'fire', 'rxburn', 'disadvantaged_communities',
+    'svi']:
     if key not in st.session_state:
         st.session_state[key] = False
-    
 
 st.set_page_config(layout="wide", page_title="CA Protected Areas Explorer", page_icon=":globe:")
 
@@ -108,6 +95,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+
 st.markdown(
     """
     <style>
@@ -154,20 +142,19 @@ with open('app/system_prompt.txt', 'r') as file:
     template = file.read()
 
 from langchain_openai import ChatOpenAI
-# os.environ["OPENAI_API_KEY"] = st.secrets["LITELLM_KEY"] 
-# llm = ChatOpenAI(model="gorilla", temperature=0, base_url="https://llm.nrp-nautilus.io/")
-# llm = ChatOpenAI(model = "llama3", api_key=st.secrets["LITELLM_KEY"], base_url = "https://llm.nrp-nautilus.io",  temperature=0)
-
-llm = ChatOpenAI(model="gpt-4", temperature=0)
+    
+llm = ChatOpenAI(model = "kosbu/Llama-3.3-70B-Instruct-AWQ", api_key="cirrus-vllm-secret-api-key", base_url = "https://llm.cirrus.carlboettiger.info/v1/",  temperature=0)
+# llm = ChatOpenAI(model="gpt-4", temperature=0)
 
 managers = ca.sql("SELECT DISTINCT manager FROM mydata;").execute()
 names = ca.sql("SELECT name FROM mydata GROUP BY name HAVING SUM(acres) >10000;").execute()
+ecoregions = ca.sql("SELECT DISTINCT ecoregion FROM mydata;").execute()
 
 from langchain_core.prompts import ChatPromptTemplate
 prompt = ChatPromptTemplate.from_messages([
     ("system", template),
     ("human", "{input}")
-]).partial(dialect="duckdb", table_info = ca.schema(), managers = managers, names = names)
+]).partial(dialect="duckdb", table_info = ca.schema(), managers = managers, names = names, ecoregions = ecoregions)
 
 structured_llm = llm.with_structured_output(SQLResponse)
 few_shot_structured_llm = prompt | structured_llm
@@ -184,12 +171,11 @@ def run_sql(query,color_choice):
     output = few_shot_structured_llm.invoke(query)
     sql_query = output.sql_query
     explanation =output.explanation
-    
+
     if not sql_query: # if the chatbot can't generate a SQL query.
         st.success(explanation)
         return pd.DataFrame({'id' : []})
         
-
     result = ca.sql(sql_query).execute()
     if result.empty :
         explanation = "This query did not return any results. Please try again with a different query."
@@ -204,11 +190,17 @@ def run_sql(query,color_choice):
     elif ("id" and "geom" in result.columns): 
         style = get_pmtiles_style_llm(style_options[color_choice], result["id"].tolist())
         legend_d = {cat: color for cat, color in style_options[color_choice]['stops']}
+
+        # shorten legend for ecoregions 
+        if color_choice == "Ecoregion":
+            legend_d = {key.replace("California", "CA"): value for key, value in legend_d.items()} 
+            
         m.add_legend(legend_dict=legend_d, position='bottom-left')
         m.add_pmtiles(ca_pmtiles, style=style, opacity=alpha, tooltip=True, fit_bounds=True)
         m.fit_bounds(result.total_bounds.tolist())    
         result = result.drop('geom',axis = 1) #printing to streamlit so I need to drop geom
     else:   
+
         st.write(result)  # if we aren't mapping, just print out the data  
 
     with st.popover("Explanation"):
@@ -229,11 +221,10 @@ def summary_table_sql(ca, column, colors, ids): # get df for charts + df_tab for
 
 chatbot_toggles = {key: False for key in [
     'richness', 'rsr', 'irrecoverable_carbon', 'manageable_carbon',
-    'percent_fire_10yr', 'percent_rxburn_10yr', 'percent_disadvantaged',
-    'svi', 'svi_socioeconomic_status', 'svi_household_char',
-    'svi_racial_ethnic_minority', 'svi_housing_transit',
-    'deforest_carbon', 'human_impact'
+    'fire', 'rxburn', 'disadvantaged_communities',
+    'svi', 
 ]}
+
 
 
 #############
@@ -245,7 +236,6 @@ with st.sidebar:
 
     color_choice = st.radio("Group by:", style_options, key = "color", help = "Select a category to change map colors and chart groupings.")      
     colorby_vals = getColorVals(style_options, color_choice) #get options for selected color_by column 
-    # alpha = st.slider("transparency", 0.0, 1.0, 0.7) 
     alpha = 0.8
     st.divider()
 
@@ -303,7 +293,6 @@ with st.container():
             st.stop()
 
 
-
 #### Data layers 
 with st.sidebar:  
     st.markdown('<p class = "medium-font-sidebar"> Data Layers:</p>', help = "Select data layers to visualize on the map. Summary charts will update based on the displayed layers.", unsafe_allow_html= True)
@@ -315,7 +304,6 @@ with st.sidebar:
         
         if show_richness:
             m.add_tile_layer(url_sr, name="MOBI Species Richness",opacity=a_bio)
-            
         if show_rsr:           
             m.add_tile_layer(url_rsr, name="MOBI Range-Size Rarity", opacity=a_bio)
 
@@ -330,72 +318,41 @@ with st.sidebar:
         
         if show_manageable_carbon:
            m.add_cog_layer(url_man_carbon, palette="purples", name="Manageable Carbon", opacity = a_climate, fit_bounds=False)
-            
 
-    # Justice40 Section 
-    with st.expander("🌱 Climate & Economic Justice"):
-        a_justice = st.slider("transparency", 0.0, 1.0, 0.07, key = "social justice")
-        show_justice40 = st.toggle("Disadvantaged Communities (Justice40)", key = "percent_disadvantaged", value=chatbot_toggles['percent_disadvantaged'])
-   
-        if show_justice40:
-            m.add_pmtiles(url_justice40, style=justice40_style, name="Justice40", opacity=a_justice, tooltip=False, fit_bounds = False)
 
-    # SVI Section 
-    with st.expander("🏡 Social Vulnerability"):
-        a_svi = st.slider("transparency", 0.0, 1.0, 0.1, key = "SVI")
+    # People Section 
+    
+    with st.expander("👤 People"):
+        a_people = st.slider("transparency", 0.0, 1.0, 0.1, key = "SVI")
+        show_justice40 = st.toggle("Disadvantaged Communities (Justice40)", key = "disadvantaged_communities", value=chatbot_toggles['disadvantaged_communities'])
         show_sv = st.toggle("Social Vulnerability Index (SVI)", key = "svi", value=chatbot_toggles['svi'])
-        show_sv_socio = st.toggle("Socioeconomic Status", key = "svi_socioeconomic_status", value=chatbot_toggles['svi_socioeconomic_status'])
-        show_sv_household = st.toggle("Household Characteristics", key = "svi_household_char", value=chatbot_toggles['svi_household_char'])
-        show_sv_minority = st.toggle("Racial & Ethnic Minority Status", key = "svi_racial_ethnic_minority", value=chatbot_toggles['svi_racial_ethnic_minority'])
-        show_sv_housing = st.toggle("Housing Type & Transportation", key = "svi_housing_transit", value=chatbot_toggles['svi_housing_transit'])
         
+        if show_justice40:
+            m.add_pmtiles(url_justice40, style=justice40_style, name="Justice40", opacity=a_people, tooltip=False, fit_bounds = False)
+            
         if show_sv:
-            m.add_pmtiles(url_svi, style = get_sv_style("RPL_THEMES"), opacity=a_svi, tooltip=False, fit_bounds = False)
+            m.add_pmtiles(url_svi, style = svi_style, opacity=a_people, tooltip=False, fit_bounds = False)
         
-        if show_sv_socio:
-            m.add_pmtiles(url_svi, style = get_sv_style("RPL_THEME1"), opacity=a_svi, tooltip=False, fit_bounds = False)
-        
-        if show_sv_household:
-            m.add_pmtiles(url_svi, style = get_sv_style("RPL_THEME2"), opacity=a_svi, tooltip=False, fit_bounds = False)
-        
-        if show_sv_minority:
-            m.add_pmtiles(url_svi, style = get_sv_style("RPL_THEME3"), opacity=a_svi, tooltip=False, fit_bounds = False)
-        
-        if show_sv_housing:
-            m.add_pmtiles(url_svi, style = get_sv_style("RPL_THEME4"), opacity=a_svi, tooltip=False, fit_bounds = False)
-
     # Fire Section
     with st.expander("🔥 Fire"):
-        a_fire = st.slider("transparency", 0.0, 1.0, 0.15, key = "fire")
-        show_fire_10 = st.toggle("Fires (2013-2022)", key = "percent_fire_10yr", value=chatbot_toggles['percent_fire_10yr'])
+        a_fire = st.slider("transparency", 0.0, 1.0, 0.15, key = "calfire")
+        show_fire = st.toggle("Fires (2013-2023)", key = "fire", value=chatbot_toggles['fire'])
 
-        show_rx_10 = st.toggle("Prescribed Burns (2013-2022)", key = "percent_rxburn_10yr", value=chatbot_toggles['percent_rxburn_10yr'])
+        show_rxburn = st.toggle("Prescribed Burns (2013-2023)", key = "rxburn", value=chatbot_toggles['rxburn'])
 
 
-        if show_fire_10:
-            m.add_pmtiles(url_calfire, style=fire_style("layer2"), name="CALFIRE Fire Polygons (2013-2022)", opacity=a_fire, tooltip=False, fit_bounds = True)
+        if show_fire:
+            m.add_pmtiles(url_calfire, style=fire_style, name="CALFIRE Fire Polygons (2013-2023)", opacity=a_fire, tooltip=False, fit_bounds = False)
 
-        if show_rx_10:
-            m.add_pmtiles(url_rxburn, style=rx_style("layer2"), name="CAL FIRE Prescribed Burns (2013-2022)", opacity=a_fire, tooltip=False, fit_bounds = True)
+        if show_rxburn:
+            m.add_pmtiles(url_rxburn, style=rx_style, name="CAL FIRE Prescribed Burns (2013-2023)", opacity=a_fire, tooltip=False, fit_bounds = False)
                     
-
-    # HI Section 
-    with st.expander("🚜 Human Impacts"):
-        a_hi = st.slider("transparency", 0.0, 1.0, 0.1, key = "hi")
-        show_carbon_lost = st.toggle("Deforested Carbon", key = "deforest_carbon", value=chatbot_toggles['deforest_carbon'])
-        show_human_impact = st.toggle("Human Footprint", key = "human_impact", value=chatbot_toggles['human_impact'])
-        
-        if show_carbon_lost:
-            m.add_tile_layer(url_loss_carbon, name="Deforested Carbon (2002-2022)", opacity = a_hi)
-        
-        if show_human_impact:
-            m.add_cog_layer(url_hi, name="Human Footprint (2017-2021)", opacity = a_hi, fit_bounds=False)
 
     st.divider()
     st.markdown('<p class = "medium-font-sidebar"> Filters:</p>', help = "Apply filters to adjust what data is shown on the map.", unsafe_allow_html= True)
     for label in style_options: # get selected filters (based on the buttons selected)
         with st.expander(label):  
-            if label == "GAP Status Code": # gap code 1 and 2 are on by default
+            if label == "GAP Code": # gap code 1 and 2 are on by default
                 opts = getButtons(style_options, label, default_gap)
             else: # other buttons are not on by default.
                 opts = getButtons(style_options, label) 
@@ -408,7 +365,7 @@ with st.sidebar:
         else: 
             filter_cols = []
             filter_vals = []
-
+            
     st.divider()
     st.markdown("""
     <p class="medium-font-sidebar">
@@ -419,16 +376,23 @@ with st.sidebar:
 if 'out' not in locals():
     style = get_pmtiles_style(style_options[color_choice], alpha, filter_cols, filter_vals)
     legend_d = {cat: color for cat, color in style_options[color_choice]['stops']}
+
+    # shorten legend for ecoregions 
+    if color_choice == "Ecoregion":
+        legend_d = {key.replace("California", "CA"): value for key, value in legend_d.items()} 
+        
     m.add_legend(legend_dict = legend_d, position = 'bottom-left')
-    m.add_pmtiles(ca_pmtiles, style=style, name="CA", opacity=alpha, tooltip=True, fit_bounds = True)
+    m.add_pmtiles(ca_pmtiles, style=style, name="CA", opacity=alpha, tooltip=True, fit_bounds=True)
+    
 
-
-
+    
 column = select_column[color_choice]
 
 select_colors = {
     "Year": year["stops"],
-    "GAP Status Code": gap["stops"],
+    "GAP Code": gap["stops"],
+    "30x30 Status": status["stops"],
+    "Ecoregion": ecoregion["stops"],
     "Manager Type": manager["stops"],
     "Easement": easement["stops"],
     "Access Type": access["stops"],
@@ -439,6 +403,7 @@ colors = (
     .memtable(select_colors[color_choice], columns=[column, "color"])
     .to_pandas()
 )
+
 
 # get summary tables used for charts + printed table 
 # df - charts; df_tab - printed table (omits colors) 
@@ -451,20 +416,14 @@ total_percent = df.percent_protected.sum().round(2)
 
 
 # charts displayed based on color_by variable
-richness_chart = bar_chart(df, column, 'mean_richness', "Species Richness")
-rsr_chart = bar_chart(df, column, 'mean_rsr', "Range-Size Rarity")
-irr_carbon_chart = bar_chart(df, column, 'mean_irrecoverable_carbon', "Irrecoverable Carbon")
-man_carbon_chart = bar_chart(df, column, 'mean_manageable_carbon', "Manageable Carbon")
-fire_10_chart = bar_chart(df, column, 'mean_percent_fire_10yr', "Fires (2013-2022)")
-rx_10_chart = bar_chart(df, column, 'mean_percent_rxburn_10yr',"Prescribed Burns (2013-2022)")
-justice40_chart = bar_chart(df, column, 'mean_percent_disadvantaged', "Disadvantaged Communities (Justice40)")
-svi_chart = bar_chart(df, column, 'mean_svi', "Social Vulnerability Index")
-svi_socio_chart = bar_chart(df, column, 'mean_svi_socioeconomic_status', "SVI - Socioeconomic Status")
-svi_house_chart = bar_chart(df, column, 'mean_svi_household_char', "SVI - Household Characteristics")
-svi_minority_chart = bar_chart(df, column, 'mean_svi_racial_ethnic_minority', "SVI - Racial and Ethnic Minority")
-svi_transit_chart = bar_chart(df, column, 'mean_svi_housing_transit', "SVI - Housing Type and Transit")
-carbon_loss_chart = bar_chart(df, column, 'mean_carbon_lost', "Deforested Carbon (2002-2022)")
-hi_chart = bar_chart(df, column, 'mean_human_impact', "Human Footprint (2017-2021)")
+richness_chart = bar_chart(df, column, 'mean_richness', "Species Richness (2022)")
+rsr_chart = bar_chart(df, column, 'mean_rsr', "Range-Size Rarity (2022)")
+irr_carbon_chart = bar_chart(df, column, 'mean_irrecoverable_carbon', "Irrecoverable Carbon (2018)")
+man_carbon_chart = bar_chart(df, column, 'mean_manageable_carbon', "Manageable Carbon (2018)")
+fire_10_chart = bar_chart(df, column, 'mean_fire', "Fires (2013-2023)")
+rx_10_chart = bar_chart(df, column, 'mean_rxburn',"Prescribed Burns (2013-2023)")
+justice40_chart = bar_chart(df, column, 'mean_disadvantaged', "Disadvantaged Communities (2021)")
+svi_chart = bar_chart(df, column, 'mean_svi', "Social Vulnerability Index (2022)")
 
 
 main = st.container()
@@ -475,7 +434,7 @@ with main:
     with map_col:
         m.to_streamlit(height=650)
         if 'out' not in locals():
-            st.dataframe(df_tab, use_container_width = True)
+            st.dataframe(df_tab, use_container_width = True)  
         else:
             st.dataframe(out, use_container_width = True)
 
@@ -486,70 +445,35 @@ with main:
             st.altair_chart(area_plot(df, column), use_container_width=True)
                 
             if show_richness:
-                # "Species Richness"
                 st.altair_chart(richness_chart, use_container_width=True)
 
             if show_rsr:
-                # "Range-Size Rarity"
                 st.altair_chart(rsr_chart, use_container_width=True)
 
             if show_irrecoverable_carbon:
-                # "Irrecoverable Carbon"
                 st.altair_chart(irr_carbon_chart, use_container_width=True)
 
             if show_manageable_carbon:
-                # "Manageable Carbon"
                 st.altair_chart(man_carbon_chart, use_container_width=True)
 
-            if show_fire_10:
-                # "Fires (2013-2022)"
-                st.altair_chart(fire_10_chart, use_container_width=True)
-                
-            if show_rx_10:
-                # "Prescribed Burns (2013-2022)"
-                st.altair_chart(rx_10_chart, use_container_width=True)
-
             if show_justice40:
-                # "Disadvantaged Communities (Justice40)"
                 st.altair_chart(justice40_chart, use_container_width=True)
                 
             if show_sv:
-                # "Social Vulnerability Index"
                 st.altair_chart(svi_chart, use_container_width=True)
+
+            if show_fire:
+                st.altair_chart(fire_10_chart, use_container_width=True)
                 
-            if show_sv_socio:
-                # "SVI - Socioeconomic Status"
-                st.altair_chart(svi_socio_chart, use_container_width=True)
-            
-            if show_sv_household:
-                # "SVI - Household Characteristics"
-                st.altair_chart(svi_house_chart, use_container_width=True)
-            
-            if show_sv_minority:
-                # "SVI - Racial and Ethnic Minority"
-                st.altair_chart(svi_minority_chart, use_container_width=True)
-            
-            if show_sv_housing:
-                # "SVI - Housing Type and Transit"
-                st.altair_chart(svi_transit_chart, use_container_width=True)
-            
-            if show_carbon_lost:
-                # "Deforested Carbon (2002-2022)"
-                st.altair_chart(carbon_loss_chart, use_container_width=True)
+            if show_rxburn:
+                st.altair_chart(rx_10_chart, use_container_width=True)
 
-            if show_human_impact:
-                # "Human Footprint (2017-2021)"
-                st.altair_chart(hi_chart, use_container_width=True)
-
-
-
+ 
 
 
 st.caption("***The label 'established' is inferred from the California Protected Areas Database, which may introduce artifacts. For details on our methodology, please refer to our code: https://github.com/boettiger-lab/ca-30x30.") 
 
 st.caption("***Under California’s 30x30 framework, only GAP codes 1 and 2 are counted toward the conservation goal.") 
-
-
 
 st.divider()
 
