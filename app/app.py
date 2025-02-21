@@ -25,7 +25,8 @@ current_tables = con.list_tables()
 if "mydata" not in set(current_tables):
     tbl = con.read_parquet(ca_parquet)
     con.create_table("mydata", tbl)
-    
+
+ 
 ca = con.table("mydata")
 
     
@@ -190,12 +191,22 @@ def run_sql(query,color_choice):
     elif ("id" and "geom" in result.columns): 
         style = get_pmtiles_style_llm(style_options[color_choice], result["id"].tolist())
         legend_d = {cat: color for cat, color in style_options[color_choice]['stops']}
-
+        position = 'bottom-left'
+        fontsize = 15
+        bg_color = 'white'
+        
         # shorten legend for ecoregions 
         if color_choice == "Ecoregion":
+            legend_d = {key.replace("Northern California", "NorCal"): value for key, value in legend_d.items()} 
+            legend_d = {key.replace("Southern California", "SoCal"): value for key, value in legend_d.items()} 
+            legend_d = {key.replace("Southeastern", "SE."): value for key, value in legend_d.items()} 
+            legend_d = {key.replace("and", "&"): value for key, value in legend_d.items()} 
             legend_d = {key.replace("California", "CA"): value for key, value in legend_d.items()} 
-            
-        m.add_legend(legend_dict=legend_d, position='bottom-left')
+            legend_d = {key.replace("Northwestern", "NW."): value for key, value in legend_d.items()} 
+            bg_color = 'rgba(255, 255, 255, 0.6)'
+            fontsize = 12
+        
+        m.add_legend(legend_dict = legend_d, position = position, bg_color = bg_color, fontsize = fontsize)
         m.add_pmtiles(ca_pmtiles, style=style, opacity=alpha, tooltip=True, fit_bounds=True)
         m.fit_bounds(result.total_bounds.tolist())    
         result = result.drop('geom',axis = 1) #printing to streamlit so I need to drop geom
@@ -350,9 +361,14 @@ with st.sidebar:
 
     st.divider()
     st.markdown('<p class = "medium-font-sidebar"> Filters:</p>', help = "Apply filters to adjust what data is shown on the map.", unsafe_allow_html= True)
+    for col,val in style_options.items():
+        for name in val['stops'][0]:
+            key = val['property']+str(name)
+            st.session_state[key] = default_gap.get(name, True)
+
     for label in style_options: # get selected filters (based on the buttons selected)
         with st.expander(label):  
-            if label == "GAP Code": # gap code 1 and 2 are on by default
+            if label in ["GAP Code","30x30 Status"]: # gap code 1 and 2 are on by default
                 opts = getButtons(style_options, label, default_gap)
             else: # other buttons are not on by default.
                 opts = getButtons(style_options, label) 
@@ -365,7 +381,7 @@ with st.sidebar:
         else: 
             filter_cols = []
             filter_vals = []
-            
+
     st.divider()
     st.markdown("""
     <p class="medium-font-sidebar">
@@ -376,12 +392,23 @@ with st.sidebar:
 if 'out' not in locals():
     style = get_pmtiles_style(style_options[color_choice], alpha, filter_cols, filter_vals)
     legend_d = {cat: color for cat, color in style_options[color_choice]['stops']}
-
+    position = 'bottom-left'
+    fontsize = 15
+    bg_color = 'white'
+    
     # shorten legend for ecoregions 
     if color_choice == "Ecoregion":
+        legend_d = {key.replace("Northern California", "NorCal"): value for key, value in legend_d.items()} 
+        legend_d = {key.replace("Southern California", "SoCal"): value for key, value in legend_d.items()} 
+        legend_d = {key.replace("Southeastern", "SE."): value for key, value in legend_d.items()} 
+        legend_d = {key.replace("and", "&"): value for key, value in legend_d.items()} 
         legend_d = {key.replace("California", "CA"): value for key, value in legend_d.items()} 
+        legend_d = {key.replace("Northwestern", "NW."): value for key, value in legend_d.items()} 
+        bg_color = 'rgba(255, 255, 255, 0.6)'
+        fontsize = 12
+            
         
-    m.add_legend(legend_dict = legend_d, position = 'bottom-left')
+    m.add_legend(legend_dict = legend_d, position = position, bg_color = bg_color, fontsize = fontsize)
     m.add_pmtiles(ca_pmtiles, style=style, name="CA", opacity=alpha, tooltip=True, fit_bounds=True)
     
 
@@ -408,11 +435,12 @@ colors = (
 # get summary tables used for charts + printed table 
 # df - charts; df_tab - printed table (omits colors) 
 if 'out' not in locals():
-    df,df_tab = summary_table(ca, column, colors, filter_cols, filter_vals, colorby_vals)
+    df,df_tab,df_percent = summary_table(ca, column, colors, filter_cols, filter_vals, colorby_vals)
+    total_percent = df_percent.percent_protected.sum().round(2)
+
 else:
     df = summary_table_sql(ca, column, colors, ids)
-
-total_percent = df.percent_protected.sum().round(2)
+    total_percent = df.percent_protected.sum().round(2)
 
 
 # charts displayed based on color_by variable

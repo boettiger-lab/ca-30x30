@@ -1,6 +1,7 @@
 # urls for main layer 
-ca_parquet = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/8d5d938c04d3206e6bfb04055b5e779c4c28222f/ca-30x30.parquet"
-ca_pmtiles = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/c58913a279d13c414722c4299b0e0867e923946a/ca-30x30.pmtiles"
+ca_parquet = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/38af68979644f52ac928c5e41c81ec4d93468eef/ca-30x30.parquet"
+ca_pmtiles = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/e283bb63ee76dd5acd2d187029a80ab6a011886b/ca-30x30.pmtiles"
+
 
 ca_area_acres = 1.014e8 #acres 
 style_choice = "GAP Status Code"
@@ -41,6 +42,9 @@ default_gap = {
     0: False,
     3: False,
     4: False,
+    "other-conserved":False,
+    "unknown":False,
+    "non-conserved":False
 }
 
 # Maplibre styles. (should these be functions?)
@@ -59,7 +63,8 @@ manager = {
         ['Tribal', tribal_color],
         ['Private', private_color],
         ['HOA', hoa_color],
-    ]
+    ],
+    'default': white
 }
 
 easement = {
@@ -68,7 +73,8 @@ easement = {
     'stops': [
         ['True', private_access_color],
         ['False', public_access_color],
-    ]
+    ],
+    'default': white
 }
 
 year = {
@@ -77,7 +83,8 @@ year = {
     'stops': [
         ['pre-2024', year2023_color],
         ['2024', year2024_color],
-    ]
+    ],
+    'default': white
 }
 
 access = {
@@ -88,7 +95,8 @@ access = {
         ['No Public Access', private_access_color],
         ['Unknown Access', "#bbbbbb"],
         ['Restricted Access', tribal_color],
-    ]
+    ],
+    'default': white
 }
 
 gap = {
@@ -97,20 +105,23 @@ gap = {
     'stops': [
         [1, "#26633d"],
         [2, "#879647"],
-        [3, "#EE4B2B"],
-        [4, "#BF40BF"]
-    ]
+        [3, "#bdcf72"],
+        [4, "#6d6e6d"]
+    ],
+    'default': white
 }
 
 status = {
     'property': 'status',
     'type': 'categorical',
     'stops': [
-        ['30x30-conserved', "#26633d"],
-        ['other-conserved', "#879647"],
-        ['non-conserved', white]
-    ]
+        ['30x30-conserved', "#56711f"],
+        ['other-conserved', "#b6ce7a"],
+        ['unknown', "#e5efdb"],
+        ['non-conserved', "#e1e1e1"]
+    ],
 }
+
 
 
 ecoregion = {
@@ -137,14 +148,14 @@ ecoregion = {
         ['Northern California Coast', "#c7c7c7"],
         ['Great Valley (North)', "#dbdb8d"],
         ['Central California Coast', "#9edae5"],
-    ]
+    ],
+    'default': white
 }
-
 
 style_options = {
     "Year": year,
-    "GAP Code": gap,
     "30x30 Status": status,
+    "GAP Code": gap,
     "Ecoregion": ecoregion,
     "Manager Type": manager,
     "Easement": easement,
@@ -252,8 +263,8 @@ svi_style = {
 
 select_column = {
     "Year": "established",
-    "GAP Code": "gap_code",
     "30x30 Status":  "status",
+    "GAP Code": "gap_code",
     "Ecoregion":  "ecoregion",
     "Manager Type": "manager_type",
     "Easement": "easement",

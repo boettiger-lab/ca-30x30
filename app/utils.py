@@ -14,6 +14,7 @@ import sqlalchemy
 import pathlib
 from typing import Optional
 from functools import reduce
+from itertools import chain
 
 from variables import *
 
@@ -52,13 +53,17 @@ def summary_table(ca, column, colors, filter_cols, filter_vals,colorby_vals): # 
         filter_cols.append(column)
         filters.append(getattr(_, column).isin(colorby_vals[column])) 
     combined_filter = reduce(lambda x, y: x & y, filters) #combining all the filters into ibis filter expression 
-    
+
+    df_percent = get_summary(ca, combined_filter, [column], colors) # df used for charts 
+
     if column == "status": #need to include non-conserved in summary stats 
         combined_filter = (combined_filter) | (_.status.isin(['30x30-conserved','other-conserved','non-conserved']))
-        
+
     df = get_summary(ca, combined_filter, [column], colors) # df used for charts 
+
     df_tab = get_summary(ca, combined_filter, filter_cols, colors = None) #df used for printed table
-    return df, df_tab 
+
+    return df, df_tab, df_percent
 
 
 
@@ -120,19 +125,55 @@ def bar_chart(df, x, y, title): #display summary stats for color_by column
         ).properties(width="container", height=height, title = title)
     return chart
 
+def sync_checkboxes(source):
+    # gap 1 and gap 2 on -> 30x30-conserved on
+    if source in ["gap_code1", "gap_code2"]:
+        st.session_state['status30x30-conserved'] = st.session_state.gap_code1 and st.session_state.gap_code2
 
-def getButtons(style_options, style_choice, default_gap=None): #finding the buttons selected to use as filters 
+    # 30x30-conserved on -> gap 1 and gap 2 on
+    elif source == "status30x30-conserved":
+        st.session_state.gap_code1 = st.session_state['status30x30-conserved']
+        st.session_state.gap_code2 = st.session_state['status30x30-conserved']
+
+    # other-conserved on <-> gap 3 on
+    elif source == "gap_code3":
+        st.session_state["statusother-conserved"] = st.session_state.gap_code3
+        rerun_needed = True
+    elif source == "statusother-conserved":
+        if "gap_code3" in st.session_state and st.session_state["statusother-conserved"] != st.session_state.gap_code3:
+            st.session_state.gap_code3 = st.session_state["statusother-conserved"]
+            rerun_needed = True  # Ensure UI updates
+
+    # unknown on <-> gap 4 on
+    elif source == "gap_code4":
+        st.session_state.statusunknown = st.session_state.gap_code4
+        rerun_needed = True
+    elif source == "statusunknown":
+        if "gap_code4" in st.session_state and st.session_state.statusunknown != st.session_state.gap_code4:
+            st.session_state.gap_code4 = st.session_state.statusunknown
+            rerun_needed = True
+
+    # non-conserved on <-> gap 0 
+    elif source == "gap_code0":
+        st.session_state['statusnon-conserved'] = st.session_state.gap_code0
+        rerun_needed = True
+    elif source == "statusnon-conserved":
+        if "gap_code0" in st.session_state and st.session_state['statusnon-conserved'] != st.session_state.gap_code0:
+            st.session_state.gap_code0 = st.session_state['statusnon-conserved']
+            rerun_needed = True
+
+
+def getButtons(style_options, style_choice, default_gap=None):
     column = style_options[style_choice]['property']
-    opts = [style[0] for style in style_options[style_choice]['stops']]   
-    default_gap = default_gap or {}  
-    buttons = {
-        name: st.checkbox(f"{name}", value=default_gap.get(name, True), key=column + str(name))
-        for name in opts
-    }
-    filter_choice = [key for key, value in buttons.items() if value]  # return only selected
-    d = {}
-    d[column] = filter_choice
-    return d
+    opts = [style[0] for style in style_options[style_choice]['stops']]
+    default_gap = default_gap or {}
+    buttons = {}
+    for name in opts:
+        key = column + str(name)
+        buttons[name] = st.checkbox(f"{name}", value=st.session_state[key], key=key, on_change = sync_checkboxes, args = (key,))
+    filter_choice = [key for key, value in buttons.items() if value]
+    return {column: filter_choice}
+    
 
 
 def getColorVals(style_options, style_choice): 
@@ -149,6 +190,10 @@ def get_pmtiles_style(paint, alpha, filter_cols, filter_vals):
     for col, val in zip(filter_cols, filter_vals):
         filters.append(["match", ["get", col], val, True, False])
     combined_filters = ["all"] + filters
+    
+    if "non-conserved" in list(chain.from_iterable(filter_vals)):
+       combined_filters = ["any", combined_filters, ["match", ["get", "status"], ["non-conserved"],True, False]]
+        
     style = {
         "version": 8,
         "sources": {
