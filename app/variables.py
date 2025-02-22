@@ -1,6 +1,6 @@
 # urls for main layer 
-ca_parquet = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/65eb463312262e50d51f5c07bfad7568152803b0/ca-30x30.parquet"
-ca_pmtiles = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/fc4dc523c27a8133452bb7596e3e520fda24eccd/ca-30x30.pmtiles"
+ca_parquet = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/da85dd9ca1c774d4ddf821555e3c3c9e13c9b857/ca-30x30.parquet"
+ca_pmtiles = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/896db6c9a37488ee7c53ee56df67b3ccfd44d150/ca-30x30.pmtiles"
 
 ca_area_acres = 1.014e8 #acres 
 # ca_area_acres = 103179953.76086558
