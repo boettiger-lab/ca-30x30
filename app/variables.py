@@ -1,9 +1,9 @@
 # urls for main layer 
-ca_parquet = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/38af68979644f52ac928c5e41c81ec4d93468eef/ca-30x30.parquet"
-ca_pmtiles = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/e283bb63ee76dd5acd2d187029a80ab6a011886b/ca-30x30.pmtiles"
-
+ca_parquet = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/65eb463312262e50d51f5c07bfad7568152803b0/ca-30x30.parquet"
+ca_pmtiles = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/fc4dc523c27a8133452bb7596e3e520fda24eccd/ca-30x30.pmtiles"
 
 ca_area_acres = 1.014e8 #acres 
+# ca_area_acres = 103179953.76086558
 style_choice = "GAP Status Code"
 
 # urls for additional data layers 
@@ -38,7 +38,7 @@ svi_color = "#1bc7c3" #cyan
 white =  "#FFFFFF" 
 
 # gap codes 3 and 4 are off by default. 
-default_gap = {
+default_boxes = {
     0: False,
     3: False,
     4: False,
@@ -119,6 +119,8 @@ status = {
         ['other-conserved', "#b6ce7a"],
         ['unknown', "#e5efdb"],
         ['non-conserved', "#e1e1e1"]
+        # ['non-conserved', white]
+
     ],
 }
 
@@ -153,9 +155,9 @@ ecoregion = {
 }
 
 style_options = {
-    "Year": year,
     "30x30 Status": status,
     "GAP Code": gap,
+    "Year": year,
     "Ecoregion": ecoregion,
     "Manager Type": manager,
     "Easement": easement,
@@ -262,9 +264,9 @@ svi_style = {
     
 
 select_column = {
-    "Year": "established",
     "30x30 Status":  "status",
     "GAP Code": "gap_code",
+    "Year": "established",
     "Ecoregion":  "ecoregion",
     "Manager Type": "manager_type",
     "Easement": "easement",

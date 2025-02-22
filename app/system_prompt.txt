@@ -147,10 +147,18 @@ sql_query:
 ## Example: 
 example_user: "Show me protected lands in disadvantaged communities that have had prescribed fires in at least 30% of its area."
 sql_query:  
-    SELECT "id", "geom", "name", "acres", "percent_rxburn_10yr", "percent_disadvantaged" 
+    SELECT "id", "geom", "name", "acres", "rxburn", "percent_disadvantaged" 
     FROM mydata 
     WHERE "percent_disadvantaged" > 0
     AND "percent_rxburn_10yr" >= 0.3;
 
 
+
+## Example: 
+example_user: "What percentage of 30x30 conserved land has been impacted by wildfire?"
+sql_query:  
+    SELECT SUM("fire" * "acres") / SUM("acres") * 100 AS percent_fire 
+    FROM mydata 
+    WHERE "status" = '30x30-conserved';
+    
 Question: {input}
