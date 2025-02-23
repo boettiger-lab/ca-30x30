@@ -1,8 +1,9 @@
 # urls for main layer 
-ca_parquet = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/8d5d938c04d3206e6bfb04055b5e779c4c28222f/ca-30x30.parquet"
-ca_pmtiles = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/c58913a279d13c414722c4299b0e0867e923946a/ca-30x30.pmtiles"
+ca_parquet = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/da85dd9ca1c774d4ddf821555e3c3c9e13c9b857/ca-30x30.parquet"
+ca_pmtiles = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/896db6c9a37488ee7c53ee56df67b3ccfd44d150/ca-30x30.pmtiles"
 
 ca_area_acres = 1.014e8 #acres 
+# ca_area_acres = 103179953.76086558
 style_choice = "GAP Status Code"
 
 # urls for additional data layers 
@@ -37,10 +38,13 @@ svi_color = "#1bc7c3" #cyan
 white =  "#FFFFFF" 
 
 # gap codes 3 and 4 are off by default. 
-default_gap = {
+default_boxes = {
     0: False,
-    3: False,
-    4: False,
+    # 3: False,
+    # 4: False,
+    # "other-conserved":False,
+    # "unknown":False,
+    # "non-conserved":False
 }
 
 # Maplibre styles. (should these be functions?)
@@ -59,7 +63,8 @@ manager = {
         ['Tribal', tribal_color],
         ['Private', private_color],
         ['HOA', hoa_color],
-    ]
+    ],
+    'default': white
 }
 
 easement = {
@@ -68,7 +73,8 @@ easement = {
     'stops': [
         ['True', private_access_color],
         ['False', public_access_color],
-    ]
+    ],
+    'default': white
 }
 
 year = {
@@ -77,7 +83,8 @@ year = {
     'stops': [
         ['pre-2024', year2023_color],
         ['2024', year2024_color],
-    ]
+    ],
+    'default': white
 }
 
 access = {
@@ -88,7 +95,8 @@ access = {
         ['No Public Access', private_access_color],
         ['Unknown Access', "#bbbbbb"],
         ['Restricted Access', tribal_color],
-    ]
+    ],
+    'default': white
 }
 
 gap = {
@@ -97,54 +105,59 @@ gap = {
     'stops': [
         [1, "#26633d"],
         [2, "#879647"],
-        [3, "#EE4B2B"],
-        [4, "#BF40BF"]
-    ]
+        [3, "#bdcf72"],
+        [4, "#6d6e6d"]
+    ],
+    'default': white
 }
 
 status = {
     'property': 'status',
     'type': 'categorical',
     'stops': [
-        ['30x30-conserved', "#26633d"],
-        ['other-conserved', "#879647"],
-        ['non-conserved', white]
-    ]
+        ['30x30-conserved', "#56711f"],
+        ['other-conserved', "#b6ce7a"],
+        ['unknown', "#e5efdb"],
+        ['non-conserved', "#e1e1e1"]
+        # ['non-conserved', white]
+
+    ],
 }
+
 
 
 ecoregion = {
     'property': 'ecoregion',
     'type': 'categorical',
     'stops': [
-        ['Sierra Nevada Foothills', "#1f77b4"],
-        ['Southern Cascades', "#ff7f0e"],
         ['Southeastern Great Basin', "#2ca02c"],
-        ['Southern California Mountains and Valleys', "#d62728"],
+        ['Mojave Desert', "#98df8a"],
         ['Sonoran Desert', "#9467bd"],
+        ['Sierra Nevada', "#17becf"],
+        ['Southern California Mountains and Valleys', "#d62728"],
+        ['Mono', "#ff9896"],
+        ['Central California Coast', "#9edae5"],
+        ['Klamath Mountains', "#f7b6d2"],
+        ['Northern California Coast', "#c7c7c7"],
+        ['Northern California Coast Ranges', "#aec7e8"],
         ['Northwestern Basin and Range', "#8c564b"],
         ['Colorado Desert', "#e377c2"],
         ['Central Valley Coast Ranges', "#7f7f7f"],
-        ['Great Valley (South)', "#bcbd22"],
-        ['Sierra Nevada', "#17becf"],
-        ['Northern California Coast Ranges', "#aec7e8"],
-        ['Northern California Interior Coast Ranges', "#ffbb78"],
-        ['Mojave Desert', "#98df8a"],
-        ['Mono', "#ff9896"],
         ['Southern California Coast', "#c5b0d5"],
+        ['Sierra Nevada Foothills', "#1f77b4"],
+        ['Southern Cascades', "#ff7f0e"],
         ['Modoc Plateau', "#c49c94"],
-        ['Klamath Mountains', "#f7b6d2"],
-        ['Northern California Coast', "#c7c7c7"],
+        ['Great Valley (South)', "#bcbd22"],
+        ['Northern California Interior Coast Ranges', "#ffbb78"],
         ['Great Valley (North)', "#dbdb8d"],
-        ['Central California Coast', "#9edae5"],
-    ]
+    ],
+    'default': white
 }
 
-
 style_options = {
-    "Year": year,
-    "GAP Code": gap,
     "30x30 Status": status,
+    "GAP Code": gap,
+    "Year": year,
     "Ecoregion": ecoregion,
     "Manager Type": manager,
     "Easement": easement,
@@ -251,9 +264,9 @@ svi_style = {
     
 
 select_column = {
-    "Year": "established",
-    "GAP Code": "gap_code",
     "30x30 Status":  "status",
+    "GAP Code": "gap_code",
+    "Year": "established",
     "Ecoregion":  "ecoregion",
     "Manager Type": "manager_type",
     "Easement": "easement",
