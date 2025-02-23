@@ -40,11 +40,11 @@ white =  "#FFFFFF"
 # gap codes 3 and 4 are off by default. 
 default_boxes = {
     0: False,
-    3: False,
-    4: False,
-    "other-conserved":False,
-    "unknown":False,
-    "non-conserved":False
+    # 3: False,
+    # 4: False,
+    # "other-conserved":False,
+    # "unknown":False,
+    # "non-conserved":False
 }
 
 # Maplibre styles. (should these be functions?)
@@ -130,26 +130,26 @@ ecoregion = {
     'property': 'ecoregion',
     'type': 'categorical',
     'stops': [
-        ['Sierra Nevada Foothills', "#1f77b4"],
-        ['Southern Cascades', "#ff7f0e"],
         ['Southeastern Great Basin', "#2ca02c"],
-        ['Southern California Mountains and Valleys', "#d62728"],
+        ['Mojave Desert', "#98df8a"],
         ['Sonoran Desert', "#9467bd"],
+        ['Sierra Nevada', "#17becf"],
+        ['Southern California Mountains and Valleys', "#d62728"],
+        ['Mono', "#ff9896"],
+        ['Central California Coast', "#9edae5"],
+        ['Klamath Mountains', "#f7b6d2"],
+        ['Northern California Coast', "#c7c7c7"],
+        ['Northern California Coast Ranges', "#aec7e8"],
         ['Northwestern Basin and Range', "#8c564b"],
         ['Colorado Desert', "#e377c2"],
         ['Central Valley Coast Ranges', "#7f7f7f"],
-        ['Great Valley (South)', "#bcbd22"],
-        ['Sierra Nevada', "#17becf"],
-        ['Northern California Coast Ranges', "#aec7e8"],
-        ['Northern California Interior Coast Ranges', "#ffbb78"],
-        ['Mojave Desert', "#98df8a"],
-        ['Mono', "#ff9896"],
         ['Southern California Coast', "#c5b0d5"],
+        ['Sierra Nevada Foothills', "#1f77b4"],
+        ['Southern Cascades', "#ff7f0e"],
         ['Modoc Plateau', "#c49c94"],
-        ['Klamath Mountains', "#f7b6d2"],
-        ['Northern California Coast', "#c7c7c7"],
+        ['Great Valley (South)', "#bcbd22"],
+        ['Northern California Interior Coast Ranges', "#ffbb78"],
         ['Great Valley (North)', "#dbdb8d"],
-        ['Central California Coast', "#9edae5"],
     ],
     'default': white
 }

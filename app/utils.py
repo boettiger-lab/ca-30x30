@@ -24,15 +24,19 @@ def colorTable(select_colors,color_choice,column):
               .to_pandas()
              )
     return colors 
-    
+
+
+
+
 def get_summary(ca, combined_filter, column, main_group, colors=None):
     df = ca.filter(combined_filter)
     #total acres for each group 
+    # if colors is not None and not colors.empty:
     group_totals = df.group_by(main_group).aggregate(total_acres=_.acres.sum())
     df = ca.filter(combined_filter)
     df = (df
             .group_by(*column)  # unpack the list for grouping
-            .aggregate(percent_CA=100 * _.acres.sum() / ca_area_acres,
+            .aggregate(percent_CA= _.acres.sum() / ca_area_acres,
                        acres = _.acres.sum(),
                        mean_richness = (_.richness * _.acres).sum() / _.acres.sum(),
                        mean_rsr = (_.rsr * _.acres).sum() / _.acres.sum(),
@@ -43,12 +47,12 @@ def get_summary(ca, combined_filter, column, main_group, colors=None):
                        mean_disadvantaged =  (_.disadvantaged_communities * _.acres).sum() / _.acres.sum(),
                        mean_svi =  (_.svi * _.acres).sum() / _.acres.sum(),
                       )
-            .mutate(percent_CA=_.percent_CA.round(1),
-                    acres=_.acres.round(1))
+            .mutate(percent_CA=_.percent_CA.round(3),
+                    acres=_.acres.round(0))
          )
-    
+    # if colors is not None and not colors.empty:
     df = df.inner_join(group_totals, main_group)    
-    df = df.mutate(percent_group=(100 * _.acres / _.total_acres).round(1)) 
+    df = df.mutate(percent_group=( _.acres / _.total_acres).round(3)) 
     if colors is not None and not colors.empty: #only the df will have colors, df_tab doesn't since we are printing it.
         df = df.inner_join(colors, column[-1]) 
     df = df.cast({col: "string" for col in column})
@@ -70,19 +74,32 @@ def summary_table(ca, column, select_colors, color_choice, filter_cols, filter_v
         filters.append(getattr(_, column).isin(colorby_vals[column]))    
     combined_filter = reduce(lambda x, y: x & y, filters) #combining all the filters into ibis filter expression 
     
-    df_percent = get_summary(ca, combined_filter, [column],column, colors) # df used for percentage, excludes non-conserved. 
+    only_conserved = (combined_filter) & (_.status.isin(['30x30-conserved']))
+    df_percent = get_summary(ca, only_conserved, [column],column, colors) # df used for percentage, excludes non-conserved. 
+
     df_tab = get_summary(ca, combined_filter, filter_cols, column, colors = None) #df used for printed table
-    if column == "status": #need to include non-conserved in summary stats 
-        combined_filter = (combined_filter) | (_.status.isin(['30x30-conserved','other-conserved','unknown','non-conserved']))
+
+    if "non-conserved" in list(chain.from_iterable(filter_vals)):
+       combined_filter = (combined_filter) | (_.status.isin(['non-conserved']))
+        
     df = get_summary(ca, combined_filter, [column], column, colors) # df used for charts 
 
     df_bar_30x30 = None # no stacked charts if we have status/gap_code
     if column not in ["status","gap_code"]: # df for stacked 30x30 status bar chart 
         colors = colorTable(select_colors,"30x30 Status",'status')
-        combined_filter_status = (combined_filter) | (_.status.isin(['30x30-conserved','other-conserved','unknown','non-conserved']))
-        df_bar_30x30 = get_summary(ca, combined_filter_status, [column, 'status'], column, colors) # df used for charts 
+        df_bar_30x30 = get_summary(ca, combined_filter, [column, 'status'], column, colors) # df used for charts 
+    
+
     return df, df_tab, df_percent, df_bar_30x30
 
+
+
+        
+def summary_table_sql(ca, column, colors, ids): # get df for charts + df_tab for printed table 
+    filters = [_.id.isin(ids)]
+    combined_filter = reduce(lambda x, y: x & y, filters) #combining all the filters into ibis filter expression 
+    df = get_summary(ca, combined_filter, [column], column, colors) # df used for charts 
+    return df
 
 
 def get_hex(df, color,sort_order):
@@ -90,39 +107,59 @@ def get_hex(df, color,sort_order):
                 .set_index(color)
                 .reindex(sort_order)
                 .dropna()["color"])
-    
 
-def stacked_bar(df, x, y, color, title):
+def transform_label(label, x_field):
+    # converting labels for that gnarly stacked bar chart 
+    if x_field == "access_type":
+        return label.replace(" Access", "")
+    elif x_field == "ecoregion":
+        label = label.replace("Northern California", "NorCal")
+        label = label.replace("Southern California", "SoCal")
+        label = label.replace("Southeastern", "SE.")
+        label = label.replace("Northwestern", "NW.")
+        label = label.replace("and", "&")
+        label = label.replace("California", "CA")
+        return label
+    else:
+        return label
+
+            
+def stacked_bar(df, x, y, color, title, colors):
+    label_colors = colors['color'].to_list()
     # bar order 
-    if x == "established": # order labels in chronological order, not alphabetic. 
+    if x == "established":  # order labels in chronological order, not alphabetic.
         sort = '-x'
-    elif x == "access_type": #order based on levels of openness 
-        sort=['Open', 'Restricted', 'No Public', "Unknown"] 
-    elif x == "manager_type": 
-        sort = ["Federal","Tribal","State","Special District", "County", "City", "HOA","Joint","Non Profit","Private","Unknown"]
-    elif x == "status": 
-        sort = ["30x30-conserved","other-conserved","unknown","non-conserved"]
-    elif x == "ecoregion": 
-       sort = ['SE. Great Basin','Mojave Desert','Sonoran Desert','Sierra Nevada','SoCal Mountains & Valleys','Mono',
-                'Central CA Coast','Klamath Mountains','NorCal Coast','NorCal Coast Ranges',
-                'NW. Basin & Range','Colorado Desert','Central Valley Coast Ranges','SoCal Coast',
-                'Sierra Nevada Foothills','Southern Cascades','Modoc Plateau','Great Valley (North)','NorCal Interior Coast Ranges',
-                'Great Valley (South)']
-    else: 
+    elif x == "access_type":  # order based on levels of openness 
+        sort = ['Open', 'Restricted', 'No Public', "Unknown"]
+    elif x == "easement":
+        sort = ['True', 'False']
+    elif x == "manager_type":
+        sort = ["Federal", "Tribal", "State", "Special District", "County", "City", "HOA",
+                "Joint", "Non Profit", "Private", "Unknown"]
+    elif x == "status":
+        sort = ["30x30-conserved", "other-conserved", "unknown", "non-conserved"]
+    elif x == "ecoregion":
+        sort = ['SE. Great Basin', 'Mojave Desert', 'Sonoran Desert', 'Sierra Nevada',
+                'SoCal Mountains & Valleys', 'Mono', 'Central CA Coast', 'Klamath Mountains',
+                'NorCal Coast', 'NorCal Coast Ranges', 'NW. Basin & Range', 'Colorado Desert',
+                'Central Valley Coast Ranges', 'SoCal Coast', 'Sierra Nevada Foothills',
+                'Southern Cascades', 'Modoc Plateau', 'Great Valley (North)',
+                'NorCal Interior Coast Ranges', 'Great Valley (South)']
+    else:
         sort = 'x'
 
-    # label order 
-    if x == "manager_type": #labels are too long, making vertical 
+    if x == "manager_type":
         angle = 270
-        height = 373
-    elif x == 'ecoregion': # make labels vertical and figure taller  
+        height = 350
+
+    elif x == 'ecoregion':
         angle = 270
         height = 430
-    else: #other labels are horizontal
+    else:
         angle = 0
         height = 310
 
-    # stacked bar order 
+    # stacked bar order
     sort_order = ['30x30-conserved', 'other-conserved', 'unknown', 'non-conserved']
     y_titles = {
         'ecoregion': 'Ecoregion (%)',
@@ -131,12 +168,16 @@ def stacked_bar(df, x, y, color, title):
         'easement': 'Easement (%)',
         'access_type': 'Access (%)'
     }
-    ytitle = y_titles.get(x, y)  # Default to `y` if not in the dictionary
+    ytitle = y_titles.get(x, y)
     color_hex = get_hex(df[[color, 'color']], color, sort_order)
-    sort_order = sort_order[0:len(color_hex)] 
+    sort_order = sort_order[0:len(color_hex)]
     df["stack_order"] = df[color].apply(lambda val: sort_order.index(val) if val in sort_order else len(sort_order))
-
-    if x == "ecoregion":
+            
+    # shorten labels to fit on chart  
+    label_transform = f"datum.{x}"
+    if x == "access_type":
+        label_transform = f"replace(datum.{x}, ' Access', '')"
+    elif x == "ecoregion":
         label_transform = (
             "replace("
             "replace("
@@ -150,40 +191,102 @@ def stacked_bar(df, x, y, color, title):
             "'and', '&'),"
             "'California', 'CA')"
         )
-    else:
-        label_transform = f"datum.{x}"  # Default label transformation
 
-    chart = alt.Chart(df).mark_bar().transform_calculate(
-        label=label_transform
+    # to match the colors in the map to each label, need to write some ugly code..
+    #  bar chart w/ xlabels hidden
+    chart = alt.Chart(df).mark_bar(height = 500).transform_calculate(
+        xlabel=label_transform
     ).encode(
-        x=alt.X("label:N", sort = sort, title=None, axis=alt.Axis(labelLimit=150, labelAngle=angle)),  # Shorten axis labels
-        y=alt.Y(y, title=ytitle).scale(domain=(0,100)),
+        x=alt.X("xlabel:N", sort=sort, title=None,
+                axis=alt.Axis(labelLimit=150, labelAngle=angle, labelColor="transparent")),
+        y=alt.Y(y, title=ytitle, axis=alt.Axis(labelPadding=5)).scale(domain=(0, 1)),
         color=alt.Color(
             color,
-            sort=sort_order,  # Controls legend order
+            sort=sort_order,
             scale=alt.Scale(domain=sort_order, range=color_hex)
         ),
-        order=alt.Order(
-            "stack_order:Q",
-            sort="ascending"
-        ),
+        order=alt.Order("stack_order:Q", sort="ascending"),
         tooltip=[
-            alt.Tooltip("label", type="nominal"),  # Use transformed label
-            alt.Tooltip("percent_CA", type="quantitative", format=",.2f"),
-            alt.Tooltip("percent_group", type="quantitative", format=",.2f"),
+            alt.Tooltip(x, type="nominal"),
+            alt.Tooltip(color, type="nominal"),
+            alt.Tooltip("percent_group", type="quantitative", format=",.1%"),
             alt.Tooltip("acres", type="quantitative", format=",.0f"),
         ]
-    ).configure_legend(
-    direction = 'horizontal',
-    orient='top',
-    columns = 3,
-    title = None,
-    labelOffset = 2,
-    offset = 10
-    ).properties(width="container", height=height, title=title
-                ).configure_title(fontSize=18, align = "center",anchor='middle',offset = 10)
-    return chart
+    )
+    transformed_labels = [transform_label(str(lab), x) for lab in colors[x]]    
+    labels_df = colors 
+    labels_df['xlabel'] = transformed_labels
+    # 2 layers, 1 for the symbol and 1 for the text
+    if angle == 0:
+        symbol_layer = alt.Chart(labels_df).mark_point(
+            filled=True,
+            shape="circle",
+            size=100,
+            xOffset = 0,
+            yOffset=130,
+            align = 'left',
+            tooltip = False
+        ).encode(
+            x=alt.X("xlabel:N", sort=sort),
+            color=alt.Color("color:N", scale=None)
+        )
+        text_layer = alt.Chart(labels_df).mark_text(
+            dy=115,  # shifts the text to the right of the symbol
+            dx = 0,
+            yOffset=0, 
+            xOffset = 0,
+            align='center',
+            color="black",
+            tooltip = False
+        ).encode(
+            x=alt.X("xlabel:N", sort=sort),
+            text=alt.Text("xlabel:N")
+        )
+    # vertical labels 
+    elif angle == 270:
+        symbol_layer = alt.Chart(labels_df).mark_point(
+            xOffset = 0, 
+            yOffset= 100,
+            filled=True,
+            shape="circle",
+            size=100,
+            tooltip = False
+        ).encode(
+            x=alt.X("xlabel:N", sort=sort),
+            color=alt.Color("color:N", scale=None)
+        )
+        text_layer = alt.Chart(labels_df).mark_text(
+            dy=0,
+            dx = -110,
+            angle=270,
+            align='right',
+            color="black",
+            tooltip = False
+        ).encode(
+            x=alt.X("xlabel:N", sort=sort),
+            text=alt.Text("xlabel:N")
+        )
+        
+    custom_labels = alt.layer(symbol_layer, text_layer)
+    final_chart = alt.layer(chart, custom_labels)
 
+    # put it all together 
+    final_chart = final_chart.properties(
+        width="container",
+        height=height,
+        title=title
+    ).configure_legend(
+        direction='horizontal',
+        orient='top',
+        columns=3,
+        title=None,
+        labelOffset=2,
+        offset=10,
+        symbolType = 'square'
+    ).configure_title(
+        fontSize=18, align="center", anchor='middle', offset=10
+    )
+    return final_chart
 
 def area_plot(df, column):  # Percent protected pie chart
     base = alt.Chart(df).encode(
@@ -196,7 +299,7 @@ def area_plot(df, column):  # Percent protected pie chart
             alt.Color("color:N").scale(None).legend(None),
             tooltip=[
                 alt.Tooltip(column, type="nominal"),
-                alt.Tooltip("percent_CA", type="quantitative", format=",.2f"),
+                alt.Tooltip("percent_CA", type="quantitative", format=",.1%"),
                 alt.Tooltip("acres", type="quantitative", format=",.0f"),
             ]
         )
@@ -230,6 +333,8 @@ def bar_chart(df, x, y, title): #display summary stats for color_by column
         sort = '-x'
     elif x == "access_type": #order based on levels of openness 
         sort=['Open', 'Restricted', 'No Public', "Unknown"] 
+    elif x == "easement": 
+        sort=['True','False'] 
     elif x == "manager_type": 
         sort = ["Federal","Tribal","State","Special District", "County", "City", "HOA","Joint","Non Profit","Private","Unknown"]
     elif x == "ecoregion": 
@@ -421,57 +526,4 @@ def get_pmtiles_style_llm(paint, ids):
         ]
     }
     return style
-
-def run_sql(query,color_choice):
-    """
-    Filter data based on an LLM-generated SQL query and return matching IDs.
-
-    Args:
-        query (str): The natural language query to filter the data.
-        color_choice (str): The column used for plotting.
-    """
-    output = few_shot_structured_llm.invoke(query)
-    sql_query = output.sql_query
-    explanation =output.explanation
-
-    if not sql_query: # if the chatbot can't generate a SQL query.
-        st.success(explanation)
-        return pd.DataFrame({'id' : []})
-        
-    result = ca.sql(sql_query).execute()
-    if result.empty :
-        explanation = "This query did not return any results. Please try again with a different query."
-        st.warning(explanation, icon="⚠️")
-        st.caption("SQL Query:")
-        st.code(sql_query,language = "sql") 
-        if 'geom' in result.columns:
-            return result.drop('geom',axis = 1)
-        else: 
-            return result
-    
-    elif ("id" and "geom" in result.columns): 
-        style = get_pmtiles_style_llm(style_options[color_choice], result["id"].tolist())
-        legend, position, bg_color, fontsize = getLegend(style_options,color_choice)
-
-        m.add_legend(legend_dict = legend, position = position, bg_color = bg_color, fontsize = fontsize)
-        m.add_pmtiles(ca_pmtiles, style=style, opacity=alpha, tooltip=True, fit_bounds=True)
-        m.fit_bounds(result.total_bounds.tolist())    
-        result = result.drop('geom',axis = 1) #printing to streamlit so I need to drop geom
-    else:   
-        st.write(result)  # if we aren't mapping, just print out the data  
-
-    with st.popover("Explanation"):
-        st.write(explanation)
-        st.caption("SQL Query:")
-        st.code(sql_query,language = "sql") 
-        
-    return result
-
-
-    
-def summary_table_sql(ca, column, colors, ids): # get df for charts + df_tab for printed table 
-    filters = [_.id.isin(ids)]
-    combined_filter = reduce(lambda x, y: x & y, filters) #combining all the filters into ibis filter expression 
-    df = get_summary(ca, combined_filter, [column], colors) # df used for charts 
-    return df
 
