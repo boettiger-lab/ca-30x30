@@ -278,7 +278,7 @@ def stacked_bar(df, x, y, color, title, colors):
     ).configure_legend(
         direction='horizontal',
         orient='top',
-        columns=3,
+        columns=2,
         title=None,
         labelOffset=2,
         offset=10,
