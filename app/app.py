@@ -391,11 +391,11 @@ colors = (
 # df - charts; df_tab - printed table (omits colors) 
 if 'out' not in locals():
     df, df_tab, df_percent, df_bar_30x30 = summary_table(ca, column, select_colors, color_choice, filter_cols, filter_vals,colorby_vals)
-    total_percent = 100*df_percent.percent_CA.sum().round(1)
+    total_percent = 100*df_percent.percent_CA.sum()
 
 else:
     df = summary_table_sql(ca, column, colors, ids)
-    total_percent = 100*df.percent_CA.sum().round(1)
+    total_percent = 100*df.percent_CA.sum()
 
 
 # charts displayed based on color_by variable
