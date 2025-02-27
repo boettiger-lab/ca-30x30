@@ -148,9 +148,10 @@ with open('app/system_prompt.txt', 'r') as file:
 
 from langchain_openai import ChatOpenAI
     
-# llm = ChatOpenAI(model = "kosbu/Llama-3.3-70B-Instruct-AWQ", api_key="cirrus-vllm-secret-api-key", base_url = "https://llm.cirrus.carlboettiger.info/v1/",  temperature=0)
+# llm = ChatOpenAI(model = "kosbu/Llama-3.3-70B-Instruct-AWQ", api_key=st.secrets['CIRRUS_LLM_API_KEY'], base_url = "https://llm.cirrus.carlboettiger.info/v1/",  temperature=0)
 # llm = ChatOpenAI(model="gpt-4", temperature=0)
-llm = ChatOpenAI(model = "llama3", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0)
+# llm = ChatOpenAI(model = "llama3", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0)
+llm = ChatOpenAI(model = "groq-tools", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0)
 
 
 managers = ca.sql("SELECT DISTINCT manager FROM mydata;").execute()
