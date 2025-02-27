@@ -148,9 +148,11 @@ with open('app/system_prompt.txt', 'r') as file:
 
 from langchain_openai import ChatOpenAI
 
-
-llm = ChatOpenAI(model = "kosbu/Llama-3.3-70B-Instruct-AWQ", api_key = st.secrets['CIRRUS_LLM_API_KEY'], base_url = "https://llm.cirrus.carlboettiger.info/v1/",  temperature=0)
+#llm = ChatOpenAI(model = "kosbu/Llama-3.3-70B-Instruct-AWQ", api_key = st.secrets['CIRRUS_LLM_API_KEY'], base_url = "https://llm.cirrus.carlboettiger.info/v1/",  temperature=0)
 # llm = ChatOpenAI(model="gpt-4", temperature=0)
+# llm = ChatOpenAI(model = "llama3", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0)
+llm = ChatOpenAI(model = "groq-tools", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0)
+
 
 managers = ca.sql("SELECT DISTINCT manager FROM mydata;").execute()
 names = ca.sql("SELECT name FROM mydata GROUP BY name HAVING SUM(acres) >10000;").execute()
@@ -182,7 +184,6 @@ def run_sql(query,color_choice):
     output = few_shot_structured_llm.invoke(query)
     sql_query = output.sql_query
     explanation =output.explanation
-
     if not sql_query: # if the chatbot can't generate a SQL query.
         st.success(explanation)
         return pd.DataFrame({'id' : []})
@@ -273,6 +274,8 @@ with st.container():
                                 key: (True if key in cols else value) 
                                 for key, value in chatbot_toggles.items()
                             }
+                        for key, value in chatbot_toggles.items():
+                            st.session_state[key] = value  # Update session state
                     else:
                         ids = []
         except Exception as e:
