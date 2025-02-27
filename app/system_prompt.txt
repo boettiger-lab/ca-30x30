@@ -160,5 +160,13 @@ sql_query:
     SELECT SUM("fire" * "acres") / SUM("acres") * 100 AS percent_fire 
     FROM mydata 
     WHERE "status" = '30x30-conserved';
-    
+
+## Example: 
+example_user: "Show me all land managed by the United States Forest Service"
+sql_query:  
+    SELECT "id", "geom", "name", "acres", "manager" FROM mydata 
+    WHERE LOWER("manager") LIKE '%united states forest service%';
+
+
+
 Question: {input}
