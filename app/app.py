@@ -117,10 +117,8 @@ st.markdown(
 
 st.markdown("<h2>CA 30x30 Planning & Assessment Prototype</h2>", unsafe_allow_html=True)
 
-
 st.markdown('<p class="medium-font"> In October 2020, Governor Newsom issued <a href="https://www.gov.ca.gov/wp-content/uploads/2020/10/10.07.2020-EO-N-82-20-.pdf" target="_blank">Executive Order N-82-20</a>, which establishes a state goal of conserving 30% of California’s lands and coastal waters by 2030 – known as <a href="https://www.californianature.ca.gov/" target="_blank">CA 30x30</a>. </p>',
 unsafe_allow_html=True)
-
 
 st.markdown('<p class = "medium-font"> This is an interactive cloud-native geospatial tool for exploring and visualizing California\'s protected lands. </p>', unsafe_allow_html = True)
 
@@ -148,8 +146,8 @@ from langchain_openai import ChatOpenAI
 #llm = ChatOpenAI(model = "kosbu/Llama-3.3-70B-Instruct-AWQ", api_key = st.secrets['CIRRUS_LLM_API_KEY'], base_url = "https://llm.cirrus.carlboettiger.info/v1/",  temperature=0)
 # llm = ChatOpenAI(model="gpt-4", temperature=0)
 # llm = ChatOpenAI(model = "llama3", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0)
-llm = ChatOpenAI(model = "groq-tools", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0)
-
+# llm = ChatOpenAI(model = "groq-tools", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0)
+llm = ChatOpenAI(model = "llama3-sdsc", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0)
 
 managers = ca.sql("SELECT DISTINCT manager FROM mydata;").execute()
 names = ca.sql("SELECT name FROM mydata GROUP BY name HAVING SUM(acres) >10000;").execute()
@@ -198,7 +196,7 @@ def run_sql(query,color_choice):
     
     elif ("id" and "geom" in result.columns): 
         style = get_pmtiles_style_llm(style_options[color_choice], result["id"].tolist())
-        legend, position, bg_color, fontsize = getLegend(style_options,color_choice)
+        legend, position, bg_color, fontsize = get_legend(style_options,color_choice)
 
         m.add_legend(legend_dict = legend, position = position, bg_color = bg_color, fontsize = fontsize)
         m.add_pmtiles(ca_pmtiles, style=style, opacity=alpha, tooltip=True, fit_bounds=True)
@@ -232,7 +230,7 @@ with st.sidebar:
     
     st.divider()
     color_choice = st.radio("Group by:", style_options, key = "color", help = "Select a category to change map colors and chart groupings.")   
-    colorby_vals = getColorVals(style_options, color_choice) #get options for selected color_by column 
+    colorby_vals = get_color_vals(style_options, color_choice) #get options for selected color_by column 
     alpha = 0.8
     st.divider()
 
@@ -351,9 +349,9 @@ with st.sidebar:
     for label in style_options: # get selected filters (based on the buttons selected)
         with st.expander(label):  
             if label in ["GAP Code","30x30 Status"]: # gap code 1 and 2 are on by default
-                opts = getButtons(style_options, label, default_boxes)
+                opts = get_buttons(style_options, label, default_boxes)
             else: # other buttons are not on by default.
-                opts = getButtons(style_options, label) 
+                opts = get_buttons(style_options, label) 
             filters.update(opts)
             
         selected = {k: v for k, v in filters.items() if v}
@@ -374,7 +372,7 @@ with st.sidebar:
 # Display CA 30x30 Data
 if 'out' not in locals():
     style = get_pmtiles_style(style_options[color_choice], alpha, filter_cols, filter_vals)
-    legend, position, bg_color, fontsize = getLegend(style_options, color_choice)
+    legend, position, bg_color, fontsize = get_legend(style_options, color_choice)
     m.add_legend(legend_dict = legend, position = position, bg_color = bg_color, fontsize = fontsize)
     m.add_pmtiles(ca_pmtiles, style=style, name="CA", opacity=alpha, tooltip=True, fit_bounds=True)
     
@@ -400,12 +398,12 @@ colors = (
 # get summary tables used for charts + printed table 
 # df - charts; df_tab - printed table (omits colors) 
 if 'out' not in locals():
-    df, df_tab, df_percent, df_bar_30x30 = summary_table(ca, column, select_colors, color_choice, filter_cols, filter_vals,colorby_vals)
-    total_percent = 100*df_percent.percent_CA.sum()
+    df, df_tab, df_percent, df_bar_30x30 = get_summary_table(ca, column, select_colors, color_choice, filter_cols, filter_vals,colorby_vals)
+    total_percent = (100*df_percent.percent_CA.sum()).round(2)
 
 else:
-    df = summary_table_sql(ca, column, colors, ids)
-    total_percent = 100*df.percent_CA.sum()
+    df = get_summary_table_sql(ca, column, colors, ids)
+    total_percent = (100*df.percent_CA.sum()).round(2)
 
 
 # charts displayed based on color_by variable
@@ -434,7 +432,7 @@ with main:
         with st.container():
             
             st.markdown(f"{total_percent}% CA Protected", help = "Total percentage of 30x30 conserved lands, updates based on displayed data")
-            st.altair_chart(area_plot(df, column), use_container_width=True)
+            st.altair_chart(area_chart(df, column), use_container_width=True)
             
             if 'df_bar_30x30' in locals(): #if we use chatbot, we won't have these graphs.
                 if column not in ["status", "gap_code"]:
