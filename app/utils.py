@@ -30,10 +30,6 @@ def get_buttons(style_options, style_choice, default_boxes=None):
         buttons[name] = st.checkbox(f"{name}", value=st.session_state[key], key=key, on_change = sync_checkboxes, args = (key,))
     filter_choice = [key for key, value in buttons.items() if value]
     return {column: filter_choice}
-    
-    # buttons = {name: st.checkbox(name, value=st.session_state.get(column + str(name), False), key=column + str(name), on_change=sync_checkboxes, args=(column + str(name),)) for name in opts}
-    
-    # return {column: [key for key, value in buttons.items() if value]} 
 
 
 def sync_checkboxes(source):
@@ -108,7 +104,7 @@ def get_summary(ca, combined_filter, column, main_group, colors = None):
                      mean_rxburn=(_.rxburn * _.acres).sum()/_.acres.sum(),
                      mean_disadvantaged=(_.disadvantaged_communities * _.acres).sum() / _.acres.sum(),
                      mean_svi=(_.svi * _.acres).sum() / _.acres.sum())
-          .mutate(percent_CA=_.percent_CA.round(3), acres=_.acres.round(0)))
+          .mutate(percent_CA=_.percent_CA.round(5), acres=_.acres.round(0)))
     df = df.inner_join(group_totals, main_group).mutate(percent_group=( _.acres / _.total_acres).round(3))
     if colors is not None and not colors.empty:
         df = df.inner_join(colors, column[-1])
@@ -314,14 +310,15 @@ def get_label_transform(x, label=None):
     
     return transformations.get(x, (f"datum.{x}", None))[0]
 
-def get_hex(df, color, sort_order):
+def get_hex(df, color, order):
     """
-    Returns a list of hex color codes sorted based on `sort_order`.
+    Returns a list of hex color codes and categories sorted based on `sort_order`.
     """
-    return list(df.drop_duplicates(subset=color, keep="first")
+    return (df.drop_duplicates(subset=color, keep="first")
                 .set_index(color)
-                .reindex(sort_order)
-                .dropna()["color"])
+                .reindex(order)
+                .dropna()
+                .reset_index()).T.values.tolist()
 
 
 def create_bar_chart(df, x, y, title, color=None, stacked=False, colors=None):
@@ -349,9 +346,9 @@ def create_bar_chart(df, x, y, title, color=None, stacked=False, colors=None):
 
     if stacked:
         # order stacks 
-        sort_order = ["30x30-conserved", "other-conserved", "unknown", "non-conserved"]
-        color_hex = get_hex(df[[color, "color"]], color, sort_order)
-        sort_order = sort_order[:len(color_hex)]
+        order = ["30x30-conserved", "other-conserved", "unknown", "non-conserved"]
+        sort_order ,color_hex = get_hex(df[[color, "color"]], color, order)
+
         df["stack_order"] = df[color].apply(lambda val: sort_order.index(val) if val in sort_order else len(sort_order))
 
         # build chart  
