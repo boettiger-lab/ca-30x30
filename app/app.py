@@ -115,17 +115,14 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# st.header("CA 30x30 Planning & Assessment Prototype")
 st.markdown("<h2>CA 30x30 Planning & Assessment Prototype</h2>", unsafe_allow_html=True)
 
-st.markdown('<p class = "medium-font"> An interactive cloud-native geospatial tool for exploring and visualizing California\'s protected lands with open data and generative AI. </p>', unsafe_allow_html = True)
+
+st.markdown('<p class="medium-font"> In October 2020, Governor Newsom issued <a href="https://www.gov.ca.gov/wp-content/uploads/2020/10/10.07.2020-EO-N-82-20-.pdf" target="_blank">Executive Order N-82-20</a>, which establishes a state goal of conserving 30% of California’s lands and coastal waters by 2030 – known as <a href="https://www.californianature.ca.gov/" target="_blank">CA 30x30</a>. </p>',
+unsafe_allow_html=True)
 
 
-'''
-- ❌ Safari/iOS not yet supported. For Safari/iOS users, try [this version](https://huggingface.co/spaces/boettiger-lab/ca-30x30-folium) with similar functionality. 
-- 📊 Use the left sidebar to color-code the map by different attributes **(Group by)**, toggle on data layers and view summary charts **(Data Layers)**, or filter data **(Filters)**.
-- 💬 For a more tailored experience, query our dataset of protected areas and their precomputed mean values for each of the displayed layers, using the experimental chatbot below.
-'''
+st.markdown('<p class = "medium-font"> This is an interactive cloud-native geospatial tool for exploring and visualizing California\'s protected lands. </p>', unsafe_allow_html = True)
 
 st.divider()
 
@@ -225,6 +222,15 @@ def run_sql(query,color_choice):
 filters = {}
 
 with st.sidebar:
+    with st.popover("ℹ️ Help"):
+        '''
+        - ❌ Safari/iOS not yet supported. For Safari/iOS users, try [this version](https://huggingface.co/spaces/boettiger-lab/ca-30x30-folium) with similar functionality. 
+        - 📊 Use this sidebar to color-code the map by different attributes **(Group by)**, toggle on data layers and view summary charts **(Data Layers)**, or filter data **(Filters)**.
+        - 💬 For a more tailored experience, query our dataset of protected areas and their precomputed mean values for each of the displayed layers, using the experimental chatbot. The language model tries to answer natural language questions by drawing only from curated datasets (listed below).
+        '''
+
+    
+    st.divider()
     color_choice = st.radio("Group by:", style_options, key = "color", help = "Select a category to change map colors and chart groupings.")   
     colorby_vals = getColorVals(style_options, color_choice) #get options for selected color_by column 
     alpha = 0.8
@@ -234,7 +240,7 @@ with st.sidebar:
 ##### Chatbot 
 with st.container():
 
-    with st.popover("ℹ️ Example Queries"):
+    with st.popover("💬 Example Queries"):
         '''
         Mapping queries:        
         - Show me areas open to the public that are in the top 10% of species richness.
