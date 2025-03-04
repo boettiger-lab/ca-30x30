@@ -117,7 +117,10 @@ st.markdown(
 
 st.markdown("<h2>CA 30x30 Planning & Assessment Prototype</h2>", unsafe_allow_html=True)
 
-st.markdown('<p class = "medium-font"> In October 2020, Governor Newsom issued Executive Order N-82-20 which establishes a state goal of conserving 30% of California’s lands and coastal waters by 2030 – known as CA 30x30. </p>', unsafe_allow_html = True)
+
+st.markdown('<p class="medium-font"> In October 2020, Governor Newsom issued <a href="https://www.gov.ca.gov/wp-content/uploads/2020/10/10.07.2020-EO-N-82-20-.pdf" target="_blank">Executive Order N-82-20</a>, which establishes a state goal of conserving 30% of California’s lands and coastal waters by 2030 – known as <a href="https://www.californianature.ca.gov/" target="_blank">CA 30x30</a>. </p>',
+unsafe_allow_html=True)
+
 
 st.markdown('<p class = "medium-font"> This is an interactive cloud-native geospatial tool for exploring and visualizing California\'s protected lands. </p>', unsafe_allow_html = True)
 
