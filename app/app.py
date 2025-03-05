@@ -423,10 +423,11 @@ with main:
 
     with map_col:
         m.to_streamlit(height=650)
-        if 'out' not in locals():
-            st.dataframe(df_tab, use_container_width = True)  
-        else:
-            st.dataframe(out, use_container_width = True)
+        with st.expander("🔍 View table of mapped data"):
+            if 'out' not in locals():
+                st.dataframe(df_tab, use_container_width = True)  
+            else:
+                st.dataframe(out, use_container_width = True)
 
     with stats_col:
         with st.container():
@@ -463,8 +464,9 @@ with main:
                 st.altair_chart(rx_10_chart, use_container_width=True)
 
 
-st.caption("***The label 'established' is inferred from the California Protected Areas Database, which may introduce artifacts. For details on our methodology, please refer to our code: https://github.com/boettiger-lab/ca-30x30.") 
+st.caption("***The label 'established' is inferred from the California Protected Areas Database, which may introduce artifacts. For details on our methodology, please refer to our <a href='https://github.com/boettiger-lab/ca-30x30' target='_blank'>our source code</a>.", unsafe_allow_html=True)
 
+            
 st.caption("***Under California’s 30x30 framework, only GAP codes 1 and 2 are counted toward the conservation goal.") 
 
 st.divider()
