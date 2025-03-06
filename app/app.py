@@ -423,7 +423,7 @@ with main:
 
     with map_col:
         m.to_streamlit(height=650)
-        with st.expander("🔍 View table of mapped data"):
+        with st.expander("🔍 View/download data"):
             if 'out' not in locals():
                 st.dataframe(df_tab, use_container_width = True)  
             else:
