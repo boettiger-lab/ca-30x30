@@ -229,7 +229,7 @@ filters = {}
 with st.sidebar:
     with st.popover("ℹ️ Help"):
         '''
-        - ❌ Safari/iOS not yet supported. For Safari/iOS users, try [this version](https://huggingface.co/spaces/boettiger-lab/ca-30x30-folium) with similar functionality. 
+        - ❌ Safari/iOS not yet supported.  
         - 📊 Use this sidebar to color-code the map by different attributes **(Group by)**, toggle on data layers and view summary charts **(Data Layers)**, or filter data **(Filters)**.
         - 💬 For a more tailored experience, query our dataset of protected areas and their precomputed mean values for each of the displayed layers, using the experimental chatbot. The language model tries to answer natural language questions by drawing only from curated datasets (listed below).
         '''
@@ -440,7 +440,7 @@ with st.sidebar:
     
     # adding github logo 
     st.markdown(f"<div class='spacer'>{github_html}</div>", unsafe_allow_html=True)
-    st.markdown(":left_speech_bubble: [Get in touch or report an issue](https://github.com/boettiger-lab/ca-30x30/issues)")
+    st.markdown(":left_speech_bubble: [Get in touch or report an issue](https://github.com/boettiger-lab/CBN-taskforce/issues)")
 
 
 
@@ -595,7 +595,7 @@ with main:
                 st.altair_chart(fire_chart, use_container_width=True)
             
 
-st.caption("***The label 'established' is inferred from the California Protected Areas Database, which may introduce artifacts. For details on our methodology, please refer to our <a href='https://github.com/boettiger-lab/ca-30x30' target='_blank'>our source code</a>.", unsafe_allow_html=True)
+st.caption("***The label 'established' is inferred from the California Protected Areas Database, which may introduce artifacts. For details on our methodology, please refer to our <a href='https://github.com/boettiger-lab/CBN-taskforce' target='_blank'>our source code</a>.", unsafe_allow_html=True)
 
             
 st.caption("***Under California’s 30x30 framework, only GAP codes 1 and 2 are counted toward the conservation goal.") 
