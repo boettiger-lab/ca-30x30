@@ -11,7 +11,7 @@ from shapely import wkb
 from typing import Optional
 from functools import reduce
 from itertools import chain
-
+import re
 from variables import *
 
 
@@ -175,7 +175,7 @@ def get_pmtiles_style(paint, alpha, filter_cols, filter_vals):
     
     if "non-conserved" in chain.from_iterable(filter_vals):
         combined_filters = ["any", combined_filters, ["match", ["get", "status"], ["non-conserved"], True, False]]
-    
+    source_layer_name = re.sub(r'\W+', '', os.path.splitext(os.path.basename(ca_pmtiles))[0]) #stripping hyphens to get layer name 
     return {
         "version": 8,
         "sources": {"ca": {"type": "vector", "url": f"pmtiles://{ca_pmtiles}"}},
@@ -184,8 +184,7 @@ def get_pmtiles_style(paint, alpha, filter_cols, filter_vals):
                 "id": "ca30x30",
                 "source": "ca",
                 # "source-layer": "ca30x30",
-                "source-layer": "ca30x30cbnv3",
-                # "source-layer": "ca30x30cbn",
+                "source-layer": source_layer_name,
                 "type": "fill",
                 "filter": combined_filters,
                 "paint": {"fill-color": paint, "fill-opacity": alpha},
@@ -210,6 +209,7 @@ def get_pmtiles_style_llm(paint, ids):
     """
     Generates a MapLibre GL style for PMTiles using specific IDs as filters.
     """
+    source_layer_name = re.sub(r'\W+', '', os.path.splitext(os.path.basename(ca_pmtiles))[0]) #stripping hyphens to get layer name 
     return {
         "version": 8,
         "sources": {"ca": {"type": "vector", "url": f"pmtiles://{ca_pmtiles}"}},
@@ -218,8 +218,7 @@ def get_pmtiles_style_llm(paint, ids):
                 "id": "ca30x30",
                 "source": "ca",
                 # "source-layer": "ca30x30",
-                 "source-layer": "ca30x30cbnv3",
-                 # "source-layer": "ca30x30cbn",
+                 "source-layer": source_layer_name,
                 "type": "fill",
                 "filter": ["in", ["get", "id"], ["literal", ids]],
                 # "filter": ["all", ["match", ["get", "id"], ids, True, False]],

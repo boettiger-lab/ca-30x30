@@ -2,28 +2,25 @@
 # ca_parquet = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/da85dd9ca1c774d4ddf821555e3c3c9e13c9b857/ca-30x30.parquet"
 # ca_pmtiles = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/896db6c9a37488ee7c53ee56df67b3ccfd44d150/ca-30x30.pmtiles"
 
+ca_parquet = 'https://minio.carlboettiger.info/public-ca30x30/ca-30x30-cbn.parquet'
+ca_pmtiles = 'https://minio.carlboettiger.info/public-ca30x30/ca-30x30-cbn.pmtiles'
 
-# ca_parquet = 'https://minio.carlboettiger.info/public-ca30x30/ca-30x30-cbn.parquet'
-# ca_pmtiles = 'https://minio.carlboettiger.info/public-ca30x30/ca-30x30-cbn.pmtiles'
+# computed by taking the sum of all the acres in this file:
+# https://minio.carlboettiger.info/public-ca30x30/CBN-data/Progress_data_new_protection/Land_Status_Zone_Ecoregion_Counties/all_regions_reGAP_county_eco.parquet
+ca_area_acres = 101523750.68856516 
 
-ca_parquet = 'https://minio.carlboettiger.info/public-ca30x30/ca-30x30-cbn-v3.parquet'
-ca_pmtiles = 'https://minio.carlboettiger.info/public-ca30x30/ca-30x30-cbn-v3.pmtiles'
-
-ca_area_acres = 1.014e8 #acres 
-ca_area_acres = 101523750.68856516
-# ca_area_acres = 103179953.76086558
 style_choice = "GAP Status Code"
 
 from utils import get_url
 # urls for additional data layers 
-url_sr = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/species-richness-ca/{z}/{x}/{y}.png"
-url_rsr = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/range-size-rarity/{z}/{x}/{y}.png"
-url_irr_carbon = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/ca_irrecoverable_c_2018_cog.tif"
-url_man_carbon = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/ca_manageable_c_2018_cog.tif"
-url_justice40 = "https://data.source.coop/cboettig/justice40/disadvantaged-communities.pmtiles"
-url_calfire = 'https://minio.carlboettiger.info/public-fire/calfire-2023.pmtiles'
-url_rxburn = 'https://minio.carlboettiger.info/public-fire/calfire-rxburn-2023.pmtiles'
-url_svi = 'https://minio.carlboettiger.info/public-data/social-vulnerability/2022/SVI2022_US_tract.pmtiles'
+# url_sr = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/species-richness-ca/{z}/{x}/{y}.png"
+# url_rsr = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/range-size-rarity/{z}/{x}/{y}.png"
+# url_irr_carbon = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/ca_irrecoverable_c_2018_cog.tif"
+# url_man_carbon = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/ca_manageable_c_2018_cog.tif"
+# url_justice40 = "https://data.source.coop/cboettig/justice40/disadvantaged-communities.pmtiles"
+# url_calfire = 'https://minio.carlboettiger.info/public-fire/calfire-2023.pmtiles'
+# url_rxburn = 'https://minio.carlboettiger.info/public-fire/calfire-rxburn-2023.pmtiles'
+# url_svi = 'https://minio.carlboettiger.info/public-data/social-vulnerability/2022/SVI2022_US_tract.pmtiles'
 
 
 #vector data 

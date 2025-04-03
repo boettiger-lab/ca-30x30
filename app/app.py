@@ -28,13 +28,14 @@ if "mydata" not in set(current_tables):
 
 ca = con.table("mydata")
 
-
-
 # session state for syncing app 
 for key in [
-    'richness', 'rsr', 'irrecoverable_carbon', 'manageable_carbon',
-    'fire', 'rxburn', 'disadvantaged_communities',
-    'svi']:
+    "ACE_amphibian", "ACE_reptile", "ACE_bird",
+    "ACE_mammal", "ACE_rare_amphibian", "ACE_rare_reptile",
+    "ACE_rare_bird", "ACE_rare_mammal", "ACE_end_amphibian",
+    "ACE_end_reptile", "ACE_end_bird", "ACE_end_mammal",
+    "plant", "end_plant", "farmlands", "grazing",
+    "DAC", "low-income", "fire"]:
     if key not in st.session_state:
         st.session_state[key] = False
 
@@ -164,10 +165,14 @@ prompt = ChatPromptTemplate.from_messages([
 structured_llm = llm.with_structured_output(SQLResponse)
 few_shot_structured_llm = prompt | structured_llm
 
+
 chatbot_toggles = {key: False for key in [
-    'richness', 'rsr', 'irrecoverable_carbon', 'manageable_carbon',
-    'fire', 'rxburn', 'disadvantaged_communities',
-    'svi', 
+    "ACE_amphibian", "ACE_reptile", "ACE_bird",
+    "ACE_mammal", "ACE_rare_amphibian", "ACE_rare_reptile",
+    "ACE_rare_bird", "ACE_rare_mammal", "ACE_end_amphibian",
+    "ACE_end_reptile", "ACE_end_bird", "ACE_end_mammal",
+    "plant", "end_plant", "farmlands", "grazing",
+    "DAC", "low-income", "fire"
 ]}
 
 def run_sql(query,color_choice):
@@ -296,7 +301,6 @@ with st.sidebar:
     st.markdown('<p class = "medium-font-sidebar"> Data Layers:</p>', help = "Select data layers to visualize on the map. Summary charts will update based on the displayed layers.", unsafe_allow_html= True)
 
     # # Biodiversity Section 
-
     with st.expander("🦜 Biodiversity"):
         a_bio = st.slider("transparency", 0.0, 1.0, 0.1, key = "biodiversity")
 
@@ -360,58 +364,52 @@ with st.sidebar:
         
         if show_plant:       
             m.add_cog_layer(url_plant_richness, name = "Plant Richness", attribution =  "Kling et al. (2018)", opacity = a_bio)
-
         if show_end_plant:       
             m.add_cog_layer(url_endemic_plant_richness, name = "Rarity-Weighted Endemic Plant Richness", attribution = "Kling et al. (2018)", opacity = a_bio)
-    
+
+    ## Connectivity Section
     # with st.expander("🔗 Connectivity"):
     #     a_connect = st.slider("transparency", 0.0, 1.0, 0.1, key = "connectivity")
     #     show_resilient = st.toggle("Resilient Connected Network", key = "resilient")
-        
     #     if show_resilient:       
     #         m.add_cog_layer(url_resilient_conn_network, name = "Resilient Connected Network", attribution = "Anderson et al. (2023)", opacity = a_connect)
     
 
-    
+    # Freshwater Section
     with st.expander("💧 Freshwater Resources"):
         a_freshwater= st.slider("transparency", 0.0, 1.0, 0.1, key = "freshwater")
-
         show_wetlands = st.toggle("Wetlands", key = "wetlands")
+        
         if show_wetlands:       
             m.add_pmtiles(url_wetlands, name = "Wetlands", attribution = "National Wetland Inventory, US Fish and Wildlife Service (2019)", style = get_pmtiles_layer('CA_wetlands',url_wetlands), opacity = a_freshwater)
-    
+
+    # Agriculture Section
     with st.expander("🚜 Agriculture"):
         a_ag= st.slider("transparency", 0.0, 1.0, 0.1, key = "agriculture")
-
         show_farm = st.toggle("Farmlands", key = "farmlands")
+        show_grazing = st.toggle("Grazing lands", key = "grazing")
+
         if show_farm:       
             m.add_pmtiles(url_farmland, name = "Farmlands", attribution = "DOC FMMP (2018)", 
                           style = get_pmtiles_layer('Farmland_2018',url_farmland), opacity = a_ag)
-    
-        show_grazing = st.toggle("Grazing lands", key = "grazing")
         if show_grazing:       
             m.add_pmtiles(url_grazing, name = "Grazing Lands", attribution = "DOC FMMP (2018)",
                           style = get_pmtiles_layer('Grazing_land_2018',url_grazing), opacity = a_ag)
-                              
-
-        
 
     # People Section 
     with st.expander("👤 People"):
         a_people = st.slider("transparency", 0.0, 1.0, 0.1, key = "SVI")
         show_DAC = st.toggle("Disadvantaged Communities", key = "DAC")
         show_low_income = st.toggle("Low-Income Communities", key = "low-income")
-        # show_sv = st.toggle("Social Vulnerability Index (SVI)", key = "svi", value=chatbot_toggles['svi'])
 
         if show_DAC:
             m.add_pmtiles(url_DAC, name = "Disadvantaged Communities", attribution = "CalEnviroScreen (2022)",
                           style = get_pmtiles_layer('DAC_2022',url_DAC), opacity = a_people)
-            
         if show_low_income:
             m.add_pmtiles(url_low_income, name = "Low-Income Communities", attribution = "CalEnviroScreen (2022)",
                           style = get_pmtiles_layer('low_income_CalEnviroScreen4',url_low_income), opacity = a_people)
 
-    # Fire Section
+    # Climate Risk Section
     with st.expander("🔥 Climate Risks"):
         a_fire = st.slider("transparency", 0.0, 1.0, 0.15, key = "calfire")
         show_fire = st.toggle("Fires (2013-2023)", key = "fire", value=chatbot_toggles['fire'])
@@ -444,13 +442,6 @@ with st.sidebar:
     
     # adding github logo 
     st.markdown(f"<div class='spacer'>{github_html}</div>", unsafe_allow_html=True)
-    
-    # st.markdown("""
-    # <p class='medium-font-sidebar'> 
-    # :left_speech_bubble: <a href='https://github.com/boettiger-lab/ca-30x30/issues' target='_blank'>Report an issue</a>
-    # </p> 
-    # """, unsafe_allow_html=True)
-
     st.markdown(":left_speech_bubble: [Get in touch or report an issue](https://github.com/boettiger-lab/ca-30x30/issues)")
 
 

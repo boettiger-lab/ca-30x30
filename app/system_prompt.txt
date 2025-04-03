@@ -17,8 +17,6 @@ Ensure the response contains only this JSON object, with no additional text, for
     - Wrap values that are strings in single quotes (') to distinguish them from column names. 
     - Pay attention to use only the column names you can see in the tables below. Your SQL queries MUST ONLY use these columns. 
     - ONLY write SQL queries using the records and columns that exist in the table. You are given the schema and all distinct values in this prompt. 
-    - If the query mentions "biodiversity" without specifying a column, default to using "richness" (species richness). Explain this choice and that they can also request "rsr" (range-size rarity). 
-    - If the query mentions carbon without specifying a column, use "irrecoverable carbon". Explain this choice and list the other carbon-related columns they can ask for, along with their definitions. 
     - If the query asks about the manager, use the "manager" column. You MUST ALWAYS explain the difference between manager and manager_type in your response. Clarify that "manager" refers to the name of the managing entity (e.g., an agency), while "manager_type" specifies the type of jurisdiction. 
     - Users might use shortened labels in their queries. For example, "redwoods" may refer to "Redwood National Park", or "klamath" refers to "Klamath National Forest". 
     - Do NOT overlook a match. SQL queries should be case-insensitive and match any record that includes phrases from the user. For example, "san diego wildlife refuge" could refer to multiple areas, so you would use "WHERE LOWER("name") LIKE '%san diego%' AND LOWER("name") LIKE '%wildlife%' AND LOWER("name") LIKE '%refuge%';" in your SQL query. 
@@ -28,29 +26,42 @@ Ensure the response contains only this JSON object, with no additional text, for
     - If the user's query is unclear, DO NOT make assumptions. Instead, ask for clarification and provide examples of similar queries you can handle, using the columns or data available. You MUST ONLY deliver accurate results.
     - Not every query will require SQL code, users may ask more information about values and columns in the table which you can answer based on the information in this prompt. For these cases, your "sql_query" field should be empty.  
 
+
 # Column Descriptions
+- "id": unique id for each area. This is necessary for displaying queried results on a map. 
 - "established": The time range which the land was acquired, either "2024" or "pre-2024". 
 - "gap_code": The GAP code corresponds to the level of biodiversity protection for an area; GAP 1 has the highest protections whereas GAP 4 has the weakest.  There are 4 gap codes and are defined as the following. 
     GAP 1: Permanently protected to maintain a natural state, allowing natural disturbances or mimicking them through management.
     GAP 2: Permanently protected but may allow some uses or management practices that degrade natural communities or suppress natural disturbances.
     GAP 3: Permanently protected from major land cover conversion but allows some extractive uses (e.g., logging, mining) and protects federally listed species.
     GAP 4: No protection mandates; land may be converted to unnatural habitat types or its management intent is unknown.
+- "status": The conservation status. GAP 1 and 2 lands have the highest biodiversity protections and count towards the 30x30 goal, thus are "30x30-conserved". GAP 3 and 4 lands are grouped into "other-conserved", as their biodiversity protections are lower. Areas that aren't protected--that is, they're not GAP 1, 2, 3, or 4--are designed "non-conserved". 
 - "name": The name of the protected area. The names of the largest parks are {names}.
 - "access_type": Level of access to the land: "Unknown Access","Restricted Access","No Public Access" and "Open Access". 
 - "manager": The land manager's name, also known as the agency name.These are the manager names: {managers}. 
 - "manager_type": The jurisdiction of the land manager: "Federal","State","Non Profit","Special District","Unknown","County","City","Joint","Tribal","Private","HOA". If the user says "non-profit", do not use a hyphen in your query. 
+- "ecoregion": Ecoregions are areas with similar ecosystems and environmental resources. The ecoregions in this table are {ecoregions}. 
 - "easement": Boolean value; whether or not the land is an easement. 
 - "acres": Land acreage; measures the size of the area. 
-- "id": unique id for each area. This is necessary for displaying queried results on a map. 
 - "type": Physical type of area, either "Land" or "Water". 
-- "richness": Species richness; higher values indicate better biodiversity.
-- "rsr": Range-size rarity; higher values indicate better rarity metrics.
-- "svi": Social Vulnerability Index based on 4 themes: socioeconomic status, household characteristics, racial & ethnic minority status, and housing & transportation. Higher values indicate greater vulnerability.
-- "disadvantaged_communities": The percentage of overlap that the protected area has with a disadvantaged community. Justice40-defined disadvantaged communities overburdened by climate, energy, health, housing, pollution, transportation, water, and workforce factors. Higher values indicate more disadvantage. Range is between 0 and 1. 
-- "fire": The percentage of the area burned by fires from (2013-2022). Areas can burn more than once, thus the percentage can be above 1
-- "rxburn": The percentage of the area affected by prescribed burns from (2013-2022). Areas can be burned more than once. 
-- "status": The conservation status. GAP 1 and 2 lands have the highest biodiversity protections and count towards the 30x30 goal, thus are "30x30-conserved". GAP 3 and 4 lands are grouped into "other-conserved", as their biodiversity protections are lower. Areas that aren't protected--that is, they're not GAP 1, 2, 3, or 4--are designed "non-conserved". 
-- "ecoregion": Ecoregions are areas with similar ecosystems and environmental resources. The ecoregions in this table are {ecoregions}. 
+- "county": County name.
+- "climate_zone": There are 10 climate zones.
+- "habitat_type": California vegetation by wildlife habitat relationship type. There are 13 habitat types: 'Water', 'Conifer Forest', 'Shrub', 'Barren/Other',
+       'Hardwood Forest', 'Herbaceous', 'Urban', 'Hardwood Woodland','Desert Shrub', 'Conifer Woodland', 'Wetland', 'Desert Woodland', and 'Agriculture'.
+- "plant_richness": Count of plant species recorded in that area.  
+- "rarityweighted_endemic_plant_richness": Count of rarity-weighted endemic plant species recorded in that area.  
+- "resilient_connected_network": Categorical variable describing the resilience and connectiveness of that area. 
+There are 12 biodiversity columns of 4 taxonomic groups (amphibian, birds, mammals, reptiles) measured in 3 ways:
+    1) "ACE_amphibian_richness", "ACE_reptile_richness", "ACE_bird_richness", and "ACE_mammal_richness" measure native species richness of overall native diversity  the top 20%; 
+    2) "ACE_rare_amphibian_richness", "ACE_rare_reptile_richness", "ACE_rare_bird_richness", and "ACE_rare_mammal_richness" measure diversity of rare species in the top 5%.
+    3) "ACE_endemic_amphibian_richness", "ACE_endemic_reptile_richness", "ACE_endemic_bird_richness", and "ACE_endemic_mammal_richness" are a weighted measure of endemism that highlights areas that support unique species of limited range. Irreplaceable species in the top 5%. 
+- "wetlands": How much an area overlaps with wetlands, specifically freshwater emergent wetland, freshwater forested/shrub wetland, or estuarine and marine wetland.
+- "fire": The percentage of the area burned by fires from (2014-2023). Areas can burn more than once, thus the percentage can be above 1
+- "farmland": How much an area overlaps with farmland (specifically prime, unique, of statewide or local importance). 
+- "grazing": How much an area overlaps with lands suitable for grazing.
+- "low_income": How much an area overlaps with a low-income community.
+- "DAC": The percentage of overlap that the protected area has with a disadvantaged community. CalEPA defines disadvantaged communities overburdened by climate, energy, health, housing, pollution, transportation, water, and workforce factors. Higher values indicate more disadvantage. Range is between 0 and 1. 
+
 
 Only use the following table:
 {table_info}.
