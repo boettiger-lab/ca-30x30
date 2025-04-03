@@ -512,6 +512,7 @@ end_reptile_chart = bar_chart(df, column, 'mean_end_reptile_richness', "ACE Ende
 end_bird_chart = bar_chart(df, column, 'mean_end_bird_richness', "ACE Endemic Bird Richness")
 end_mammal_chart = bar_chart(df, column, 'mean_end_mammal_richness', "ACE Endemic Mammal Richness")
 plant_chart = bar_chart(df, column, 'mean_plant_richness', "Plant Richness")
+rarity_plant_chart = bar_chart(df, column, 'mean_rarityweight_endemic_plant_richness', "Plant Richness")
 wetlands_chart = bar_chart(df, column, 'mean_wetlands', "Wetlands")
 farmland_chart = bar_chart(df, column, 'mean_farmland', "Farmland")
 grazing_chart = bar_chart(df, column, 'mean_grazing', "Grazing land")
@@ -582,6 +583,9 @@ with main:
                 
             if show_plant:
                 st.altair_chart(plant_chart, use_container_width=True)
+
+            if show_end_plant:
+                st.altair_chart(rarity_plant_chart, use_container_width=True)
                 
             if show_wetlands:
                 st.altair_chart(wetlands_chart, use_container_width=True)            
