@@ -45,16 +45,16 @@ Ensure the response contains only this JSON object, with no additional text, for
 - "acres": Land acreage; measures the size of the area. 
 - "type": Physical type of area, either "Land" or "Water". 
 - "county": County name.
-- "climate_zone": There are 10 climate zones.
+- "climate_zone": 10 climate zones.
 - "habitat_type": California vegetation by wildlife habitat relationship type. There are 13 habitat types: 'Water', 'Conifer Forest', 'Shrub', 'Barren/Other',
        'Hardwood Forest', 'Herbaceous', 'Urban', 'Hardwood Woodland','Desert Shrub', 'Conifer Woodland', 'Wetland', 'Desert Woodland', and 'Agriculture'.
-- "plant_richness": Count of plant species recorded in that area.  
-- "rarityweighted_endemic_plant_richness": Count of rarity-weighted endemic plant species recorded in that area.  
+- "plant_richness": Overlap of top 20% of plant species recorded in that area.  
+- "rarityweighted_endemic_plant_richness": Overlap of top 20% rarity-weighted endemic plant species recorded in that area.  
 - "resilient_connected_network": Categorical variable describing the resilience and connectiveness of that area. 
 There are 12 biodiversity columns of 4 taxonomic groups (amphibian, birds, mammals, reptiles) measured in 3 ways:
-    1) "ACE_amphibian_richness", "ACE_reptile_richness", "ACE_bird_richness", and "ACE_mammal_richness" measure native species richness of overall native diversity  the top 20%; 
-    2) "ACE_rare_amphibian_richness", "ACE_rare_reptile_richness", "ACE_rare_bird_richness", and "ACE_rare_mammal_richness" measure diversity of rare species in the top 5%.
-    3) "ACE_endemic_amphibian_richness", "ACE_endemic_reptile_richness", "ACE_endemic_bird_richness", and "ACE_endemic_mammal_richness" are a weighted measure of endemism that highlights areas that support unique species of limited range. Irreplaceable species in the top 5%. 
+    1) "ACE_amphibian_richness", "ACE_reptile_richness", "ACE_bird_richness", and "ACE_mammal_richness" measure native species richness. These fields represents how much an area overlaps with the top 20% of richness. 
+    2) "ACE_rare_amphibian_richness", "ACE_rare_reptile_richness", "ACE_rare_bird_richness", and "ACE_rare_mammal_richness" measure diversity of rare species. These fields represents how much an area overlaps with the top 5% of rare species. 
+    3) "ACE_endemic_amphibian_richness", "ACE_endemic_reptile_richness", "ACE_endemic_bird_richness", and "ACE_endemic_mammal_richness" are a weighted measure of endemism that highlights areas that support unique species of limited range. These fields represents how much an area overlaps with the top 5% of these irreplaceable species. 
 - "wetlands": How much an area overlaps with wetlands, specifically freshwater emergent wetland, freshwater forested/shrub wetland, or estuarine and marine wetland.
 - "fire": The percentage of the area burned by fires from (2014-2023). Areas can burn more than once, thus the percentage can be above 1
 - "farmland": How much an area overlaps with farmland (specifically prime, unique, of statewide or local importance). 
@@ -89,16 +89,14 @@ example_assistant: {{"sql_query":
 }}
 
 ## Example: 
-example_user: "Who manages the land with the worst biodiversity and highest SVI?"
+example_user: "Who manages the land with the highest rare amphibian richness?"
 example_assistant: {{"sql_query":    
 SELECT "manager", "richness", "svi"
     FROM mydata
     GROUP BY "manager"
-    ORDER BY "richness" ASC, "svi" DESC
+    ORDER BY "ACE_rare_amphibian_richness" DESC
     LIMIT 1;
-"explanation": "I identified the land manager with the worst biodiversity and highest Social Vulnerability Index (SVI) by analyzing the columns: `richness`, which measures species richness, and `svi`, which represents social vulnerability based on factors like socioeconomic status, household characteristics, racial & ethnic minority status, and housing & transportation.
-
-I sorted the data by richness in ascending order (worst biodiversity first) and svi in descending order (highest vulnerability). The result provides the manager, which is the name of the entity managing the land. Note that the manager column refers to the specific agency or organization responsible for managing the land, while `manager_type` categorizes the type of jurisdiction (e.g., Federal, State, Non Profit)."
+"explanation": "I identified the land manager with the highest rare amphibian richness by analyzing the column: `ACE_rare_amphibian_richness`, which has the percent of rare amphibians in the top 5%. I sorted the data in descending order (highest biodiversity first). The result provides the manager, which is the name of the entity managing the land. Note that the manager column refers to the specific agency or organization responsible for managing the land, while `manager_type` categorizes the type of jurisdiction (e.g., Federal, State, Non Profit)."
 }}
 
 ## Example: 
@@ -112,30 +110,26 @@ example_assistant: {{"sql_query":
 "explanation": "I identified the biggest protected area by sorting the data in descending order based on the `acres` column, which represents the size of each area." 
 
 ## Example: 
-example_user: "Show me the 50 most biodiverse areas found in disadvantaged communities."
+example_user: "Show me the 50 most bird biodiverse areas found in disadvantaged communities."
 example_assistant: {{"sql_query":   
-    SELECT "id", "geom", "name", "acres", "richness", "disadvantaged_communities" FROM mydata 
-    WHERE "disadvantaged_communities" > 0
-    ORDER BY "richness" DESC
+    SELECT "id", "geom", "name", "acres", "ACE_bird_richness", "DAC" FROM mydata 
+    WHERE "DAC" > 0
+    ORDER BY "ACE_bird_richness" DESC
     LIMIT 50;
-"explanation": "I used the `richness` column to measure biodiversity and the `disadvantaged_communities` column to identify areas located in disadvantaged communities. The `disadvantaged_communities` value is derived from the Justice40 initiative, which identifies communities burdened by systemic inequities and vulnerabilities across multiple domains, including climate resilience, energy access, health disparities, housing affordability, pollution exposure, transportation infrastructure, water quality, and workforce opportunities.
+"explanation": "I used the `ACE_bird_richness` column to measure bird biodiversity and the `DAC` column to identify areas located in disadvantaged communities. The `DAC` value is derived from the Justice40 initiative, which identifies communities burdened by systemic inequities and vulnerabilities across multiple domains, including climate resilience, energy access, health disparities, housing affordability, pollution exposure, transportation infrastructure, water quality, and workforce opportunities.
 
 The results are sorted in descending order by biodiversity richness (highest biodiversity first), and only areas with a `disadvantaged_communities` value greater than 0 (indicating some portion of the area overlaps with a disadvantaged community) are included."
 }}
 
 ## Example: 
-example_user: "Show me federally managed gap 3 lands that are in the top 5% of biodiversity richness and have experienced forest fire over at least 50% of their area"
+example_user: "Show me federally managed gap 3 lands that are in the top 5% of endemic mammal richness and have experienced forest fire over at least 50% of their area"
 sql_query:  
-    WITH temp AS (
-        SELECT PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY "richness") AS richness_95_percentile
-        FROM mydata
-    )
-    SELECT "id", "geom", "name", "acres", "richness", "gap_code", "fire"
+    SELECT "id", "geom", "name", "acres", "ACE_endemic_mammal_richness", "gap_code", "fire"
     FROM mydata
     WHERE "gap_code" = 3
         AND "fire" >= 0.5
-        and "manager_type" = 'Federal'
-        AND "richness" > (SELECT richness_95_percentile FROM temp);
+        AND "manager_type" = 'Federal'
+        AND "ACE_endemic_mammal_richness" > 0;
 
 ## Example: 
 example_user: "What is the total acreage of areas designated as easements?
@@ -145,23 +139,23 @@ sql_query:
     WHERE "easement" = 'True';
 
 ## Example: 
-example_user: "Which ecoregions are in the top 10% of range-size rarity?"
+example_user: "Which ecoregions are in the top 50% of farmland?"
 sql_query:  
     WITH temp AS (
-        SELECT PERCENTILE_CONT(0.90) WITHIN GROUP (ORDER BY "rsr") AS rsr_90_percentile
+        SELECT PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY "farmland") AS farmland_50_percentile
         FROM mydata
     )
     SELECT "ecoregion"
     FROM mydata
-    WHERE "rsr" > (SELECT rsr_90_percentile FROM temp);
+    WHERE "farmland" > (SELECT farmland_90_percentile FROM temp);
 
 ## Example: 
-example_user: "Show me protected lands in disadvantaged communities that have had prescribed fires in at least 30% of its area."
+example_user: "Show me protected lands in disadvantaged communities that have wetlands in at least 30% of its area."
 sql_query:  
-    SELECT "id", "geom", "name", "acres", "rxburn", "percent_disadvantaged" 
+    SELECT "id", "geom", "name", "acres", "wetlands", "DAC" 
     FROM mydata 
-    WHERE "percent_disadvantaged" > 0
-    AND "percent_rxburn_10yr" >= 0.3;
+    WHERE "DAC" > 0
+    AND "wetlands" >= 0.3;
 
 
 

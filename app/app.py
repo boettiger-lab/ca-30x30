@@ -248,10 +248,8 @@ with st.container():
     with st.popover("💬 Example Queries"):
         '''
         Mapping queries:        
-        - Show me areas open to the public that are in the top 10% of species richness.
         - Show me all GAP 1 and 2 lands managed by The Nature Conservancy.
-        - Show me state land smaller than 1000 acres, with a social vulnerability index in the 90th percentile.
-        - Show me GAP 3 and 4 lands managed by BLM in the top 5% of range-size rarity.
+        - Show me GAP 3 and 4 lands with the top 5% of rare amphibian richness.
         - Show me Joshua Tree National Park.
         - Show me all protected lands that have experienced forest fire over at least 50% of their area.
         - Show me the biggest protected area in California. 
@@ -263,7 +261,7 @@ with st.container():
         - What is a GAP code?
         - What percentage of 30x30 conserved land has been impacted by wildfire?
         - What is the total acreage of areas designated as easements?
-        - Who manages the land with the highest amount of irrecoverable carbon and highest social vulnerability index? 
+        - Who manages the land with the highest percentage of wetlands?
         '''
         
         st.info('If the map appears blank, queried data may be too small to see at the default zoom level. Check the table below the map, as query results will also be displayed there.', icon="ℹ️")
@@ -490,25 +488,25 @@ else:
 
 
 # charts displayed based on color_by variable
-amph_chart = bar_chart(df, column, 'mean_amph_richness', "ACE Amphibian Richness")
-reptile_chart = bar_chart(df, column, 'mean_reptile_richness', "ACE Reptile Richness")
-bird_chart = bar_chart(df, column, 'mean_bird_richness', "ACE Bird Richness")
-mammal_chart = bar_chart(df, column, 'mean_mammal_richness', "ACE Mammal Richness")
-rare_amph_chart = bar_chart(df, column, 'mean_rare_amph_richness', "ACE Rare Amphibian Richness")
-rare_reptile_chart = bar_chart(df, column, 'mean_rare_reptile_richness', "ACE Rare Reptile Richness")
-rare_bird_chart = bar_chart(df, column, 'mean_rare_bird_richness', "ACE Rare Bird Richness")
-rare_mammal_chart = bar_chart(df, column, 'mean_rare_mammal_richness', "ACE Rare Mammal Richness")
-end_amph_chart = bar_chart(df, column, 'mean_end_amph_richness', "ACE Endemic Amphibian Richness")
-end_reptile_chart = bar_chart(df, column, 'mean_end_reptile_richness', "ACE Endemic Reptile Richness")
-end_bird_chart = bar_chart(df, column, 'mean_end_bird_richness', "ACE Endemic Bird Richness")
-end_mammal_chart = bar_chart(df, column, 'mean_end_mammal_richness', "ACE Endemic Mammal Richness")
-plant_chart = bar_chart(df, column, 'mean_plant_richness', "Plant Richness")
-rarity_plant_chart = bar_chart(df, column, 'mean_rarityweight_endemic_plant_richness', "Plant Richness")
-wetlands_chart = bar_chart(df, column, 'mean_wetlands', "Wetlands")
-farmland_chart = bar_chart(df, column, 'mean_farmland', "Farmland")
-grazing_chart = bar_chart(df, column, 'mean_grazing', "Grazing land")
-DAC_chart = bar_chart(df, column, 'mean_disadvantaged', "Disadvantaged Communities")
-low_income_chart = bar_chart(df, column, 'mean_low_income', "Low-Income Communities")
+amph_chart = bar_chart(df, column, 'percent_amph_richness', "ACE Amphibian Richness")
+reptile_chart = bar_chart(df, column, 'percent_reptile_richness', "ACE Reptile Richness")
+bird_chart = bar_chart(df, column, 'percent_bird_richness', "ACE Bird Richness")
+mammal_chart = bar_chart(df, column, 'percent_mammal_richness', "ACE Mammal Richness")
+rare_amph_chart = bar_chart(df, column, 'percent_rare_amph_richness', "ACE Rare Amphibian Richness")
+rare_reptile_chart = bar_chart(df, column, 'percent_rare_reptile_richness', "ACE Rare Reptile Richness")
+rare_bird_chart = bar_chart(df, column, 'percent_rare_bird_richness', "ACE Rare Bird Richness")
+rare_mammal_chart = bar_chart(df, column, 'percent_rare_mammal_richness', "ACE Rare Mammal Richness")
+end_amph_chart = bar_chart(df, column, 'percent_end_amph_richness', "ACE Endemic Amphibian Richness")
+end_reptile_chart = bar_chart(df, column, 'percent_end_reptile_richness', "ACE Endemic Reptile Richness")
+end_bird_chart = bar_chart(df, column, 'percent_end_bird_richness', "ACE Endemic Bird Richness")
+end_mammal_chart = bar_chart(df, column, 'percent_end_mammal_richness', "ACE Endemic Mammal Richness")
+plant_chart = bar_chart(df, column, 'percent_plant_richness', "Plant Richness")
+rarity_plant_chart = bar_chart(df, column, 'percent_rarityweight_endemic_plant_richness', "Plant Richness")
+wetlands_chart = bar_chart(df, column, 'percent_wetlands', "Wetlands")
+farmland_chart = bar_chart(df, column, 'percent_farmland', "Farmland")
+grazing_chart = bar_chart(df, column, 'percent_grazing', "Grazing land")
+DAC_chart = bar_chart(df, column, 'percent_disadvantaged', "Disadvantaged Communities")
+low_income_chart = bar_chart(df, column, 'percent_low_income', "Low-Income Communities")
 
 
 

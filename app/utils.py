@@ -95,26 +95,26 @@ def get_summary(ca, combined_filter, column, main_group, colors = None):
     df = (df.group_by(*column)
           .aggregate(percent_CA=(_.acres.sum() / ca_area_acres),
                      acres=_.acres.sum(),
-                     mean_amph_richness =(_.ACE_amphibian_richness * _.acres).sum() / _.acres.sum(),
-                     mean_reptile_richness=(_.ACE_reptile_richness * _.acres).sum() / _.acres.sum(),
-                     mean_bird_richness=(_.ACE_bird_richness * _.acres).sum() / _.acres.sum(),
-                     mean_mammal_richness=(_.ACE_mammal_richness * _.acres).sum() / _.acres.sum(),
-                     mean_rare_amph_richness =(_.ACE_rare_amphibian_richness * _.acres).sum() / _.acres.sum(),
-                     mean_rare_reptile_richness=(_.ACE_rare_reptile_richness * _.acres).sum() / _.acres.sum(),
-                     mean_rare_bird_richness=(_.ACE_rare_bird_richness * _.acres).sum() / _.acres.sum(),
-                     mean_rare_mammal_richness=(_.ACE_rare_mammal_richness * _.acres).sum() / _.acres.sum(),
-                     mean_end_amph_richness =(_.ACE_endemic_amphibian_richness * _.acres).sum() / _.acres.sum(),
-                     mean_end_reptile_richness=(_.ACE_endemic_reptile_richness * _.acres).sum() / _.acres.sum(),
-                     mean_end_bird_richness=(_.ACE_endemic_bird_richness * _.acres).sum() / _.acres.sum(),
-                     mean_end_mammal_richness=(_.ACE_endemic_mammal_richness * _.acres).sum() / _.acres.sum(),
-                     mean_plant_richness=(_.plant_richness * _.acres).sum()/_.acres.sum(),
-                     mean_rarityweight_endemic_plant_richness=(_.rarityweighted_endemic_plant_richness * _.acres).sum()/_.acres.sum(),
-                     mean_wetlands=(_.wetlands * _.acres).sum()/_.acres.sum(),
-                     mean_fire=(_.fire * _.acres).sum() / _.acres.sum(),
-                     mean_farmland=(_.farmland * _.acres).sum() / _.acres.sum(),
-                     mean_grazing=(_.grazing * _.acres).sum() / _.acres.sum(),
-                     mean_disadvantaged=(_.DAC * _.acres).sum() / _.acres.sum(),
-                     mean_low_income=(_.low_income * _.acres).sum() / _.acres.sum()
+                     percent_amph_richness =(_.ACE_amphibian_richness * _.acres).sum() / _.acres.sum(),
+                     percent_reptile_richness=(_.ACE_reptile_richness * _.acres).sum() / _.acres.sum(),
+                     percent_bird_richness=(_.ACE_bird_richness * _.acres).sum() / _.acres.sum(),
+                     percent_mammal_richness=(_.ACE_mammal_richness * _.acres).sum() / _.acres.sum(),
+                     percent_rare_amph_richness =(_.ACE_rare_amphibian_richness * _.acres).sum() / _.acres.sum(),
+                     percent_rare_reptile_richness=(_.ACE_rare_reptile_richness * _.acres).sum() / _.acres.sum(),
+                     percent_rare_bird_richness=(_.ACE_rare_bird_richness * _.acres).sum() / _.acres.sum(),
+                     percent_rare_mammal_richness=(_.ACE_rare_mammal_richness * _.acres).sum() / _.acres.sum(),
+                     percent_end_amph_richness =(_.ACE_endemic_amphibian_richness * _.acres).sum() / _.acres.sum(),
+                     percent_end_reptile_richness=(_.ACE_endemic_reptile_richness * _.acres).sum() / _.acres.sum(),
+                     percent_end_bird_richness=(_.ACE_endemic_bird_richness * _.acres).sum() / _.acres.sum(),
+                     percent_end_mammal_richness=(_.ACE_endemic_mammal_richness * _.acres).sum() / _.acres.sum(),
+                     percent_plant_richness=(_.plant_richness * _.acres).sum()/_.acres.sum(),
+                     percent_rarityweight_endemic_plant_richness=(_.rarityweighted_endemic_plant_richness * _.acres).sum()/_.acres.sum(),
+                     percent_wetlands=(_.wetlands * _.acres).sum()/_.acres.sum(),
+                     percent_fire=(_.fire * _.acres).sum() / _.acres.sum(),
+                     percent_farmland=(_.farmland * _.acres).sum() / _.acres.sum(),
+                     percent_grazing=(_.grazing * _.acres).sum() / _.acres.sum(),
+                     percent_disadvantaged=(_.DAC * _.acres).sum() / _.acres.sum(),
+                     percent_low_income=(_.low_income * _.acres).sum() / _.acres.sum()
                     )
           .mutate(percent_CA=_.percent_CA.round(5), acres=_.acres.round(0))
          )
@@ -324,7 +324,7 @@ def get_chart_settings(x, stacked):
         "mean_svi": "SVI (Mean)", "mean_fire": "Fire (Mean)", "mean_rxburn": "Rx Fire (Mean)"
     }
 
-    angle = 270 if x in ["manager_type", "ecoregion"] else 0
+    angle = 270 if x in ["manager_type", "ecoregion", "status", "habitat_type", "resilient_connected_network"] else 0
     height = 250 if stacked else 400 if x == "ecoregion" else 350 if x == "manager_type" else 300
 
     return sort_options.get(x, "x"), angle, height, y_titles.get(x, x)
