@@ -1,5 +1,16 @@
+from utils import *
 
-def geom_to_h3(con, name, cols, zoom):
+# === CONFIG ===
+default_zoom = "8"
+default_limit = 10_000
+default_geom_len_thresh = 5_000  # H3 cells per geometry
+chunk_limit = default_limit
+large_geom_thresh = default_geom_len_thresh
+est_total_h3_thresh = 150_000 
+large_geom_batch_limit = 100
+
+
+def compute_h3(con, name, cols, zoom):
     """
     Computes hexes    
     """
@@ -38,38 +49,36 @@ def check_size(con, name, zoom, sample_size=100):
 
     return est_total_h3, max_len
 
+# def chunk_large_geom(con, s3, bucket, path, name, zoom=default_zoom, geom_len_threshold=large_geom_thresh):
+# def chunk_large_geom(con, s3, bucket, path, name, zoom="8", geom_len_threshold=10_000):
 
-def write_large_geoms(con, s3, bucket, path, name, zoom="8", geom_len_threshold=10_000):
+def chunk_large_geom(con, s3, bucket, path, name, zoom=default_zoom,
+                      geom_len_threshold=large_geom_thresh,
+                      batch_limit=large_geom_batch_limit):
     """
     Individually processing large geoms (different from processing "chunks")
     """
     offset = 0
     i = 0
-    limit=3000
     while True:
-        large_key = f"{path}/hex/{name}_large_{i:03d}.parquet"
-        print(f"🟠 Checking large geometry batch {i} → {large_key}")
+        relative_key = f"{path}/hex/{name}_large_{i:03d}.parquet"
+        print(f"🟠 Checking large geometry batch {i} → {relative_key}")
 
-        #  check if file already exists in minio
-        try:
-            s3.stat_object(bucket, large_key)
-            print(f"⏩ Skipping existing large batch: {large_key}")
-            offset += limit
+        if exists_on_s3(s3, folder="", file=relative_key):  # we pass relative_key as `file`
+            print(f"⏩ Skipping existing large batch: {relative_key}")
+            offset += batch_limit
             i += 1
             continue
-        except S3Error as err:
-            if err.code != "NoSuchKey":
-                raise  
 
-        print(f"📝 Writing large geometry batch {i} → {large_key}")
+        print(f"📝 Writing large geometry batch {i} → {relative_key}")
         q = con.sql(f'''
             SELECT *, UNNEST(h{zoom}) AS h{zoom}
             FROM t2
             WHERE len(h{zoom}) > {geom_len_threshold}
-            LIMIT {limit} OFFSET {offset}
+            LIMIT {batch_limit} OFFSET {offset}
         ''')
 
-        q.to_parquet(f"s3://{bucket}/{large_key}")
+        q.to_parquet(f"s3://{bucket}/{relative_key}")
 
         if q.count().execute() == 0:
             break
@@ -79,7 +88,6 @@ def write_large_geoms(con, s3, bucket, path, name, zoom="8", geom_len_threshold=
 
     return i
 
-    
 def join_large_geoms(con, s3, bucket, path, name):
     """
     If we had to process large geoms individually, join those datasets after conversion.
@@ -87,14 +95,10 @@ def join_large_geoms(con, s3, bucket, path, name):
     # check if any large files exist before trying to join
     test_key = f"{path}/hex/{name}_large_000.parquet"
 
-    try:
-        s3.stat_object(bucket, test_key)
-    except S3Error as err:
-        if err.code == "NoSuchKey":
-            print("✅ No large geometry chunks to join.")
-            return
-        else:
-            raise
+    if not exists_on_s3(s3, folder="", file=test_key):
+        print("✅ No large geometry chunks to join.")
+        return
+
     # join if it exists 
     con.raw_sql(f'''
         COPY (
@@ -103,27 +107,24 @@ def join_large_geoms(con, s3, bucket, path, name):
         TO 's3://{bucket}/{path}/hex/{name}_large.parquet'
         (FORMAT PARQUET)
     ''')
+    
 
-
-def chunk_data(con, s3, bucket, path, name, zoom="8", limit=100_000, geom_len_threshold=10_000):
+# def chunk_geom(con, s3, bucket, path, name, zoom="8", limit=50_000, geom_len_threshold=10_000):
+def chunk_geom(con, s3, bucket, path, name, zoom=default_zoom, limit=chunk_limit, geom_len_threshold=large_geom_thresh):
     """
     Processing large files in chunks. 
     """
     offset = 0
     i = 0
-
+    
     while True:
         chunk_path = f"{path}/hex/{name}_chunk{i:03d}.parquet"
         
-        try:
-            s3.stat_object(bucket, chunk_path)
+        if exists_on_s3(s3, folder="", file=chunk_path):  # relative path passed as file
             print(f"⏩ Skipping existing chunk: {chunk_path}")
             offset += limit
             i += 1
             continue
-        except S3Error as err:
-            if err.code != "NoSuchKey":
-                raise
 
         print(f"📝 Writing chunk {i} → {chunk_path}")
         q = con.sql(f'''
@@ -139,13 +140,13 @@ def chunk_data(con, s3, bucket, path, name, zoom="8", limit=100_000, geom_len_th
         i += 1
 
     # process large geometries using same threshold and limit
-    write_large_geoms(con, s3, bucket, path, name, zoom, geom_len_threshold=geom_len_threshold)
+    chunk_large_geom(con, s3, bucket, path, name, zoom, geom_len_threshold=geom_len_threshold)
     join_large_geoms(con, s3, bucket, path, name)
     return i
 
 
 
-def join_chunked(bucket, path, name):
+def join_chunked(con, bucket, path, name):
     """
     If we had to chunk the data, join those datasets after conversion.
     """
@@ -158,7 +159,8 @@ def join_chunked(bucket, path, name):
         ''')
 
 # def convert_h3(con, folder, file, cols, zoom="8", limit=100_000, geom_len_threshold=10_000):
-def convert_h3(con, s3, folder, file, cols, zoom="8", limit=100_000, geom_len_threshold=5_000):
+# def convert_h3(con, s3, folder, file, cols, zoom="8", limit=50_000, geom_len_threshold=5_000):
+def convert_h3(con, s3, folder, file, cols, zoom=default_zoom, limit=chunk_limit, geom_len_threshold=large_geom_thresh):
     """
     Driver function to convert geometries to h3
     """
@@ -175,14 +177,14 @@ def convert_h3(con, s3, folder, file, cols, zoom="8", limit=100_000, geom_len_th
     est_total, max_per_geom = check_size(con, name, zoom)
     # if est_total > 500_000 or max_per_geom > geom_len_threshold:
 
-    if est_total > 1_000_000 or max_per_geom > geom_len_threshold:
+    if est_total > est_total_h3_thresh or max_per_geom > geom_len_threshold:
         print("Chunking due to estimated size")
-        geom_to_h3(con, name, cols, zoom)
-        chunk_data(con, s3, bucket, path, name, zoom, limit, geom_len_threshold)
+        compute_h3(con, name, cols, zoom)
+        chunk_geom(con, s3, bucket, path, name, zoom, limit, geom_len_threshold)
         join_chunked(con, bucket, path, name)
     else:
         print("Writing single output")
-        geom_to_h3(con, name, cols, zoom)
+        compute_h3(con, name, cols, zoom)
         con.sql(f'''
             SELECT *, UNNEST(h{zoom}) AS h{zoom}
             FROM t2

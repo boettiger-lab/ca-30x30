@@ -1,4 +1,5 @@
 from minio.error import S3Error
+from cng.utils import *
 
 import zipfile
 import os
@@ -40,7 +41,7 @@ def upload(s3, folder, file):
     s3.fput_object(bucket, path ,file) 
     return
 
-def unzip(folder, file):
+def unzip(s3, folder, file):
     """
     Unzipping zip files 
     """
@@ -49,8 +50,8 @@ def unzip(folder, file):
         zip_ref.extractall()
     return 
 
-# def process_vector(folder, file, file_name = None, gdf = None, crs="EPSG:3310"):
-def process_vector(folder, file, file_name = None, gdf = None, crs="EPSG:4326"):
+# def process_vector(s3, folder, file, file_name = None, gdf = None, crs="EPSG:3310"):
+def process_vector(s3, folder, file, file_name = None, gdf = None, crs="EPSG:4326"):
     """
     Driver function to process vectors 
     """
@@ -67,20 +68,56 @@ def process_vector(folder, file, file_name = None, gdf = None, crs="EPSG:4326"):
     parquet_file = f"{name}{'.parquet'}"
     gdf.to_parquet(parquet_file)
     upload(s3, folder, parquet_file)
-    return 
 
+    return gdf.drop('geom',axis = 1).columns.to_list()
 
-# def upload_parquet(folder, file, gdf):
-#     """
-#     Uploading parquets 
-#     """
-#     name, ext = os.path.splitext(file)
-#     parquet_file = f"{name}{'.parquet'}"
-#     gdf.to_parquet(parquet_file)
-#     upload(folder, parquet_file)
-#     return  
+def process_raster(s3, folder, file, file_name = None):
+    """
+    Driver function to process rasters 
+    """
+    if file_name:
+        file = file_name
+    # output_file = reproject_raster(file)
+    # upload(s3, folder, output_file)
+    # output_cog_file = make_cog(output_file)
+    # upload(s3, folder, output_cog_file)
+    # output_vector, cols  = make_vector(output_file)
+    # upload(s3, folder, output_vector)
 
+    name, ext = os.path.splitext(file)
+    output_file = f"{name}_processed{ext}"
 
+    output_cog_file = f"{name}_processed_COG{ext}"
+
+    output_vector_file = f"{name}_processed.parquet"
+    print(output_file)
+    print(output_cog_file)
+    print(output_vector_file)
+    # Reproject raster
+    if not exists_on_s3(s3, folder, output_file):
+        output_file = reproject_raster(file)
+        upload(s3, folder, output_file)
+    else:
+        print(f"{output_file} already exists on S3, skipping reprojection/upload.")
+
+    # Make COG
+    if not exists_on_s3(s3, folder, output_cog_file):
+        output_cog_file = make_cog(output_file)
+        upload(s3, folder, output_cog_file)
+    else:
+        print(f"{output_cog_file} already exists on S3, skipping COG conversion/upload.")
+
+    # Vectorize raster
+    if not exists_on_s3(s3, folder, output_vector_file):
+        output_vector_file, cols = make_vector(output_file)
+        upload(s3, folder, output_vector_file)
+    else:
+        print(f"{output_vector_file} already exists on S3, skipping vectorization/upload.")
+        # We still need column names
+        gdf = gpd.read_parquet(output_vector_file)
+        cols = gdf.drop('geom', axis=1).columns.to_list()
+    return cols
+    
 def reproject_raster(input_file, crs="EPSG:3310"):
     """
     Reproject rasters 
@@ -147,7 +184,7 @@ def make_vector(input_file, crs="EPSG:4326"):
 
     gdf.to_parquet(output_file)
     print(gdf)
-    return output_file
+    return output_file, gdf.drop('geom',axis = 1).columns.to_list()
 
 def filter_raster(s3, folder, file, percentile):
     """
@@ -168,31 +205,33 @@ def filter_raster(s3, folder, file, percentile):
     profile.update(dtype=rasterio.float64)
     with rasterio.open(new_file, "w", **profile) as dst:
         dst.write(filtered, 1)
-    process_raster(s3, folder, file)
-    return
+    cols = process_raster(s3, folder, file)
+    return cols
 
-def process_raster(s3, folder, file, file_name = None):
-    """
-    Driver function to process rasters 
-    """
-    if file_name:
-        file = file_name
-    output_file = reproject_raster(file)
-    upload(s3, folder, output_file)
-    output_cog_file = make_cog(output_file)
-    upload(s3, folder, output_cog_file)
-    output_vector = make_vector(output_file)
-    upload(s3, folder, output_vector)
-    return
-    
-def convert_pmtiles(folder, file):
+
+def convert_pmtiles(con, s3, folder, file):
     """
     Convert to PMTiles with tippecanoe 
     """
     name, ext = os.path.splitext(file)
     if ext != '.geojson':
-        con.read_parquet(file).execute().set_crs('epsg:3310').to_crs('epsg:4326').to_file(name+'.geojson')
+            (con.read_parquet(file).execute().set_crs('epsg:3310')
+             .to_crs('epsg:4326').to_file(name+'.geojson'))
     to_pmtiles(name+'.geojson', name+'.pmtiles', options = ['--extend-zooms-if-still-dropping'])
     upload(s3, folder, name+'.pmtiles')
     return
+
+def exists_on_s3(s3, folder, file):
+    """
+    Check if a file exists on S3
+    """
+    bucket, path = info(folder, file)
+    print(bucket)
+    print(path)
+    
+    try:
+        s3.stat_object(bucket, path)
+        return True
+    except S3Error:
+        return False
 
