@@ -1,6 +1,5 @@
 from utils import *
 
-# === CONFIG ===
 default_zoom = "8"
 default_limit = 10_000
 default_geom_len_thresh = 5_000  # H3 cells per geometry
@@ -8,7 +7,6 @@ chunk_limit = default_limit
 large_geom_thresh = default_geom_len_thresh
 est_total_h3_thresh = 150_000 
 large_geom_batch_limit = 100
-
 
 def compute_h3(con, name, cols, zoom):
     """
@@ -49,9 +47,6 @@ def check_size(con, name, zoom, sample_size=100):
 
     return est_total_h3, max_len
 
-# def chunk_large_geom(con, s3, bucket, path, name, zoom=default_zoom, geom_len_threshold=large_geom_thresh):
-# def chunk_large_geom(con, s3, bucket, path, name, zoom="8", geom_len_threshold=10_000):
-
 def chunk_large_geom(con, s3, bucket, path, name, zoom=default_zoom,
                       geom_len_threshold=large_geom_thresh,
                       batch_limit=large_geom_batch_limit):
@@ -83,7 +78,7 @@ def chunk_large_geom(con, s3, bucket, path, name, zoom=default_zoom,
         if q.count().execute() == 0:
             break
 
-        offset += limit
+        offset += batch_limit
         i += 1
 
     return i
@@ -109,7 +104,6 @@ def join_large_geoms(con, s3, bucket, path, name):
     ''')
     
 
-# def chunk_geom(con, s3, bucket, path, name, zoom="8", limit=50_000, geom_len_threshold=10_000):
 def chunk_geom(con, s3, bucket, path, name, zoom=default_zoom, limit=chunk_limit, geom_len_threshold=large_geom_thresh):
     """
     Processing large files in chunks. 
@@ -158,8 +152,6 @@ def join_chunked(con, bucket, path, name):
         (FORMAT PARQUET)
         ''')
 
-# def convert_h3(con, folder, file, cols, zoom="8", limit=100_000, geom_len_threshold=10_000):
-# def convert_h3(con, s3, folder, file, cols, zoom="8", limit=50_000, geom_len_threshold=5_000):
 def convert_h3(con, s3, folder, file, cols, zoom=default_zoom, limit=chunk_limit, geom_len_threshold=large_geom_thresh):
     """
     Driver function to convert geometries to h3
@@ -175,8 +167,6 @@ def convert_h3(con, s3, folder, file, cols, zoom=default_zoom, limit=chunk_limit
 
     # Decide to chunk or not
     est_total, max_per_geom = check_size(con, name, zoom)
-    # if est_total > 500_000 or max_per_geom > geom_len_threshold:
-
     if est_total > est_total_h3_thresh or max_per_geom > geom_len_threshold:
         print("Chunking due to estimated size")
         compute_h3(con, name, cols, zoom)
