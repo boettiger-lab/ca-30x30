@@ -44,8 +44,8 @@ url_ACE_endemic_mammal_richness = get_url('ACE_biodiversity/ACE_endemic_mammal_r
 
 url_wetlands = get_url('Freshwater_resources/Wetlands','CA_wetlands.pmtiles')
 url_fire = get_url('Climate_risks/Historical_fire_perimeters','calfire_2023.pmtiles')
-url_farmland = get_url('NBS_agriculture/Farmland','Farmland_2018.pmtiles')
-url_grazing = get_url('NBS_agriculture/Lands_suitable_grazing','Grazing_land_2018.pmtiles')
+url_farmland = get_url('NBS_agriculture/Farmland_all/Farmland','Farmland_2018.pmtiles')
+url_grazing = get_url('NBS_agriculture/Farmland_all/Lands_suitable_grazing','Grazing_land_2018.pmtiles')
 url_DAC = get_url('Progress_data_new_protection/DAC','DAC_2022.pmtiles')
 url_low_income = get_url('Progress_data_new_protection/Low_income_communities','low_income_CalEnviroScreen4.pmtiles')
 
