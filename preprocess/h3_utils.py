@@ -56,7 +56,7 @@ def chunk_large_geom(con, s3, bucket, path, name, zoom=default_zoom,
     offset = 0
     i = 0
     while True:
-        relative_key = f"{path}/hex/{name}_large_{i:03d}.parquet"
+        relative_key = f"{path}/hex/zoom{zoom}/{name}_large_{i:03d}.parquet"
         print(f"🟠 Checking large geometry batch {i} → {relative_key}")
 
         if exists_on_s3(s3, folder="", file=relative_key):  # we pass relative_key as `file`
@@ -88,7 +88,7 @@ def join_large_geoms(con, s3, bucket, path, name):
     If we had to process large geoms individually, join those datasets after conversion.
     """
     # check if any large files exist before trying to join
-    test_key = f"{path}/hex/{name}_large_000.parquet"
+    test_key = f"{path}/hex/zoom{zoom}/{name}_large_000.parquet"
 
     if not exists_on_s3(s3, folder="", file=test_key):
         print("✅ No large geometry chunks to join.")
@@ -97,9 +97,9 @@ def join_large_geoms(con, s3, bucket, path, name):
     # join if it exists 
     con.raw_sql(f'''
         COPY (
-            SELECT * FROM read_parquet('s3://{bucket}/{path}/hex/{name}_large_*.parquet')
+            SELECT * FROM read_parquet('s3://{bucket}/{path}/hex/zoom{zoom}/{name}_large_*.parquet')
         )
-        TO 's3://{bucket}/{path}/hex/{name}_large.parquet'
+        TO 's3://{bucket}/{path}/hex/zoom{zoom}/{name}_large.parquet'
         (FORMAT PARQUET)
     ''')
     
@@ -112,7 +112,7 @@ def chunk_geom(con, s3, bucket, path, name, zoom=default_zoom, limit=chunk_limit
     i = 0
     
     while True:
-        chunk_path = f"{path}/hex/{name}_chunk{i:03d}.parquet"
+        chunk_path = f"{path}/hex/zoom{zoom}/{name}_chunk{i:03d}.parquet"
         
         if exists_on_s3(s3, folder="", file=chunk_path):  # relative path passed as file
             print(f"⏩ Skipping existing chunk: {chunk_path}")
@@ -146,9 +146,9 @@ def join_chunked(con, bucket, path, name):
     """
     con.raw_sql(f'''
         COPY (
-        SELECT * FROM read_parquet('s3://{bucket}/{path}/hex/{name}_chunk*.parquet')
+        SELECT * FROM read_parquet('s3://{bucket}/{path}/hex/zoom{zoom}/{name}_chunk*.parquet')
         )
-        TO 's3://{bucket}/{path}/hex/{name}.parquet'
+        TO 's3://{bucket}/{path}/hex/zoom{zoom}/{name}.parquet'
         (FORMAT PARQUET)
         ''')
 
@@ -178,4 +178,4 @@ def convert_h3(con, s3, folder, file, cols, zoom=default_zoom, limit=chunk_limit
         con.sql(f'''
             SELECT *, UNNEST(h{zoom}) AS h{zoom}
             FROM t2
-        ''').to_parquet(f"s3://{bucket}/{path}/hex/{name}.parquet")
+        ''').to_parquet(f"s3://{bucket}/{path}/hex/zoom{zoom}/{name}.parquet")
