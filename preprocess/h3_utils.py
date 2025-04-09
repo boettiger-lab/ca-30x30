@@ -1,12 +1,10 @@
 from utils import *
 
 default_zoom = "8"
-default_limit = 10_000
-default_geom_len_thresh = 5_000  # H3 cells per geometry
-chunk_limit = default_limit
-large_geom_thresh = default_geom_len_thresh
-est_total_h3_thresh = 150_000 
-large_geom_batch_limit = 100
+max_h3_n = 1_000_000   # if est total H3 cells > this -> process in chunks
+chunk_n = 10_000     # chunk size (# of geoms)
+big_n = 10_000        # if geoms > big_n -> they are "big" and processed individually 
+batch_n = 5_000      # big geoms processed in batches of this size
 
 def compute_h3(con, name, cols, zoom):
     """
@@ -23,7 +21,7 @@ def compute_h3(con, name, cols, zoom):
         FROM t1
     ''')
     
-def check_size(con, name, zoom, sample_size=100):
+def check_size(con, name, zoom, sample_size):
     """
     Estimating size of geoms to decide if we need to process in chunks 
     """
@@ -47,9 +45,7 @@ def check_size(con, name, zoom, sample_size=100):
 
     return est_total_h3, max_len
 
-def chunk_large_geom(con, s3, bucket, path, name, zoom=default_zoom,
-                      geom_len_threshold=large_geom_thresh,
-                      batch_limit=large_geom_batch_limit):
+def chunk_large_geom(con, s3, bucket, path, name, zoom, big_n, batch_limit):
     """
     Individually processing large geoms (different from processing "chunks")
     """
@@ -69,7 +65,7 @@ def chunk_large_geom(con, s3, bucket, path, name, zoom=default_zoom,
         q = con.sql(f'''
             SELECT *, UNNEST(h{zoom}) AS h{zoom}
             FROM t2
-            WHERE len(h{zoom}) > {geom_len_threshold}
+            WHERE len(h{zoom}) > {big_n}
             LIMIT {batch_limit} OFFSET {offset}
         ''')
 
@@ -83,7 +79,7 @@ def chunk_large_geom(con, s3, bucket, path, name, zoom=default_zoom,
 
     return i
 
-def join_large_geoms(con, s3, bucket, path, name):
+def join_large_geoms(con, s3, bucket, path, name, zoom):
     """
     If we had to process large geoms individually, join those datasets after conversion.
     """
@@ -104,9 +100,9 @@ def join_large_geoms(con, s3, bucket, path, name):
     ''')
     
 
-def chunk_geom(con, s3, bucket, path, name, zoom=default_zoom, limit=chunk_limit, geom_len_threshold=large_geom_thresh):
+def chunk_geom(con, s3, bucket, path, name, zoom, limit, batch_limit, big_n):
     """
-    Processing large files in chunks. 
+    Processing files in chunks. 
     """
     offset = 0
     i = 0
@@ -124,7 +120,7 @@ def chunk_geom(con, s3, bucket, path, name, zoom=default_zoom, limit=chunk_limit
         q = con.sql(f'''
             SELECT *, UNNEST(h{zoom}) AS h{zoom}
             FROM t2
-            WHERE len(h{zoom}) <= {geom_len_threshold}
+            WHERE len(h{zoom}) <= {big_n}
             LIMIT {limit} OFFSET {offset}
         ''')
         q.to_parquet(f"s3://{bucket}/{chunk_path}")
@@ -134,13 +130,13 @@ def chunk_geom(con, s3, bucket, path, name, zoom=default_zoom, limit=chunk_limit
         i += 1
 
     # process large geometries using same threshold and limit
-    chunk_large_geom(con, s3, bucket, path, name, zoom, geom_len_threshold=geom_len_threshold)
-    join_large_geoms(con, s3, bucket, path, name)
+    chunk_large_geom(con, s3, bucket, path, name, zoom, big_n, batch_limit)
+    join_large_geoms(con, s3, bucket, path, name, zoom)
     return i
 
 
 
-def join_chunked(con, bucket, path, name):
+def join_chunked(con, bucket, path, name, zoom):
     """
     If we had to chunk the data, join those datasets after conversion.
     """
@@ -152,7 +148,7 @@ def join_chunked(con, bucket, path, name):
         (FORMAT PARQUET)
         ''')
 
-def convert_h3(con, s3, folder, file, cols, zoom=default_zoom, limit=chunk_limit, geom_len_threshold=large_geom_thresh):
+def convert_h3(con, s3, folder, file, cols, zoom=default_zoom, limit=chunk_n, batch_limit = batch_n, big_n=big_n, max_h3_n = max_h3_n):
     """
     Driver function to convert geometries to h3
     """
@@ -166,12 +162,12 @@ def convert_h3(con, s3, folder, file, cols, zoom=default_zoom, limit=chunk_limit
     con.read_parquet(f"s3://{bucket}/{path}/{file}", table_name=name)
 
     # Decide to chunk or not
-    est_total, max_per_geom = check_size(con, name, zoom)
-    if est_total > est_total_h3_thresh or max_per_geom > geom_len_threshold:
+    est_total, max_per_geom = check_size(con, name, zoom, sample_size=100)
+    if est_total > max_h3_n or max_per_geom > big_n:
         print("Chunking due to estimated size")
         compute_h3(con, name, cols, zoom)
-        chunk_geom(con, s3, bucket, path, name, zoom, limit, geom_len_threshold)
-        join_chunked(con, bucket, path, name)
+        chunk_geom(con, s3, bucket, path, name, zoom, limit, batch_limit, big_n)
+        join_chunked(con, bucket, path, name, zoom)
     else:
         print("Writing single output")
         compute_h3(con, name, cols, zoom)
