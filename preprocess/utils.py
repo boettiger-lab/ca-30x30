@@ -15,7 +15,7 @@ from shapely.geometry import shape
 import numpy as np
 
 
-def info(folder, file, bucket = "public-ca30x30", base_folder = 'CBN-data/'):
+def info(folder, file, bucket = "public-ca30x30", base_folder = 'CBN/'):
     """
     Extract minio path to upload/download data 
     """
@@ -77,22 +77,10 @@ def process_raster(s3, folder, file, file_name = None):
     """
     if file_name:
         file = file_name
-    # output_file = reproject_raster(file)
-    # upload(s3, folder, output_file)
-    # output_cog_file = make_cog(output_file)
-    # upload(s3, folder, output_cog_file)
-    # output_vector, cols  = make_vector(output_file)
-    # upload(s3, folder, output_vector)
-
     name, ext = os.path.splitext(file)
     output_file = f"{name}_processed{ext}"
-
     output_cog_file = f"{name}_processed_COG{ext}"
-
     output_vector_file = f"{name}_processed.parquet"
-    print(output_file)
-    print(output_cog_file)
-    print(output_vector_file)
     # Reproject raster
     if not exists_on_s3(s3, folder, output_file):
         output_file = reproject_raster(file)
@@ -183,7 +171,6 @@ def make_vector(input_file, crs="EPSG:4326"):
         gdf.to_crs(crs, inplace=True)
 
     gdf.to_parquet(output_file)
-    print(gdf)
     return output_file, gdf.drop('geom',axis = 1).columns.to_list()
 
 def filter_raster(s3, folder, file, percentile):
@@ -226,9 +213,6 @@ def exists_on_s3(s3, folder, file):
     Check if a file exists on S3
     """
     bucket, path = info(folder, file)
-    print(bucket)
-    print(path)
-    
     try:
         s3.stat_object(bucket, path)
         return True
