@@ -129,9 +129,40 @@ m = leafmap.Map(style="positron")
 #############
 
 
-##### Chatbot stuff 
+chatbot_container = st.container()
+with chatbot_container:
+    llm_left_col, llm_right_col = st.columns([5,1], vertical_alignment = "bottom")
+    with llm_left_col:
+
+        with st.popover("💬 Example Queries"):
+            '''
+            Mapping queries:        
+            - Show me areas open to the public that are in the top 10% of species richness.
+            - Show me all GAP 1 and 2 lands managed by The Nature Conservancy.
+            - Show me state land smaller than 1000 acres, with a social vulnerability index in the 90th percentile.
+            - Show me GAP 3 and 4 lands managed by BLM in the top 5% of range-size rarity.
+            - Show me Joshua Tree National Park.
+            - Show me all protected lands that have experienced forest fire over at least 50% of their area.
+            - Show me the biggest protected area in California. 
+            - Show me all land managed by the United States Forest Service. 
+            '''
+            
+            '''
+            Exploratory data queries:
+            - What is a GAP code?
+            - What percentage of 30x30 conserved land has been impacted by wildfire?
+            - What is the total acreage of areas designated as easements?
+            - Who manages the land with the highest amount of irrecoverable carbon and highest social vulnerability index? 
+            '''
+            
+            st.info('If the map appears blank, queried data may be too small to see at the default zoom level. Check the table below the map, as query results will also be displayed there.', icon="ℹ️")
 
 
+    with llm_right_col:
+        llm_choice = st.selectbox("Select LLM:", llm_options, key = "llm", help = "Select which model to use.")   
+        llm = llm_options[llm_choice]
+        
+##### Chatbot stuff       
 from pydantic import BaseModel, Field
 class SQLResponse(BaseModel):
     """Defines the structure for SQL response."""
@@ -236,36 +267,15 @@ with st.sidebar:
 
 
 ##### Chatbot 
+with chatbot_container:
+    with llm_left_col:
+        example_query = "👋 Input query here"
+        prompt = st.chat_input(example_query, key="chain", max_chars=300)
+
+
 with st.container():
-
-    with st.popover("💬 Example Queries"):
-        '''
-        Mapping queries:        
-        - Show me areas open to the public that are in the top 10% of species richness.
-        - Show me all GAP 1 and 2 lands managed by The Nature Conservancy.
-        - Show me state land smaller than 1000 acres, with a social vulnerability index in the 90th percentile.
-        - Show me GAP 3 and 4 lands managed by BLM in the top 5% of range-size rarity.
-        - Show me Joshua Tree National Park.
-        - Show me all protected lands that have experienced forest fire over at least 50% of their area.
-        - Show me the biggest protected area in California. 
-        - Show me all land managed by the United States Forest Service. 
-        '''
-        
-        '''
-        Exploratory data queries:
-        - What is a GAP code?
-        - What percentage of 30x30 conserved land has been impacted by wildfire?
-        - What is the total acreage of areas designated as easements?
-        - Who manages the land with the highest amount of irrecoverable carbon and highest social vulnerability index? 
-        '''
-        
-        st.info('If the map appears blank, queried data may be too small to see at the default zoom level. Check the table below the map, as query results will also be displayed there.', icon="ℹ️")
-
-
-    example_query = "👋 Input query here"
-    if prompt := st.chat_input(example_query, key="chain", max_chars = 300):
+    if prompt: 
         st.chat_message("user").write(prompt)
-
         try:
             with st.chat_message("assistant"):
                 with st.spinner("Invoking query..."):
