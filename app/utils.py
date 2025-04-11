@@ -192,7 +192,7 @@ def get_pmtiles_style(paint, alpha, filter_cols, filter_vals):
         ],
     }
     
-def get_url(folder, file, base_folder = 'CBN-data'):
+def get_url(folder, file, base_folder = 'CBN'):
     """
     Get url for minio hosted data
     """
@@ -296,7 +296,7 @@ def stacked_bar(df, x, y, color, title, colors):
     return create_bar_chart(df, x, y, title, color=color, stacked=True, colors=colors)
 
 
-def get_chart_settings(x, stacked):
+def get_chart_settings(x, y, stacked):
     """
     Returns sorting, axis settings, and y-axis title mappings.
     """
@@ -314,20 +314,52 @@ def get_chart_settings(x, stacked):
                       'Southern Cascades', 'Modoc Plateau', 'Great Valley (North)',
                       'NorCal Interior Coast Ranges', 'Great Valley (South)']
     }
-
     y_titles = {
-        "ecoregion": "Ecoregion (%)", "established": "Year (%)",
-        "manager_type": "Manager Type (%)", "easement": "Easement (%)",
-        "access_type": "Access (%)", "mean_richness": "Richness (Mean)",
-        "mean_rsr": "Range-Size Rarity (Mean)", "mean_irrecoverable_carbon": "Irrecoverable Carbon (Mean)",
-        "mean_manageable_carbon": "Manageable Carbon (Mean)", "mean_disadvantaged": "Disadvantaged (Mean)",
-        "mean_svi": "SVI (Mean)", "mean_fire": "Fire (Mean)", "mean_rxburn": "Rx Fire (Mean)"
+            "ecoregion": "Ecoregion (%)", "established": "Year (%)",
+            "manager_type": "Manager Type (%)", "easement": "Easement (%)",
+            "access_type": "Access (%)", "climate_zone": "Climate Zone (%)",
+            "habitat_type": "Habitat Type (%)", "resilient_connected_network": "Resilient & Connected Network (%)",
+        
+            # "percent_amph_richness":"Amphibian Richness (%)", "percent_reptile_richness":"Reptile Richness (%)",
+            # "percent_bird_richness":"Bird Richness (%)", "percent_mammal_richness":"Mammal Richness (%)",
+        
+            # "percent_rare_amph_richness":"Rare Amphibian Richness (%)", "percent_rare_reptile_richness":"Rare Reptile Richness (%)",
+            # "percent_rare_bird_richness":"Rare Bird Richness (%)", "percent_rare_mammal_richness":"Rare Mammal Richness (%)",
+        
+            # "percent_end_amph_richness":"Endemic Amphibian Richness (%)", "percent_end_reptile_richness":"Endemic Reptile Richness (%)",
+            # "percent_end_bird_richness":"Endemic Bird Richness (%)", "percent_end_mammal_richness":"Endemic Mammal Richness (%)",
+            
+            # "percent_plant_richness":"Plant Richness (%)",
+            # "percent_rarityweight_endemic_plant_richness":"Rarity-Weighted Endemic Plant Richness (%)",
+            "percent_amph_richness":"Richness (%)", "percent_reptile_richness":"Richness (%)",
+            "percent_bird_richness":"Richness (%)", "percent_mammal_richness":"Richness (%)",
+        
+            "percent_rare_amph_richness":"Richness (%)", "percent_rare_reptile_richness":"Richness (%)",
+            "percent_rare_bird_richness":"Richness (%)", "percent_rare_mammal_richness":"Richness (%)",
+        
+            "percent_end_amph_richness":"Richness (%)", "percent_end_reptile_richness":"Richness (%)",
+            "percent_end_bird_richness":"Richness (%)", "percent_end_mammal_richness":"Richness (%)",
+            
+            "percent_plant_richness":"Richness (%)",
+            "percent_rarityweight_endemic_plant_richness":"Richness (%)",
+        
+            "percent_wetlands":"Wetlands (%)",
+            "percent_farmland":"Farmland (%)",
+            "percent_grazing":"Grazing Land (%)",
+            "percent_disadvantaged":"Disadvantaged Communities (%)",
+            "percent_low_income":"Low-Income Communities (%)",
+            "percent_fire": "Fire (%)",
+
     }
+    if stacked:
+        y_titles = y_titles.get(x,x)
+    else: 
+        y_titles = y_titles.get(y,y)
 
     angle = 270 if x in ["manager_type", "ecoregion", "status", "habitat_type", "resilient_connected_network"] else 0
-    height = 250 if stacked else 400 if x == "ecoregion" else 350 if x == "manager_type" else 300
+    height = 470 if y == "percent_rarityweight_endemic_plant_richness" else 250 if stacked else 400 if x == "ecoregion" else 350 if x == "manager_type" else 300
 
-    return sort_options.get(x, "x"), angle, height, y_titles.get(x, x)
+    return sort_options.get(x, "x"), angle, height, y_titles
 
     
 def get_label_transform(x, label=None):
@@ -373,7 +405,7 @@ def create_bar_chart(df, x, y, title, color=None, stacked=False, colors=None):
     Generalized function to create a bar chart, supporting both standard and stacked bars.
     """
     # helper functions 
-    sort, angle, height, y_title = get_chart_settings(x,stacked)
+    sort, angle, height, y_title = get_chart_settings(x, y, stacked)
     label_transform = get_label_transform(x)
 
     # create base chart 
@@ -440,7 +472,7 @@ def create_bar_chart(df, x, y, title, color=None, stacked=False, colors=None):
 
     # customize chart
     final_chart = final_chart.properties(
-        title=title
+        title=title.split("\n") if "\n" in title else title
     ).configure_legend(
         symbolStrokeWidth=0.1, direction="horizontal", orient="top",
         columns=2, title=None, labelOffset=2, offset=5,

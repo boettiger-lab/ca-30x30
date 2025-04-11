@@ -130,6 +130,35 @@ st.divider()
            
 m = leafmap.Map(style="positron")
 #############
+with st.popover("💬 Example Queries"):
+    '''
+    Mapping queries:        
+    - Show me all GAP 1 and 2 lands managed by The Nature Conservancy.
+    - Show me Joshua Tree National Park.
+    - Show me all protected lands that have experienced forest fire over at least 50% of their area.
+    - Show me the biggest protected area in California. 
+    - Show me all land managed by the United States Forest Service. 
+    '''
+    
+    '''
+    Exploratory data queries:
+    - What is a GAP code?
+    - What percentage of 30x30 conserved land has been impacted by wildfire?
+    - What is the total acreage of areas designated as easements?
+    - Who manages the land with the highest percentage of wetlands?
+    '''
+    
+    st.info('If the map appears blank, queried data may be too small to see at the default zoom level. Check the table below the map, as query results will also be displayed there.', icon="ℹ️")
+
+
+chatbot_container = st.container()
+with chatbot_container:
+    llm_choice_col, llm_input_col = st.columns([1,8])
+
+    with llm_choice_col:
+        with st.popover("LLM"):
+            llm_options = ['Llama-3.3-70B-Instruct-AWQ']
+            llm_choice = st.radio("LLM:", llm_options, key = "llm", help = "Select which model to use.")   
 
 
 ##### Chatbot stuff 
@@ -149,7 +178,9 @@ from langchain_openai import ChatOpenAI
 #llm = ChatOpenAI(model = "kosbu/Llama-3.3-70B-Instruct-AWQ", api_key = st.secrets['CIRRUS_LLM_API_KEY'], base_url = "https://llm.cirrus.carlboettiger.info/v1/",  temperature=0)
 # llm = ChatOpenAI(model="gpt-4", temperature=0)
 # llm = ChatOpenAI(model = "llama3", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0)
-llm = ChatOpenAI(model = "groq-tools", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0)
+if llm_choice == 'Llama-3.3-70B-Instruct-AWQ':
+    llm = ChatOpenAI(model = "groq-tools", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0)
+
 # llm = ChatOpenAI(model = "llama3-sdsc", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0)
 
 managers = ca.sql("SELECT DISTINCT manager FROM mydata;").execute()
@@ -243,127 +274,135 @@ with st.sidebar:
 
 
 ##### Chatbot 
-with st.container():
-
-    with st.popover("💬 Example Queries"):
-        '''
-        Mapping queries:        
-        - Show me all GAP 1 and 2 lands managed by The Nature Conservancy.
-        - Show me GAP 3 and 4 lands with the top 5% of rare amphibian richness.
-        - Show me Joshua Tree National Park.
-        - Show me all protected lands that have experienced forest fire over at least 50% of their area.
-        - Show me the biggest protected area in California. 
-        - Show me all land managed by the United States Forest Service. 
-        '''
-        
-        '''
-        Exploratory data queries:
-        - What is a GAP code?
-        - What percentage of 30x30 conserved land has been impacted by wildfire?
-        - What is the total acreage of areas designated as easements?
-        - Who manages the land with the highest percentage of wetlands?
-        '''
-        
-        st.info('If the map appears blank, queried data may be too small to see at the default zoom level. Check the table below the map, as query results will also be displayed there.', icon="ℹ️")
 
 
-    example_query = "👋 Input query here"
-    if prompt := st.chat_input(example_query, key="chain", max_chars = 300):
-        st.chat_message("user").write(prompt)
 
-        try:
-            with st.chat_message("assistant"):
-                with st.spinner("Invoking query..."):
 
-                    out = run_sql(prompt,color_choice)
-                    if ("id" in out.columns) and (not out.empty):
-                        ids = out['id'].tolist()
-                        cols = out.columns.tolist()
-                        chatbot_toggles = {
-                                key: (True if key in cols else value) 
-                                for key, value in chatbot_toggles.items()
-                            }
-                        for key, value in chatbot_toggles.items():
-                            st.session_state[key] = value  # Update session state
-                    else:
-                        ids = []
-        except Exception as e:
-            error_message = f"ERROR: An unexpected error has occured with the following query:\n\n*{prompt}*\n\n which raised the following error:\n\n{type(e)}: {e}\n"
-            st.warning("Please try again with a different query", icon="⚠️")
-            st.write(error_message)
-            st.stop()
-
+with chatbot_container:
+    with llm_input_col:
+    
+       
+    
+        example_query = "👋 Input query here"
+        if prompt := st.chat_input(example_query, key="chain", max_chars = 300):
+            st.chat_message("user").write(prompt)
+    
+            try:
+                with st.chat_message("assistant"):
+                    with st.spinner("Invoking query..."):
+    
+                        out = run_sql(prompt,color_choice)
+                        if ("id" in out.columns) and (not out.empty):
+                            ids = out['id'].tolist()
+                            cols = out.columns.tolist()
+                            chatbot_toggles = {
+                                    key: (True if key in cols else value) 
+                                    for key, value in chatbot_toggles.items()
+                                }
+                            for key, value in chatbot_toggles.items():
+                                st.session_state[key] = value  # Update session state
+                        else:
+                            ids = []
+            except Exception as e:
+                error_message = f"ERROR: An unexpected error has occured with the following query:\n\n*{prompt}*\n\n which raised the following error:\n\n{type(e)}: {e}\n"
+                st.warning("Please try again with a different query", icon="⚠️")
+                st.write(error_message)
+                st.stop()
+    
 
 #### Data layers 
 with st.sidebar:  
     st.markdown('<p class = "medium-font-sidebar"> Data Layers:</p>', help = "Select data layers to visualize on the map. Summary charts will update based on the displayed layers.", unsafe_allow_html= True)
-
-    # # Biodiversity Section 
-    with st.expander("🦜 Biodiversity"):
-        a_bio = st.slider("transparency", 0.0, 1.0, 0.1, key = "biodiversity")
-
-        show_ACE_amph = st.toggle("ACE Amphibian Richness (CDFW)", key = "ACE_amphibian")
-        show_ACE_reptile = st.toggle("ACE Reptile Richness (CDFW)", key = "ACE_reptile")
-        show_ACE_bird = st.toggle("ACE Bird Richness (CDFW)", key = "ACE_bird")
-        show_ACE_mammal = st.toggle("ACE Mammal Richness (CDFW)", key = "ACE_mammal")
-        
-        show_ACE_rare_amph = st.toggle("ACE Rare Amphibian Richness (CDFW)", key = "ACE_rare_amphibian")
-        show_ACE_rare_reptile = st.toggle("ACE Rare Reptile Richness (CDFW)", key = "ACE_rare_reptile")
-        show_ACE_rare_bird = st.toggle("ACE Rare Bird Richness (CDFW)", key = "ACE_rare_bird")
-        show_ACE_rare_mammal = st.toggle("ACE Rare Mammal Richness (CDFW)", key = "ACE_rare_mammal")
-
-        show_ACE_end_amph = st.toggle("ACE Amphibian Richness (CDFW)", key = "ACE_end_amphibian")
-        show_ACE_end_reptile = st.toggle("ACE Reptile Richness (CDFW)", key = "ACE_end_reptile")
-        show_ACE_end_bird = st.toggle("ACE Bird Richness (CDFW)", key = "ACE_end_bird")
-        show_ACE_end_mammal = st.toggle("ACE Mammal Richness (CDFW)", key = "ACE_end_mammal")
-        
-        show_plant = st.toggle("Plant Richness", key = "plant")
-        show_end_plant = st.toggle("Rarity-Weighted Endemic Plant Richness", key = "end_plant")
+    with st.expander("🐸 Amphibian"):
+        a_amph = st.slider("transparency", 0.0, 1.0, 0.1, key = "a_amph")
+        show_ACE_amph = st.toggle("Amphibian Richness", key = "ACE_amphibian")
+        show_ACE_rare_amph = st.toggle("Rare Amphibian Richness", key = "ACE_rare_amphibian")
+        show_ACE_end_amph = st.toggle("Endemic Amphibian Richness", key = "ACE_end_amphibian")
 
         if show_ACE_amph:       
-            m.add_pmtiles(url_ACE_amph_richness, name = "ACE Amphibian Richness", attribution = "CDFW (2025)", 
-                          style = get_pmtiles_layer('ACE_amphibian_richness',url_ACE_amph_richness), opacity = a_bio)
-        if show_ACE_reptile:       
-            m.add_pmtiles(url_ACE_reptile_richness, name = "ACE Reptile Richness", attribution = "CDFW (2025)", 
-                          style = get_pmtiles_layer('ACE_reptile_richness',url_ACE_reptile_richness), opacity = a_bio)
-        if show_ACE_bird:       
-            m.add_pmtiles(url_ACE_bird_richness, name = "ACE Bird Richness", attribution = "CDFW (2025)",  
-                          style = get_pmtiles_layer('ACE_bird_richness',url_ACE_bird_richness), opacity = a_bio)
-        if show_ACE_mammal:       
-            m.add_pmtiles(url_ACE_mammal_richness, name = "ACE Mammal Richness", attribution = "CDFW (2025)", 
-                          style = get_pmtiles_layer('ACE_mammal_richness',url_ACE_mammal_richness), opacity = a_bio)
+            m.add_pmtiles(url_ACE_amph_richness, name = "Amphibian Richness", attribution = "CDFW (2025)", 
+                          style = get_pmtiles_layer('ACE_amphibian_richness',url_ACE_amph_richness), opacity = a_amph)
 
         if show_ACE_rare_amph:       
-            m.add_pmtiles(url_ACE_amph_richness, name = "ACE Amphibian Richness", attribution = "CDFW (2025)", 
-                          style = get_pmtiles_layer('ACE_amphibian_richness',url_ACE_amph_richness), opacity = a_bio)
-        if show_ACE_rare_reptile:       
-            m.add_pmtiles(url_ACE_reptile_richness, name = "ACE Reptile Richness", attribution = "CDFW (2025)", 
-                          style = get_pmtiles_layer('ACE_reptile_richness',url_ACE_reptile_richness), opacity = a_bio)
-        if show_ACE_rare_bird:       
-            m.add_pmtiles(url_ACE_bird_richness, name = "ACE Bird Richness", attribution = "CDFW (2025)",  
-                          style = get_pmtiles_layer('ACE_bird_richness',url_ACE_bird_richness), opacity = a_bio)
-        if show_ACE_rare_mammal:       
-            m.add_pmtiles(url_ACE_mammal_richness, name = "ACE Mammal Richness", attribution = "CDFW (2025)", 
-                          style = get_pmtiles_layer('ACE_mammal_richness',url_ACE_mammal_richness), opacity = a_bio)
-        
+            m.add_pmtiles(url_ACE_rare_amph_richness, name = "Amphibian Richness", attribution = "CDFW (2025)", 
+                          style = get_pmtiles_layer('ACE_amphibian_richness',url_ACE_rare_amph_richness), opacity = a_amph)
+
         if show_ACE_end_amph:       
-            m.add_pmtiles(url_ACE_amph_richness, name = "ACE Endemic Amphibian Richness", attribution = "CDFW (2025)", 
-                          style = get_pmtiles_layer('ACE_amphibian_richness',url_ACE_amph_richness), opacity = a_bio)
+            m.add_pmtiles(url_ACE_end_amph_richness, name = "Endemic Amphibian Richness", attribution = "CDFW (2025)", 
+                          style = get_pmtiles_layer('ACE_amphibian_richness',url_ACE_end_amph_richness), opacity = a_amph)
+
+    with st.expander("🐍 Reptile"):
+        a_rept = st.slider("transparency", 0.0, 1.0, 0.1, key = "a_rept")            
+        show_ACE_reptile = st.toggle("Reptile Richness", key = "ACE_reptile")
+        show_ACE_rare_reptile = st.toggle("Rare Reptile Richness", key = "ACE_rare_reptile")
+        show_ACE_end_reptile = st.toggle("Endemic Reptile Richness", key = "ACE_end_reptile")
+
+        if show_ACE_reptile:       
+            m.add_pmtiles(url_ACE_reptile_richness, name = "Reptile Richness", attribution = "CDFW (2025)", 
+                          style = get_pmtiles_layer('ACE_reptile_richness',url_ACE_reptile_richness), opacity = a_rept)
+
+        if show_ACE_rare_reptile:       
+            m.add_pmtiles(url_ACE_rare_reptile_richness, name = "Rare Reptile Richness", attribution = "CDFW (2025)", 
+                          style = get_pmtiles_layer('ACE_reptile_richness',url_ACE_rare_reptile_richness), opacity = a_rept)
+
         if show_ACE_end_reptile:       
-            m.add_pmtiles(url_ACE_reptile_richness, name = "ACE Endemic Reptile Richness", attribution = "CDFW (2025)", 
-                          style = get_pmtiles_layer('ACE_reptile_richness',url_ACE_reptile_richness), opacity = a_bio)
-        if show_ACE_end_bird:       
-            m.add_pmtiles(url_ACE_bird_richness, name = "ACE Endemic Bird Richness", attribution = "CDFW (2025)",  
-                          style = get_pmtiles_layer('ACE_bird_richness',url_ACE_bird_richness), opacity = a_bio)
-        if show_ACE_end_mammal:       
-            m.add_pmtiles(url_ACE_mammal_richness, name = "ACE Endemic Mammal Richness", attribution = "CDFW (2025)", 
-                          style = get_pmtiles_layer('ACE_mammal_richness',url_ACE_mammal_richness), opacity = a_bio)
+            m.add_pmtiles(url_ACE_end_reptile_richness, name = "Endemic Reptile Richness", attribution = "CDFW (2025)", 
+                          style = get_pmtiles_layer('ACE_reptile_richness',url_ACE_end_reptile_richness), opacity = a_rept)
 
         
+    # # Bird Section 
+    with st.expander("🦜 Bird"):
+        a_bird = st.slider("transparency", 0.0, 1.0, 0.1, key = "a_bird")
+        show_ACE_bird = st.toggle("Bird Richness", key = "ACE_bird")
+        show_ACE_rare_bird = st.toggle("Rare Bird Richness", key = "ACE_rare_bird")
+        show_ACE_end_bird = st.toggle("ACE Endemic Bird Richness", key = "ACE_end_bird")
+        
+
+        if show_ACE_bird:       
+            m.add_pmtiles(url_ACE_bird_richness, name = "Bird Richness", attribution = "CDFW (2025)",  
+                          style = get_pmtiles_layer('ACE_bird_richness',url_ACE_bird_richness), opacity = a_bird)
+
+        if show_ACE_rare_bird:       
+            m.add_pmtiles(url_ACE_rare_bird_richness, name = "Rare Bird Richness", attribution = "CDFW (2025)",  
+                          style = get_pmtiles_layer('ACE_rare_bird_richness',url_ACE_rare_bird_richness), opacity = a_bird)
+
+        if show_ACE_end_bird:       
+            m.add_pmtiles(url_ACE_end_bird_richness, name = "Endemic Bird Richness", attribution = "CDFW (2025)",  
+                          style = get_pmtiles_layer('ACE_bird_richness',url_ACE_end_bird_richness), opacity = a_bird)
+            
+            
+            # # Mammal Section 
+    with st.expander("🦌 Mammal"):
+        a_mammal = st.slider("transparency", 0.0, 1.0, 0.1, key = "a_mammal")
+
+        show_ACE_mammal = st.toggle("Mammal Richness", key = "ACE_mammal")
+        show_ACE_rare_mammal = st.toggle("Rare Mammal Richness", key = "ACE_rare_mammal")
+        show_ACE_end_mammal = st.toggle("Endemic Mammal Richness", key = "ACE_end_mammal")
+
+
+        if show_ACE_mammal:       
+            m.add_pmtiles(url_ACE_mammal_richness, name = "Mammal Richness", attribution = "CDFW (2025)", 
+                          style = get_pmtiles_layer('ACE_mammal_richness',url_ACE_mammal_richness), opacity = a_mammal)
+        if show_ACE_rare_mammal:       
+            m.add_pmtiles(url_ACE_rare_mammal_richness, name = "Rare Mammal Richness", attribution = "CDFW (2025)", 
+                          style = get_pmtiles_layer('ACE_mammal_richness',url_ACE_rare_mammal_richness), opacity = a_mammal)
+
+        if show_ACE_end_mammal:       
+            m.add_pmtiles(url_ACE_end_mammal_richness, name = "Endemic Mammal Richness", attribution = "CDFW (2025)", 
+                          style = get_pmtiles_layer('ACE_mammal_richness',url_ACE_end_mammal_richness), opacity = a_mammal)
+
+        
+            # # Plants Section 
+    with st.expander("🌿 Plant"):
+        a_plant = st.slider("transparency", 0.0, 1.0, 0.1, key = "a_plant")
+
+        show_plant = st.toggle("Plant Richness", key = "plant")
+        show_end_plant = st.toggle("Rarity-Weighted Endemic Plant Richness", key = "end_plant")
+        
         if show_plant:       
-            m.add_cog_layer(url_plant_richness, name = "Plant Richness", attribution =  "Kling et al. (2018)", opacity = a_bio)
+            m.add_cog_layer(url_plant_richness, name = "Plant Richness", attribution =  "Kling et al. (2018)", opacity = a_plant)
         if show_end_plant:       
-            m.add_cog_layer(url_endemic_plant_richness, name = "Rarity-Weighted Endemic Plant Richness", attribution = "Kling et al. (2018)", opacity = a_bio)
+            m.add_cog_layer(url_endemic_plant_richness, name = "Rarity-Weighted Endemic Plant Richness", attribution = "Kling et al. (2018)", opacity = a_plant)
 
     ## Connectivity Section
     # with st.expander("🔗 Connectivity"):
@@ -458,14 +497,14 @@ column = select_column[color_choice]
 select_colors = {
     "30x30 Status": status["stops"],
     "GAP Code": gap["stops"],
-    "Year": year["stops"],
+    # "Year": year["stops"],
     "Ecoregion": ecoregion["stops"],
     "Climate Zone": climate_zone["stops"],
     "Habitat Type": habitat_type["stops"],
     "Manager Type": manager["stops"],
     "Easement": easement["stops"],
     "Access Type": access["stops"],
-    "Networks": networks["stops"],
+    "Resilient & Connected Network": networks["stops"],
 
 }
 
@@ -488,25 +527,26 @@ else:
 
 
 # charts displayed based on color_by variable
-amph_chart = bar_chart(df, column, 'percent_amph_richness', "ACE Amphibian Richness")
-reptile_chart = bar_chart(df, column, 'percent_reptile_richness', "ACE Reptile Richness")
-bird_chart = bar_chart(df, column, 'percent_bird_richness', "ACE Bird Richness")
-mammal_chart = bar_chart(df, column, 'percent_mammal_richness', "ACE Mammal Richness")
-rare_amph_chart = bar_chart(df, column, 'percent_rare_amph_richness', "ACE Rare Amphibian Richness")
-rare_reptile_chart = bar_chart(df, column, 'percent_rare_reptile_richness', "ACE Rare Reptile Richness")
-rare_bird_chart = bar_chart(df, column, 'percent_rare_bird_richness', "ACE Rare Bird Richness")
-rare_mammal_chart = bar_chart(df, column, 'percent_rare_mammal_richness', "ACE Rare Mammal Richness")
-end_amph_chart = bar_chart(df, column, 'percent_end_amph_richness', "ACE Endemic Amphibian Richness")
-end_reptile_chart = bar_chart(df, column, 'percent_end_reptile_richness', "ACE Endemic Reptile Richness")
-end_bird_chart = bar_chart(df, column, 'percent_end_bird_richness', "ACE Endemic Bird Richness")
-end_mammal_chart = bar_chart(df, column, 'percent_end_mammal_richness', "ACE Endemic Mammal Richness")
+amph_chart = bar_chart(df, column, 'percent_amph_richness', "Amphibian Richness")
+reptile_chart = bar_chart(df, column, 'percent_reptile_richness', "Reptile Richness")
+bird_chart = bar_chart(df, column, 'percent_bird_richness', "Bird Richness")
+mammal_chart = bar_chart(df, column, 'percent_mammal_richness', "Mammal Richness")
+rare_amph_chart = bar_chart(df, column, 'percent_rare_amph_richness', "Rare Amphibian Richness")
+rare_reptile_chart = bar_chart(df, column, 'percent_rare_reptile_richness', "Rare Reptile Richness")
+rare_bird_chart = bar_chart(df, column, 'percent_rare_bird_richness', "Rare Bird Richness")
+rare_mammal_chart = bar_chart(df, column, 'percent_rare_mammal_richness', "Rare Mammal Richness")
+end_amph_chart = bar_chart(df, column, 'percent_end_amph_richness', "Endemic Amphibian Richness")
+end_reptile_chart = bar_chart(df, column, 'percent_end_reptile_richness', "Endemic Reptile Richness")
+end_bird_chart = bar_chart(df, column, 'percent_end_bird_richness', "Endemic Bird Richness")
+end_mammal_chart = bar_chart(df, column, 'percent_end_mammal_richness', "Endemic Mammal Richness")
 plant_chart = bar_chart(df, column, 'percent_plant_richness', "Plant Richness")
-rarity_plant_chart = bar_chart(df, column, 'percent_rarityweight_endemic_plant_richness', "Plant Richness")
+rarity_plant_chart = bar_chart(df, column, 'percent_rarityweight_endemic_plant_richness', "Rarity-Weighted\nEndemic Plant Richness")
 wetlands_chart = bar_chart(df, column, 'percent_wetlands', "Wetlands")
 farmland_chart = bar_chart(df, column, 'percent_farmland', "Farmland")
-grazing_chart = bar_chart(df, column, 'percent_grazing', "Grazing land")
+grazing_chart = bar_chart(df, column, 'percent_grazing', "Lands Suitable for Grazing")
 DAC_chart = bar_chart(df, column, 'percent_disadvantaged', "Disadvantaged Communities")
 low_income_chart = bar_chart(df, column, 'percent_low_income', "Low-Income Communities")
+fire_chart = bar_chart(df, column, 'percent_fire', "Historical Fire Perimeters")
 
 
 

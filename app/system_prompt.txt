@@ -147,7 +147,7 @@ sql_query:
     )
     SELECT "ecoregion"
     FROM mydata
-    WHERE "farmland" > (SELECT farmland_90_percentile FROM temp);
+    WHERE "farmland" > (SELECT farmland_50_percentile FROM temp);
 
 ## Example: 
 example_user: "Show me protected lands in disadvantaged communities that have wetlands in at least 30% of its area."

@@ -12,16 +12,6 @@ ca_area_acres = 101523750.68856516
 style_choice = "GAP Status Code"
 
 from utils import get_url
-# urls for additional data layers 
-# url_sr = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/species-richness-ca/{z}/{x}/{y}.png"
-# url_rsr = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/range-size-rarity/{z}/{x}/{y}.png"
-# url_irr_carbon = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/ca_irrecoverable_c_2018_cog.tif"
-# url_man_carbon = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/ca_manageable_c_2018_cog.tif"
-# url_justice40 = "https://data.source.coop/cboettig/justice40/disadvantaged-communities.pmtiles"
-# url_calfire = 'https://minio.carlboettiger.info/public-fire/calfire-2023.pmtiles'
-# url_rxburn = 'https://minio.carlboettiger.info/public-fire/calfire-rxburn-2023.pmtiles'
-# url_svi = 'https://minio.carlboettiger.info/public-data/social-vulnerability/2022/SVI2022_US_tract.pmtiles'
-
 
 #vector data 
 url_ACE_rarerank_statewide = get_url('ACE_biodiversity/ACE_rarerank_statewide','ACE_rarerank_statewide.pmtiles')
@@ -33,14 +23,14 @@ url_ACE_amph_richness = get_url('ACE_biodiversity/ACE_amphibian_richness','ACE_a
 url_ACE_reptile_richness = get_url('ACE_biodiversity/ACE_reptile_richness','ACE_reptile_richness.pmtiles')
 url_ACE_bird_richness = get_url('ACE_biodiversity/ACE_bird_richness','ACE_bird_richness.pmtiles')
 url_ACE_mammal_richness = get_url('ACE_biodiversity/ACE_mammal_richness','ACE_mammal_richness.pmtiles')
-url_ACE_rare_amphibian_richness = get_url('ACE_biodiversity/ACE_rare_amphibian_richness','ACE_rare_amphibian_richness.pmtiles')
+url_ACE_rare_amph_richness = get_url('ACE_biodiversity/ACE_rare_amphibian_richness','ACE_rare_amphibian_richness.pmtiles')
 url_ACE_rare_reptile_richness = get_url('ACE_biodiversity/ACE_rare_reptile_richness','ACE_rare_reptile_richness.pmtiles')
 url_ACE_rare_bird_richness = get_url('ACE_biodiversity/ACE_rare_bird_richness','ACE_rare_bird_richness.pmtiles')
 url_ACE_rare_mammal_richness = get_url('ACE_biodiversity/ACE_rare_mammal_richness','ACE_rare_mammal_richness.pmtiles')
-url_ACE_endemic_amphibian_richness = get_url('ACE_biodiversity/ACE_endemic_amphibian_richness','ACE_endemic_amphibian_richness.pmtiles')
-url_ACE_endemic_reptile_richness = get_url('ACE_biodiversity/ACE_endemic_reptile_richness','ACE_endemic_reptile_richness.pmtiles')
-url_ACE_endemic_bird_richness = get_url('ACE_biodiversity/ACE_endemic_bird_richness','ACE_endemic_bird_richness.pmtiles')
-url_ACE_endemic_mammal_richness = get_url('ACE_biodiversity/ACE_endemic_mammal_richness','ACE_endemic_mammal_richness.pmtiles')
+url_ACE_end_amph_richness = get_url('ACE_biodiversity/ACE_endemic_amphibian_richness','ACE_endemic_amphibian_richness.pmtiles')
+url_ACE_end_reptile_richness = get_url('ACE_biodiversity/ACE_endemic_reptile_richness','ACE_endemic_reptile_richness.pmtiles')
+url_ACE_end_bird_richness = get_url('ACE_biodiversity/ACE_endemic_bird_richness','ACE_endemic_bird_richness.pmtiles')
+url_ACE_end_mammal_richness = get_url('ACE_biodiversity/ACE_endemic_mammal_richness','ACE_endemic_mammal_richness.pmtiles')
 
 url_wetlands = get_url('Freshwater_resources/Wetlands','CA_wetlands.pmtiles')
 url_fire = get_url('Climate_risks/Historical_fire_perimeters','calfire_2023.pmtiles')
@@ -56,7 +46,6 @@ url_plant_richness = get_url('Biodiversity_unique/Plant_richness', 'species_D_pr
 url_endemic_plant_richness = get_url('Biodiversity_unique/Rarityweighted_endemic_plant_richness', 'endemicspecies_E_processed_COG.tif')
 url_resilient_conn_network = get_url('Connectivity_resilience/Resilient_connected_network_allcategories', 
                                  'rcn_wIntactBioCat_caOnly_2020-10-27_processed_COG.tif')
-
 
 
 # colors for plotting 
@@ -307,127 +296,27 @@ networks = {
 style_options = {
     "30x30 Status": status,
     "GAP Code": gap,
-    "Year": year,
     "Ecoregion": ecoregion,
     "Climate Zone": climate_zone,
     "Habitat Type": habitat_type,
+    "Resilient & Connected Network": networks,
     "Manager Type": manager,
     "Easement": easement,
+    # "Year": year,
     "Access Type": access,
-    "Networks": networks,
-
 }
 
-# justice40_fill = {
-#     'property': 'Disadvan',
-#     'type': 'categorical',
-#     'stops': [
-#         [0, white], 
-#         [1, justice40_color]
-#     ]
-# }
-
-# justice40_style = {
-#     "version": 8,
-#     "sources": {
-#         "source1": {
-#             "type": "vector",
-#             "url": "pmtiles://" + url_justice40,
-#             "attribution": "Justice40"
-#         }
-#     },
-#     "layers": [
-#         {
-#             "id": "layer1",
-#             "source": "source1",
-#             "source-layer": "DisadvantagedCommunitiesCEJST",
-#             "filter": ["match", ["get", "StateName"], "California", True, False],
-#             "type": "fill",
-#             "paint": {
-#                 "fill-color": justice40_fill,
-#             }
-#         }
-#     ]
-# }
-# # fire_style = {"version": 8,
-#     "sources": {
-#         "source1": {
-#             "type": "vector",
-#             "url": "pmtiles://" + url_calfire,
-#             "attribution": "CAL FIRE"
-#         }
-#     },
-#     "layers": [
-#         {
-#             "id": "fire",
-#             "source": "source1",
-#             "source-layer": 'calfire2023',
-#             "filter": [">=", ["get", "YEAR_"], 2013],
-
-#             "type": "fill",
-#             "paint": {
-#                 "fill-color": "#D22B2B",
-#             }
-#         }
-#     ]
-# }
-# rx_style = {
-#     "version": 8,
-#     "sources": {
-#         "source2": {
-#             "type": "vector",
-#             "url": "pmtiles://" + url_rxburn,
-#             "attribution": "CAL FIRE"
-#         }
-#     },
-#     "layers": [
-#         {
-#             "id": "rxburn",
-#             "source": "source2",
-#             "source-layer": 'calfirerxburn2023',
-#             "filter": [">=", ["get", "YEAR_"], 2013],
-#             "type": "fill",
-#             "paint": {
-#                 "fill-color": "#702963",
-#             }
-#         }
-#     ]
-# }
-
-
-# svi_style = {
-#         "layers": [
-#             {
-#                 "id": "svi",
-#                 "source": "svi",
-#                 "source-layer": "svi",
-#                 "filter": ["match", ["get", "ST_ABBR"], "CA", True, False],
-#                 "type": "fill",
-#                 "paint": {
-#                     "fill-color": [
-#                         "interpolate", ["linear"], ["get", "RPL_THEMES"],
-#                         0, white,
-#                         1, svi_color
-#                     ]
-#                 }
-#             }
-#         ]
-#     }
-
-
-    
 
 select_column = {
     "30x30 Status":  "status",
     "GAP Code": "gap_code",
-    "Year": "established",
     "Ecoregion":  "ecoregion",
     "Climate Zone":  "climate_zone",
     "Habitat Type":  "habitat_type",
+    "Resilient & Connected Network": "resilient_connected_network",
     "Manager Type": "manager_type",
     "Easement": "easement",
+    # "Year": "established",
     "Access Type": "access_type",
-    "Networks": "resilient_connected_network",
-
 }
 
