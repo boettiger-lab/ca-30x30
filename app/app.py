@@ -127,40 +127,42 @@ st.markdown('<p class = "medium-font"> This is an interactive cloud-native geosp
 
 st.divider()
 
-           
 m = leafmap.Map(style="positron")
 #############
-with st.popover("💬 Example Queries"):
-    '''
-    Mapping queries:        
-    - Show me all GAP 1 and 2 lands managed by The Nature Conservancy.
-    - Show me Joshua Tree National Park.
-    - Show me all protected lands that have experienced forest fire over at least 50% of their area.
-    - Show me the biggest protected area in California. 
-    - Show me all land managed by the United States Forest Service. 
-    '''
-    
-    '''
-    Exploratory data queries:
-    - What is a GAP code?
-    - What percentage of 30x30 conserved land has been impacted by wildfire?
-    - What is the total acreage of areas designated as easements?
-    - Who manages the land with the highest percentage of wetlands?
-    '''
-    
-    st.info('If the map appears blank, queried data may be too small to see at the default zoom level. Check the table below the map, as query results will also be displayed there.', icon="ℹ️")
-
 
 chatbot_container = st.container()
 with chatbot_container:
-    llm_choice_col, llm_input_col = st.columns([1,8])
+    llm_left_col, llm_right_col = st.columns([5,1], vertical_alignment = "bottom")
+    with llm_left_col:
+        with st.popover("💬 Example Queries"):
+            '''
+            Mapping queries:        
+            - Show me all GAP 1 and 2 lands managed by The Nature Conservancy.
+            - Show me Joshua Tree National Park.
+            - Show me all protected lands that have experienced forest fire over at least 50% of their area.
+            - Show me the biggest protected area in California. 
+            - Show me all land managed by the United States Forest Service. 
+            '''
+            
+            '''
+            Exploratory data queries:
+            - What is a GAP code?
+            - What percentage of 30x30 conserved land has been impacted by wildfire?
+            - What is the total acreage of areas designated as easements?
+            - Who manages the land with the highest percentage of wetlands?
+            '''
+            
+            st.info('If the map appears blank, queried data may be too small to see at the default zoom level. Check the table below the map, as query results will also be displayed there.', icon="ℹ️")
+    
 
-    with llm_choice_col:
-        with st.popover("LLM"):
-            llm_options = ['Llama-3.3-70B-Instruct-AWQ']
-            llm_choice = st.radio("LLM:", llm_options, key = "llm", help = "Select which model to use.")   
+    
+
+    with llm_right_col:
+        llm_choice = st.selectbox("Select LLM:", llm_options, key = "llm", help = "Select which model to use.")   
+        llm = llm_options[llm_choice]
 
 
+           
 ##### Chatbot stuff 
 
 
@@ -174,14 +176,6 @@ with open('app/system_prompt.txt', 'r') as file:
     template = file.read()
 
 from langchain_openai import ChatOpenAI
-
-#llm = ChatOpenAI(model = "kosbu/Llama-3.3-70B-Instruct-AWQ", api_key = st.secrets['CIRRUS_LLM_API_KEY'], base_url = "https://llm.cirrus.carlboettiger.info/v1/",  temperature=0)
-# llm = ChatOpenAI(model="gpt-4", temperature=0)
-# llm = ChatOpenAI(model = "llama3", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0)
-if llm_choice == 'Llama-3.3-70B-Instruct-AWQ':
-    llm = ChatOpenAI(model = "groq-tools", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0)
-
-# llm = ChatOpenAI(model = "llama3-sdsc", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0)
 
 managers = ca.sql("SELECT DISTINCT manager FROM mydata;").execute()
 names = ca.sql("SELECT name FROM mydata GROUP BY name HAVING SUM(acres) >10000;").execute()
@@ -274,41 +268,37 @@ with st.sidebar:
 
 
 ##### Chatbot 
-
-
-
-
 with chatbot_container:
-    with llm_input_col:
-    
-       
-    
+    with llm_left_col:
         example_query = "👋 Input query here"
-        if prompt := st.chat_input(example_query, key="chain", max_chars = 300):
-            st.chat_message("user").write(prompt)
-    
-            try:
-                with st.chat_message("assistant"):
-                    with st.spinner("Invoking query..."):
-    
-                        out = run_sql(prompt,color_choice)
-                        if ("id" in out.columns) and (not out.empty):
-                            ids = out['id'].tolist()
-                            cols = out.columns.tolist()
-                            chatbot_toggles = {
-                                    key: (True if key in cols else value) 
-                                    for key, value in chatbot_toggles.items()
-                                }
-                            for key, value in chatbot_toggles.items():
-                                st.session_state[key] = value  # Update session state
-                        else:
-                            ids = []
-            except Exception as e:
-                error_message = f"ERROR: An unexpected error has occured with the following query:\n\n*{prompt}*\n\n which raised the following error:\n\n{type(e)}: {e}\n"
-                st.warning("Please try again with a different query", icon="⚠️")
-                st.write(error_message)
-                st.stop()
-    
+        prompt = st.chat_input(example_query, key="chain", max_chars=300)
+
+# new container for output so it doesn't mess with the alignment of llm options 
+with st.container():
+    if prompt: 
+        st.chat_message("user").write(prompt)
+        try:
+            with st.chat_message("assistant"):
+                with st.spinner("Invoking query..."):
+
+                    out = run_sql(prompt,color_choice)
+                    if ("id" in out.columns) and (not out.empty):
+                        ids = out['id'].tolist()
+                        cols = out.columns.tolist()
+                        chatbot_toggles = {
+                                key: (True if key in cols else value) 
+                                for key, value in chatbot_toggles.items()
+                            }
+                        for key, value in chatbot_toggles.items():
+                            st.session_state[key] = value  # Update session state
+                    else:
+                        ids = []
+        except Exception as e:
+            error_message = f"ERROR: An unexpected error has occured with the following query:\n\n*{prompt}*\n\n which raised the following error:\n\n{type(e)}: {e}\n"
+            st.warning("Please try again with a different query", icon="⚠️")
+            st.write(error_message)
+            st.stop()
+            
 
 #### Data layers 
 with st.sidebar:  
