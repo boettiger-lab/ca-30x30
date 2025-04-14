@@ -137,11 +137,9 @@ with chatbot_container:
         with st.popover("💬 Example Queries"):
             '''
             Mapping queries:        
-            - Show me all GAP 1 and 2 lands managed by The Nature Conservancy.
-            - Show me Joshua Tree National Park.
-            - Show me all protected lands that have experienced forest fire over at least 50% of their area.
-            - Show me the biggest protected area in California. 
-            - Show me all land managed by the United States Forest Service. 
+            - Show me all 30x30 conserved lands managed by The Nature Conservancy.
+            - Show me amphibian biodiversity hotspots that aren't currently conserved.
+            - Show me protected areas with at least 80% overlap with regions of high endemic species richness.
             '''
             
             '''
@@ -149,7 +147,7 @@ with chatbot_container:
             - What is a GAP code?
             - What percentage of 30x30 conserved land has been impacted by wildfire?
             - What is the total acreage of areas designated as easements?
-            - Who manages the land with the highest percentage of wetlands?
+            - Which county has the most 30x30 conserved land?
             '''
             
             st.info('If the map appears blank, queried data may be too small to see at the default zoom level. Check the table below the map, as query results will also be displayed there.', icon="ℹ️")
@@ -174,6 +172,7 @@ class SQLResponse(BaseModel):
 
 with open('app/system_prompt.txt', 'r') as file:
     template = file.read()
+
 
 from langchain_openai import ChatOpenAI
 

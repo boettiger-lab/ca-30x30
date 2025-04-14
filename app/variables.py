@@ -42,8 +42,8 @@ url_low_income = get_url('Progress_data_new_protection/Low_income_communities','
 # raster data
 url_climate_zones = get_url('Climate_zones', 'climate_zones_10_processed_COG.tif')
 url_habitat = get_url('Habitat', 'CWHR13_2022_processed_COG.tif')
-url_plant_richness = get_url('Biodiversity_unique/Plant_richness', 'species_D_processed_COG.tif')
-url_endemic_plant_richness = get_url('Biodiversity_unique/Rarityweighted_endemic_plant_richness', 'endemicspecies_E_processed_COG.tif')
+url_plant_richness = get_url('Biodiversity_unique/Plant_richness', 'species_D_80percentile_processed_COG.tif')
+url_endemic_plant_richness = get_url('Biodiversity_unique/Rarityweighted_endemic_plant_richness', 'endemicspecies_E_80percentile_processed_COG.tif')
 url_resilient_conn_network = get_url('Connectivity_resilience/Resilient_connected_network_allcategories', 
                                  'rcn_wIntactBioCat_caOnly_2020-10-27_processed_COG.tif')
 
@@ -322,13 +322,16 @@ select_column = {
 from langchain_openai import ChatOpenAI
 import streamlit as st
 
+from langchain_openai.chat_models.base import BaseChatOpenAI
+
+
 llm_options = {
-    "llama-3.3": ChatOpenAI(model = "groq-tools", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0),
     "llama3": ChatOpenAI(model = "llama3-sdsc", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0),
-    "phi3": ChatOpenAI(model = "phi3", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0),
-    # "DeepSeek-R1-Distill-Qwen-32B": ChatOpenAI(model = "DeepSeek-R1-Distill-Qwen-32B", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0),
-    # "watt": ChatOpenAI(model = "watt", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0),
+    # "llama-3.3": ChatOpenAI(model = "groq-tools", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0),
     "gemma3": ChatOpenAI(model = "gemma3", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0),
+    # "DeepSeek-R1-Distill-Qwen-32B": BaseChatOpenAI(model = "DeepSeek-R1-Distill-Qwen-32B", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0),
+    "watt": ChatOpenAI(model = "watt", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0),
+    "phi3": ChatOpenAI(model = "phi3", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0),
 
 }
 
