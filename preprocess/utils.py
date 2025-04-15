@@ -208,15 +208,20 @@ def filter_raster(s3, folder, file, percentile):
     # return cols
     return
 
-def convert_pmtiles(con, s3, folder, file, base_folder = "CBN/"):
+def convert_pmtiles(con, s3, folder, file, base_folder = "CBN/", current_crs = 'epsg:3310'):
     """
     Convert to PMTiles with tippecanoe 
     """
+    print('converting pmtiles')
     name, ext = os.path.splitext(file)
     if ext != '.geojson':
-            (con.read_parquet(file).execute().set_crs('epsg:3310')
-             .to_crs('epsg:4326').to_file(name+'.geojson'))
-    to_pmtiles(name+'.geojson', name+'.pmtiles', options = ['--extend-zooms-if-still-dropping'])
+        if current_crs != 'epsg:4326':
+            data = (con.read_parquet(file).execute().set_crs(current_crs)
+                     .to_crs('epsg:4326'))    
+        else:
+            data = (con.read_parquet(file).execute().set_crs(current_crs))
+        data.to_file(name+'.geojson')
+    to_pmtiles(name+'.geojson', name+'.pmtiles', options = ['--extend-zooms-if-still-dropping','--drop-densest-as-needed'])
     upload(s3, folder, name+'.pmtiles', base_folder)
     return
 
