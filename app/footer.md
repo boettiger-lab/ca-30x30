@@ -2,17 +2,30 @@
 Authors: Cassie Buhler & Carl Boettiger, UC Berkeley
 License: BSD-2-clause
 
-Data: https://huggingface.co/datasets/boettiger-lab/ca-30x30
+Data: https://data.carlboettiger.info/public-ca30x30
 
 ### Data sources
 - CA Nature Terrestrial 30x30 Conserved Areas map layer by CA Nature. Data: https://www.californianature.ca.gov/datasets/CAnature::30x30-conserved-areas-terrestrial-2024/about. License: Public Domain
 
-- Imperiled Species Richness and Range-Size-Rarity from NatureServe (2022). Data: https://beta.source.coop/repositories/cboettig/mobi. License CC-BY-NC-ND
+- Climate Zones by Ackerly Lab; Kling. Data: https://github.com/matthewkling/climclust/tree/master/hclust
 
-- Irrecoverable and Manageable Carbon from Conservation International, reprocessed to COG on https://beta.source.coop/cboettig/carbon, citation: https://doi.org/10.1038/s41893-021-00803-6, License: CC-BY-NC
+- California Vegetation by Wildlife Habitat Relationship Type, CAL FIRE (2022). Data: https://www.fire.ca.gov/Home/What-We-Do/Fire-Resource-Assessment-Program/GIS-Mapping-and-Data-Analytics
 
-- Climate and Economic Justice Screening Tool, US Council on Environmental Quality, Justice40. Archived description: https://web.archive.org/web/20250121194509/https://screeningtool.geoplatform.gov/en/methodology#3/33.47/-97.5. Data: https://beta.source.coop/repositories/cboettig/justice40/description/, License: Public Domain
+- ACE Biodiversity by CDFW. Data: https://data.ca.gov/dataset/terrestrial-biodiversity-summary-ace-ds2739
 
-- CDC 2022 Social Vulnerability Index by US Census Tract. Archived description: https://web.archive.org/web/20250126095916/https://www.atsdr.cdc.gov/place-health/php/svi/index.html. Data: https://source.coop/repositories/cboettig/social-vulnerability/description. License: Public Domain
+- Rarity-Weighted Endemic Plant Richness and Plant Richness. Citation: Kling et al. (2018) Philosophical Transactions of the Royal Society B, https://royalsocietypublishing.org/doi/full/10.1098/rstb.2017.0397.
 
-- Fire and Prescribed Fire by CAL FIRE (2023), reprocessed to PMTiles on https://beta.source.coop/cboettig/fire/. License: Public Domain
+- Resilient Connected Network. Data: https://crcs.tnc.org/pages/data. Citation: Anderson et al. (2023) https://doi.org/10.1073/pnas.2204434119.
+
+- Wetlands (freshwater emergent wetland, freshwater forested/shrub wetland, or estuarine and marine wetland) from National Wetland Inventory, US Fish and Wildlife Service (2019). Data: https://www.fws.gov/program/national-wetlands-inventory/wetlands-data.
+
+- Farmland (prime, unique, of statewide or local importance) and Lands suitable for grazing by DOC FMMP (2018). Data: https://gis.conservation.ca.gov/portal/home/group.html?id=b1494c705cb34d01acf78f4927a75b8f#overview.
+
+- Disadvantaged Communities by CalEPA. Data: https://calepa.ca.gov/envjustice/ghginvest/
+
+- Priority Populations (Low-Income Communities) from CalEnviroScreen 4.0. Data: https://oehha.ca.gov/calenviroscreen/report/calenviroscreen-40
+
+- Historic Fire Perimeters by CAL FIRE (2023). Data: https://www.fire.ca.gov/Home/What-We-Do/Fire-Resource-Assessment-Program/GIS-Mapping-and-Data-Analytics
+
+### LLMs
+This app can use a selection of open-weights language models hosted on the National Research Platform, https://nrp.ai/documentation/userdocs/ai/llm-managed/.

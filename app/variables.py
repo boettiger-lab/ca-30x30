@@ -1,20 +1,52 @@
 # urls for main layer 
-ca_parquet = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/da85dd9ca1c774d4ddf821555e3c3c9e13c9b857/ca-30x30.parquet"
-ca_pmtiles = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/896db6c9a37488ee7c53ee56df67b3ccfd44d150/ca-30x30.pmtiles"
+# ca_parquet = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/da85dd9ca1c774d4ddf821555e3c3c9e13c9b857/ca-30x30.parquet"
+# ca_pmtiles = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/896db6c9a37488ee7c53ee56df67b3ccfd44d150/ca-30x30.pmtiles"
 
-ca_area_acres = 1.014e8 #acres 
-# ca_area_acres = 103179953.76086558
+ca_parquet = 'https://minio.carlboettiger.info/public-ca30x30/ca-30x30-cbn.parquet'
+ca_pmtiles = 'https://minio.carlboettiger.info/public-ca30x30/ca-30x30-cbn.pmtiles'
+
+# computed by taking the sum of all the acres in this file:
+# https://minio.carlboettiger.info/public-ca30x30/CBN-data/Progress_data_new_protection/Land_Status_Zone_Ecoregion_Counties/all_regions_reGAP_county_eco.parquet
+ca_area_acres = 101523750.68856516 
+
 style_choice = "GAP Status Code"
 
-# urls for additional data layers 
-url_sr = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/species-richness-ca/{z}/{x}/{y}.png"
-url_rsr = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/range-size-rarity/{z}/{x}/{y}.png"
-url_irr_carbon = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/ca_irrecoverable_c_2018_cog.tif"
-url_man_carbon = "https://huggingface.co/datasets/boettiger-lab/ca-30x30/resolve/main/ca_manageable_c_2018_cog.tif"
-url_justice40 = "https://data.source.coop/cboettig/justice40/disadvantaged-communities.pmtiles"
-url_calfire = 'https://minio.carlboettiger.info/public-fire/calfire-2023.pmtiles'
-url_rxburn = 'https://minio.carlboettiger.info/public-fire/calfire-rxburn-2023.pmtiles'
-url_svi = 'https://minio.carlboettiger.info/public-data/social-vulnerability/2022/SVI2022_US_tract.pmtiles'
+from utils import get_url
+
+#vector data 
+url_ACE_rarerank_statewide = get_url('ACE_biodiversity/ACE_rarerank_statewide','ACE_rarerank_statewide.pmtiles')
+url_ACE_rarerank_ecoregion = get_url('ACE_biodiversity/ACE_rarerank_ecoregion','ACE_rarerank_ecoregion.pmtiles')
+url_ACE_biorank_statewide = get_url('ACE_biodiversity/ACE_biorank_statewide','ACE_biorank_statewide.pmtiles')
+url_ACE_biorank_ecoregion = get_url('ACE_biodiversity/ACE_biorank_ecoregion','ACE_biorank_ecoregion.pmtiles')
+
+url_ACE_amph_richness = get_url('ACE_biodiversity/ACE_amphibian_richness','ACE_amphibian_richness.pmtiles')
+url_ACE_reptile_richness = get_url('ACE_biodiversity/ACE_reptile_richness','ACE_reptile_richness.pmtiles')
+url_ACE_bird_richness = get_url('ACE_biodiversity/ACE_bird_richness','ACE_bird_richness.pmtiles')
+url_ACE_mammal_richness = get_url('ACE_biodiversity/ACE_mammal_richness','ACE_mammal_richness.pmtiles')
+url_ACE_rare_amph_richness = get_url('ACE_biodiversity/ACE_rare_amphibian_richness','ACE_rare_amphibian_richness.pmtiles')
+url_ACE_rare_reptile_richness = get_url('ACE_biodiversity/ACE_rare_reptile_richness','ACE_rare_reptile_richness.pmtiles')
+url_ACE_rare_bird_richness = get_url('ACE_biodiversity/ACE_rare_bird_richness','ACE_rare_bird_richness.pmtiles')
+url_ACE_rare_mammal_richness = get_url('ACE_biodiversity/ACE_rare_mammal_richness','ACE_rare_mammal_richness.pmtiles')
+url_ACE_end_amph_richness = get_url('ACE_biodiversity/ACE_endemic_amphibian_richness','ACE_endemic_amphibian_richness.pmtiles')
+url_ACE_end_reptile_richness = get_url('ACE_biodiversity/ACE_endemic_reptile_richness','ACE_endemic_reptile_richness.pmtiles')
+url_ACE_end_bird_richness = get_url('ACE_biodiversity/ACE_endemic_bird_richness','ACE_endemic_bird_richness.pmtiles')
+url_ACE_end_mammal_richness = get_url('ACE_biodiversity/ACE_endemic_mammal_richness','ACE_endemic_mammal_richness.pmtiles')
+
+url_wetlands = get_url('Freshwater_resources/Wetlands','CA_wetlands.pmtiles')
+url_fire = get_url('Climate_risks/Historical_fire_perimeters','calfire_2023.pmtiles')
+url_farmland = get_url('NBS_agriculture/Farmland_all/Farmland','Farmland_2018.pmtiles')
+url_grazing = get_url('NBS_agriculture/Farmland_all/Lands_suitable_grazing','Grazing_land_2018.pmtiles')
+url_DAC = get_url('Progress_data_new_protection/DAC','DAC_2022.pmtiles')
+url_low_income = get_url('Progress_data_new_protection/Low_income_communities','low_income_CalEnviroScreen4.pmtiles')
+
+# raster data
+url_climate_zones = get_url('Climate_zones', 'climate_zones_10_processed_COG.tif')
+url_habitat = get_url('Habitat', 'CWHR13_2022_processed_COG.tif')
+url_plant_richness = get_url('Biodiversity_unique/Plant_richness', 'species_D_80percentile_processed_COG.tif')
+url_endemic_plant_richness = get_url('Biodiversity_unique/Rarityweighted_endemic_plant_richness', 'endemicspecies_E_80percentile_processed_COG.tif')
+url_resilient_conn_network = get_url('Connectivity_resilience/Resilient_connected_network_allcategories', 
+                                 'rcn_wIntactBioCat_caOnly_2020-10-27_processed_COG.tif')
+
 
 # colors for plotting 
 private_access_color = "#DE881E" # orange 
@@ -82,6 +114,7 @@ manager = {
     ],
     'default': white
 }
+
 
 easement = {
     'property': 'easement',
@@ -170,123 +203,135 @@ ecoregion = {
     'default': white
 }
 
+
+climate_zone = {
+    'property': 'climate_zone',
+    'type': 'categorical',
+    'stops': [
+        [1.0, "#2ca02c"],
+        [2.0, "#98df8a"],
+        [3.0, "#9467bd"],
+        [4.0, "#17becf"],
+        [5.0, "#d62728"],
+        [6.0, "#ff9896"],
+        [7.0, "#dbdb8d"],
+        [8.0, "#bcbd22"],
+        [9.0, "#c5b0d5"],
+        [10.0, "#e377c2"],
+    ],
+    'default': white
+}
+
+ecoregion = {
+    'property': 'ecoregion',
+    'type': 'categorical',
+    'stops': [
+        ['Southeastern Great Basin', "#2ca02c"],
+        ['Mojave Desert', "#98df8a"],
+        ['Sonoran Desert', "#9467bd"],
+        ['Sierra Nevada', "#17becf"],
+        ['Southern California Mountains and Valleys', "#d62728"],
+        ['Mono', "#ff9896"],
+        ['Central California Coast', "#9edae5"],
+        ['Klamath Mountains', "#f7b6d2"],
+        ['Northern California Coast', "#c7c7c7"],
+        ['Northern California Coast Ranges', "#aec7e8"],
+        ['Northwestern Basin and Range', "#8c564b"],
+        ['Colorado Desert', "#e377c2"],
+        ['Central Valley Coast Ranges', "#7f7f7f"],
+        ['Southern California Coast', "#c5b0d5"],
+        ['Sierra Nevada Foothills', "#1f77b4"],
+        ['Southern Cascades', "#ff7f0e"],
+        ['Modoc Plateau', "#c49c94"],
+        ['Great Valley (South)', "#bcbd22"],
+        ['Northern California Interior Coast Ranges', "#ffbb78"],
+        ['Great Valley (North)', "#dbdb8d"],
+    ],
+    'default': white
+}
+
+habitat_type = {
+    'property': 'habitat_type',
+    'type': 'categorical',
+    'stops': [
+        ['Agriculture', "#2ca02c"],
+        ['Conifer Forest', "#98df8a"],
+        ['Conifer Woodland', "#9467bd"],
+        ['Desert Shrub', "#bcbd22"],
+        ['Desert Woodland', "#d62728"],
+        ['Hardwood Forest', "#ff9896"],
+        ['Hardwood Woodland', "#8c564b"],
+        ['Herbaceous', "#f7b6d2"],
+        ['Barren/Other', "#c7c7c7"],
+        ['Shrub', "#aec7e8"],
+        ['Wetland', "#9edae5"],
+        ['Water', "#17becf"],
+        ['Urban', "#ffbb78"],
+    ],
+    'default': white
+}
+
+networks = {
+    'property': 'resilient_connected_network',
+    'type': 'categorical',
+    'stops': [
+        [110, "#54a0f7"],
+        [103, "#72b3fd"],
+        [1010, "#6b9ad3"],
+        [1100, "#a2b0d5"],
+        [1110, "#bfd1ff"],
+        [10000, "#a87001"],
+        [10010, "#d09514"],
+        [20000, "#ffa807"],
+        [20010, "#fed087"],
+        [30000, "#88cc6a"],
+        [30010, "#257202"],
+        [40000, "#e377c2"],
+        [0, "#ffffff"],
+    ],
+    'default': white
+}
+
+
 style_options = {
     "30x30 Status": status,
     "GAP Code": gap,
-    "Year": year,
     "Ecoregion": ecoregion,
+    "Climate Zone": climate_zone,
+    "Habitat Type": habitat_type,
+    "Resilient & Connected Network": networks,
     "Manager Type": manager,
     "Easement": easement,
+    # "Year": year,
     "Access Type": access,
 }
 
-justice40_fill = {
-    'property': 'Disadvan',
-    'type': 'categorical',
-    'stops': [
-        [0, white], 
-        [1, justice40_color]
-    ]
-}
-
-justice40_style = {
-    "version": 8,
-    "sources": {
-        "source1": {
-            "type": "vector",
-            "url": "pmtiles://" + url_justice40,
-            "attribution": "Justice40"
-        }
-    },
-    "layers": [
-        {
-            "id": "layer1",
-            "source": "source1",
-            "source-layer": "DisadvantagedCommunitiesCEJST",
-            "filter": ["match", ["get", "StateName"], "California", True, False],
-            "type": "fill",
-            "paint": {
-                "fill-color": justice40_fill,
-            }
-        }
-    ]
-}
-fire_style = {"version": 8,
-    "sources": {
-        "source1": {
-            "type": "vector",
-            "url": "pmtiles://" + url_calfire,
-            "attribution": "CAL FIRE"
-        }
-    },
-    "layers": [
-        {
-            "id": "fire",
-            "source": "source1",
-            "source-layer": 'calfire2023',
-            "filter": [">=", ["get", "YEAR_"], 2013],
-
-            "type": "fill",
-            "paint": {
-                "fill-color": "#D22B2B",
-            }
-        }
-    ]
-}
-rx_style = {
-    "version": 8,
-    "sources": {
-        "source2": {
-            "type": "vector",
-            "url": "pmtiles://" + url_rxburn,
-            "attribution": "CAL FIRE"
-        }
-    },
-    "layers": [
-        {
-            "id": "rxburn",
-            "source": "source2",
-            "source-layer": 'calfirerxburn2023',
-            "filter": [">=", ["get", "YEAR_"], 2013],
-            "type": "fill",
-            "paint": {
-                "fill-color": "#702963",
-            }
-        }
-    ]
-}
-
-
-svi_style = {
-        "layers": [
-            {
-                "id": "svi",
-                "source": "svi",
-                "source-layer": "svi",
-                "filter": ["match", ["get", "ST_ABBR"], "CA", True, False],
-                "type": "fill",
-                "paint": {
-                    "fill-color": [
-                        "interpolate", ["linear"], ["get", "RPL_THEMES"],
-                        0, white,
-                        1, svi_color
-                    ]
-                }
-            }
-        ]
-    }
-
-
-    
 
 select_column = {
     "30x30 Status":  "status",
     "GAP Code": "gap_code",
-    "Year": "established",
     "Ecoregion":  "ecoregion",
+    "Climate Zone":  "climate_zone",
+    "Habitat Type":  "habitat_type",
+    "Resilient & Connected Network": "resilient_connected_network",
     "Manager Type": "manager_type",
     "Easement": "easement",
-    "Access Type": "access_type"
+    # "Year": "established",
+    "Access Type": "access_type",
+}
+from langchain_openai import ChatOpenAI
+import streamlit as st
+
+from langchain_openai.chat_models.base import BaseChatOpenAI
+
+
+llm_options = {
+    "llama3": ChatOpenAI(model = "llama3-sdsc", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0),
+    "gemma3": ChatOpenAI(model = "gemma3", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0),
+    # "DeepSeek-R1-Distill-Qwen-32B": BaseChatOpenAI(model = "DeepSeek-R1-Distill-Qwen-32B", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0),
+    "watt": ChatOpenAI(model = "watt", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0),
+    "llama-3.3": ChatOpenAI(model = "groq-tools", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0),
+    "phi3": ChatOpenAI(model = "phi3", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0),
 
 }
 

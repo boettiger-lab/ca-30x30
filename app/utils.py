@@ -11,7 +11,7 @@ from shapely import wkb
 from typing import Optional
 from functools import reduce
 from itertools import chain
-
+import re
 from variables import *
 
 
@@ -89,22 +89,35 @@ def get_summary(ca, combined_filter, column, main_group, colors = None):
     """
     Computes summary statistics for the filtered dataset.
     """
-    df = ca.filter(combined_filter)
-
+    df = ca.filter(combined_filter)    
     #total acres for each group 
     group_totals = df.group_by(main_group).aggregate(total_acres=_.acres.sum())
     df = (df.group_by(*column)
           .aggregate(percent_CA=(_.acres.sum() / ca_area_acres),
                      acres=_.acres.sum(),
-                     mean_richness=(_.richness * _.acres).sum() / _.acres.sum(),
-                     mean_rsr=(_.rsr * _.acres).sum() / _.acres.sum(),
-                     mean_irrecoverable_carbon=(_.irrecoverable_carbon * _.acres).sum() / _.acres.sum(),
-                     mean_manageable_carbon=(_.manageable_carbon * _.acres).sum() / _.acres.sum(),
-                     mean_fire=(_.fire * _.acres).sum()/_.acres.sum(),
-                     mean_rxburn=(_.rxburn * _.acres).sum()/_.acres.sum(),
-                     mean_disadvantaged=(_.disadvantaged_communities * _.acres).sum() / _.acres.sum(),
-                     mean_svi=(_.svi * _.acres).sum() / _.acres.sum())
-          .mutate(percent_CA=_.percent_CA.round(5), acres=_.acres.round(0)))
+                     percent_amph_richness =(_.ACE_amphibian_richness * _.acres).sum() / _.acres.sum(),
+                     percent_reptile_richness=(_.ACE_reptile_richness * _.acres).sum() / _.acres.sum(),
+                     percent_bird_richness=(_.ACE_bird_richness * _.acres).sum() / _.acres.sum(),
+                     percent_mammal_richness=(_.ACE_mammal_richness * _.acres).sum() / _.acres.sum(),
+                     percent_rare_amph_richness =(_.ACE_rare_amphibian_richness * _.acres).sum() / _.acres.sum(),
+                     percent_rare_reptile_richness=(_.ACE_rare_reptile_richness * _.acres).sum() / _.acres.sum(),
+                     percent_rare_bird_richness=(_.ACE_rare_bird_richness * _.acres).sum() / _.acres.sum(),
+                     percent_rare_mammal_richness=(_.ACE_rare_mammal_richness * _.acres).sum() / _.acres.sum(),
+                     percent_end_amph_richness =(_.ACE_endemic_amphibian_richness * _.acres).sum() / _.acres.sum(),
+                     percent_end_reptile_richness=(_.ACE_endemic_reptile_richness * _.acres).sum() / _.acres.sum(),
+                     percent_end_bird_richness=(_.ACE_endemic_bird_richness * _.acres).sum() / _.acres.sum(),
+                     percent_end_mammal_richness=(_.ACE_endemic_mammal_richness * _.acres).sum() / _.acres.sum(),
+                     percent_plant_richness=(_.plant_richness * _.acres).sum()/_.acres.sum(),
+                     percent_rarityweight_endemic_plant_richness=(_.rarityweighted_endemic_plant_richness * _.acres).sum()/_.acres.sum(),
+                     percent_wetlands=(_.wetlands * _.acres).sum()/_.acres.sum(),
+                     percent_fire=(_.fire * _.acres).sum() / _.acres.sum(),
+                     percent_farmland=(_.farmland * _.acres).sum() / _.acres.sum(),
+                     percent_grazing=(_.grazing * _.acres).sum() / _.acres.sum(),
+                     percent_disadvantaged=(_.DAC * _.acres).sum() / _.acres.sum(),
+                     percent_low_income=(_.low_income * _.acres).sum() / _.acres.sum()
+                    )
+          .mutate(percent_CA=_.percent_CA.round(5), acres=_.acres.round(0))
+         )
     df = df.inner_join(group_totals, main_group).mutate(percent_group=( _.acres / _.total_acres).round(3))
     if colors is not None and not colors.empty:
         df = df.inner_join(colors, column[-1])
@@ -162,7 +175,7 @@ def get_pmtiles_style(paint, alpha, filter_cols, filter_vals):
     
     if "non-conserved" in chain.from_iterable(filter_vals):
         combined_filters = ["any", combined_filters, ["match", ["get", "status"], ["non-conserved"], True, False]]
-    
+    source_layer_name = re.sub(r'\W+', '', os.path.splitext(os.path.basename(ca_pmtiles))[0]) #stripping hyphens to get layer name 
     return {
         "version": 8,
         "sources": {"ca": {"type": "vector", "url": f"pmtiles://{ca_pmtiles}"}},
@@ -170,18 +183,33 @@ def get_pmtiles_style(paint, alpha, filter_cols, filter_vals):
             {
                 "id": "ca30x30",
                 "source": "ca",
-                "source-layer": "ca30x30",
+                # "source-layer": "ca30x30",
+                "source-layer": source_layer_name,
                 "type": "fill",
                 "filter": combined_filters,
                 "paint": {"fill-color": paint, "fill-opacity": alpha},
             }
         ],
     }
-
+    
+def get_url(folder, file, base_folder = 'CBN'):
+    """
+    Get url for minio hosted data
+    """
+    minio = 'https://minio.carlboettiger.info/'
+    bucket = 'public-ca30x30'
+    if base_folder is None:
+        path = os.path.join(bucket,folder,file)
+    else:
+        path = os.path.join(bucket,base_folder,folder,file)
+    url = minio+path
+    return url
+    
 def get_pmtiles_style_llm(paint, ids):
     """
     Generates a MapLibre GL style for PMTiles using specific IDs as filters.
     """
+    source_layer_name = re.sub(r'\W+', '', os.path.splitext(os.path.basename(ca_pmtiles))[0]) #stripping hyphens to get layer name 
     return {
         "version": 8,
         "sources": {"ca": {"type": "vector", "url": f"pmtiles://{ca_pmtiles}"}},
@@ -189,7 +217,8 @@ def get_pmtiles_style_llm(paint, ids):
             {
                 "id": "ca30x30",
                 "source": "ca",
-                "source-layer": "ca30x30",
+                # "source-layer": "ca30x30",
+                 "source-layer": source_layer_name,
                 "type": "fill",
                 "filter": ["in", ["get", "id"], ["literal", ids]],
                 # "filter": ["all", ["match", ["get", "id"], ids, True, False]],
@@ -197,6 +226,24 @@ def get_pmtiles_style_llm(paint, ids):
             }
         ],
     }    
+
+def get_pmtiles_layer(layer,url):
+    """
+    Generates a MapLibre GL style for PMTiles file
+    """
+    return {
+        "version": 8,
+        "sources": {"ca": {"type": "vector", "url": f"pmtiles://{url}"}},
+        "layers": [
+            {
+                "id": layer,
+                "source": "ca",
+                "source-layer": layer,
+                "type": "fill",
+                "paint": {"fill-color": "#702963"},
+            }
+        ],
+    }
 
 def get_legend(style_options, color_choice):
     """
@@ -249,7 +296,7 @@ def stacked_bar(df, x, y, color, title, colors):
     return create_bar_chart(df, x, y, title, color=color, stacked=True, colors=colors)
 
 
-def get_chart_settings(x, stacked):
+def get_chart_settings(x, y, stacked):
     """
     Returns sorting, axis settings, and y-axis title mappings.
     """
@@ -267,20 +314,52 @@ def get_chart_settings(x, stacked):
                       'Southern Cascades', 'Modoc Plateau', 'Great Valley (North)',
                       'NorCal Interior Coast Ranges', 'Great Valley (South)']
     }
-
     y_titles = {
-        "ecoregion": "Ecoregion (%)", "established": "Year (%)",
-        "manager_type": "Manager Type (%)", "easement": "Easement (%)",
-        "access_type": "Access (%)", "mean_richness": "Richness (Mean)",
-        "mean_rsr": "Range-Size Rarity (Mean)", "mean_irrecoverable_carbon": "Irrecoverable Carbon (Mean)",
-        "mean_manageable_carbon": "Manageable Carbon (Mean)", "mean_disadvantaged": "Disadvantaged (Mean)",
-        "mean_svi": "SVI (Mean)", "mean_fire": "Fire (Mean)", "mean_rxburn": "Rx Fire (Mean)"
+            "ecoregion": "Ecoregion (%)", "established": "Year (%)",
+            "manager_type": "Manager Type (%)", "easement": "Easement (%)",
+            "access_type": "Access (%)", "climate_zone": "Climate Zone (%)",
+            "habitat_type": "Habitat Type (%)", "resilient_connected_network": "Resilient & Connected Network (%)",
+        
+            # "percent_amph_richness":"Amphibian Richness (%)", "percent_reptile_richness":"Reptile Richness (%)",
+            # "percent_bird_richness":"Bird Richness (%)", "percent_mammal_richness":"Mammal Richness (%)",
+        
+            # "percent_rare_amph_richness":"Rare Amphibian Richness (%)", "percent_rare_reptile_richness":"Rare Reptile Richness (%)",
+            # "percent_rare_bird_richness":"Rare Bird Richness (%)", "percent_rare_mammal_richness":"Rare Mammal Richness (%)",
+        
+            # "percent_end_amph_richness":"Endemic Amphibian Richness (%)", "percent_end_reptile_richness":"Endemic Reptile Richness (%)",
+            # "percent_end_bird_richness":"Endemic Bird Richness (%)", "percent_end_mammal_richness":"Endemic Mammal Richness (%)",
+            
+            # "percent_plant_richness":"Plant Richness (%)",
+            # "percent_rarityweight_endemic_plant_richness":"Rarity-Weighted Endemic Plant Richness (%)",
+            "percent_amph_richness":"Richness (%)", "percent_reptile_richness":"Richness (%)",
+            "percent_bird_richness":"Richness (%)", "percent_mammal_richness":"Richness (%)",
+        
+            "percent_rare_amph_richness":"Richness (%)", "percent_rare_reptile_richness":"Richness (%)",
+            "percent_rare_bird_richness":"Richness (%)", "percent_rare_mammal_richness":"Richness (%)",
+        
+            "percent_end_amph_richness":"Richness (%)", "percent_end_reptile_richness":"Richness (%)",
+            "percent_end_bird_richness":"Richness (%)", "percent_end_mammal_richness":"Richness (%)",
+            
+            "percent_plant_richness":"Richness (%)",
+            "percent_rarityweight_endemic_plant_richness":"Richness (%)",
+        
+            "percent_wetlands":"Wetlands (%)",
+            "percent_farmland":"Farmland (%)",
+            "percent_grazing":"Grazing Land (%)",
+            "percent_disadvantaged":"Disadvantaged Communities (%)",
+            "percent_low_income":"Low-Income Communities (%)",
+            "percent_fire": "Fire (%)",
+
     }
+    if stacked:
+        y_titles = y_titles.get(x,x)
+    else: 
+        y_titles = y_titles.get(y,y)
 
-    angle = 270 if x in ["manager_type", "ecoregion"] else 0
-    height = 250 if stacked else 400 if x == "ecoregion" else 350 if x == "manager_type" else 300
+    angle = 270 if x in ["manager_type", "ecoregion", "status", "habitat_type", "resilient_connected_network"] else 0
+    height = 470 if y == "percent_rarityweight_endemic_plant_richness" else 250 if stacked else 400 if x == "ecoregion" else 350 if x == "manager_type" else 300
 
-    return sort_options.get(x, "x"), angle, height, y_titles.get(x, x)
+    return sort_options.get(x, "x"), angle, height, y_titles
 
     
 def get_label_transform(x, label=None):
@@ -326,7 +405,7 @@ def create_bar_chart(df, x, y, title, color=None, stacked=False, colors=None):
     Generalized function to create a bar chart, supporting both standard and stacked bars.
     """
     # helper functions 
-    sort, angle, height, y_title = get_chart_settings(x,stacked)
+    sort, angle, height, y_title = get_chart_settings(x, y, stacked)
     label_transform = get_label_transform(x)
 
     # create base chart 
@@ -393,7 +472,7 @@ def create_bar_chart(df, x, y, title, color=None, stacked=False, colors=None):
 
     # customize chart
     final_chart = final_chart.properties(
-        title=title
+        title=title.split("\n") if "\n" in title else title
     ).configure_legend(
         symbolStrokeWidth=0.1, direction="horizontal", orient="top",
         columns=2, title=None, labelOffset=2, offset=5,
