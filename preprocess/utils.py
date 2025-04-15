@@ -193,15 +193,18 @@ def filter_raster(s3, folder, file, percentile):
     masked_data = np.ma.masked_equal(data, src.nodata)
 
     # compute percentile/threshold 
-    p = np.percentile(masked_data.compressed(),percentile)
-    filtered = np.where(data >= p, data, src.nodata)
+    p = np.percentile(masked_data.compressed(), percentile)
+    filtered = np.full_like(data, src.nodata)
+    filtered[(masked_data >= p).filled(False)] = masked_data[(masked_data >= p).filled(False)]
+
     name, ext = os.path.splitext(file)
     new_file = f"{name}{'_'}{percentile}{'percentile'}{ext}"
 
-    profile.update(dtype=rasterio.float64)
+    profile.update(dtype=rasterio.float64, nodata=src.nodata)
+
     with rasterio.open(new_file, "w", **profile) as dst:
         dst.write(filtered, 1)
-    process_raster(s3, folder, file)
+    process_raster(s3, folder, new_file)
     # return cols
     return
 
