@@ -249,7 +249,7 @@ def stacked_bar(df, x, y, color, title, colors):
     return create_bar_chart(df, x, y, title, color=color, stacked=True, colors=colors)
 
 
-def get_chart_settings(x, stacked):
+def get_chart_settings(x, y, stacked):
     """
     Returns sorting, axis settings, and y-axis title mappings.
     """
@@ -276,11 +276,15 @@ def get_chart_settings(x, stacked):
         "mean_manageable_carbon": "Manageable Carbon (Mean)", "mean_disadvantaged": "Disadvantaged (Mean)",
         "mean_svi": "SVI (Mean)", "mean_fire": "Fire (Mean)", "mean_rxburn": "Rx Fire (Mean)"
     }
+    if stacked:
+        y_titles = y_titles.get(x,x)
+    else: 
+        y_titles = y_titles.get(y,y)
 
     angle = 270 if x in ["manager_type", "ecoregion"] else 0
     height = 250 if stacked else 400 if x == "ecoregion" else 350 if x == "manager_type" else 300
 
-    return sort_options.get(x, "x"), angle, height, y_titles.get(x, x)
+    return sort_options.get(x, "x"), angle, height, y_titles
 
     
 def get_label_transform(x, label=None):
@@ -326,7 +330,7 @@ def create_bar_chart(df, x, y, title, color=None, stacked=False, colors=None):
     Generalized function to create a bar chart, supporting both standard and stacked bars.
     """
     # helper functions 
-    sort, angle, height, y_title = get_chart_settings(x,stacked)
+    sort, angle, height, y_title = get_chart_settings(x, y, stacked)
     label_transform = get_label_transform(x)
 
     # create base chart 
