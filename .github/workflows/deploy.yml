@@ -17,4 +17,6 @@ jobs:
       - name: Push to hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: git push https://cboettig:$HF_TOKEN@huggingface.co/spaces/boettiger-lab/ca-30x30 main
+        run:  git remote add deploy https://cboettig:$HF_TOKEN@huggingface.co/spaces/boettiger-lab/ca-30x30
+              git push -f --set-upstream deploy HEAD:main
+              git remote rm deploy
