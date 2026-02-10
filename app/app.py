@@ -129,9 +129,10 @@ m = leafmap.Map(style="positron")
 #############
 
 
+
 chatbot_container = st.container()
 with chatbot_container:
-    llm_left_col, llm_right_col = st.columns([5,1], vertical_alignment = "bottom")
+    llm_left_col, llm_right_col = st.columns([2.5,1], vertical_alignment = "bottom")
     with llm_left_col:
 
         with st.popover("💬 Example Queries"):
@@ -156,7 +157,6 @@ with chatbot_container:
             '''
             
             st.info('If the map appears blank, queried data may be too small to see at the default zoom level. Check the table below the map, as query results will also be displayed there.', icon="ℹ️")
-
 
     with llm_right_col:
         llm_choice = st.selectbox("Select LLM:", llm_options, key = "llm", help = "Select which model to use.")   
@@ -206,7 +206,7 @@ def run_sql(query,color_choice):
     explanation =output.explanation
     if not sql_query: # if the chatbot can't generate a SQL query.
         st.success(explanation)
-        return pd.DataFrame({'id' : []})
+        return pd.DataFrame({'id' : []}), [], []
         
     result = ca.sql(sql_query).execute()
     if result.empty :
@@ -215,9 +215,9 @@ def run_sql(query,color_choice):
         st.caption("SQL Query:")
         st.code(sql_query,language = "sql") 
         if 'geom' in result.columns:
-            return result.drop('geom',axis = 1)
+            return result.drop('geom',axis = 1),  sql_query, explanation
         else: 
-            return result
+            return result, sql_query, explanation
     
     elif ("id" and "geom" in result.columns): 
         style = get_pmtiles_style_llm(style_options[color_choice], result["id"].tolist())
@@ -235,7 +235,7 @@ def run_sql(query,color_choice):
         st.caption("SQL Query:")
         st.code(sql_query,language = "sql") 
         
-    return result
+    return result, sql_query, explanation
 
 
 
@@ -266,7 +266,12 @@ with chatbot_container:
         example_query = "👋 Input query here"
         prompt = st.chat_input(example_query, key="chain", max_chars=300)
 
+with chatbot_container:      
+        _,log_query_col, _ = st.columns([.001, 5,1], vertical_alignment = "top")
+        with log_query_col:
+            log_queries = st.checkbox("Save query", value = True, help = "Saving your queries helps improve this tool and guide conservation efforts. Your data is stored in a private location. For more details, see 'Why save your queries?' at the bottom of this page.")
 
+    
 with st.container():
     if prompt: 
         st.chat_message("user").write(prompt)
@@ -274,7 +279,9 @@ with st.container():
             with st.chat_message("assistant"):
                 with st.spinner("Invoking query..."):
 
-                    out = run_sql(prompt,color_choice)
+                    out, sql_query, llm_explanation = run_sql(prompt,color_choice)
+                    minio_logger(log_queries, prompt, sql_query, llm_explanation, llm_choice, 'query_log_prototype.csv', "shared-ca30x30-app")
+                    
                     if ("id" in out.columns) and (not out.empty):
                         ids = out['id'].tolist()
                         cols = out.columns.tolist()

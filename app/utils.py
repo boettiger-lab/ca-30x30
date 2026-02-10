@@ -11,6 +11,8 @@ from shapely import wkb
 from typing import Optional
 from functools import reduce
 from itertools import chain
+import minio
+import datetime
 
 from variables import *
 
@@ -407,3 +409,28 @@ def create_bar_chart(df, x, y, title, color=None, stacked=False, colors=None):
     )
 
     return final_chart
+
+minio_key = os.getenv("MINIO_KEY")
+if minio_key is None:
+    minio_key = st.secrets["MINIO_KEY"]
+
+minio_secret = os.getenv("MINIO_SECRET")
+if minio_secret is None:
+    minio_secret = st.secrets["MINIO_SECRET"]
+
+def minio_logger(consent, query, sql_query, llm_explanation, llm_choice, filename, bucket,
+                 key=minio_key, secret=minio_secret,
+                 endpoint="minio.carlboettiger.info"):
+    mc = minio.Minio(endpoint, key, secret)
+    mc.fget_object(bucket, filename, filename)
+    log = pd.read_csv(filename)
+    timestamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+    if consent:
+        df = pd.DataFrame({"timestamp": [timestamp], "user_query": [query], "llm_sql": [sql_query], "llm_explanation": [llm_explanation], "llm_choice":[llm_choice]})
+
+    # if user opted out, do not store query
+    else:  
+        df = pd.DataFrame({"timestamp": [timestamp], "user_query": ['USER OPTED OUT'], "llm_sql": [''], "llm_explanation": [''], "llm_choice":['']})
+    
+    pd.concat([log,df]).to_csv(filename, index=False, header=True)
+    mc.fput_object(bucket, filename, filename, content_type="text/csv")

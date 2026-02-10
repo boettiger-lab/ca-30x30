@@ -293,13 +293,53 @@ select_column = {
 
 from langchain_openai import ChatOpenAI
 import streamlit as st
-# from langchain_openai.chat_models.base import BaseChatOpenAI
+from langchain_openai.chat_models.base import BaseChatOpenAI
+
+## dockerized streamlit app wants to read from os.getenv(), otherwise use st.secrets
+import os
+api_key = os.getenv("NRP_API_KEY")
+if api_key is None:
+    api_key = st.secrets["NRP_API_KEY"]
+
+openrouter_api = os.getenv("OPENROUTER_API_KEY")
+if openrouter_api is None:
+    openrouter_api = st.secrets["OPENROUTER_API_KEY"]
+
+openrouter_endpoint="https://openrouter.ai/api/v1"
+nrp_endpoint="https://ellm.nrp-nautilus.io/v1"
+
+# don't use a provider that collects data
+data_policy = {
+    "provider": {
+        "data_collection": "deny"
+    }
+}
 
 llm_options = {
-    # "llama-3.3-quantized": ChatOpenAI(model = "cirrus", api_key=st.secrets['CIRRUS_LLM_API_KEY'], base_url = "https://llm.cirrus.carlboettiger.info/v1",  temperature=0),
-    "llama3.3": ChatOpenAI(model = "llama3-sdsc", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0),
-    "gemma3": ChatOpenAI(model = "gemma3", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0),
-    # "DeepSeek-R1-Distill-Qwen-32B": BaseChatOpenAI(model = "DeepSeek-R1-Distill-Qwen-32B", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0),
-    "watt": ChatOpenAI(model = "watt", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0),
-    # "phi3": ChatOpenAI(model = "phi3", api_key=st.secrets['NRP_API_KEY'], base_url = "https://llm.nrp-nautilus.io/",  temperature=0),
+    "gemma-3-27b-it": ChatOpenAI(
+        model="gemma3",
+        api_key=api_key,
+        base_url=nrp_endpoint,
+        temperature=0
+    ),
+    "gpt-oss-120b": ChatOpenAI(
+        model="gpt-oss",
+        api_key=api_key,
+        base_url=nrp_endpoint,
+        temperature=0
+    ),
+    "trinity-mini": ChatOpenAI(
+        model="arcee-ai/trinity-mini:free",
+        api_key=openrouter_api,
+        base_url=openrouter_endpoint,
+        temperature=0,
+        extra_body=data_policy
+    ),
+    "nemotron-nano-9b-v2": ChatOpenAI(
+        model="nvidia/nemotron-nano-9b-v2:free",
+        api_key=openrouter_api,
+        base_url=openrouter_endpoint,
+        temperature=0,
+        extra_body=data_policy
+    ),
 }
