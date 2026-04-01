@@ -124,6 +124,11 @@ st.markdown('<p class = "medium-font"> This is an interactive cloud-native geosp
 
 st.divider()
 
+# initialize map
+leafmap = importlib.import_module("leafmap.maplibregl")
+m = leafmap.Map(center=(-120, 36), style="positron", zoom=5,
+                controls=controls, attribution_control=False, use_message_queue=True)
+
 #############
 
 chatbot_container = st.container()
@@ -376,11 +381,6 @@ if 'out' not in locals():
     style = get_pmtiles_style(style_options[color_choice], alpha, filter_cols, filter_vals)
 
 legend, position, bg_color, fontsize, shape_type, controls = get_legend(style_options, color_choice, df, column)
-
-# initialize map
-leafmap = importlib.import_module("leafmap.maplibregl")
-m = leafmap.Map(center=(-120, 36), style="positron", zoom=5,
-                controls=controls, attribution_control=False, use_message_queue=True)
 
 # add tile/cog/pmtiles layers
 if show_richness:
