@@ -75,7 +75,7 @@ def color_table(select_colors, color_choice, column):
     """
     Converts selected color mapping into a DataFrame.
     """
-    return ibis.memtable(select_colors[color_choice], columns=[column, "color"]).to_pandas()
+    return ibis.memtable(select_colors[color_choice], columns=[column, "color"])
 
 def get_color_vals(style_options, style_choice):
     """
@@ -108,7 +108,7 @@ def get_summary(ca, combined_filter, column, main_group, colors = None):
                      mean_svi=(_.svi * _.acres).sum() / _.acres.sum())
           .mutate(percent_CA=_.percent_CA.round(5), acres=_.acres.round(0)))
     df = df.inner_join(group_totals, main_group).mutate(percent_group=( _.acres / _.total_acres).round(3))
-    if colors is not None and not colors.empty:
+    if colors is not None:
         df = df.inner_join(colors, column[-1])
     return df.cast({col: "string" for col in column}).execute()
 
@@ -200,15 +200,19 @@ def get_pmtiles_style_llm(paint, ids):
         ],
     }    
 
-def get_legend(style_options, color_choice):
+def get_legend(style_options, color_choice, df = None, column = None):
     """
     Generates a legend dictionary with color mapping and formatting adjustments.
     """
     legend = {cat: color for cat, color in style_options[color_choice]['stops']}
-    position, fontsize, bg_color = 'bottom-left', 15, 'white'
-    
-    # shorten legend for ecoregions 
-    if color_choice == "Ecoregion":
+    if df is not None:
+        if ~df.empty:
+            categories = df[column].to_list() #if we filter out categories, don't show them on the legend 
+            legend = {cat: color for cat, color in legend.items() if str(cat) in categories}
+    fontsize = 15
+
+    # shorten ecoregion legend labels + move around widgets to make room for legend 
+    if color_choice in "Ecoregion":
         legend = {key.replace("Northern California", "NorCal"): value for key, value in legend.items()} 
         legend = {key.replace("Southern California", "SoCal"): value for key, value in legend.items()} 
         legend = {key.replace("Southeastern", "SE."): value for key, value in legend.items()} 
@@ -217,7 +221,7 @@ def get_legend(style_options, color_choice):
         legend = {key.replace("Northwestern", "NW."): value for key, value in legend.items()} 
         bg_color = 'rgba(255, 255, 255, 0.6)'
         fontsize = 12
-    return legend, position, bg_color, fontsize
+    return legend, fontsize
 
 
 
