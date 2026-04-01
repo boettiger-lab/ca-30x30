@@ -200,7 +200,7 @@ def get_pmtiles_style_llm(paint, ids):
         ],
     }    
 
-def get_legend(style_options, color_choice, leafmap_backend, df = None, column = None):
+def get_legend(style_options, color_choice, df = None, column = None):
     """
     Generates a legend dictionary with color mapping and formatting adjustments.
     """
