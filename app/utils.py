@@ -75,7 +75,7 @@ def color_table(select_colors, color_choice, column):
     """
     Converts selected color mapping into a DataFrame.
     """
-    return ibis.memtable(select_colors[color_choice], columns=[column, "color"]).to_pandas()
+    return ibis.memtable(select_colors[color_choice], columns=[column, "color"])
 
 def get_color_vals(style_options, style_choice):
     """
@@ -108,7 +108,7 @@ def get_summary(ca, combined_filter, column, main_group, colors = None):
                      mean_svi=(_.svi * _.acres).sum() / _.acres.sum())
           .mutate(percent_CA=_.percent_CA.round(5), acres=_.acres.round(0)))
     df = df.inner_join(group_totals, main_group).mutate(percent_group=( _.acres / _.total_acres).round(3))
-    if colors is not None and not colors.empty:
+    if colors is not None:
         df = df.inner_join(colors, column[-1])
     return df.cast({col: "string" for col in column}).execute()
 
