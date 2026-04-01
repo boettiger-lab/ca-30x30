@@ -200,15 +200,22 @@ def get_pmtiles_style_llm(paint, ids):
         ],
     }    
 
-def get_legend(style_options, color_choice):
+def get_legend(style_options, color_choice, leafmap_backend, df = None, column = None):
     """
     Generates a legend dictionary with color mapping and formatting adjustments.
     """
     legend = {cat: color for cat, color in style_options[color_choice]['stops']}
-    position, fontsize, bg_color = 'bottom-left', 15, 'white'
-    
-    # shorten legend for ecoregions 
-    if color_choice == "Ecoregion":
+    if df is not None:
+        if ~df.empty:
+            categories = df[column].to_list() #if we filter out categories, don't show them on the legend 
+            legend = {cat: color for cat, color in legend.items() if str(cat) in categories}
+    position, fontsize, bg_color = 'top-right', 15, 'white'
+    controls={'navigation': 'bottom-left', 
+              'fullscreen':'bottom-left'}
+    shape_type = 'circle'
+
+    # shorten ecoregion legend labels + move around widgets to make room for legend 
+    if color_choice in "Ecoregion":
         legend = {key.replace("Northern California", "NorCal"): value for key, value in legend.items()} 
         legend = {key.replace("Southern California", "SoCal"): value for key, value in legend.items()} 
         legend = {key.replace("Southeastern", "SE."): value for key, value in legend.items()} 
@@ -217,7 +224,7 @@ def get_legend(style_options, color_choice):
         legend = {key.replace("Northwestern", "NW."): value for key, value in legend.items()} 
         bg_color = 'rgba(255, 255, 255, 0.6)'
         fontsize = 12
-    return legend, position, bg_color, fontsize
+    return legend, position, bg_color, fontsize, shape_type, controls 
 
 
 
