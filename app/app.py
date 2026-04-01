@@ -362,11 +362,8 @@ select_colors = {
     "Access Type": access["stops"],
 }
 
-colors = (
-    ibis
-    .memtable(select_colors[color_choice], columns=[column, "color"])
-    .to_pandas()
-)
+colors = color_table(select_colors, color_choice, column)
+
 
 # get summary tables used for charts + printed table 
 if 'out' not in locals():
