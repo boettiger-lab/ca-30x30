@@ -290,6 +290,10 @@ select_column = {
 
 }
 
+position, fontsize, bg_color = 'top-right', 15, 'white'
+controls={'navigation': 'bottom-left', 
+          'fullscreen':'bottom-left'}
+shape_type = 'circle'
 
 from langchain_openai import ChatOpenAI
 import streamlit as st

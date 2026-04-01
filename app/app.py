@@ -380,7 +380,7 @@ else:
 if 'out' not in locals():
     style = get_pmtiles_style(style_options[color_choice], alpha, filter_cols, filter_vals)
 
-legend, position, bg_color, fontsize, shape_type, controls = get_legend(style_options, color_choice, df, column)
+legend,fontsize = get_legend(style_options, color_choice, df, column)
 
 # add tile/cog/pmtiles layers
 if show_richness:

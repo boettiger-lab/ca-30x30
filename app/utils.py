@@ -209,10 +209,6 @@ def get_legend(style_options, color_choice, df = None, column = None):
         if ~df.empty:
             categories = df[column].to_list() #if we filter out categories, don't show them on the legend 
             legend = {cat: color for cat, color in legend.items() if str(cat) in categories}
-    position, fontsize, bg_color = 'top-right', 15, 'white'
-    controls={'navigation': 'bottom-left', 
-              'fullscreen':'bottom-left'}
-    shape_type = 'circle'
 
     # shorten ecoregion legend labels + move around widgets to make room for legend 
     if color_choice in "Ecoregion":
@@ -224,7 +220,7 @@ def get_legend(style_options, color_choice, df = None, column = None):
         legend = {key.replace("Northwestern", "NW."): value for key, value in legend.items()} 
         bg_color = 'rgba(255, 255, 255, 0.6)'
         fontsize = 12
-    return legend, position, bg_color, fontsize, shape_type, controls 
+    return legend, fontsize
 
 
 
