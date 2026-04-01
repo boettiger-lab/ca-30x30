@@ -16,3 +16,17 @@ Data: https://huggingface.co/datasets/boettiger-lab/ca-30x30
 - CDC 2022 Social Vulnerability Index by US Census Tract. Archived description: https://web.archive.org/web/20250126095916/https://www.atsdr.cdc.gov/place-health/php/svi/index.html. Data: https://source.coop/repositories/cboettig/social-vulnerability/description. License: Public Domain
 
 - Fire and Prescribed Fire by CAL FIRE (2023), reprocessed to PMTiles on https://beta.source.coop/cboettig/fire/. License: Public Domain
+
+
+#### LLMs
+This app can use a selection of open-weights language models hosted on the National Research Platform (https://nrp.ai/documentation/userdocs/ai/llm-managed/), and Open Router (https://openrouter.ai/models).
+
+---
+
+### Why save your queries?
+Conservation researchers and practitioners are interested in **learning what matters most to our community**. 
+
+By saving your anonymous queries, we can identify which topics and areas are drawing the most attention, helping us improve future tools and data products to **better support conservation efforts**. We also save the LLM’s response to each query to monitor its accuracy and ensure the system is working as intended. 
+
+You can opt out at any time by disabling “Save query”.
+
