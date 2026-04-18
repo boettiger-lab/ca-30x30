@@ -52,7 +52,7 @@ Ensure the response contains only this JSON object, with no additional text, for
 - "status": The conservation status. GAP 1 and 2 lands have the highest biodiversity protections and count towards the 30x30 goal, thus are "30x30-conserved". GAP 3 and 4 lands are grouped into "other-conserved", as their biodiversity protections are lower. Areas that aren't protected--that is, they're not GAP 1, 2, 3, or 4--are designed "non-conserved". 
 - "ecoregion": Ecoregions are areas with similar ecosystems and environmental resources. The ecoregions in this table are {ecoregions}. 
 
-Only use the following table:
+Only use the following table named `ca30x30table`. ALWAYS use this exact table name in the FROM clause:
 {table_info}.
 
 # Example Questions and How to Approach Them 
