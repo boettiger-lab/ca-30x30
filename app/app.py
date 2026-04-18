@@ -276,8 +276,9 @@ with st.container():
                 with st.spinner("Invoking query..."):
 
                     out, sql_query, llm_explanation = run_sql(prompt, color_choice)
-                    minio_logger(log_queries, prompt, sql_query, llm_explanation, llm_choice, 'query_log_prototype.csv', "shared-ca30x30-app")
-                    
+                    minio_logger(log_queries, prompt, sql_query, llm_explanation, llm_choice,
+                                 bucket="shared-ca30x30-app",
+                                 prefix="ca-30x30-logs/query_log_prototype")
                     if ("id" in out.columns) and (not out.empty):
                         ids = out['id'].tolist()
                         cols = out.columns.tolist()

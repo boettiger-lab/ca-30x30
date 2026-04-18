@@ -12,6 +12,9 @@ from typing import Optional
 from functools import reduce
 from itertools import chain
 import minio
+from minio.error import S3Error
+import logging
+import io
 import datetime
 
 from variables import *
@@ -422,19 +425,57 @@ minio_secret = os.getenv("MINIO_SECRET")
 if minio_secret is None:
     minio_secret = st.secrets["MINIO_SECRET"]
 
-def minio_logger(consent, query, sql_query, llm_explanation, llm_choice, filename, bucket,
-                 key=minio_key, secret=minio_secret,
-                 endpoint="minio.carlboettiger.info"):
-    mc = minio.Minio(endpoint, key, secret)
-    mc.fget_object(bucket, filename, filename)
-    log = pd.read_csv(filename)
-    timestamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
-    if consent:
-        df = pd.DataFrame({"timestamp": [timestamp], "user_query": [query], "llm_sql": [sql_query], "llm_explanation": [llm_explanation], "llm_choice":[llm_choice]})
+log = logging.getLogger(__name__)
 
-    # if user opted out, do not store query
-    else:  
-        df = pd.DataFrame({"timestamp": [timestamp], "user_query": ['USER OPTED OUT'], "llm_sql": [''], "llm_explanation": [''], "llm_choice":['']})
-    
-    pd.concat([log,df]).to_csv(filename, index=False, header=True)
-    mc.fput_object(bucket, filename, filename, content_type="text/csv")
+# Module-level client — reused across calls instead of reconnecting every time
+_mc = minio.Minio("minio.carlboettiger.info", minio_key, minio_secret)
+
+def minio_logger(consent, query, sql_query, llm_explanation, llm_choice,
+                 bucket, prefix="ca-30x30-logs/query_log_prototype"):
+    """
+    Append a single log entry to object storage as its own object.
+    Each call writes one small CSV object under `prefix/`. No read-modify-write,
+    no shared file, no race conditions. To read the full log, list and
+    concatenate all objects under the prefix (see `read_log` below).
+    """
+    timestamp_dt = datetime.datetime.now(datetime.timezone.utc)
+    timestamp = timestamp_dt.strftime("%Y-%m-%d %H:%M:%S")
+    if consent:
+        row = {
+            "timestamp": timestamp,
+            "user_query": query,
+            "llm_sql": sql_query,
+            "llm_explanation": llm_explanation,
+            "llm_choice": llm_choice,
+        }
+    else:
+        row = {
+            "timestamp": timestamp,
+            "user_query": "USER OPTED OUT",
+            "llm_sql": "",
+            "llm_explanation": "",
+            "llm_choice": "",
+        }
+    # Serialize to CSV in memory — no local file, no collisions between
+    # concurrent Streamlit sessions
+    df = pd.DataFrame([row])
+    buf = io.BytesIO()
+    df.to_csv(buf, index=False, header=True)
+    data = buf.getvalue()
+    # Object key includes timestamp (sortable) and uuid (collision-proof)
+    # Sub-prefixing by date keeps listings fast once you have many entries
+    date_prefix = timestamp_dt.strftime("%Y/%m/%d")
+    object_name = f"{prefix}/{date_prefix}/{timestamp_dt.strftime('%H%M%S')}-{uuid.uuid4()}.csv"
+    try:
+        _mc.put_object(
+            bucket,
+            object_name,
+            io.BytesIO(data),
+            length=len(data),
+            content_type="text/csv",
+        )
+    except S3Error as e:
+        # Log but don't crash the user's session over a logging failure
+        log.exception("Failed to write log entry to %s/%s: %s", bucket, object_name, e)
+        return None
+    return object_name
