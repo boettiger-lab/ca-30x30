@@ -320,11 +320,32 @@ data_policy = {
 }
 
 llm_options = {
-    "gemma-3-27b-it": ChatOpenAI(
-        model="gemma3",
+     "gemma-4-e4b-it": ChatOpenAI(
+        model="gemma-4-e4b",
         api_key=api_key,
         base_url=nrp_endpoint,
-        temperature=0
+        temperature=0,
+        model_kwargs={
+            "extra_body": {"chat_template_kwargs": {"thinking": False}}
+        }
+    ),
+    "olmo-3.1-32b": ChatOpenAI(
+        model="olmo",
+        api_key=api_key,
+        base_url=nrp_endpoint,
+        temperature=0,
+        model_kwargs={
+            "extra_body": {"chat_template_kwargs": {"thinking": False}}
+        }
+    ),
+    "gemma-4-31b-it": ChatOpenAI(
+        model="gemma",
+        api_key=api_key,
+        base_url=nrp_endpoint,
+        temperature=0,
+        model_kwargs={
+            "extra_body": {"chat_template_kwargs": {"thinking": False}}
+        }
     ),
     "gpt-oss-120b": ChatOpenAI(
         model="gpt-oss",
@@ -332,18 +353,29 @@ llm_options = {
         base_url=nrp_endpoint,
         temperature=0
     ),
-    "trinity-mini": ChatOpenAI(
-        model="arcee-ai/trinity-mini:free",
+    "minimax-m2": ChatOpenAI(
+        model="minimax-m2",
+        api_key=api_key,
+        base_url=nrp_endpoint,
+        temperature=0,
+        model_kwargs={
+            "extra_body": {"chat_template_kwargs": {"thinking": False}}
+        }
+    ),
+    "kimi-k2.5": ChatOpenAI(
+        model="kimi",
+        api_key=api_key,
+        base_url=nrp_endpoint,
+        temperature=0,
+        model_kwargs={
+            "extra_body": {"chat_template_kwargs": {"thinking": False}}
+        }
+    ),
+     "dolphin-mistral-24b-venice-edition:free": ChatOpenAI(
+        model="cognitivecomputations/dolphin-mistral-24b-venice-edition:free",
         api_key=openrouter_api,
         base_url=openrouter_endpoint,
         temperature=0,
         extra_body=data_policy
-    ),
-    "nemotron-nano-9b-v2": ChatOpenAI(
-        model="nvidia/nemotron-nano-9b-v2:free",
-        api_key=openrouter_api,
-        base_url=openrouter_endpoint,
-        temperature=0,
-        extra_body=data_policy
-    ),
-}
+    ),   
+    }

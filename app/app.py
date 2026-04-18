@@ -22,11 +22,11 @@ from utils import *
 con = ibis.duckdb.connect("duck.db", extensions=["spatial"])
 current_tables = con.list_tables()
 
-if "mydata" not in set(current_tables):
+if "ca30x30table" not in set(current_tables):
     tbl = con.read_parquet(ca_parquet)
-    con.create_table("mydata", tbl)
+    con.create_table("ca30x30table", tbl)
 
-ca = con.table("mydata")
+ca = con.table("ca30x30table")
 
 # session state for syncing app 
 for key in [
@@ -175,9 +175,9 @@ with open('app/system_prompt.txt', 'r') as file:
 
 from langchain_openai import ChatOpenAI
 
-managers = ca.sql("SELECT DISTINCT manager FROM mydata;").execute()
-names = ca.sql("SELECT name FROM mydata GROUP BY name HAVING SUM(acres) >10000;").execute()
-ecoregions = ca.sql("SELECT DISTINCT ecoregion FROM mydata;").execute()
+managers = ca.sql("SELECT DISTINCT manager FROM ca30x30table;").execute()
+names = ca.sql("SELECT name FROM ca30x30table GROUP BY name HAVING SUM(acres) >10000;").execute()
+ecoregions = ca.sql("SELECT DISTINCT ecoregion FROM ca30x30table;").execute()
 
 from langchain_core.prompts import ChatPromptTemplate
 prompt = ChatPromptTemplate.from_messages([
@@ -276,8 +276,9 @@ with st.container():
                 with st.spinner("Invoking query..."):
 
                     out, sql_query, llm_explanation = run_sql(prompt, color_choice)
-                    minio_logger(log_queries, prompt, sql_query, llm_explanation, llm_choice, 'query_log_prototype.csv', "shared-ca30x30-app")
-                    
+                    minio_logger(log_queries, prompt, sql_query, llm_explanation, llm_choice,
+                                 bucket="shared-ca30x30-app",
+                                 prefix="ca-30x30-logs/query_log_prototype")
                     if ("id" in out.columns) and (not out.empty):
                         ids = out['id'].tolist()
                         cols = out.columns.tolist()
