@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: padus-ingress
+  name: ca-30x30-ingress
   namespace: biodiversity
   annotations:
     haproxy-ingress.github.io/cors-enable: "true"
@@ -16,15 +16,15 @@ spec:
   ingressClassName: haproxy
   tls:
     - hosts:
-        - padus.nrp-nautilus.io
+        - ca-30x30.nrp-nautilus.io
   rules:
-    - host: padus.nrp-nautilus.io
+    - host: ca-30x30.nrp-nautilus.io
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: padus
+                name: ca-30x30
                 port:
                   number: 80

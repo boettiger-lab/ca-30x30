@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: padus
+  name: ca-30x30
   namespace: biodiversity
   labels:
-    app: padus
+    app: ca-30x30
 spec:
   replicas: 1
   strategy:
@@ -14,11 +14,11 @@ spec:
       maxSurge: 1
   selector:
     matchLabels:
-      app: padus
+      app: ca-30x30
   template:
     metadata:
       labels:
-        app: padus
+        app: ca-30x30
     spec:
       initContainers:
       - name: git-clone
@@ -30,7 +30,7 @@ spec:
           # Clone YOUR app repo (the GitHub repo you created from the template).
           # Update this URL to point to your own GitHub repo:
           # Update this URL to point to your own GitHub repo:
-          git clone --depth 1 https://github.com/boettiger-lab/geo-agent-template.git /tmp/repo
+          git clone --depth 1 https://github.com/boettiger-lab/ca-30x30.git /tmp/repo
           cp /tmp/repo/index.html /usr/share/nginx/html/
           cp /tmp/repo/layers-input.json /usr/share/nginx/html/
           cp /tmp/repo/system-prompt.md /usr/share/nginx/html/
@@ -103,9 +103,9 @@ spec:
         emptyDir: {}
       - name: config-template
         configMap:
-          name: padus-config
+          name: ca-30x30-config
       - name: nginx-template
         configMap:
-          name: padus-nginx
+          name: ca-30x30-nginx
       - name: nginx-conf-d
         emptyDir: {}
