@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: padus
+  namespace: biodiversity
+  labels:
+    app: padus
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: padus
+  template:
+    metadata:
+      labels:
+        app: padus
+    spec:
+      initContainers:
+      - name: git-clone
+        image: alpine/git:2.52.0
+        command:
+        - sh
+        - -c
+        - |
+          # Clone YOUR app repo (the GitHub repo you created from the template).
+          # Update this URL to point to your own GitHub repo:
+          # Update this URL to point to your own GitHub repo:
+          git clone --depth 1 https://github.com/boettiger-lab/geo-agent-template.git /tmp/repo
+          cp /tmp/repo/index.html /usr/share/nginx/html/
+          cp /tmp/repo/layers-input.json /usr/share/nginx/html/
+          cp /tmp/repo/system-prompt.md /usr/share/nginx/html/
+        volumeMounts:
+        - name: website-content
+          mountPath: /usr/share/nginx/html
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        env:
+        - name: TMPDIR
+          value: "/tmp"
+        - name: MCP_SERVER_URL
+          value: "https://dev-duckdb-mcp.nrp-nautilus.io/mcp"
+        - name: LLM_ENDPOINT
+          value: "https://open-llm-proxy.nrp-nautilus.io/v1"
+        - name: PROXY_KEY
+          valueFrom:
+            secretKeyRef:
+              name: open-llm-proxy-secrets
+              key: proxy-key
+        command:
+        - sh
+        - -c
+        - |
+          apk add --no-cache gettext
+          # Client-side config: no secrets, only ${MCP_SERVER_URL}
+          envsubst '$${MCP_SERVER_URL}' < /config/config.template.json \
+            > /usr/share/nginx/html/config.json
+          # Server-side nginx config: substitutes ${PROXY_KEY} into the
+          # Authorization header used by the /api/llm/ reverse proxy.
+          # Limit envsubst to just ${PROXY_KEY} so nginx's own $uri /
+          # $remote_addr style variables are left alone.
+          envsubst '$${PROXY_KEY}' < /nginx-template/nginx.conf.template \
+            > /etc/nginx/conf.d/default.conf
+          nginx -g 'daemon off;'
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "256Mi"
+        volumeMounts:
+        - name: website-content
+          mountPath: /usr/share/nginx/html
+        - name: nginx-template
+          mountPath: /nginx-template
+          readOnly: true
+        - name: nginx-conf-d
+          mountPath: /etc/nginx/conf.d
+        - name: config-template
+          mountPath: /config
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+      volumes:
+      - name: website-content
+        emptyDir: {}
+      - name: config-template
+        configMap:
+          name: padus-config
+      - name: nginx-template
+        configMap:
+          name: padus-nginx
+      - name: nginx-conf-d
+        emptyDir: {}
