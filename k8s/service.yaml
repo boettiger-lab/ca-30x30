@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: padus
+  name: ca-30x30
   namespace: biodiversity
   labels:
-    app: padus
+    app: ca-30x30
 spec:
   type: ClusterIP
   selector:
-    app: padus
+    app: ca-30x30
   ports:
     - protocol: TCP
       port: 80
