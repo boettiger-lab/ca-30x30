@@ -154,7 +154,7 @@
                     "id": "terrestrial-biodiversity-summary-pmtiles",
                     "alias": "ace-biorank-sw",
                     "display_name": "BioRank (Statewide)",
-                    "group": "ACE Biodiversity Ranks",
+                    "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
                         "fill-color": [
@@ -170,7 +170,7 @@
                     "id": "terrestrial-biodiversity-summary-pmtiles",
                     "alias": "ace-biorank-eco",
                     "display_name": "BioRank (Ecoregion)",
-                    "group": "ACE Biodiversity Ranks",
+                    "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
                         "fill-color": [
@@ -186,7 +186,7 @@
                     "id": "terrestrial-biodiversity-summary-pmtiles",
                     "alias": "ace-rarerank-sw",
                     "display_name": "Rare Rank (Statewide)",
-                    "group": "ACE Biodiversity Ranks",
+                    "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
                         "fill-color": [
@@ -202,7 +202,7 @@
                     "id": "terrestrial-biodiversity-summary-pmtiles",
                     "alias": "ace-rarerank-eco",
                     "display_name": "Rare Rank (Ecoregion)",
-                    "group": "ACE Biodiversity Ranks",
+                    "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
                         "fill-color": [
@@ -218,7 +218,7 @@
                     "id": "terrestrial-biodiversity-summary-pmtiles",
                     "alias": "ace-richness-amph",
                     "display_name": "Amphibian Richness",
-                    "group": "ACE Native Richness",
+                    "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
                         "fill-color": ["interpolate", ["linear"], ["get", "NtvAmph"], 0, "#edf8e9", 16, "#005a32"],
@@ -230,7 +230,7 @@
                     "id": "terrestrial-biodiversity-summary-pmtiles",
                     "alias": "ace-richness-rept",
                     "display_name": "Reptile Richness",
-                    "group": "ACE Native Richness",
+                    "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
                         "fill-color": ["interpolate", ["linear"], ["get", "NtvRept"], 0, "#edf8e9", 51, "#005a32"],
@@ -242,7 +242,7 @@
                     "id": "terrestrial-biodiversity-summary-pmtiles",
                     "alias": "ace-richness-bird",
                     "display_name": "Bird Richness",
-                    "group": "ACE Native Richness",
+                    "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
                         "fill-color": ["interpolate", ["linear"], ["get", "NtvBird"], 0, "#edf8e9", 242, "#005a32"],
@@ -254,7 +254,7 @@
                     "id": "terrestrial-biodiversity-summary-pmtiles",
                     "alias": "ace-richness-mamm",
                     "display_name": "Mammal Richness",
-                    "group": "ACE Native Richness",
+                    "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
                         "fill-color": ["interpolate", ["linear"], ["get", "NtvMamm"], 0, "#edf8e9", 83, "#005a32"],
@@ -266,7 +266,7 @@
                     "id": "terrestrial-biodiversity-summary-pmtiles",
                     "alias": "ace-rare-amph",
                     "display_name": "Rare Amphibian Richness",
-                    "group": "ACE Rare Richness",
+                    "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
                         "fill-color": ["interpolate", ["linear"], ["get", "RarAmph"], 0, "#feedde", 6, "#8c2d04"],
@@ -278,7 +278,7 @@
                     "id": "terrestrial-biodiversity-summary-pmtiles",
                     "alias": "ace-rare-rept",
                     "display_name": "Rare Reptile Richness",
-                    "group": "ACE Rare Richness",
+                    "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
                         "fill-color": ["interpolate", ["linear"], ["get", "RarRept"], 0, "#feedde", 9, "#8c2d04"],
@@ -290,7 +290,7 @@
                     "id": "terrestrial-biodiversity-summary-pmtiles",
                     "alias": "ace-rare-bird",
                     "display_name": "Rare Bird Richness",
-                    "group": "ACE Rare Richness",
+                    "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
                         "fill-color": ["interpolate", ["linear"], ["get", "RarBird"], 0, "#feedde", 30, "#8c2d04"],
@@ -302,7 +302,7 @@
                     "id": "terrestrial-biodiversity-summary-pmtiles",
                     "alias": "ace-rare-mamm",
                     "display_name": "Rare Mammal Richness",
-                    "group": "ACE Rare Richness",
+                    "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
                         "fill-color": ["interpolate", ["linear"], ["get", "RarMamm"], 0, "#feedde", 11, "#8c2d04"],
@@ -314,7 +314,7 @@
                     "id": "terrestrial-biodiversity-summary-pmtiles",
                     "alias": "ace-endemic-amph",
                     "display_name": "Endemic Amphibian Richness",
-                    "group": "ACE Endemic Richness",
+                    "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
                         "fill-color": ["interpolate", ["linear"], ["get", "AmphEndem"], 0, "#f2f0f7", 5, "#54278f"],
@@ -326,7 +326,7 @@
                     "id": "terrestrial-biodiversity-summary-pmtiles",
                     "alias": "ace-endemic-rept",
                     "display_name": "Endemic Reptile Richness",
-                    "group": "ACE Endemic Richness",
+                    "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
                         "fill-color": ["interpolate", ["linear"], ["get", "ReptEndem"], 0, "#f2f0f7", 6, "#54278f"],
@@ -338,7 +338,7 @@
                     "id": "terrestrial-biodiversity-summary-pmtiles",
                     "alias": "ace-endemic-bird",
                     "display_name": "Endemic Bird Richness",
-                    "group": "ACE Endemic Richness",
+                    "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
                         "fill-color": ["interpolate", ["linear"], ["get", "BirdEndem"], 0, "#f2f0f7", 8, "#54278f"],
@@ -350,7 +350,7 @@
                     "id": "terrestrial-biodiversity-summary-pmtiles",
                     "alias": "ace-endemic-mamm",
                     "display_name": "Endemic Mammal Richness",
-                    "group": "ACE Endemic Richness",
+                    "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
                         "fill-color": ["interpolate", ["linear"], ["get", "MammEndem"], 0, "#f2f0f7", 7, "#54278f"],
