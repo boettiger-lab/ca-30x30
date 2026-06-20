@@ -634,6 +634,158 @@
                     ]
                 }
             ]
+        },
+        {
+            "collection_id": "calenviroscreen-5-0",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-calenviroscreen/stac-collection.json",
+            "assets": [
+                {
+                    "id": "ces5-pmtiles",
+                    "display_name": "CalEnviroScreen 5.0 (pollution burden)",
+                    "group": "CalEnviroScreen",
+                    "visible": false,
+                    "default_style": {
+                        "fill-color": [
+                            "interpolate", ["linear"], ["get", "CIscore_Pctl"],
+                            0, "#2c7bb6", 25, "#abd9e9", 50, "#ffffbf", 75, "#fdae61", 100, "#d7191c"
+                        ],
+                        "fill-opacity": 0.7
+                    },
+                    "tooltip_fields": [
+                        "county",
+                        "CIscore",
+                        "CIscore_Pctl",
+                        "Poverty_Pctl"
+                    ]
+                }
+            ]
+        },
+        {
+            "collection_id": "census-2024-state",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-census/census-2024/state/stac-collection.json",
+            "assets": [
+                {
+                    "id": "state-pmtiles",
+                    "display_name": "State Boundaries",
+                    "group": "Census Boundaries",
+                    "visible": false,
+                    "default_style": {
+                        "fill-color": "#000000",
+                        "fill-opacity": 0
+                    },
+                    "outline_style": {
+                        "line-color": "#37474F",
+                        "line-width": 1.2,
+                        "line-opacity": 0.7
+                    },
+                    "tooltip_fields": [
+                        "NAME",
+                        "STUSPS"
+                    ]
+                }
+            ]
+        },
+        {
+            "collection_id": "census-2024-county",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-census/census-2024/county/stac-collection.json",
+            "assets": [
+                {
+                    "id": "county-pmtiles",
+                    "display_name": "County Boundaries",
+                    "group": "Census Boundaries",
+                    "visible": false,
+                    "default_style": {
+                        "fill-color": "#000000",
+                        "fill-opacity": 0
+                    },
+                    "outline_style": {
+                        "line-color": "#455A64",
+                        "line-width": 0.7,
+                        "line-opacity": 0.7
+                    },
+                    "tooltip_fields": [
+                        "NAMELSAD",
+                        "GEOID"
+                    ]
+                }
+            ]
+        },
+        {
+            "collection_id": "census-2024-tract",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-census/census-2024/tract/stac-collection.json",
+            "assets": [
+                {
+                    "id": "tract-pmtiles",
+                    "display_name": "Census Tracts",
+                    "group": "Census Boundaries",
+                    "visible": false,
+                    "default_style": {
+                        "fill-color": "#000000",
+                        "fill-opacity": 0
+                    },
+                    "outline_style": {
+                        "line-color": "#607D8B",
+                        "line-width": 0.3,
+                        "line-opacity": 0.6
+                    },
+                    "tooltip_fields": [
+                        "NAMELSAD",
+                        "GEOID"
+                    ]
+                }
+            ]
+        },
+        {
+            "collection_id": "usgs-wbd-hu8",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-usgs-wbd/wbd/hu8/stac-collection.json",
+            "assets": [
+                {
+                    "id": "hu8-pmtiles",
+                    "display_name": "Subbasins (HUC8)",
+                    "group": "Watersheds (USGS WBD)",
+                    "visible": false,
+                    "default_style": {
+                        "fill-color": "#1976D2",
+                        "fill-opacity": 0
+                    },
+                    "outline_style": {
+                        "line-color": "#1565C0",
+                        "line-width": 0.8,
+                        "line-opacity": 0.7
+                    },
+                    "tooltip_fields": [
+                        "name",
+                        "huc8",
+                        "areaacres"
+                    ]
+                }
+            ]
+        },
+        {
+            "collection_id": "usgs-wbd-hu12",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-usgs-wbd/wbd/hu12/stac-collection.json",
+            "assets": [
+                {
+                    "id": "hu12-pmtiles",
+                    "display_name": "Subwatersheds (HUC12)",
+                    "group": "Watersheds (USGS WBD)",
+                    "visible": false,
+                    "default_style": {
+                        "fill-color": "#0288D1",
+                        "fill-opacity": 0
+                    },
+                    "outline_style": {
+                        "line-color": "#0277BD",
+                        "line-width": 0.4,
+                        "line-opacity": 0.6
+                    },
+                    "tooltip_fields": [
+                        "name",
+                        "huc12",
+                        "areaacres"
+                    ]
+                }
+            ]
         }
     ]
 }
