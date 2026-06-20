@@ -105,6 +105,25 @@
                         "reGAP",
                         "ACCESS_TYP",
                         "Acres"
+                    ],
+                    "legend_type": "categorical",
+                    "legend_classes": [
+                        {
+                            "label": "GAP 1 \u2014 managed for biodiversity (strict)",
+                            "color": "#26633A"
+                        },
+                        {
+                            "label": "GAP 2 \u2014 managed for biodiversity",
+                            "color": "#3E9C47"
+                        },
+                        {
+                            "label": "GAP 3 \u2014 multiple use",
+                            "color": "#7EB3D3"
+                        },
+                        {
+                            "label": "GAP 4 \u2014 no protection mandate",
+                            "color": "#BDBDBD"
+                        }
                     ]
                 }
             ]
@@ -194,6 +213,29 @@
                         "BioRankSW",
                         "County",
                         "Eco_Name"
+                    ],
+                    "legend_type": "categorical",
+                    "legend_classes": [
+                        {
+                            "label": "1 \u2014 lowest",
+                            "color": "#ffffb2"
+                        },
+                        {
+                            "label": "2",
+                            "color": "#fecc5c"
+                        },
+                        {
+                            "label": "3",
+                            "color": "#fd8d3c"
+                        },
+                        {
+                            "label": "4",
+                            "color": "#f03b20"
+                        },
+                        {
+                            "label": "5 \u2014 highest",
+                            "color": "#bd0026"
+                        }
                     ]
                 },
                 {
@@ -227,6 +269,29 @@
                         "BioRankEco",
                         "County",
                         "Eco_Name"
+                    ],
+                    "legend_type": "categorical",
+                    "legend_classes": [
+                        {
+                            "label": "1 \u2014 lowest",
+                            "color": "#ffffb2"
+                        },
+                        {
+                            "label": "2",
+                            "color": "#fecc5c"
+                        },
+                        {
+                            "label": "3",
+                            "color": "#fd8d3c"
+                        },
+                        {
+                            "label": "4",
+                            "color": "#f03b20"
+                        },
+                        {
+                            "label": "5 \u2014 highest",
+                            "color": "#bd0026"
+                        }
                     ]
                 },
                 {
@@ -260,6 +325,29 @@
                         "RarRankSW",
                         "County",
                         "Eco_Name"
+                    ],
+                    "legend_type": "categorical",
+                    "legend_classes": [
+                        {
+                            "label": "1 \u2014 lowest",
+                            "color": "#ffffb2"
+                        },
+                        {
+                            "label": "2",
+                            "color": "#fecc5c"
+                        },
+                        {
+                            "label": "3",
+                            "color": "#fd8d3c"
+                        },
+                        {
+                            "label": "4",
+                            "color": "#f03b20"
+                        },
+                        {
+                            "label": "5 \u2014 highest",
+                            "color": "#bd0026"
+                        }
                     ]
                 },
                 {
@@ -293,6 +381,29 @@
                         "RarRankEco",
                         "County",
                         "Eco_Name"
+                    ],
+                    "legend_type": "categorical",
+                    "legend_classes": [
+                        {
+                            "label": "1 \u2014 lowest",
+                            "color": "#ffffb2"
+                        },
+                        {
+                            "label": "2",
+                            "color": "#fecc5c"
+                        },
+                        {
+                            "label": "3",
+                            "color": "#fd8d3c"
+                        },
+                        {
+                            "label": "4",
+                            "color": "#f03b20"
+                        },
+                        {
+                            "label": "5 \u2014 highest",
+                            "color": "#bd0026"
+                        }
                     ]
                 },
                 {
@@ -805,6 +916,21 @@
                         "WETLAND_TYPE",
                         "ATTRIBUTE",
                         "state_code"
+                    ],
+                    "legend_type": "categorical",
+                    "legend_classes": [
+                        {
+                            "label": "Freshwater Emergent",
+                            "color": "#7CB342"
+                        },
+                        {
+                            "label": "Freshwater Forested/Shrub",
+                            "color": "#33691E"
+                        },
+                        {
+                            "label": "Estuarine & Marine",
+                            "color": "#0277BD"
+                        }
                     ]
                 }
             ]
@@ -1213,6 +1339,17 @@
                         "DAC23",
                         "MHI23",
                         "Pop23"
+                    ],
+                    "legend_type": "categorical",
+                    "legend_classes": [
+                        {
+                            "label": "Disadvantaged community",
+                            "color": "#d84315"
+                        },
+                        {
+                            "label": "Not disadvantaged",
+                            "color": "#bbdefb"
+                        }
                     ]
                 }
             ]
