@@ -256,13 +256,29 @@ p.lede { font-size: 1.05rem; color: var(--ink-soft); }
     <p>Every layer draws from a public, primary source. Click "STAC" beside any entry to see the full machine-readable metadata — schemas, column descriptions, license, lineage, and download URLs.</p>
 
     <div class="layer-group">
-        <h3>30x30 Conserved Areas</h3>
+        <h3>Progress &amp; Protections</h3>
         <div class="layer">
             <div class="name">Conserved Areas, Terrestrial (2025)</div>
             <div class="source">California's statewide inventory of lands conserved toward the 30x30 goal — one polygon per conserved unit, attributed with managing agency, access type, and GAP/reGAP biodiversity-protection status (1–4). The primary reference for tracking conservation progress.</div>
             <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/conserved-areas-terrestrial-2025/stac-collection.json" target="_blank" rel="noopener">STAC</a><a href="https://www.californianature.ca.gov/" target="_blank" rel="noopener">Source: California Nature</a></div>
             <span class="lic">California Natural Resources Agency (CNRA) — CA Nature 30x30</span>
         </div>
+        <div class="layer">
+            <div class="name">Disadvantaged Communities (DAC, 2023)</div>
+            <div class="source">California disadvantaged and economically distressed communities by census tract (2023), used to track equitable access to nature alongside the conserved network.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca-dac/stac-collection.json" target="_blank" rel="noopener">STAC</a></div>
+            <span class="lic">CalEPA / OEHHA — DAC &amp; EDA designations</span>
+        </div>
+        <div class="layer">
+            <div class="name">CalEnviroScreen 5.0</div>
+            <div class="source">OEHHA's cumulative environmental-justice screening tool — a per-census-tract score combining pollution burden and population-characteristic indicators. Useful context for siting and equity questions.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-calenviroscreen/stac-collection.json" target="_blank" rel="noopener">STAC</a><a href="https://oehha.ca.gov/calenviroscreen" target="_blank" rel="noopener">Source: OEHHA</a></div>
+            <span class="lic">California OEHHA / CalEPA</span>
+        </div>
+    </div>
+
+    <div class="layer-group">
+        <h3>Ecoregions</h3>
         <div class="layer">
             <div class="name">Ecoregions (20-class)</div>
             <div class="source">California's Bailey/ECOMAP-derived ecoregions as used by the CNRA / ACE program — the standard regional framework for normalizing biodiversity and conservation metrics within the state.</div>
@@ -282,29 +298,61 @@ p.lede { font-size: 1.05rem; color: var(--ink-soft); }
     </div>
 
     <div class="layer-group">
-        <h3>ACE Biodiversity &amp; Richness</h3>
+        <h3>ACE Biodiversity</h3>
         <div class="layer">
             <div class="name">ACE Terrestrial Biodiversity Summary</div>
-            <div class="source">CDFW's Areas of Conservation Emphasis (ACE v3.0) terrestrial biodiversity summary, on a statewide hexagon grid. A single dataset whose columns drive many map layers: BioRank and Rare Rank (statewide and ecoregion-normalized, 1–5 quantiles), and native, rare, and endemic species richness for amphibians, reptiles, birds, and mammals.</div>
+            <div class="source">CDFW's Areas of Conservation Emphasis (ACE v3.0) terrestrial biodiversity summary, on a statewide hexagon grid. A single dataset whose columns drive 16 map layers: BioRank and Rare Rank (statewide and ecoregion-normalized, 1–5 quantiles), and native, rare, and endemic species richness for amphibians, reptiles, birds, and mammals.</div>
             <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-cdfw/ace/terrestrial-biodiversity-summary/stac-collection.json" target="_blank" rel="noopener">STAC</a><a href="https://wildlife.ca.gov/Data/Analysis/ACE" target="_blank" rel="noopener">Source: CDFW ACE</a></div>
             <span class="lic">California Department of Fish and Wildlife (CDFW) — ACE v3.0 (ds2739)</span>
         </div>
+    </div>
+
+    <div class="layer-group">
+        <h3>Biodiversity: Communities, Species &amp; Richness</h3>
         <div class="layer">
             <div class="name">Plant &amp; Rarity-Weighted Endemic Plant Richness</div>
             <div class="source">Modeled plant species richness and rarity-weighted endemic plant richness for California (Kling et al. 2018), as continuous rasters — highlighting centers of overall plant diversity and of range-restricted endemic diversity.</div>
             <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/plant-richness/stac-collection.json" target="_blank" rel="noopener">STAC (richness)</a><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/rarity-weighted-endemic-plant-richness/stac-collection.json" target="_blank" rel="noopener">STAC (endemic)</a></div>
             <span class="lic">Kling et al. 2018</span>
         </div>
+    </div>
+
+    <div class="layer-group">
+        <h3>Freshwater Resources</h3>
         <div class="layer">
             <div class="name">Freshwater Species Richness (HUC12)</div>
             <div class="source">Freshwater species richness summarized by HUC12 subwatershed (Howard et al. 2015 / TNC California Freshwater Species Database) — a choropleth of freshwater biodiversity, including vulnerable and listed species counts.</div>
             <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/freshwater-species-richness/stac-collection.json" target="_blank" rel="noopener">STAC</a></div>
             <span class="lic">Howard et al. 2015 / TNC (ds1197)</span>
         </div>
+        <div class="layer">
+            <div class="name">Wetlands (National Wetlands Inventory)</div>
+            <div class="source">US Fish &amp; Wildlife Service National Wetlands Inventory, filtered to freshwater emergent, freshwater forested/shrub, and estuarine &amp; marine wetland classes.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-wetlands/nwi/stac-collection.json" target="_blank" rel="noopener">STAC</a><a href="https://www.fws.gov/program/national-wetlands-inventory" target="_blank" rel="noopener">Source: USFWS NWI</a></div>
+            <span class="lic">USFWS — National Wetlands Inventory</span>
+        </div>
+        <div class="layer">
+            <div class="name">Groundwater-Dependent Ecosystems</div>
+            <div class="source">Mapped groundwater-dependent ecosystems (Klausmeyer et al. 2018) — vegetation and wetland features that rely on groundwater, provided as separate vegetation and wetland layers.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/groundwater-dependent-ecosystems/vegetation/stac-collection.json" target="_blank" rel="noopener">STAC (vegetation)</a><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/groundwater-dependent-ecosystems/wetlands/stac-collection.json" target="_blank" rel="noopener">STAC (wetlands)</a></div>
+            <span class="lic">Klausmeyer et al. 2018 / TNC</span>
+        </div>
+        <div class="layer">
+            <div class="name">Streams by Order &amp; Perennial Streams (NHD)</div>
+            <div class="source">USGS National Hydrography Dataset stream flowlines — one layer classified by Strahler stream order, and one filtered to perennial streams.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-usgs-nhd/streams-by-order/stac-collection.json" target="_blank" rel="noopener">STAC (by order)</a><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-usgs-nhd/perennial-streams/stac-collection.json" target="_blank" rel="noopener">STAC (perennial)</a><a href="https://www.usgs.gov/national-hydrography" target="_blank" rel="noopener">Source: USGS NHD</a></div>
+            <span class="lic">USGS National Hydrography Dataset</span>
+        </div>
+        <div class="layer">
+            <div class="name">Watersheds — USGS WBD (HUC8 &amp; HUC12)</div>
+            <div class="source">USGS Watershed Boundary Dataset subbasins (HUC8) and subwatersheds (HUC12) — nested hydrologic units for watershed-scale summaries.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-usgs-wbd/wbd/hu8/stac-collection.json" target="_blank" rel="noopener">STAC (HUC8)</a><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-usgs-wbd/wbd/hu12/stac-collection.json" target="_blank" rel="noopener">STAC (HUC12)</a><a href="https://www.usgs.gov/national-hydrography/watershed-boundary-dataset" target="_blank" rel="noopener">Source: USGS WBD</a></div>
+            <span class="lic">USGS Watershed Boundary Dataset</span>
+        </div>
     </div>
 
     <div class="layer-group">
-        <h3>Connectivity</h3>
+        <h3>Connectivity &amp; Resilience</h3>
         <div class="layer">
             <div class="name">Present-day Connectivity &amp; Climate Migration Routes</div>
             <div class="source">Present-day terrestrial connectivity categories (Cameron et al. 2022) and modeled climate migration routes (Schloss et al. 2022) — categorical rasters showing where the landscape supports movement today and where species are expected to track suitable climate over time.</div>
@@ -320,23 +368,7 @@ p.lede { font-size: 1.05rem; color: var(--ink-soft); }
     </div>
 
     <div class="layer-group">
-        <h3>Wetlands &amp; Groundwater-Dependent Ecosystems</h3>
-        <div class="layer">
-            <div class="name">Wetlands (National Wetlands Inventory)</div>
-            <div class="source">US Fish &amp; Wildlife Service National Wetlands Inventory, filtered to freshwater emergent, freshwater forested/shrub, and estuarine &amp; marine wetland classes.</div>
-            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-wetlands/nwi/stac-collection.json" target="_blank" rel="noopener">STAC</a><a href="https://www.fws.gov/program/national-wetlands-inventory" target="_blank" rel="noopener">Source: USFWS NWI</a></div>
-            <span class="lic">USFWS — National Wetlands Inventory</span>
-        </div>
-        <div class="layer">
-            <div class="name">Groundwater-Dependent Ecosystems</div>
-            <div class="source">Mapped groundwater-dependent ecosystems (Klausmeyer et al. 2018) — vegetation and wetland features that rely on groundwater, provided as separate vegetation and wetland layers.</div>
-            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/groundwater-dependent-ecosystems/vegetation/stac-collection.json" target="_blank" rel="noopener">STAC (vegetation)</a><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/groundwater-dependent-ecosystems/wetlands/stac-collection.json" target="_blank" rel="noopener">STAC (wetlands)</a></div>
-            <span class="lic">Klausmeyer et al. 2018 / TNC</span>
-        </div>
-    </div>
-
-    <div class="layer-group">
-        <h3>Climate &amp; Fire</h3>
+        <h3>Climate-Related Risks</h3>
         <div class="layer">
             <div class="name">Sea-Level Rise Inundation (5 ft)</div>
             <div class="source">NOAA sea-level-rise inundation extent at 5 feet — the coastal area exposed under that scenario.</div>
@@ -354,6 +386,16 @@ p.lede { font-size: 1.05rem; color: var(--ink-soft); }
             <div class="source">CAL FIRE's statewide record of mapped wildfire perimeters from 1878 through 2025, colored by year of burn.</div>
             <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-fire/calfire-2025/firep/stac-collection.json" target="_blank" rel="noopener">STAC</a><a href="https://frap.fire.ca.gov/mapping/gis-data/" target="_blank" rel="noopener">Source: CAL FIRE FRAP</a></div>
             <span class="lic">CAL FIRE FRAP — Fire Perimeters</span>
+        </div>
+    </div>
+
+    <div class="layer-group">
+        <h3>Counties &amp; Reference Boundaries</h3>
+        <div class="layer">
+            <div class="name">County, State &amp; Census-Tract Boundaries</div>
+            <div class="source">US Census TIGER/Line 2024 administrative boundaries — counties, states, and census tracts — for reference and for summarizing metrics by jurisdiction. (Census counties stand in for the CNRA 30×30 county tiling.)</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-census/census-2024/county/stac-collection.json" target="_blank" rel="noopener">STAC (county)</a><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-census/census-2024/state/stac-collection.json" target="_blank" rel="noopener">STAC (state)</a><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-census/census-2024/tract/stac-collection.json" target="_blank" rel="noopener">STAC (tract)</a><a href="https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html" target="_blank" rel="noopener">Source: US Census</a></div>
+            <span class="lic">US Census Bureau — TIGER/Line 2024</span>
         </div>
     </div>
 
