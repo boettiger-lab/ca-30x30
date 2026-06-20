@@ -4,8 +4,12 @@
     "mcp_url": "https://duckdb-mcp.nrp-nautilus.io/mcp",
     "auto_approve": true,
     "draw_enabled": true,
-    "geolocate": { "button": true },
-    "geocoder": { "search_box": false },
+    "geolocate": {
+        "button": true
+    },
+    "geocoder": {
+        "search_box": false
+    },
     "sidebar": {
         "enabled": true,
         "chat_title": "Chat"
@@ -19,7 +23,9 @@
     },
     "llm": {
         "user_provided": true,
-        "transcription_model": { "value": "gemma" },
+        "transcription_model": {
+            "value": "gemma"
+        },
         "default_endpoint": "https://openrouter.ai/api/v1",
         "models": [
             {
@@ -66,16 +72,23 @@
                 {
                     "id": "conserved-areas-terrestrial-2025-pmtiles",
                     "display_name": "Conserved Areas, Terrestrial (2025)",
-                    "group": "30x30 Conserved Areas",
+                    "group": "Progress Data",
                     "visible": true,
                     "default_style": {
                         "fill-color": [
                             "match",
-                            ["get", "reGAP"],
-                            1, "#26633A",
-                            2, "#3E9C47",
-                            3, "#7EB3D3",
-                            4, "#BDBDBD",
+                            [
+                                "get",
+                                "reGAP"
+                            ],
+                            1,
+                            "#26633A",
+                            2,
+                            "#3E9C47",
+                            3,
+                            "#7EB3D3",
+                            4,
+                            "#BDBDBD",
                             "#888888"
                         ],
                         "fill-opacity": 0.7
@@ -158,13 +171,30 @@
                     "visible": false,
                     "default_style": {
                         "fill-color": [
-                            "match", ["get", "BioRankSW"],
-                            1, "#ffffb2", 2, "#fecc5c", 3, "#fd8d3c", 4, "#f03b20", 5, "#bd0026",
+                            "match",
+                            [
+                                "get",
+                                "BioRankSW"
+                            ],
+                            1,
+                            "#ffffb2",
+                            2,
+                            "#fecc5c",
+                            3,
+                            "#fd8d3c",
+                            4,
+                            "#f03b20",
+                            5,
+                            "#bd0026",
                             "rgba(0,0,0,0)"
                         ],
                         "fill-opacity": 0.75
                     },
-                    "tooltip_fields": ["BioRankSW", "County", "Eco_Name"]
+                    "tooltip_fields": [
+                        "BioRankSW",
+                        "County",
+                        "Eco_Name"
+                    ]
                 },
                 {
                     "id": "terrestrial-biodiversity-summary-pmtiles",
@@ -174,13 +204,30 @@
                     "visible": false,
                     "default_style": {
                         "fill-color": [
-                            "match", ["get", "BioRankEco"],
-                            1, "#ffffb2", 2, "#fecc5c", 3, "#fd8d3c", 4, "#f03b20", 5, "#bd0026",
+                            "match",
+                            [
+                                "get",
+                                "BioRankEco"
+                            ],
+                            1,
+                            "#ffffb2",
+                            2,
+                            "#fecc5c",
+                            3,
+                            "#fd8d3c",
+                            4,
+                            "#f03b20",
+                            5,
+                            "#bd0026",
                             "rgba(0,0,0,0)"
                         ],
                         "fill-opacity": 0.75
                     },
-                    "tooltip_fields": ["BioRankEco", "County", "Eco_Name"]
+                    "tooltip_fields": [
+                        "BioRankEco",
+                        "County",
+                        "Eco_Name"
+                    ]
                 },
                 {
                     "id": "terrestrial-biodiversity-summary-pmtiles",
@@ -190,13 +237,30 @@
                     "visible": false,
                     "default_style": {
                         "fill-color": [
-                            "match", ["get", "RarRankSW"],
-                            1, "#ffffb2", 2, "#fecc5c", 3, "#fd8d3c", 4, "#f03b20", 5, "#bd0026",
+                            "match",
+                            [
+                                "get",
+                                "RarRankSW"
+                            ],
+                            1,
+                            "#ffffb2",
+                            2,
+                            "#fecc5c",
+                            3,
+                            "#fd8d3c",
+                            4,
+                            "#f03b20",
+                            5,
+                            "#bd0026",
                             "rgba(0,0,0,0)"
                         ],
                         "fill-opacity": 0.75
                     },
-                    "tooltip_fields": ["RarRankSW", "County", "Eco_Name"]
+                    "tooltip_fields": [
+                        "RarRankSW",
+                        "County",
+                        "Eco_Name"
+                    ]
                 },
                 {
                     "id": "terrestrial-biodiversity-summary-pmtiles",
@@ -206,13 +270,30 @@
                     "visible": false,
                     "default_style": {
                         "fill-color": [
-                            "match", ["get", "RarRankEco"],
-                            1, "#ffffb2", 2, "#fecc5c", 3, "#fd8d3c", 4, "#f03b20", 5, "#bd0026",
+                            "match",
+                            [
+                                "get",
+                                "RarRankEco"
+                            ],
+                            1,
+                            "#ffffb2",
+                            2,
+                            "#fecc5c",
+                            3,
+                            "#fd8d3c",
+                            4,
+                            "#f03b20",
+                            5,
+                            "#bd0026",
                             "rgba(0,0,0,0)"
                         ],
                         "fill-opacity": 0.75
                     },
-                    "tooltip_fields": ["RarRankEco", "County", "Eco_Name"]
+                    "tooltip_fields": [
+                        "RarRankEco",
+                        "County",
+                        "Eco_Name"
+                    ]
                 },
                 {
                     "id": "terrestrial-biodiversity-summary-pmtiles",
@@ -221,10 +302,26 @@
                     "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
-                        "fill-color": ["interpolate", ["linear"], ["get", "NtvAmph"], 0, "#edf8e9", 16, "#005a32"],
+                        "fill-color": [
+                            "interpolate",
+                            [
+                                "linear"
+                            ],
+                            [
+                                "get",
+                                "NtvAmph"
+                            ],
+                            0,
+                            "#edf8e9",
+                            16,
+                            "#005a32"
+                        ],
                         "fill-opacity": 0.75
                     },
-                    "tooltip_fields": ["NtvAmph", "County"]
+                    "tooltip_fields": [
+                        "NtvAmph",
+                        "County"
+                    ]
                 },
                 {
                     "id": "terrestrial-biodiversity-summary-pmtiles",
@@ -233,10 +330,26 @@
                     "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
-                        "fill-color": ["interpolate", ["linear"], ["get", "NtvRept"], 0, "#edf8e9", 51, "#005a32"],
+                        "fill-color": [
+                            "interpolate",
+                            [
+                                "linear"
+                            ],
+                            [
+                                "get",
+                                "NtvRept"
+                            ],
+                            0,
+                            "#edf8e9",
+                            51,
+                            "#005a32"
+                        ],
                         "fill-opacity": 0.75
                     },
-                    "tooltip_fields": ["NtvRept", "County"]
+                    "tooltip_fields": [
+                        "NtvRept",
+                        "County"
+                    ]
                 },
                 {
                     "id": "terrestrial-biodiversity-summary-pmtiles",
@@ -245,10 +358,26 @@
                     "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
-                        "fill-color": ["interpolate", ["linear"], ["get", "NtvBird"], 0, "#edf8e9", 242, "#005a32"],
+                        "fill-color": [
+                            "interpolate",
+                            [
+                                "linear"
+                            ],
+                            [
+                                "get",
+                                "NtvBird"
+                            ],
+                            0,
+                            "#edf8e9",
+                            242,
+                            "#005a32"
+                        ],
                         "fill-opacity": 0.75
                     },
-                    "tooltip_fields": ["NtvBird", "County"]
+                    "tooltip_fields": [
+                        "NtvBird",
+                        "County"
+                    ]
                 },
                 {
                     "id": "terrestrial-biodiversity-summary-pmtiles",
@@ -257,10 +386,26 @@
                     "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
-                        "fill-color": ["interpolate", ["linear"], ["get", "NtvMamm"], 0, "#edf8e9", 83, "#005a32"],
+                        "fill-color": [
+                            "interpolate",
+                            [
+                                "linear"
+                            ],
+                            [
+                                "get",
+                                "NtvMamm"
+                            ],
+                            0,
+                            "#edf8e9",
+                            83,
+                            "#005a32"
+                        ],
                         "fill-opacity": 0.75
                     },
-                    "tooltip_fields": ["NtvMamm", "County"]
+                    "tooltip_fields": [
+                        "NtvMamm",
+                        "County"
+                    ]
                 },
                 {
                     "id": "terrestrial-biodiversity-summary-pmtiles",
@@ -269,10 +414,26 @@
                     "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
-                        "fill-color": ["interpolate", ["linear"], ["get", "RarAmph"], 0, "#feedde", 6, "#8c2d04"],
+                        "fill-color": [
+                            "interpolate",
+                            [
+                                "linear"
+                            ],
+                            [
+                                "get",
+                                "RarAmph"
+                            ],
+                            0,
+                            "#feedde",
+                            6,
+                            "#8c2d04"
+                        ],
                         "fill-opacity": 0.75
                     },
-                    "tooltip_fields": ["RarAmph", "County"]
+                    "tooltip_fields": [
+                        "RarAmph",
+                        "County"
+                    ]
                 },
                 {
                     "id": "terrestrial-biodiversity-summary-pmtiles",
@@ -281,10 +442,26 @@
                     "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
-                        "fill-color": ["interpolate", ["linear"], ["get", "RarRept"], 0, "#feedde", 9, "#8c2d04"],
+                        "fill-color": [
+                            "interpolate",
+                            [
+                                "linear"
+                            ],
+                            [
+                                "get",
+                                "RarRept"
+                            ],
+                            0,
+                            "#feedde",
+                            9,
+                            "#8c2d04"
+                        ],
                         "fill-opacity": 0.75
                     },
-                    "tooltip_fields": ["RarRept", "County"]
+                    "tooltip_fields": [
+                        "RarRept",
+                        "County"
+                    ]
                 },
                 {
                     "id": "terrestrial-biodiversity-summary-pmtiles",
@@ -293,10 +470,26 @@
                     "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
-                        "fill-color": ["interpolate", ["linear"], ["get", "RarBird"], 0, "#feedde", 30, "#8c2d04"],
+                        "fill-color": [
+                            "interpolate",
+                            [
+                                "linear"
+                            ],
+                            [
+                                "get",
+                                "RarBird"
+                            ],
+                            0,
+                            "#feedde",
+                            30,
+                            "#8c2d04"
+                        ],
                         "fill-opacity": 0.75
                     },
-                    "tooltip_fields": ["RarBird", "County"]
+                    "tooltip_fields": [
+                        "RarBird",
+                        "County"
+                    ]
                 },
                 {
                     "id": "terrestrial-biodiversity-summary-pmtiles",
@@ -305,10 +498,26 @@
                     "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
-                        "fill-color": ["interpolate", ["linear"], ["get", "RarMamm"], 0, "#feedde", 11, "#8c2d04"],
+                        "fill-color": [
+                            "interpolate",
+                            [
+                                "linear"
+                            ],
+                            [
+                                "get",
+                                "RarMamm"
+                            ],
+                            0,
+                            "#feedde",
+                            11,
+                            "#8c2d04"
+                        ],
                         "fill-opacity": 0.75
                     },
-                    "tooltip_fields": ["RarMamm", "County"]
+                    "tooltip_fields": [
+                        "RarMamm",
+                        "County"
+                    ]
                 },
                 {
                     "id": "terrestrial-biodiversity-summary-pmtiles",
@@ -317,10 +526,26 @@
                     "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
-                        "fill-color": ["interpolate", ["linear"], ["get", "AmphEndem"], 0, "#f2f0f7", 5, "#54278f"],
+                        "fill-color": [
+                            "interpolate",
+                            [
+                                "linear"
+                            ],
+                            [
+                                "get",
+                                "AmphEndem"
+                            ],
+                            0,
+                            "#f2f0f7",
+                            5,
+                            "#54278f"
+                        ],
                         "fill-opacity": 0.75
                     },
-                    "tooltip_fields": ["AmphEndem", "County"]
+                    "tooltip_fields": [
+                        "AmphEndem",
+                        "County"
+                    ]
                 },
                 {
                     "id": "terrestrial-biodiversity-summary-pmtiles",
@@ -329,10 +554,26 @@
                     "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
-                        "fill-color": ["interpolate", ["linear"], ["get", "ReptEndem"], 0, "#f2f0f7", 6, "#54278f"],
+                        "fill-color": [
+                            "interpolate",
+                            [
+                                "linear"
+                            ],
+                            [
+                                "get",
+                                "ReptEndem"
+                            ],
+                            0,
+                            "#f2f0f7",
+                            6,
+                            "#54278f"
+                        ],
                         "fill-opacity": 0.75
                     },
-                    "tooltip_fields": ["ReptEndem", "County"]
+                    "tooltip_fields": [
+                        "ReptEndem",
+                        "County"
+                    ]
                 },
                 {
                     "id": "terrestrial-biodiversity-summary-pmtiles",
@@ -341,10 +582,26 @@
                     "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
-                        "fill-color": ["interpolate", ["linear"], ["get", "BirdEndem"], 0, "#f2f0f7", 8, "#54278f"],
+                        "fill-color": [
+                            "interpolate",
+                            [
+                                "linear"
+                            ],
+                            [
+                                "get",
+                                "BirdEndem"
+                            ],
+                            0,
+                            "#f2f0f7",
+                            8,
+                            "#54278f"
+                        ],
                         "fill-opacity": 0.75
                     },
-                    "tooltip_fields": ["BirdEndem", "County"]
+                    "tooltip_fields": [
+                        "BirdEndem",
+                        "County"
+                    ]
                 },
                 {
                     "id": "terrestrial-biodiversity-summary-pmtiles",
@@ -353,10 +610,26 @@
                     "group": "ACE Biodiversity",
                     "visible": false,
                     "default_style": {
-                        "fill-color": ["interpolate", ["linear"], ["get", "MammEndem"], 0, "#f2f0f7", 7, "#54278f"],
+                        "fill-color": [
+                            "interpolate",
+                            [
+                                "linear"
+                            ],
+                            [
+                                "get",
+                                "MammEndem"
+                            ],
+                            0,
+                            "#f2f0f7",
+                            7,
+                            "#54278f"
+                        ],
                         "fill-opacity": 0.75
                     },
-                    "tooltip_fields": ["MammEndem", "County"]
+                    "tooltip_fields": [
+                        "MammEndem",
+                        "County"
+                    ]
                 }
             ]
         },
@@ -367,7 +640,7 @@
                 {
                     "id": "plant-richness-cog",
                     "display_name": "Plant Species Richness",
-                    "group": "Species Richness",
+                    "group": "Biodiversity: Communities, Species & Richness",
                     "visible": false,
                     "colormap": "greens",
                     "rescale": "16,452",
@@ -382,7 +655,7 @@
                 {
                     "id": "rarity-weighted-endemic-plant-richness-cog",
                     "display_name": "Rarity-Weighted Endemic Plant Richness",
-                    "group": "Species Richness",
+                    "group": "Biodiversity: Communities, Species & Richness",
                     "visible": false,
                     "colormap": "magma",
                     "rescale": "0,0.0115",
@@ -397,12 +670,28 @@
                 {
                     "id": "freshwater-species-richness-pmtiles",
                     "display_name": "Freshwater Species Richness (HUC12)",
-                    "group": "Species Richness",
+                    "group": "Freshwater Resources",
                     "visible": false,
                     "default_style": {
                         "fill-color": [
-                            "interpolate", ["linear"], ["get", "Freshwater_Species_Count"],
-                            0, "#ffffcc", 46, "#a1dab4", 92, "#41b6c4", 139, "#2c7fb8", 185, "#253494"
+                            "interpolate",
+                            [
+                                "linear"
+                            ],
+                            [
+                                "get",
+                                "Freshwater_Species_Count"
+                            ],
+                            0,
+                            "#ffffcc",
+                            46,
+                            "#a1dab4",
+                            92,
+                            "#41b6c4",
+                            139,
+                            "#2c7fb8",
+                            185,
+                            "#253494"
                         ],
                         "fill-opacity": 0.7
                     },
@@ -427,7 +716,7 @@
                 {
                     "id": "present-day-connectivity-categories-cog",
                     "display_name": "Present-day Connectivity (categories)",
-                    "group": "Connectivity",
+                    "group": "Connectivity & Resilience",
                     "visible": false,
                     "legend_type": "categorical"
                 }
@@ -440,7 +729,7 @@
                 {
                     "id": "climate-migration-routes-cog",
                     "display_name": "Climate Migration Routes",
-                    "group": "Connectivity",
+                    "group": "Connectivity & Resilience",
                     "visible": false,
                     "legend_type": "categorical"
                 }
@@ -453,7 +742,7 @@
                 {
                     "id": "regional-connectivity-linkages-pmtiles",
                     "display_name": "Regional Connectivity Linkages",
-                    "group": "Connectivity",
+                    "group": "Connectivity & Resilience",
                     "visible": false,
                     "default_style": {
                         "fill-color": "#00897B",
@@ -479,11 +768,14 @@
                 {
                     "id": "nwi-pmtiles",
                     "display_name": "Wetlands (NWI)",
-                    "group": "Wetlands",
+                    "group": "Freshwater Resources",
                     "visible": false,
                     "default_filter": [
                         "match",
-                        ["get", "WETLAND_TYPE"],
+                        [
+                            "get",
+                            "WETLAND_TYPE"
+                        ],
                         [
                             "Freshwater Emergent Wetland",
                             "Freshwater Forested/Shrub Wetland",
@@ -495,10 +787,16 @@
                     "default_style": {
                         "fill-color": [
                             "match",
-                            ["get", "WETLAND_TYPE"],
-                            "Freshwater Emergent Wetland", "#7CB342",
-                            "Freshwater Forested/Shrub Wetland", "#33691E",
-                            "Estuarine and Marine Wetland", "#0277BD",
+                            [
+                                "get",
+                                "WETLAND_TYPE"
+                            ],
+                            "Freshwater Emergent Wetland",
+                            "#7CB342",
+                            "Freshwater Forested/Shrub Wetland",
+                            "#33691E",
+                            "Estuarine and Marine Wetland",
+                            "#0277BD",
                             "#888888"
                         ],
                         "fill-opacity": 0.6
@@ -518,7 +816,7 @@
                 {
                     "id": "gde-vegetation-pmtiles",
                     "display_name": "GDE: Vegetation",
-                    "group": "Groundwater-Dependent Ecosystems",
+                    "group": "Freshwater Resources",
                     "visible": false,
                     "default_style": {
                         "fill-color": "#2E7D32",
@@ -545,7 +843,7 @@
                 {
                     "id": "gde-wetlands-pmtiles",
                     "display_name": "GDE: Wetlands",
-                    "group": "Groundwater-Dependent Ecosystems",
+                    "group": "Freshwater Resources",
                     "visible": false,
                     "default_style": {
                         "fill-color": "#00838F",
@@ -571,7 +869,7 @@
                 {
                     "id": "sea-level-rise-pmtiles",
                     "display_name": "Sea-Level Rise Inundation (5 ft)",
-                    "group": "Climate",
+                    "group": "Climate-Related Risks",
                     "visible": false,
                     "default_style": {
                         "fill-color": "#0288D1",
@@ -597,7 +895,7 @@
                 {
                     "id": "cnrm-cog",
                     "display_name": "Mid-Century Habitat Climate Exposure (CNRM, warm-wet)",
-                    "group": "Climate",
+                    "group": "Climate-Related Risks",
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0.15,1",
@@ -611,13 +909,29 @@
             "assets": [
                 {
                     "id": "firep-pmtiles",
-                    "display_name": "Historic Fire Perimeters (1878–2025)",
-                    "group": "Fire",
+                    "display_name": "Historic Fire Perimeters (1878\u20132025)",
+                    "group": "Climate-Related Risks",
                     "visible": false,
                     "default_style": {
                         "fill-color": [
-                            "interpolate", ["linear"], ["get", "YEAR_"],
-                            1878, "#fee5d9", 1950, "#fcae91", 1990, "#fb6a4a", 2010, "#de2d26", 2025, "#a50f15"
+                            "interpolate",
+                            [
+                                "linear"
+                            ],
+                            [
+                                "get",
+                                "YEAR_"
+                            ],
+                            1878,
+                            "#fee5d9",
+                            1950,
+                            "#fcae91",
+                            1990,
+                            "#fb6a4a",
+                            2010,
+                            "#de2d26",
+                            2025,
+                            "#a50f15"
                         ],
                         "fill-opacity": 0.55
                     },
@@ -642,12 +956,28 @@
                 {
                     "id": "ces5-pmtiles",
                     "display_name": "CalEnviroScreen 5.0 (pollution burden)",
-                    "group": "CalEnviroScreen",
+                    "group": "Progress Data",
                     "visible": false,
                     "default_style": {
                         "fill-color": [
-                            "interpolate", ["linear"], ["get", "CIscore_Pctl"],
-                            0, "#2c7bb6", 25, "#abd9e9", 50, "#ffffbf", 75, "#fdae61", 100, "#d7191c"
+                            "interpolate",
+                            [
+                                "linear"
+                            ],
+                            [
+                                "get",
+                                "CIscore_Pctl"
+                            ],
+                            0,
+                            "#2c7bb6",
+                            25,
+                            "#abd9e9",
+                            50,
+                            "#ffffbf",
+                            75,
+                            "#fdae61",
+                            100,
+                            "#d7191c"
                         ],
                         "fill-opacity": 0.7
                     },
@@ -667,7 +997,7 @@
                 {
                     "id": "state-pmtiles",
                     "display_name": "State Boundaries",
-                    "group": "Census Boundaries",
+                    "group": "Reference Boundaries",
                     "visible": false,
                     "default_style": {
                         "fill-color": "#000000",
@@ -692,7 +1022,7 @@
                 {
                     "id": "county-pmtiles",
                     "display_name": "County Boundaries",
-                    "group": "Census Boundaries",
+                    "group": "Counties",
                     "visible": false,
                     "default_style": {
                         "fill-color": "#000000",
@@ -717,7 +1047,7 @@
                 {
                     "id": "tract-pmtiles",
                     "display_name": "Census Tracts",
-                    "group": "Census Boundaries",
+                    "group": "Reference Boundaries",
                     "visible": false,
                     "default_style": {
                         "fill-color": "#000000",
@@ -742,7 +1072,7 @@
                 {
                     "id": "hu8-pmtiles",
                     "display_name": "Subbasins (HUC8)",
-                    "group": "Watersheds (USGS WBD)",
+                    "group": "Freshwater Resources",
                     "visible": false,
                     "default_style": {
                         "fill-color": "#1976D2",
@@ -768,7 +1098,7 @@
                 {
                     "id": "hu12-pmtiles",
                     "display_name": "Subwatersheds (HUC12)",
-                    "group": "Watersheds (USGS WBD)",
+                    "group": "Freshwater Resources",
                     "visible": false,
                     "default_style": {
                         "fill-color": "#0288D1",
@@ -783,6 +1113,106 @@
                         "name",
                         "huc12",
                         "areaacres"
+                    ]
+                }
+            ]
+        },
+        {
+            "collection_id": "usgs-nhd-streams-by-order",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-usgs-nhd/streams-by-order/stac-collection.json",
+            "assets": [
+                {
+                    "id": "streams-by-order-pmtiles",
+                    "display_name": "Streams by Order (NHD)",
+                    "group": "Freshwater Resources",
+                    "visible": false,
+                    "layer_type": "line",
+                    "default_style": {
+                        "line-color": "#1E88E5",
+                        "line-width": [
+                            "interpolate",
+                            [
+                                "linear"
+                            ],
+                            [
+                                "get",
+                                "STREAMORDER"
+                            ],
+                            1,
+                            0.3,
+                            4,
+                            1.2,
+                            7,
+                            2.5
+                        ],
+                        "line-opacity": 0.8
+                    },
+                    "tooltip_fields": [
+                        "GNIS_NAME",
+                        "STREAMORDER",
+                        "FTYPE",
+                        "LENGTHKM"
+                    ]
+                }
+            ]
+        },
+        {
+            "collection_id": "usgs-nhd-perennial-streams",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-usgs-nhd/perennial-streams/stac-collection.json",
+            "assets": [
+                {
+                    "id": "perennial-streams-pmtiles",
+                    "display_name": "Perennial Streams (NHD)",
+                    "group": "Freshwater Resources",
+                    "visible": false,
+                    "layer_type": "line",
+                    "default_style": {
+                        "line-color": "#0277BD",
+                        "line-width": 0.6,
+                        "line-opacity": 0.8
+                    },
+                    "tooltip_fields": [
+                        "GNIS_NAME",
+                        "FTYPE",
+                        "LENGTHKM"
+                    ]
+                }
+            ]
+        },
+        {
+            "collection_id": "ca-dac-eda-2023",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-ca-dac/stac-collection.json",
+            "assets": [
+                {
+                    "id": "dac-tract-pmtiles",
+                    "display_name": "Disadvantaged Communities (DAC, by tract)",
+                    "group": "Progress Data",
+                    "visible": false,
+                    "default_style": {
+                        "fill-color": [
+                            "match",
+                            [
+                                "get",
+                                "DAC23"
+                            ],
+                            "Y",
+                            "#d84315",
+                            "N",
+                            "#bbdefb",
+                            "#cfd8dc"
+                        ],
+                        "fill-opacity": 0.55
+                    },
+                    "outline_style": {
+                        "line-color": "#90a4ae",
+                        "line-width": 0.2,
+                        "line-opacity": 0.4
+                    },
+                    "tooltip_fields": [
+                        "GEOID20",
+                        "DAC23",
+                        "MHI23",
+                        "Pop23"
                     ]
                 }
             ]
