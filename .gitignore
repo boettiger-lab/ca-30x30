@@ -1,0 +1,3 @@
+# Spreadsheets / working data files (not part of the deployed app)
+*.xlsx
+*.xls
