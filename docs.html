@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — California 30x30</title>
+<style>
+:root {
+    --ink: #14241a;
+    --ink-soft: #4a5b50;
+    --paper: #f6faf6;
+    --rule: #dde7df;
+    --accent: #2e7d32;
+    --accent-dark: #1b5e20;
+    --accent-soft: #e6f1e7;
+    --link: #2e7d32;
+    --max: 880px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+header.hero {
+    background: linear-gradient(135deg, #0d3a1a 0%, var(--accent) 100%);
+    color: #fff;
+    padding: 3.5rem 1.5rem 2.5rem;
+    border-bottom: 1px solid var(--rule);
+}
+.hero-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+}
+.hero h1 {
+    font-size: 2.1rem;
+    margin: 0 0 0.4rem 0;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+.hero .tag {
+    font-size: 1.05rem;
+    opacity: 0.92;
+    margin: 0 0 1.4rem 0;
+    max-width: 60ch;
+}
+.hero .cta {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    padding: 0.55rem 1.1rem;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.35);
+    font-weight: 500;
+    transition: background 0.15s;
+}
+.hero .cta:hover { background: rgba(255,255,255,0.28); text-decoration: none; }
+.hero .badge {
+    display: inline-block;
+    margin-left: 0.6rem;
+    padding: 0.18rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.18);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    vertical-align: middle;
+}
+
+main {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+}
+
+section { margin-bottom: 2.8rem; }
+
+h2 {
+    font-size: 1.45rem;
+    color: var(--accent-dark);
+    border-bottom: 2px solid var(--accent-soft);
+    padding-bottom: 0.4rem;
+    margin: 0 0 1rem 0;
+    font-weight: 600;
+}
+h3 {
+    font-size: 1.12rem;
+    color: var(--ink);
+    margin: 1.4rem 0 0.5rem 0;
+    font-weight: 600;
+}
+p { margin: 0.5rem 0 0.9rem; }
+p.lede { font-size: 1.05rem; color: var(--ink-soft); }
+
+.layer-group {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 0.9rem 0;
+}
+.layer-group h3 {
+    margin-top: 0;
+    color: var(--accent-dark);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.layer-group h3::before {
+    content: "";
+    display: inline-block;
+    width: 4px;
+    height: 1.1em;
+    background: var(--accent);
+    border-radius: 2px;
+}
+.layer {
+    padding: 0.55rem 0;
+    border-top: 1px solid var(--rule);
+}
+.layer:first-of-type { border-top: 0; padding-top: 0; }
+.layer .name {
+    font-weight: 600;
+    color: var(--ink);
+}
+.layer .source {
+    color: var(--ink-soft);
+    font-size: 0.93rem;
+    margin: 0.1rem 0 0.15rem;
+}
+.layer .links {
+    font-size: 0.88rem;
+}
+.layer .links a { margin-right: 0.9rem; }
+.lic {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--accent-dark);
+    background: var(--accent-soft);
+    border-radius: 4px;
+    padding: 0.05rem 0.4rem;
+    margin-top: 0.2rem;
+}
+
+.callout {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    padding: 0.9rem 1.1rem;
+    border-radius: 0 6px 6px 0;
+    margin: 1rem 0;
+    font-size: 0.97rem;
+}
+.callout.green {
+    background: #e8f3ea;
+    border-left-color: #2e7d32;
+}
+
+.foot {
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 0.88rem;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+}
+.foot .partners {
+    display: flex;
+    justify-content: center;
+    gap: 1.8rem;
+    flex-wrap: wrap;
+    margin: 0.6rem 0 1rem;
+    font-weight: 500;
+    color: var(--ink);
+}
+
+@media (max-width: 600px) {
+    .hero h1 { font-size: 1.6rem; }
+    main { padding: 1.5rem 1rem 3rem; }
+    h2 { font-size: 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+    <div class="hero-inner">
+        <h1>California 30x30
+            <span class="badge">work in progress</span>
+        </h1>
+        <p class="tag">An interactive map and AI assistant for exploring California's conserved lands, biodiversity, habitat connectivity, and climate data — and tracking progress toward the state's goal of conserving 30% of its lands and coastal waters by 2030.</p>
+        <a href="/" class="cta">← Open the App</a>
+    </div>
+</header>
+
+<main>
+
+<section>
+    <h2>About this project</h2>
+    <p class="lede">A project of the <a href="https://dse.berkeley.edu" target="_blank" rel="noopener">Eric and Wendy Schmidt Center for Data Science &amp; Environment (DSE)</a> at UC Berkeley.</p>
+    <p>In 2020 California committed to <a href="https://www.californianature.ca.gov/" target="_blank" rel="noopener">conserving 30% of its lands and coastal waters by 2030</a> — the "30x30" goal — to protect biodiversity, expand access to nature, and build climate resilience. Meeting it depends on knowing what is already conserved, where biodiversity and habitat connectivity are concentrated, and how a changing climate is reshaping the landscape. This app brings the state's 30x30 conservation inventory together with the biodiversity, connectivity, wetland, and climate-hazard datasets that inform those decisions, and pairs them with an AI assistant that can both drive the map and answer quantitative questions about the data.</p>
+    <p>This is a <strong>work in progress</strong> — layers, models, and capabilities are being added and refined.</p>
+</section>
+
+<section>
+    <h2>How it works</h2>
+    <p>This app is powered by <a href="https://boettiger-lab.github.io/geo-agent/" target="_blank" rel="noopener"><strong>GLEN</strong></a>, DSE's open-source framework for AI-assisted geospatial exploration. Open datasets stream straight to your browser from cloud-native formats — no tile server in between — and an AI assistant answers questions by writing live queries against the same data. Full technical details are in the <a href="https://boettiger-lab.github.io/geo-agent/docs/" target="_blank" rel="noopener">GLEN documentation</a>.</p>
+
+    <div class="callout green">
+        <strong>🌱 Low-carbon, open models.</strong> Be patient. While much faster than most humans, GLEN makes use of more environmentally-friendly AI models. (Check out the <a href="https://carbon-dashboard.nrp-nautilus.io" target="_blank" rel="noopener">carbon dashboard 🌱</a> to see the CO₂/energy use of this deployment.)
+    </div>
+</section>
+
+<section>
+    <h2>Exploring the map</h2>
+    <p>The map is built on <a href="https://maplibre.org" target="_blank" rel="noopener">MapLibre GL</a> — the open-source engine behind the familiar Mapbox-style interactive maps. <strong>Scroll or pinch to zoom</strong>, <strong>drag to pan</strong>, and <strong>hold Ctrl and drag</strong> to tilt and rotate the view. Use the <strong>locate-me button</strong> in the top-left corner to jump the map to your current position.</p>
+    <p>The <strong>Overlays</strong> panel lists every data layer, organized into groups — conserved areas, biodiversity, connectivity, climate, and more. <strong>Toggle a layer on or off</strong> with its checkbox, and <strong>hover any feature</strong> for a tooltip of its live attributes — names, categories, ranks, acreages — straight from the source data. When layers overlap, use the <strong>send-to-back button (↩)</strong> in the Overlays header to drop the topmost layer beneath the others.</p>
+</section>
+
+<section>
+    <h2>Asking the assistant</h2>
+    <p>The Data Assistant understands plain English and does two kinds of things: it can <strong>drive the map</strong> for you, and it can <strong>answer analytical questions</strong> about the data. Just type what you want — if it can't do something, it will say so and usually suggest the closest thing it can.</p>
+
+    <p><strong>Map operations</strong> happen right away on the layers already loaded — no hunting through menus:</p>
+    <ul>
+        <li><strong>Filter a layer:</strong> <em>"Show only GAP status 1 and 2 conserved lands."</em></li>
+        <li><strong>Recolor or restyle a layer:</strong> <em>"Color conserved areas by managing agency"</em>, <em>"Make the habitat layer 50% transparent."</em></li>
+        <li><strong>Fly somewhere:</strong> <em>"Fly to the Sierra Nevada"</em>, <em>"Zoom to San Diego County."</em></li>
+        <li><strong>Show or hide layers:</strong> <em>"Turn on bird species richness"</em>, <em>"Show the historic fire perimeters."</em></li>
+    </ul>
+
+    <p><strong>Analytical questions</strong> are answered by writing live spatial queries over the underlying data, returning a number or a downloadable table:</p>
+    <ul>
+        <li><em>"How many acres of California are conserved at GAP status 1 or 2?"</em></li>
+        <li><em>"Which ecoregion has the most conserved acreage?"</em></li>
+        <li><em>"Where is rare-species biodiversity highest relative to its ecoregion?"</em></li>
+    </ul>
+
+    <div class="callout">
+        <strong>✏️ Draw an area to ask about it.</strong> Use the <strong>draw tool</strong> on the map to sketch a polygon — a watershed, a proposed acquisition, a county, anywhere in the state — then ask the assistant about it: <em>"How many acres inside the area I drew are already conserved?"</em>, <em>"What habitat types does this polygon contain?"</em>, <em>"What's the average biodiversity rank here?"</em> Your drawn shape becomes a live spatial filter for any query.
+    </div>
+</section>
+
+<section>
+    <h2>Data layers &amp; sources</h2>
+    <p>Every layer draws from a public, primary source. Click "STAC" beside any entry to see the full machine-readable metadata — schemas, column descriptions, license, lineage, and download URLs.</p>
+
+    <div class="layer-group">
+        <h3>30x30 Conserved Areas</h3>
+        <div class="layer">
+            <div class="name">Conserved Areas, Terrestrial (2025)</div>
+            <div class="source">California's statewide inventory of lands conserved toward the 30x30 goal — one polygon per conserved unit, attributed with managing agency, access type, and GAP/reGAP biodiversity-protection status (1–4). The primary reference for tracking conservation progress.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/conserved-areas-terrestrial-2025/stac-collection.json" target="_blank" rel="noopener">STAC</a><a href="https://www.californianature.ca.gov/" target="_blank" rel="noopener">Source: California Nature</a></div>
+            <span class="lic">California Natural Resources Agency (CNRA) — CA Nature 30x30</span>
+        </div>
+        <div class="layer">
+            <div class="name">Ecoregions (20-class)</div>
+            <div class="source">California's Bailey/ECOMAP-derived ecoregions as used by the CNRA / ACE program — the standard regional framework for normalizing biodiversity and conservation metrics within the state.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/ecoregion/stac-collection.json" target="_blank" rel="noopener">STAC</a></div>
+            <span class="lic">CNRA / ACE — Bailey-derived ecoregions</span>
+        </div>
+    </div>
+
+    <div class="layer-group">
+        <h3>Habitat Types</h3>
+        <div class="layer">
+            <div class="name">CWHR Major Habitat Types (13-class) &amp; Habitat Types (60+ class)</div>
+            <div class="source">California Wildlife Habitat Relationships vegetation classes derived from CAL FIRE's FVEG statewide vegetation map — a coarse 13-class major-habitat grouping and the full 60+ class typology, both as categorical rasters.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/cwhr13/stac-collection.json" target="_blank" rel="noopener">STAC (13-class)</a><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/cwhr/stac-collection.json" target="_blank" rel="noopener">STAC (60+ class)</a><a href="https://frap.fire.ca.gov/mapping/gis-data/" target="_blank" rel="noopener">Source: CAL FIRE FRAP</a></div>
+            <span class="lic">CAL FIRE FRAP — FVEG / CWHR</span>
+        </div>
+    </div>
+
+    <div class="layer-group">
+        <h3>ACE Biodiversity &amp; Richness</h3>
+        <div class="layer">
+            <div class="name">ACE Terrestrial Biodiversity Summary</div>
+            <div class="source">CDFW's Areas of Conservation Emphasis (ACE v3.0) terrestrial biodiversity summary, on a statewide hexagon grid. A single dataset whose columns drive many map layers: BioRank and Rare Rank (statewide and ecoregion-normalized, 1–5 quantiles), and native, rare, and endemic species richness for amphibians, reptiles, birds, and mammals.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-cdfw/ace/terrestrial-biodiversity-summary/stac-collection.json" target="_blank" rel="noopener">STAC</a><a href="https://wildlife.ca.gov/Data/Analysis/ACE" target="_blank" rel="noopener">Source: CDFW ACE</a></div>
+            <span class="lic">California Department of Fish and Wildlife (CDFW) — ACE v3.0 (ds2739)</span>
+        </div>
+        <div class="layer">
+            <div class="name">Plant &amp; Rarity-Weighted Endemic Plant Richness</div>
+            <div class="source">Modeled plant species richness and rarity-weighted endemic plant richness for California (Kling et al. 2018), as continuous rasters — highlighting centers of overall plant diversity and of range-restricted endemic diversity.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/plant-richness/stac-collection.json" target="_blank" rel="noopener">STAC (richness)</a><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/rarity-weighted-endemic-plant-richness/stac-collection.json" target="_blank" rel="noopener">STAC (endemic)</a></div>
+            <span class="lic">Kling et al. 2018</span>
+        </div>
+        <div class="layer">
+            <div class="name">Freshwater Species Richness (HUC12)</div>
+            <div class="source">Freshwater species richness summarized by HUC12 subwatershed (Howard et al. 2015 / TNC California Freshwater Species Database) — a choropleth of freshwater biodiversity, including vulnerable and listed species counts.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/freshwater-species-richness/stac-collection.json" target="_blank" rel="noopener">STAC</a></div>
+            <span class="lic">Howard et al. 2015 / TNC (ds1197)</span>
+        </div>
+    </div>
+
+    <div class="layer-group">
+        <h3>Connectivity</h3>
+        <div class="layer">
+            <div class="name">Present-day Connectivity &amp; Climate Migration Routes</div>
+            <div class="source">Present-day terrestrial connectivity categories (Cameron et al. 2022) and modeled climate migration routes (Schloss et al. 2022) — categorical rasters showing where the landscape supports movement today and where species are expected to track suitable climate over time.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-connectivity/present-day-connectivity/categories/stac-collection.json" target="_blank" rel="noopener">STAC (connectivity)</a><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-connectivity/climate-migration-routes/stac-collection.json" target="_blank" rel="noopener">STAC (migration)</a></div>
+            <span class="lic">Cameron et al. 2022 · Schloss et al. 2022</span>
+        </div>
+        <div class="layer">
+            <div class="name">Regional Connectivity Linkages</div>
+            <div class="source">South Coast Missing Linkages (Beier et al. 2006) — mapped landscape linkages designed to maintain connectivity between protected core areas, as polygons.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-connectivity/regional-connectivity-linkages/stac-collection.json" target="_blank" rel="noopener">STAC</a></div>
+            <span class="lic">Beier et al. 2006</span>
+        </div>
+    </div>
+
+    <div class="layer-group">
+        <h3>Wetlands &amp; Groundwater-Dependent Ecosystems</h3>
+        <div class="layer">
+            <div class="name">Wetlands (National Wetlands Inventory)</div>
+            <div class="source">US Fish &amp; Wildlife Service National Wetlands Inventory, filtered to freshwater emergent, freshwater forested/shrub, and estuarine &amp; marine wetland classes.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-wetlands/nwi/stac-collection.json" target="_blank" rel="noopener">STAC</a><a href="https://www.fws.gov/program/national-wetlands-inventory" target="_blank" rel="noopener">Source: USFWS NWI</a></div>
+            <span class="lic">USFWS — National Wetlands Inventory</span>
+        </div>
+        <div class="layer">
+            <div class="name">Groundwater-Dependent Ecosystems</div>
+            <div class="source">Mapped groundwater-dependent ecosystems (Klausmeyer et al. 2018) — vegetation and wetland features that rely on groundwater, provided as separate vegetation and wetland layers.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/groundwater-dependent-ecosystems/vegetation/stac-collection.json" target="_blank" rel="noopener">STAC (vegetation)</a><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/groundwater-dependent-ecosystems/wetlands/stac-collection.json" target="_blank" rel="noopener">STAC (wetlands)</a></div>
+            <span class="lic">Klausmeyer et al. 2018 / TNC</span>
+        </div>
+    </div>
+
+    <div class="layer-group">
+        <h3>Climate &amp; Fire</h3>
+        <div class="layer">
+            <div class="name">Sea-Level Rise Inundation (5 ft)</div>
+            <div class="source">NOAA sea-level-rise inundation extent at 5 feet — the coastal area exposed under that scenario.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-hazard/sea-level-rise/stac-collection.json" target="_blank" rel="noopener">STAC</a><a href="https://coast.noaa.gov/slr/" target="_blank" rel="noopener">Source: NOAA</a></div>
+            <span class="lic">NOAA Office for Coastal Management</span>
+        </div>
+        <div class="layer">
+            <div class="name">Mid-Century Habitat Climate Exposure</div>
+            <div class="source">Modeled mid-century habitat climate exposure (Thorne et al. 2016), shown here for the CNRM (warm-wet) scenario — higher values indicate habitat more exposed to projected climate change.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-hazard/mid-century-habitat-climate-exposure/stac-collection.json" target="_blank" rel="noopener">STAC</a></div>
+            <span class="lic">Thorne et al. 2016</span>
+        </div>
+        <div class="layer">
+            <div class="name">Historic Fire Perimeters (1878–2025)</div>
+            <div class="source">CAL FIRE's statewide record of mapped wildfire perimeters from 1878 through 2025, colored by year of burn.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-fire/calfire-2025/firep/stac-collection.json" target="_blank" rel="noopener">STAC</a><a href="https://frap.fire.ca.gov/mapping/gis-data/" target="_blank" rel="noopener">Source: CAL FIRE FRAP</a></div>
+            <span class="lic">CAL FIRE FRAP — Fire Perimeters</span>
+        </div>
+    </div>
+
+    <p style="margin-top: 1.6rem;">Browse the full STAC catalog at <a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-data/stac/catalog.json" target="_blank" rel="noopener">radiantearth.github.io / stac-browser</a> to explore additional datasets not yet enabled in the app.</p>
+</section>
+
+<div class="foot">
+    <div class="partners">
+        <span><a href="https://dse.berkeley.edu" target="_blank" rel="noopener">Schmidt Center for Data Science &amp; Environment</a></span>
+    </div>
+    <div>Built by DSE at UC Berkeley with <a href="https://github.com/boettiger-lab/geo-agent" target="_blank" rel="noopener">GLEN</a> · <a href="https://github.com/boettiger-lab/ca-30x30" target="_blank" rel="noopener">Source on GitHub</a></div>
+    <div style="margin-top:0.4rem;">A work in progress — feedback welcome via <a href="https://github.com/boettiger-lab/ca-30x30/issues" target="_blank" rel="noopener">GitHub issues</a>.</div>
+</div>
+
+</main>
+
+</body>
+</html>

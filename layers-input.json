@@ -1,8 +1,11 @@
 {
     "catalog": "https://s3-west.nrp-nautilus.io/public-data/stac/catalog.json",
     "titiler_url": "https://titiler.nrp-nautilus.io",
-    "mcp_url": "https://dev-duckdb-mcp.nrp-nautilus.io/mcp",
+    "mcp_url": "https://duckdb-mcp.nrp-nautilus.io/mcp",
     "auto_approve": true,
+    "draw_enabled": true,
+    "geolocate": { "button": true },
+    "geocoder": { "search_box": false },
     "sidebar": {
         "enabled": true,
         "chat_title": "Chat"
@@ -51,12 +54,14 @@
         ]
     },
     "links": {
-        "github": "https://github.com/boettiger-lab/geo-agent-template",
-        "docs": "https://boettiger-lab.github.io/geo-agent/"
+        "github": "https://github.com/boettiger-lab/ca-30x30",
+        "docs": "/docs.html",
+        "carbon": true
     },
     "collections": [
         {
             "collection_id": "ca30x30-conserved-areas-terrestrial-2025",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-ca30x30/conserved-areas-terrestrial-2025/stac-collection.json",
             "assets": [
                 {
                     "id": "conserved-areas-terrestrial-2025-pmtiles",
@@ -93,6 +98,7 @@
         },
         {
             "collection_id": "ca30x30-ecoregion",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-ca30x30/ecoregion/stac-collection.json",
             "assets": [
                 {
                     "id": "ecoregion-pmtiles",
@@ -116,6 +122,7 @@
         },
         {
             "collection_id": "cwhr13",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-ca30x30/cwhr13/stac-collection.json",
             "assets": [
                 {
                     "id": "cwhr13-cog",
@@ -128,6 +135,7 @@
         },
         {
             "collection_id": "cwhr",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-ca30x30/cwhr/stac-collection.json",
             "assets": [
                 {
                     "id": "cwhr-cog",
@@ -140,6 +148,7 @@
         },
         {
             "collection_id": "ace-terrestrial-biodiversity-summary",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-cdfw/ace/terrestrial-biodiversity-summary/stac-collection.json",
             "assets": [
                 {
                     "id": "terrestrial-biodiversity-summary-pmtiles",
@@ -353,6 +362,7 @@
         },
         {
             "collection_id": "plant-richness",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-ca30x30/plant-richness/stac-collection.json",
             "assets": [
                 {
                     "id": "plant-richness-cog",
@@ -367,6 +377,7 @@
         },
         {
             "collection_id": "rarity-weighted-endemic-plant-richness",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-ca30x30/rarity-weighted-endemic-plant-richness/stac-collection.json",
             "assets": [
                 {
                     "id": "rarity-weighted-endemic-plant-richness-cog",
@@ -381,6 +392,7 @@
         },
         {
             "collection_id": "freshwater-species-richness",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-ca30x30/freshwater-species-richness/stac-collection.json",
             "assets": [
                 {
                     "id": "freshwater-species-richness-pmtiles",
@@ -410,6 +422,7 @@
         },
         {
             "collection_id": "present-day-connectivity-categories",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-connectivity/present-day-connectivity/categories/stac-collection.json",
             "assets": [
                 {
                     "id": "present-day-connectivity-categories-cog",
@@ -422,6 +435,7 @@
         },
         {
             "collection_id": "climate-migration-routes",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-connectivity/climate-migration-routes/stac-collection.json",
             "assets": [
                 {
                     "id": "climate-migration-routes-cog",
@@ -434,6 +448,7 @@
         },
         {
             "collection_id": "regional-connectivity-linkages",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-connectivity/regional-connectivity-linkages/stac-collection.json",
             "assets": [
                 {
                     "id": "regional-connectivity-linkages-pmtiles",
@@ -459,6 +474,7 @@
         },
         {
             "collection_id": "wetlands-nwi",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-wetlands/nwi/stac-collection.json",
             "assets": [
                 {
                     "id": "nwi-pmtiles",
@@ -550,6 +566,7 @@
         },
         {
             "collection_id": "sea-level-rise",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-hazard/sea-level-rise/stac-collection.json",
             "assets": [
                 {
                     "id": "sea-level-rise-pmtiles",
@@ -575,6 +592,7 @@
         },
         {
             "collection_id": "mid-century-habitat-climate-exposure",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-hazard/mid-century-habitat-climate-exposure/stac-collection.json",
             "assets": [
                 {
                     "id": "cnrm-cog",
@@ -589,6 +607,7 @@
         },
         {
             "collection_id": "calfire-2025-firep",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-fire/calfire-2025/firep/stac-collection.json",
             "assets": [
                 {
                     "id": "firep-pmtiles",

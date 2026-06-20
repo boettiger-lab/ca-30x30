@@ -32,6 +32,7 @@ spec:
           # Update this URL to point to your own GitHub repo:
           git clone --depth 1 https://github.com/boettiger-lab/ca-30x30.git /tmp/repo
           cp /tmp/repo/index.html /usr/share/nginx/html/
+          cp /tmp/repo/docs.html /usr/share/nginx/html/
           cp /tmp/repo/layers-input.json /usr/share/nginx/html/
           cp /tmp/repo/system-prompt.md /usr/share/nginx/html/
         volumeMounts:
@@ -46,7 +47,7 @@ spec:
         - name: TMPDIR
           value: "/tmp"
         - name: MCP_SERVER_URL
-          value: "https://dev-duckdb-mcp.nrp-nautilus.io/mcp"
+          value: "https://duckdb-mcp.nrp-nautilus.io/mcp"
         - name: LLM_ENDPOINT
           value: "https://open-llm-proxy.nrp-nautilus.io/v1"
         - name: PROXY_KEY
