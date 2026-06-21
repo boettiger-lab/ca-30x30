@@ -4,8 +4,6 @@
 # `ca-30x30-nginx` below), which injects the Authorization header
 # server-side via `proxy_set_header`. The browser only sees a relative
 # `/api/llm` endpoint and never holds the key.
-#
-# See ../../geo-agent-ops/SECRETS_EXPOSURE.md for the migration plan.
 apiVersion: v1
 kind: ConfigMap
 metadata:
