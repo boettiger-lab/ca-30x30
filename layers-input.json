@@ -1015,6 +1015,67 @@
             ]
         },
         {
+            "collection_id": "flood-hazard",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-hazard/flood-hazard/stac-collection.json",
+            "assets": [
+                {
+                    "id": "flood-hazard-pmtiles",
+                    "display_name": "FEMA Flood Hazard Zones (NFHL)",
+                    "group": "Climate-Related Risks",
+                    "visible": false,
+                    "default_filter": [
+                        "match",
+                        ["get", "FLD_ZONE"],
+                        ["AREA NOT INCLUDED", "OPEN WATER"],
+                        false,
+                        true
+                    ],
+                    "default_style": {
+                        "fill-color": [
+                            "match",
+                            ["get", "FLD_ZONE"],
+                            ["A", "AE", "AH", "AO", "A99"], "#1565C0",
+                            ["V", "VE"], "#006064",
+                            "X", "#90CAF9",
+                            "D", "#B0BEC5",
+                            "rgba(0,0,0,0)"
+                        ],
+                        "fill-opacity": 0.55
+                    },
+                    "outline_style": {
+                        "line-color": "#0D47A1",
+                        "line-width": 0.3,
+                        "line-opacity": 0.4
+                    },
+                    "tooltip_fields": [
+                        "FLD_ZONE",
+                        "ZONE_SUBTY",
+                        "SFHA_TF",
+                        "DFIRM_ID"
+                    ],
+                    "legend_type": "categorical",
+                    "legend_classes": [
+                        {
+                            "label": "Zone A/AE/AH/AO/A99 — 1% annual chance SFHA",
+                            "color": "#1565C0"
+                        },
+                        {
+                            "label": "Zone V/VE — Coastal high-hazard SFHA",
+                            "color": "#006064"
+                        },
+                        {
+                            "label": "Zone X — Minimal/moderate hazard",
+                            "color": "#90CAF9"
+                        },
+                        {
+                            "label": "Zone D — Undetermined hazard",
+                            "color": "#B0BEC5"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "collection_id": "mid-century-habitat-climate-exposure",
             "collection_url": "https://s3-west.nrp-nautilus.io/public-hazard/mid-century-habitat-climate-exposure/stac-collection.json",
             "assets": [
