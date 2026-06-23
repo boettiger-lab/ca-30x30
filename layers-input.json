@@ -129,6 +129,19 @@
             ]
         },
         {
+            "collection_id": "ca-climate-zones",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-ca30x30/ca-climate-zones/stac-collection.json",
+            "assets": [
+                {
+                    "id": "ca-climate-zones-cog",
+                    "display_name": "Climate Zones (Ackerly/Kling 10-class)",
+                    "group": "Climate Zones",
+                    "visible": false,
+                    "legend_type": "categorical"
+                }
+            ]
+        },
+        {
             "collection_id": "ca30x30-ecoregion",
             "collection_url": "https://s3-west.nrp-nautilus.io/public-ca30x30/ecoregion/stac-collection.json",
             "assets": [
@@ -1363,6 +1376,75 @@
                         "FTYPE",
                         "LENGTHKM"
                     ]
+                }
+            ]
+        },
+        {
+            "collection_id": "fmmp-2022",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-ca30x30/fmmp-2022/stac-collection.json",
+            "assets": [
+                {
+                    "id": "fmmp-2022-pmtiles",
+                    "alias": "fmmp-farmland",
+                    "display_name": "Farmland (FMMP 2022)",
+                    "group": "NBS & Agriculture",
+                    "visible": false,
+                    "default_filter": [
+                        "match",
+                        ["get", "polygon_ty"],
+                        ["P", "U", "S", "L"],
+                        true,
+                        false
+                    ],
+                    "default_style": {
+                        "fill-color": [
+                            "match",
+                            ["get", "polygon_ty"],
+                            "P", "#1b5e20",
+                            "U", "#2e7d32",
+                            "S", "#558b2f",
+                            "L", "#8bc34a",
+                            "rgba(0,0,0,0)"
+                        ],
+                        "fill-opacity": 0.65
+                    },
+                    "outline_style": {
+                        "line-color": "#1b5e20",
+                        "line-width": 0.3,
+                        "line-opacity": 0.5
+                    },
+                    "tooltip_fields": ["county_nam", "polygon_ty", "polygon_ac", "upd_year"],
+                    "legend_type": "categorical",
+                    "legend_classes": [
+                        {"label": "Prime Farmland (P)", "color": "#1b5e20"},
+                        {"label": "Unique Farmland (U)", "color": "#2e7d32"},
+                        {"label": "Statewide Importance (S)", "color": "#558b2f"},
+                        {"label": "Local Importance (L)", "color": "#8bc34a"}
+                    ]
+                },
+                {
+                    "id": "fmmp-2022-pmtiles",
+                    "alias": "fmmp-grazing",
+                    "display_name": "Grazing Land (FMMP 2022)",
+                    "group": "NBS & Agriculture",
+                    "visible": false,
+                    "default_filter": [
+                        "match",
+                        ["get", "polygon_ty"],
+                        ["G"],
+                        true,
+                        false
+                    ],
+                    "default_style": {
+                        "fill-color": "#795548",
+                        "fill-opacity": 0.55
+                    },
+                    "outline_style": {
+                        "line-color": "#4e342e",
+                        "line-width": 0.3,
+                        "line-opacity": 0.5
+                    },
+                    "tooltip_fields": ["county_nam", "polygon_ty", "polygon_ac", "upd_year"]
                 }
             ]
         },
