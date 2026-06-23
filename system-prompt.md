@@ -48,6 +48,16 @@ The map is preloaded with these datasets (grouped in the layer panel):
 - **Choropleth counts — don't SUM across features.** Freshwater species counts are per-HUC12-subwatershed totals (dedup by `Watershed_ID`); summing across watersheds double-counts wide-ranging species. These are choropleth values, not additive totals.
 - **NWI wetlands** features can overlap and the PMTiles drops the `ACRES` field — for wetland area, join to the parquet on `_cng_fid` rather than reading area off the tiles.
 
+## Canonical 30x30 statistics — compute these identically every time
+
+Headline figures must be reproducible: the same question must return the same number across sessions. Do **not** improvise the denominator or switch methods between asks. Resolve exact S3 paths via `get_dataset`, but always use these exact definitions:
+
+- **CA total land area (denominator)** = `ALAND` for `STATEFP = '06'` from the `census-2024-state` dataset, converted to acres (`ALAND` is in m²; acres = m² / 4046.8564224) ≈ **99.75 million acres**. Always use this one source — never a hardcoded constant, the ecoregion layer, or a sum of H3 cell areas.
+- **Protected land, GAP 1+2 (numerator)** = `SUM(Gap1_acres + Gap2_acres)` over conserved units, deduplicated by `_cng_fid`, from the 30x30 conserved-areas dataset (the GAP methodology above — never a `reGAP` filter) ≈ **26.47 million acres**.
+- **Percent of California protected for 30x30** = numerator / denominator × 100 ≈ **26.5%**.
+
+If you get a materially different number, you used a different denominator or method — recheck against these definitions rather than reporting the new figure.
+
 ## When to use which tool
 
 You have two kinds of tools:
