@@ -13,13 +13,19 @@ data:
   config.template.json: |
     {
         "mcp_server_url": "${MCP_SERVER_URL}",
-        "llm_model": "minimax-m2",
+        "llm_model": "qwen3",
         "transcription_model": {
             "value": "gemma-4-e4b",
             "endpoint": "/api/llm",
             "api_key": "unused"
         },
         "llm_models": [
+            {
+                "value": "qwen3",
+                "label": "NRP Qwen3",
+                "endpoint": "/api/llm",
+                "api_key": "unused"
+            },
             {
                 "value": "gemma",
                 "label": "NRP Gemma",
@@ -35,12 +41,6 @@ data:
             {
                 "value": "glm-5",
                 "label": "NRP GLM-5",
-                "endpoint": "/api/llm",
-                "api_key": "unused"
-            },
-            {
-                "value": "qwen3",
-                "label": "NRP Qwen3",
                 "endpoint": "/api/llm",
                 "api_key": "unused"
             },
