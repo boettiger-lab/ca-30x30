@@ -82,12 +82,12 @@ When testing SQL methodology directly (not the full agent loop), run it against 
 
 ## Branch and deployment workflow
 
-**`main` is the live branch.** The `padus` deployment on k8s clones from `main` at pod startup — whatever is on `main` is what runs in production.
+**`main` is the live branch.** The `ca-30x30` deployment on k8s (namespace `biodiversity`) clones from `main` at pod startup — whatever is on `main` is what runs in production. (The app's deployment is named **`ca-30x30`**, not `padus` — `padus` is a *different* app sharing the cluster. Always target `deployment/ca-30x30`.)
 
 Workflow for testing CDN pin updates or config changes:
 1. Create a `test/` branch, make changes, verify jsDelivr serves the new SHA.
 2. Merge the `test/` branch to `main` (fast-forward is fine).
-3. Restart the deployment: `kubectl rollout restart deployment/padus -n biodiversity`
+3. Restart the deployment: `kubectl rollout restart deployment/ca-30x30 -n biodiversity`
 
 Do **not** merge to main before verifying the CDN SHA is live — jsDelivr can take up to an hour to index a new tag.
 
