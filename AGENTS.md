@@ -43,6 +43,43 @@ Instead, add a "Discovering data" section directing the agent to call `list_data
 
 ---
 
+## Training & evaluation workflow (regression fixes)
+
+Partner-reported agent failures (wrong numbers, hallucinated codes, speculation) are diagnosed and fixed through a fixed loop: **observe logs → reproduce headless → trace each issue to the layer that owns it → fix in that layer → verify → deploy.** The canonical reference is the **`geo-agent-training` skill** in `boettiger-lab/open-llm-proxy` (`.claude/skills/geo-agent-training/SKILL.md`) — read it before working a batch of issues.
+
+### Hard boundary — edit only this repo
+
+The LLM's context is assembled from four layers, each owned by a different repo. **You make code/config edits *only* in this app repo. For a root cause in any other layer, open a GitHub issue on the owning repo** (with log evidence, root cause, exact proposed change, and how to verify) — never edit another repo's code, and never open a PR there. Their agents/maintainers action it. Reading sibling repos and their git history for diagnosis is encouraged.
+
+| Layer | Owns | Repo | Symptom that points here |
+|---|---|---|---|
+| **STAC catalog metadata** | dataset paths, column schemas, coded values (code→name), dataset descriptions, per-dataset aggregation notes | `data-workflows` | model guesses a column/code, can't resolve a class name, wrong paths, missing dataset-specific aggregation rule |
+| **MCP tool descriptions** | SQL construction, H3 join rules, partition pruning, dedup/area-aggregation patterns, raster-vs-vector guidance | `mcp-data-server` (`query-optimization.md`, `h3-guide.md`) | structurally wrong SQL, bad joins, generic aggregation/uncertainty caveats that apply across apps |
+| **geo-agent framework** | tool orchestration, STAC-first enforcement, map-tool definitions, prompt assembly, LLM call params (e.g. temperature) | `geo-agent` | model skips STAC tools, wrong tool type, ListTools spam, sampling/determinism knobs |
+| **App system prompt** (here) | app persona, domain interpretation, attribution/framing, cross-dataset disambiguation, "data tool not advisor" / no-speculation guardrails | **this repo** (`system-prompt.md`) | the issue is purely how *this* app interprets/presents results for its audience |
+
+Prefer fixing the root cause in the correct layer over papering over it in `system-prompt.md`. Before adding anything to the system prompt, ask: *could STAC metadata, an MCP tool description, or the framework fix this instead?* If yes, file the issue there. After tracing a batch, the app repo gets the app-layer edits plus one summary issue linking all the cross-repo issues filed.
+
+### Verify with the headless runner — don't close on faith
+
+Before claiming an issue fixed, **reproduce it through the headless runner**, which replays the full geo-agent tool-use loop (catalog load, MCP connect, prompt assembly, tool calls) through the live proxy using *this repo's current `system-prompt.md` and `layers-input.json`*. It imports the framework from a sibling `geo-agent` checkout, so behavior matches the browser by construction.
+
+- **Matrix sweeps (model × question × trial) run as a Kubernetes Job**, never locally — it mounts `PROXY_KEY` from the `open-llm-proxy-secrets` Secret in `biodiversity`:
+  ```bash
+  cd ../open-llm-proxy/headless
+  TAG=ca30x30-regress QUESTIONS_FILE=runs/ca30x30-regression-q.txt \
+    MODELS="qwen3" TRIALS=3 \
+    ./run-matrix-k8s.sh boettiger-lab/ca-30x30
+  kubectl -n biodiversity logs -f job/<JOB_NAME>      # printed on launch
+  ```
+  Re-running the *same* question with `TRIALS>1` is how determinism regressions are checked. The Job clones the app repo at `main` (override with `APP_BRANCH`), so it tests exactly what is deployed.
+- Per-cell transcripts + `summary.tsv` print to the Job's stdout; the full request/response pairs land in the proxy logs. Analyze them per `open-llm-proxy/AGENTS.md` + `LOGGING.md` (`./sync-logs.sh` then DuckDB over the consolidated parquet, filtered by the `--origin` tag).
+- Single ad-hoc repro of one failure: `node run.js "QUESTION" --config layers-input.json --system-prompt system-prompt.md --model qwen3` (see `headless/README.md`). Not for matrix work.
+
+When testing SQL methodology directly (not the full agent loop), run it against the MCP `query` tool to confirm the numbers before encoding any guidance.
+
+---
+
 ## Branch and deployment workflow
 
 **`main` is the live branch.** The `padus` deployment on k8s clones from `main` at pod startup — whatever is on `main` is what runs in production.
