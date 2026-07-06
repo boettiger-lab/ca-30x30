@@ -13,7 +13,7 @@ data:
   config.template.json: |
     {
         "mcp_server_url": "${MCP_SERVER_URL}",
-        "llm_model": "qwen3",
+        "llm_model": "qwen",
         "transcription_model": {
             "value": "gemma-4-e4b",
             "endpoint": "/api/llm",
@@ -33,8 +33,8 @@ data:
                 "api_key": "unused"
             },
             {
-                "value": "nemotron",
-                "label": "DSE Nemotron",
+                "value": "qwen",
+                "label": "DSE-nimbus",
                 "endpoint": "/api/llm",
                 "api_key": "unused"
             },
