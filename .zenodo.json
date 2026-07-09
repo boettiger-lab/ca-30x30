@@ -1,0 +1,49 @@
+{
+    "title": "CA 30x30 Planning & Assessment Tool",
+    "description": "An interactive conservation decision-support tool for California's 30x30 goal — the state's commitment to conserve 30% of its lands and coastal waters by 2030. Built on the Geospatial LLM-Enabled Navigator (GLEN) framework, it pairs a MapLibre interface with a natural-language agent that discovers datasets and runs live SQL queries over cloud-native (Parquet/COG) data through MCP tools. Users can explore the state's conserved-areas inventory alongside biodiversity, habitat, connectivity, freshwater, and climate-hazard data, gaining insight into what is conserved, what lacks protection, and where opportunities remain to fill those gaps. Developed by the Eric and Wendy Schmidt Center for Data Science & Environment (DSE) at UC Berkeley in collaboration with the California Biodiversity Network, aligned to the CA 30x30 Biodiversity Assessment. This 1.0.0 release re-platforms the tool from its earlier Streamlit implementation onto GLEN and updates the underlying data to the 2025 CA 30x30 conservation inventory; the repository now holds only dataset configuration and the domain system prompt, with the map, chat, agent loop, and tool orchestration provided by the GLEN framework.",
+    "upload_type": "software",
+    "access_right": "open",
+    "license": "bsd-2-clause",
+    "version": "1.0.0",
+    "creators": [
+        {
+            "name": "Buhler, Cassidy Kim",
+            "orcid": "0000-0003-4157-4273",
+            "affiliation": "University of Colorado Boulder"
+        },
+        {
+            "name": "Boettiger, Carl",
+            "orcid": "0000-0002-1642-628X",
+            "affiliation": "University of California Berkeley"
+        }
+    ],
+    "grants": [
+        {
+            "id": "10.13039/100000001::2153040"
+        }
+    ],
+    "related_identifiers": [
+        {
+            "identifier": "https://github.com/boettiger-lab/ca-30x30/tree/1.0.0",
+            "relation": "isSupplementTo",
+            "resource_type": "software"
+        },
+        {
+            "identifier": "10.5281/zenodo.20673849",
+            "relation": "requires",
+            "resource_type": "software"
+        }
+    ],
+    "keywords": [
+        "California 30x30",
+        "biodiversity",
+        "conservation planning",
+        "decision support",
+        "geospatial",
+        "large language models",
+        "open-weights models",
+        "cloud-native data",
+        "STAC",
+        "DuckDB"
+    ]
+}
