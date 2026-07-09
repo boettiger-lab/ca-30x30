@@ -8,4 +8,18 @@ The map, chat, and agent code live in the [GLEN](https://github.com/boettiger-la
 
 A project of [Berkeley DSE](https://dse.berkeley.edu) with the California Biodiversity Network.
 
-To cite, use the DOI above. BSD 2-Clause.
+## Citation
+
+If you use this tool, please cite it via its Zenodo concept DOI, which always resolves to the latest version:
+
+> Buhler, C. K., & Boettiger, C. *CA 30x30 Planning & Assessment Tool.* Zenodo. https://doi.org/10.5281/zenodo.14933817
+
+It is built on the GLEN framework ([10.5281/zenodo.20673849](https://doi.org/10.5281/zenodo.20673849)).
+
+## Acknowledgements
+
+Developed by DSE at UC Berkeley in collaboration with the California Biodiversity Network. Supported in part by NSF award [2153040](https://www.nsf.gov/awardsearch/showAward?AWD_ID=2153040). Feedback welcome via [GitHub issues](https://github.com/boettiger-lab/ca-30x30/issues).
+
+## License
+
+[BSD 2-Clause](LICENSE) © Boettiger Lab, UC Berkeley.
