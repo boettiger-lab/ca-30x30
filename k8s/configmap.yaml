@@ -13,7 +13,7 @@ data:
   config.template.json: |
     {
         "mcp_server_url": "${MCP_SERVER_URL}",
-        "llm_model": "claude-sonnet-5",
+        "llm_model": "z-ai/glm-5.2",
         "transcription_model": {
             "value": "gemma-4-e4b",
             "endpoint": "/api/llm",
