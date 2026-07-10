@@ -45,8 +45,8 @@ data:
                 "api_key": "unused"
             },
             {
-                "value": "glm-5",
-                "label": "NRP GLM-5",
+                "value": "z-ai/glm-5.2",
+                "label": "GLM-5.2 (OpenRouter)",
                 "endpoint": "/api/llm",
                 "api_key": "unused"
             },
