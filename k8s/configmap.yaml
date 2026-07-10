@@ -13,13 +13,19 @@ data:
   config.template.json: |
     {
         "mcp_server_url": "${MCP_SERVER_URL}",
-        "llm_model": "qwen",
+        "llm_model": "claude-sonnet-5",
         "transcription_model": {
             "value": "gemma-4-e4b",
             "endpoint": "/api/llm",
             "api_key": "unused"
         },
         "llm_models": [
+            {
+                "value": "claude-sonnet-5",
+                "label": "Claude Sonnet 5",
+                "endpoint": "/api/llm",
+                "api_key": "unused"
+            },
             {
                 "value": "qwen3",
                 "label": "NRP Qwen3",
