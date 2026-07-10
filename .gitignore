@@ -1,3 +1,6 @@
 # Spreadsheets / working data files (not part of the deployed app)
 *.xlsx
 *.xls
+
+# Claude Code local/agent state
+.claude/
