@@ -21,7 +21,7 @@ data:
         },
         "llm_models": [
             {
-                "value": "claude-sonnet-5",
+                "value": "anthropic/claude-sonnet-5",
                 "label": "Claude Sonnet 5",
                 "endpoint": "/api/llm",
                 "api_key": "unused"
