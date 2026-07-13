@@ -69,6 +69,12 @@ spec:
           # $remote_addr style variables are left alone.
           envsubst '$${PROXY_KEY}' < /nginx-template/nginx.conf.template \
             > /etc/nginx/conf.d/default.conf
+          # Pin worker_processes low: the base image defaults to
+          # 'auto' (one worker per CPU), which spawns hundreds of
+          # workers on large NRP nodes and OOM-kills the 256Mi limit.
+          # -g can't override it (duplicate directive), so patch the
+          # main config in place before launching.
+          sed -i 's/^worker_processes.*/worker_processes 2;/' /etc/nginx/nginx.conf
           nginx -g 'daemon off;'
         resources:
           requests:
