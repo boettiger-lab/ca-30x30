@@ -1,0 +1,30 @@
+What percent of California's area is conserved under 30x30 (GAP status 1 or 2)?
+What percent of California is in other conserved or public lands (GAP status 3 or 4)?
+What percent of California is non-conserved?
+How many acres of California are conserved under 30x30 (GAP 1 or 2)?
+How many more acres does California need to conserve to reach the 30% goal?
+Which ecoregion makes up the largest share of California's 30x30 conserved network, and what percent?
+What share of California's 30x30 conserved network is the Sierra Nevada ecoregion?
+What is the most common major habitat type in California's 30x30 conserved network, and what percent of the network is it?
+What percent of desert shrub is conserved under 30x30 (GAP 1 or 2)?
+What percent of desert woodland is conserved under 30x30 (GAP 1 or 2)?
+What percent of hardwood woodland is conserved under 30x30 (GAP 1 or 2)?
+What percent of herbaceous (grassland) habitat is conserved under 30x30 (GAP 1 or 2)?
+What percent of conifer forest is conserved under 30x30 (GAP 1 or 2)?
+What percent of shrub habitat is conserved under 30x30 (GAP 1 or 2)?
+What percent of blue oak woodland is conserved under 30x30 (GAP 1 or 2)?
+What percent of eastside pine is conserved under 30x30 (GAP 1 or 2)?
+What percent of subalpine conifer is conserved under 30x30 (GAP 1 or 2)?
+Which major habitat types (CWHR13) are least protected under 30x30?
+What percent of ACE statewide BioRank rank-5 areas is conserved under 30x30 (GAP 1 or 2)?
+What percent of native bird richness hotspots (top 20%) are conserved under 30x30 (GAP 1 or 2)?
+What percent of native reptile richness hotspots (top 20%) are conserved under 30x30 (GAP 1 or 2)?
+What percent of the top-20% plant species richness areas are conserved under 30x30 (GAP 1 or 2)?
+What percent of channelized connectivity areas are conserved under 30x30 (GAP 1 or 2)?
+What percent of diffuse connectivity areas are conserved under 30x30 (GAP 1 or 2)?
+What percent of California's wetlands are conserved under 30x30 (GAP 1 or 2)?
+What percent of groundwater-dependent ecosystems are conserved under 30x30 (GAP 1 or 2)?
+What percent of the 100-year floodplain is conserved under 30x30 (GAP 1 or 2)?
+What percent of headwater streams are conserved under 30x30 (GAP 1 or 2)?
+What percent of major rivers are conserved under 30x30 (GAP 1 or 2)?
+What percent of watersheds with the highest freshwater species richness are conserved under 30x30 (GAP 1 or 2)?

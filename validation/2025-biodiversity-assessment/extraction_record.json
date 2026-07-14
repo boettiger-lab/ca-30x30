@@ -1,0 +1,2357 @@
+{
+  "record_type": "extraction",
+  "report": "V2025_WORKING_MASTER_DRAFT_Biodiversity_Assessment_Report_2025Update (CBN, draft, pub. date tag 2026-07-08)",
+  "note": "Reported values are the report's PROPORTIONAL ('Disc') estimate. Tables 3-13 in the docx are embedded raster images; their numeric values were recovered from the authors' shipped result CSVs (Result_CSVs_2025data.zip), which are the digital source of those image tables and match every prose figure spot-checked (26.1/25.5/48.4, ecoregion & habitat composition, freshwater, finer habitats). Lower80/Upper20 = the report's lower/upper uncertainty band.",
+  "metric_definitions": {
+    "percent_of_CA": "share of California's official land area (~101.5M ac denominator)",
+    "percent_of_feature": "share of that feature's STATEWIDE extent lying within 30x30 (GAP 1+2), proportional estimate",
+    "percent_of_network": "share of the 30x30 network's area composed of that feature/ecoregion, proportional estimate"
+  },
+  "n_statistics": 154,
+  "statistics": [
+    {
+      "id": "S001",
+      "group": "Land characterization",
+      "label": "% of California in 30x30 Conservation Areas",
+      "definition": "Percent of California's land area classified GAP 1+2 (durably protected for biodiversity), proportional estimate. Denominator = official CA area (~101.5M ac).",
+      "metric": "percent_of_CA",
+      "reported_value": 26.1,
+      "uncertainty": null,
+      "source": "Exec summary / p.'Where Do We Stand' / Land Characterization; = CNRA 2025 progress report"
+    },
+    {
+      "id": "S002",
+      "group": "Land characterization",
+      "label": "% of California in other conserved/public/unknown lands (GAP 3+4)",
+      "definition": "Percent of CA land classified GAP 3 or GAP 4 (other conservation, public, or unknown status).",
+      "metric": "percent_of_CA",
+      "reported_value": 25.5,
+      "uncertainty": null,
+      "source": "Land Characterization"
+    },
+    {
+      "id": "S003",
+      "group": "Land characterization",
+      "label": "% of California non-conserved",
+      "definition": "Percent of CA land outside any conservation-area unit (private unmanaged + DOD).",
+      "metric": "percent_of_CA",
+      "reported_value": 48.4,
+      "uncertainty": null,
+      "source": "Land Characterization"
+    },
+    {
+      "id": "S004",
+      "group": "Land characterization",
+      "label": "Official 2025 30x30 Conservation Area acreage (GAP 1+2)",
+      "definition": "Total statewide GAP 1+2 conserved acres in the 2025 Conserved Areas dataset.",
+      "metric": "acres",
+      "reported_value": 26471461,
+      "uncertainty": null,
+      "source": "Appendix B (Table S2 denominator)"
+    },
+    {
+      "id": "S005",
+      "group": "Land characterization",
+      "label": "Acreage increase since 2022",
+      "definition": "Net new GAP 1+2 acreage added 2022->2025.",
+      "metric": "acres",
+      "reported_value": 2400000,
+      "uncertainty": "stated as '2.4M' (exec) and 'roughly 2.5M' (conclusion)",
+      "source": "Exec summary / Conclusion"
+    },
+    {
+      "id": "S006",
+      "group": "Land characterization",
+      "label": "Acreage still needed to reach 30%",
+      "definition": "Additional GAP 1+2 acres required to hit 30% of CA.",
+      "metric": "acres",
+      "reported_value": 4000000,
+      "uncertainty": "stated as 'over 4M' / 'nearly 4M'",
+      "source": "Exec summary / Conclusion"
+    },
+    {
+      "id": "S007",
+      "group": "Network climate/disturbance",
+      "label": "Network projected climate-stressed by mid-century",
+      "definition": "% of the 30x30 network's natural vegetation projected to be stressed by mid-century climate change (Thorne et al. 2016).",
+      "metric": "percent_of_network",
+      "reported_value": 32.0,
+      "uncertainty": null,
+      "source": "Network Composition (prose); miroc %network"
+    },
+    {
+      "id": "S008",
+      "group": "Network climate/disturbance",
+      "label": "Network at risk from sea-level rise",
+      "definition": "% of the 30x30 network at risk from sea-level rise (NOAA 5 ft).",
+      "metric": "percent_of_network",
+      "reported_value": 0.5,
+      "uncertainty": null,
+      "source": "Network Composition (prose); slr %network"
+    },
+    {
+      "id": "S009",
+      "group": "Network climate/disturbance",
+      "label": "Network burned in past decade",
+      "definition": "% of the 30x30 network burned by wildfire in the past decade (CAL FIRE).",
+      "metric": "percent_of_network",
+      "reported_value": 14.0,
+      "uncertainty": null,
+      "source": "Network Composition (prose); fire %network"
+    },
+    {
+      "id": "S010",
+      "group": "Network composition: ecoregion",
+      "feature_key": "Southeastern Great Basin",
+      "label": "Southeastern Great Basin share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of the Southeastern Great Basin ecoregion.",
+      "metric": "percent_of_network",
+      "reported_value": 7.51,
+      "uncertainty": [
+        7.57,
+        7.52
+      ],
+      "source": "Figure 6b / ecoregion %network"
+    },
+    {
+      "id": "S011",
+      "group": "Network composition: ecoregion",
+      "feature_key": "Mojave Desert",
+      "label": "Mojave Desert share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of the Mojave Desert ecoregion.",
+      "metric": "percent_of_network",
+      "reported_value": 27.85,
+      "uncertainty": [
+        28.06,
+        27.89
+      ],
+      "source": "Figure 6b / ecoregion %network"
+    },
+    {
+      "id": "S012",
+      "group": "Network composition: ecoregion",
+      "feature_key": "Southern California Mountains and Valleys",
+      "label": "Southern California Mountains and Valleys share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of the Southern California Mountains and Valleys ecoregion.",
+      "metric": "percent_of_network",
+      "reported_value": 9.37,
+      "uncertainty": [
+        9.06,
+        9.37
+      ],
+      "source": "Figure 6b / ecoregion %network"
+    },
+    {
+      "id": "S013",
+      "group": "Network composition: ecoregion",
+      "feature_key": "Sonoran Desert",
+      "label": "Sonoran Desert share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of the Sonoran Desert ecoregion.",
+      "metric": "percent_of_network",
+      "reported_value": 6.14,
+      "uncertainty": [
+        6.18,
+        6.14
+      ],
+      "source": "Figure 6b / ecoregion %network"
+    },
+    {
+      "id": "S014",
+      "group": "Network composition: ecoregion",
+      "feature_key": "Great Valley (South)",
+      "label": "Great Valley (South) share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of the Great Valley (South) ecoregion.",
+      "metric": "percent_of_network",
+      "reported_value": 1.57,
+      "uncertainty": [
+        1.58,
+        1.57
+      ],
+      "source": "Figure 6b / ecoregion %network"
+    },
+    {
+      "id": "S015",
+      "group": "Network composition: ecoregion",
+      "feature_key": "Sierra Nevada",
+      "label": "Sierra Nevada share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of the Sierra Nevada ecoregion.",
+      "metric": "percent_of_network",
+      "reported_value": 17.52,
+      "uncertainty": [
+        17.6,
+        17.53
+      ],
+      "source": "Figure 6b / ecoregion %network"
+    },
+    {
+      "id": "S016",
+      "group": "Network composition: ecoregion",
+      "feature_key": "Southern California Coast",
+      "label": "Southern California Coast share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of the Southern California Coast ecoregion.",
+      "metric": "percent_of_network",
+      "reported_value": 1.62,
+      "uncertainty": [
+        1.6,
+        1.62
+      ],
+      "source": "Figure 6b / ecoregion %network"
+    },
+    {
+      "id": "S017",
+      "group": "Network composition: ecoregion",
+      "feature_key": "Colorado Desert",
+      "label": "Colorado Desert share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of the Colorado Desert ecoregion.",
+      "metric": "percent_of_network",
+      "reported_value": 1.7,
+      "uncertainty": [
+        1.68,
+        1.67
+      ],
+      "source": "Figure 6b / ecoregion %network"
+    },
+    {
+      "id": "S018",
+      "group": "Network composition: ecoregion",
+      "feature_key": "Northwestern Basin and Range",
+      "label": "Northwestern Basin and Range share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of the Northwestern Basin and Range ecoregion.",
+      "metric": "percent_of_network",
+      "reported_value": 0.74,
+      "uncertainty": [
+        0.75,
+        0.74
+      ],
+      "source": "Figure 6b / ecoregion %network"
+    },
+    {
+      "id": "S019",
+      "group": "Network composition: ecoregion",
+      "feature_key": "Modoc Plateau",
+      "label": "Modoc Plateau share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of the Modoc Plateau ecoregion.",
+      "metric": "percent_of_network",
+      "reported_value": 1.02,
+      "uncertainty": [
+        1.03,
+        1.02
+      ],
+      "source": "Figure 6b / ecoregion %network"
+    },
+    {
+      "id": "S020",
+      "group": "Network composition: ecoregion",
+      "feature_key": "Klamath Mountains",
+      "label": "Klamath Mountains share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of the Klamath Mountains ecoregion.",
+      "metric": "percent_of_network",
+      "reported_value": 4.48,
+      "uncertainty": [
+        4.51,
+        4.48
+      ],
+      "source": "Figure 6b / ecoregion %network"
+    },
+    {
+      "id": "S021",
+      "group": "Network composition: ecoregion",
+      "feature_key": "Southern Cascades",
+      "label": "Southern Cascades share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of the Southern Cascades ecoregion.",
+      "metric": "percent_of_network",
+      "reported_value": 2.14,
+      "uncertainty": [
+        2.16,
+        2.14
+      ],
+      "source": "Figure 6b / ecoregion %network"
+    },
+    {
+      "id": "S022",
+      "group": "Network composition: ecoregion",
+      "feature_key": "Northern California Interior Coast Ranges",
+      "label": "Northern California Interior Coast Ranges share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of the Northern California Interior Coast Ranges ecoregion.",
+      "metric": "percent_of_network",
+      "reported_value": 0.5,
+      "uncertainty": [
+        0.47,
+        0.5
+      ],
+      "source": "Figure 6b / ecoregion %network"
+    },
+    {
+      "id": "S023",
+      "group": "Network composition: ecoregion",
+      "feature_key": "Great Valley (North)",
+      "label": "Great Valley (North) share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of the Great Valley (North) ecoregion.",
+      "metric": "percent_of_network",
+      "reported_value": 1.47,
+      "uncertainty": [
+        1.47,
+        1.47
+      ],
+      "source": "Figure 6b / ecoregion %network"
+    },
+    {
+      "id": "S024",
+      "group": "Network composition: ecoregion",
+      "feature_key": "Northern California Coast",
+      "label": "Northern California Coast share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of the Northern California Coast ecoregion.",
+      "metric": "percent_of_network",
+      "reported_value": 3.04,
+      "uncertainty": [
+        3.01,
+        3.03
+      ],
+      "source": "Figure 6b / ecoregion %network"
+    },
+    {
+      "id": "S025",
+      "group": "Network composition: ecoregion",
+      "feature_key": "Mono",
+      "label": "Mono share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of the Mono ecoregion.",
+      "metric": "percent_of_network",
+      "reported_value": 1.94,
+      "uncertainty": [
+        1.94,
+        1.94
+      ],
+      "source": "Figure 6b / ecoregion %network"
+    },
+    {
+      "id": "S026",
+      "group": "Network composition: ecoregion",
+      "feature_key": "Northern California Coast Ranges",
+      "label": "Northern California Coast Ranges share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of the Northern California Coast Ranges ecoregion.",
+      "metric": "percent_of_network",
+      "reported_value": 2.56,
+      "uncertainty": [
+        2.54,
+        2.54
+      ],
+      "source": "Figure 6b / ecoregion %network"
+    },
+    {
+      "id": "S027",
+      "group": "Network composition: ecoregion",
+      "feature_key": "Sierra Nevada Foothills",
+      "label": "Sierra Nevada Foothills share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of the Sierra Nevada Foothills ecoregion.",
+      "metric": "percent_of_network",
+      "reported_value": 1.98,
+      "uncertainty": [
+        1.98,
+        1.98
+      ],
+      "source": "Figure 6b / ecoregion %network"
+    },
+    {
+      "id": "S028",
+      "group": "Network composition: ecoregion",
+      "feature_key": "Central California Coast",
+      "label": "Central California Coast share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of the Central California Coast ecoregion.",
+      "metric": "percent_of_network",
+      "reported_value": 3.11,
+      "uncertainty": [
+        3.1,
+        3.11
+      ],
+      "source": "Figure 6b / ecoregion %network"
+    },
+    {
+      "id": "S029",
+      "group": "Network composition: ecoregion",
+      "feature_key": "Central Valley Coast Ranges",
+      "label": "Central Valley Coast Ranges share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of the Central Valley Coast Ranges ecoregion.",
+      "metric": "percent_of_network",
+      "reported_value": 3.74,
+      "uncertainty": [
+        3.72,
+        3.73
+      ],
+      "source": "Figure 6b / ecoregion %network"
+    },
+    {
+      "id": "S030",
+      "group": "Network composition: major habitat",
+      "feature_key": "CONIFER_FO",
+      "label": "Conifer Forest share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of FVEG CWHR13 major habitat 'Conifer Forest'.",
+      "metric": "percent_of_network",
+      "reported_value": 15.98,
+      "uncertainty": [
+        16.04,
+        15.95
+      ],
+      "source": "Figure 7b / WHR13 %network"
+    },
+    {
+      "id": "S031",
+      "group": "Network composition: major habitat",
+      "feature_key": "HARDWOOD_F",
+      "label": "Hardwood Forest share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of FVEG CWHR13 major habitat 'Hardwood Forest'.",
+      "metric": "percent_of_network",
+      "reported_value": 4.36,
+      "uncertainty": [
+        4.36,
+        4.41
+      ],
+      "source": "Figure 7b / WHR13 %network"
+    },
+    {
+      "id": "S032",
+      "group": "Network composition: major habitat",
+      "feature_key": "HERBACEOUS",
+      "label": "Herbaceous share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of FVEG CWHR13 major habitat 'Herbaceous'.",
+      "metric": "percent_of_network",
+      "reported_value": 6.93,
+      "uncertainty": [
+        6.93,
+        6.97
+      ],
+      "source": "Figure 7b / WHR13 %network"
+    },
+    {
+      "id": "S033",
+      "group": "Network composition: major habitat",
+      "feature_key": "SHRUB",
+      "label": "Shrub share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of FVEG CWHR13 major habitat 'Shrub'.",
+      "metric": "percent_of_network",
+      "reported_value": 13.99,
+      "uncertainty": [
+        13.67,
+        14.02
+      ],
+      "source": "Figure 7b / WHR13 %network"
+    },
+    {
+      "id": "S034",
+      "group": "Network composition: major habitat",
+      "feature_key": "WETLAND",
+      "label": "Wetland (FVEG) share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of FVEG CWHR13 major habitat 'Wetland (FVEG)'.",
+      "metric": "percent_of_network",
+      "reported_value": 1.53,
+      "uncertainty": [
+        1.54,
+        1.53
+      ],
+      "source": "Figure 7b / WHR13 %network"
+    },
+    {
+      "id": "S035",
+      "group": "Network composition: major habitat",
+      "feature_key": "BARREN_OTH",
+      "label": "Barren/Other share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of FVEG CWHR13 major habitat 'Barren/Other'.",
+      "metric": "percent_of_network",
+      "reported_value": 6.11,
+      "uncertainty": [
+        6.14,
+        6.09
+      ],
+      "source": "Figure 7b / WHR13 %network"
+    },
+    {
+      "id": "S036",
+      "group": "Network composition: major habitat",
+      "feature_key": "URBAN",
+      "label": "Urban share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of FVEG CWHR13 major habitat 'Urban'.",
+      "metric": "percent_of_network",
+      "reported_value": 0.14,
+      "uncertainty": [
+        0.14,
+        0.15
+      ],
+      "source": "Figure 7b / WHR13 %network"
+    },
+    {
+      "id": "S037",
+      "group": "Network composition: major habitat",
+      "feature_key": "WATER",
+      "label": "Water share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of FVEG CWHR13 major habitat 'Water'.",
+      "metric": "percent_of_network",
+      "reported_value": 1.5,
+      "uncertainty": [
+        1.5,
+        1.5
+      ],
+      "source": "Figure 7b / WHR13 %network"
+    },
+    {
+      "id": "S038",
+      "group": "Network composition: major habitat",
+      "feature_key": "AGRICULTUR",
+      "label": "Agriculture share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of FVEG CWHR13 major habitat 'Agriculture'.",
+      "metric": "percent_of_network",
+      "reported_value": 0.96,
+      "uncertainty": [
+        0.95,
+        0.97
+      ],
+      "source": "Figure 7b / WHR13 %network"
+    },
+    {
+      "id": "S039",
+      "group": "Network composition: major habitat",
+      "feature_key": "HARDWOOD_W",
+      "label": "Hardwood Woodland share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of FVEG CWHR13 major habitat 'Hardwood Woodland'.",
+      "metric": "percent_of_network",
+      "reported_value": 3.18,
+      "uncertainty": [
+        3.17,
+        3.26
+      ],
+      "source": "Figure 7b / WHR13 %network"
+    },
+    {
+      "id": "S040",
+      "group": "Network composition: major habitat",
+      "feature_key": "CONIFER_WO",
+      "label": "Conifer Woodland share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of FVEG CWHR13 major habitat 'Conifer Woodland'.",
+      "metric": "percent_of_network",
+      "reported_value": 3.85,
+      "uncertainty": [
+        3.86,
+        3.83
+      ],
+      "source": "Figure 7b / WHR13 %network"
+    },
+    {
+      "id": "S041",
+      "group": "Network composition: major habitat",
+      "feature_key": "DESERT_SHR",
+      "label": "Desert Shrub share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of FVEG CWHR13 major habitat 'Desert Shrub'.",
+      "metric": "percent_of_network",
+      "reported_value": 39.15,
+      "uncertainty": [
+        39.37,
+        39.01
+      ],
+      "source": "Figure 7b / WHR13 %network"
+    },
+    {
+      "id": "S042",
+      "group": "Network composition: major habitat",
+      "feature_key": "DESERT_WOO",
+      "label": "Desert Woodland share of 30x30 network",
+      "definition": "Proportional % of the 30x30 network composed of FVEG CWHR13 major habitat 'Desert Woodland'.",
+      "metric": "percent_of_network",
+      "reported_value": 2.31,
+      "uncertainty": [
+        2.32,
+        2.3
+      ],
+      "source": "Figure 7b / WHR13 %network"
+    },
+    {
+      "id": "S043",
+      "group": "Representation: major habitat",
+      "feature_key": "CONIFER_FO",
+      "label": "Conifer Forest conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of FVEG CWHR13 'Conifer Forest' within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 24.14,
+      "uncertainty": [
+        24.11,
+        24.2
+      ],
+      "gap34_pct": 43.09,
+      "nonconserved_pct": 32.77,
+      "source": "Table 3 / WHR13 %feature"
+    },
+    {
+      "id": "S044",
+      "group": "Representation: major habitat",
+      "feature_key": "HARDWOOD_F",
+      "label": "Hardwood Forest conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of FVEG CWHR13 'Hardwood Forest' within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 21.59,
+      "uncertainty": [
+        21.46,
+        21.89
+      ],
+      "gap34_pct": 37.52,
+      "nonconserved_pct": 40.89,
+      "source": "Table 3 / WHR13 %feature"
+    },
+    {
+      "id": "S045",
+      "group": "Representation: major habitat",
+      "feature_key": "HERBACEOUS",
+      "label": "Herbaceous conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of FVEG CWHR13 'Herbaceous' within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 15.89,
+      "uncertainty": [
+        15.8,
+        16.04
+      ],
+      "gap34_pct": 14.13,
+      "nonconserved_pct": 69.98,
+      "source": "Table 3 / WHR13 %feature"
+    },
+    {
+      "id": "S046",
+      "group": "Representation: major habitat",
+      "feature_key": "SHRUB",
+      "label": "Shrub conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of FVEG CWHR13 'Shrub' within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 27.79,
+      "uncertainty": [
+        27.01,
+        27.97
+      ],
+      "gap34_pct": 39.38,
+      "nonconserved_pct": 32.82,
+      "source": "Table 3 / WHR13 %feature"
+    },
+    {
+      "id": "S047",
+      "group": "Representation: major habitat",
+      "feature_key": "WETLAND",
+      "label": "Wetland (FVEG) conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of FVEG CWHR13 'Wetland (FVEG)' within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 46.39,
+      "uncertainty": [
+        46.28,
+        46.57
+      ],
+      "gap34_pct": 17.45,
+      "nonconserved_pct": 36.16,
+      "source": "Table 3 / WHR13 %feature"
+    },
+    {
+      "id": "S048",
+      "group": "Representation: major habitat",
+      "feature_key": "BARREN_OTH",
+      "label": "Barren/Other conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of FVEG CWHR13 'Barren/Other' within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 51.67,
+      "uncertainty": [
+        51.67,
+        51.71
+      ],
+      "gap34_pct": 28.05,
+      "nonconserved_pct": 20.28,
+      "source": "Table 3 / WHR13 %feature"
+    },
+    {
+      "id": "S049",
+      "group": "Representation: major habitat",
+      "feature_key": "URBAN",
+      "label": "Urban conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of FVEG CWHR13 'Urban' within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 0.74,
+      "uncertainty": [
+        0.71,
+        0.77
+      ],
+      "gap34_pct": 4.0,
+      "nonconserved_pct": 95.27,
+      "source": "Table 3 / WHR13 %feature"
+    },
+    {
+      "id": "S050",
+      "group": "Representation: major habitat",
+      "feature_key": "WATER",
+      "label": "Water conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of FVEG CWHR13 'Water' within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 21.51,
+      "uncertainty": [
+        21.32,
+        21.61
+      ],
+      "gap34_pct": 26.42,
+      "nonconserved_pct": 52.07,
+      "source": "Table 3 / WHR13 %feature"
+    },
+    {
+      "id": "S051",
+      "group": "Representation: major habitat",
+      "feature_key": "AGRICULTUR",
+      "label": "Agriculture conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of FVEG CWHR13 'Agriculture' within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 2.33,
+      "uncertainty": [
+        2.29,
+        2.36
+      ],
+      "gap34_pct": 2.17,
+      "nonconserved_pct": 95.5,
+      "source": "Table 3 / WHR13 %feature"
+    },
+    {
+      "id": "S052",
+      "group": "Representation: major habitat",
+      "feature_key": "HARDWOOD_W",
+      "label": "Hardwood Woodland conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of FVEG CWHR13 'Hardwood Woodland' within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 13.59,
+      "uncertainty": [
+        13.45,
+        13.96
+      ],
+      "gap34_pct": 11.64,
+      "nonconserved_pct": 74.77,
+      "source": "Table 3 / WHR13 %feature"
+    },
+    {
+      "id": "S053",
+      "group": "Representation: major habitat",
+      "feature_key": "CONIFER_WO",
+      "label": "Conifer Woodland conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of FVEG CWHR13 'Conifer Woodland' within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 33.27,
+      "uncertainty": [
+        33.25,
+        33.3
+      ],
+      "gap34_pct": 46.65,
+      "nonconserved_pct": 20.08,
+      "source": "Table 3 / WHR13 %feature"
+    },
+    {
+      "id": "S054",
+      "group": "Representation: major habitat",
+      "feature_key": "DESERT_SHR",
+      "label": "Desert Shrub conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of FVEG CWHR13 'Desert Shrub' within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 48.25,
+      "uncertainty": [
+        48.24,
+        48.25
+      ],
+      "gap34_pct": 23.96,
+      "nonconserved_pct": 27.79,
+      "source": "Table 3 / WHR13 %feature"
+    },
+    {
+      "id": "S055",
+      "group": "Representation: major habitat",
+      "feature_key": "DESERT_WOO",
+      "label": "Desert Woodland conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of FVEG CWHR13 'Desert Woodland' within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 56.59,
+      "uncertainty": [
+        56.56,
+        56.59
+      ],
+      "gap34_pct": 19.63,
+      "nonconserved_pct": 23.78,
+      "source": "Table 3 / WHR13 %feature"
+    },
+    {
+      "id": "S056",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "KMC",
+      "label": "Klamath Mixed Conifer conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Klamath Mixed Conifer' (KMC) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 16.77,
+      "uncertainty": [
+        16.76,
+        16.79
+      ],
+      "gap34_pct": 57.66,
+      "nonconserved_pct": 25.57,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S057",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "RFR",
+      "label": "Red Fir conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Red Fir' (RFR) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 47.64,
+      "uncertainty": [
+        47.62,
+        47.63
+      ],
+      "gap34_pct": 43.41,
+      "nonconserved_pct": 8.95,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S058",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "DFR",
+      "label": "Douglas Fir conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Douglas Fir' (DFR) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 16.79,
+      "uncertainty": [
+        16.74,
+        16.84
+      ],
+      "gap34_pct": 43.82,
+      "nonconserved_pct": 39.39,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S059",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "MRI",
+      "label": "Montane Riparian conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Montane Riparian' (MRI) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 43.78,
+      "uncertainty": [
+        43.44,
+        44.15
+      ],
+      "gap34_pct": 16.52,
+      "nonconserved_pct": 39.71,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S060",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "WFR",
+      "label": "White Fir conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'White Fir' (WFR) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 26.27,
+      "uncertainty": [
+        26.24,
+        26.25
+      ],
+      "gap34_pct": 57.49,
+      "nonconserved_pct": 16.23,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S061",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "PGS",
+      "label": "Perennial Grassland conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Perennial Grassland' (PGS) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 30.82,
+      "uncertainty": [
+        30.79,
+        30.86
+      ],
+      "gap34_pct": 42.16,
+      "nonconserved_pct": 27.03,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S062",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "MCP",
+      "label": "Montane Chaparral conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Montane Chaparral' (MCP) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 32.14,
+      "uncertainty": [
+        32.08,
+        32.19
+      ],
+      "gap34_pct": 51.12,
+      "nonconserved_pct": 16.75,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S063",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "SCN",
+      "label": "Subalpine Conifer conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Subalpine Conifer' (SCN) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 85.75,
+      "uncertainty": [
+        85.72,
+        85.76
+      ],
+      "gap34_pct": 13.23,
+      "nonconserved_pct": 1.02,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S064",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "WTM",
+      "label": "Wet Meadow conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Wet Meadow' (WTM) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 42.73,
+      "uncertainty": [
+        42.64,
+        42.91
+      ],
+      "gap34_pct": 19.43,
+      "nonconserved_pct": 37.84,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S065",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "AGS",
+      "label": "Annual Grassland conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Annual Grassland' (AGS) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 15.2,
+      "uncertainty": [
+        15.1,
+        15.35
+      ],
+      "gap34_pct": 12.44,
+      "nonconserved_pct": 72.36,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S066",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "BAR",
+      "label": "Barren conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Barren' (BAR) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 51.67,
+      "uncertainty": [
+        51.67,
+        51.71
+      ],
+      "gap34_pct": 28.05,
+      "nonconserved_pct": 20.28,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S067",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "MHC",
+      "label": "Montane Hardwood-Conifer conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Montane Hardwood-Conifer' (MHC) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 15.42,
+      "uncertainty": [
+        15.36,
+        15.64
+      ],
+      "gap34_pct": 31.37,
+      "nonconserved_pct": 53.2,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S068",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "MHW",
+      "label": "Montane Hardwood conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Montane Hardwood' (MHW) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 20.35,
+      "uncertainty": [
+        20.23,
+        20.65
+      ],
+      "gap34_pct": 38.29,
+      "nonconserved_pct": 41.35,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S069",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "URB",
+      "label": "Urban conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Urban' (URB) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 0.74,
+      "uncertainty": [
+        0.71,
+        0.77
+      ],
+      "gap34_pct": 4.0,
+      "nonconserved_pct": 95.27,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S070",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "RDW",
+      "label": "Redwood conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Redwood' (RDW) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 23.95,
+      "uncertainty": [
+        24.06,
+        24.12
+      ],
+      "gap34_pct": 8.64,
+      "nonconserved_pct": 67.41,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S071",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "PAS",
+      "label": "Pasture conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Pasture' (PAS) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 5.06,
+      "uncertainty": [
+        4.9,
+        5.19
+      ],
+      "gap34_pct": 6.01,
+      "nonconserved_pct": 88.93,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S072",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "CSC",
+      "label": "Coastal Scrub conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Coastal Scrub' (CSC) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 26.59,
+      "uncertainty": [
+        26.15,
+        27.63
+      ],
+      "gap34_pct": 16.65,
+      "nonconserved_pct": 56.76,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S073",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "MAR",
+      "label": "Marine conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Marine' (MAR) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 22.9,
+      "uncertainty": [
+        21.25,
+        24.1
+      ],
+      "gap34_pct": 7.56,
+      "nonconserved_pct": 69.54,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S074",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "CRP",
+      "label": "Cropland conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Cropland' (CRP) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 5.59,
+      "uncertainty": [
+        5.53,
+        5.66
+      ],
+      "gap34_pct": 2.5,
+      "nonconserved_pct": 91.91,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S075",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "CPC",
+      "label": "Closed-Cone Pine-Cypress conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Closed-Cone Pine-Cypress' (CPC) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 30.12,
+      "uncertainty": [
+        30.07,
+        30.43
+      ],
+      "gap34_pct": 31.45,
+      "nonconserved_pct": 38.43,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S076",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "JPN",
+      "label": "Jeffrey Pine conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Jeffrey Pine' (JPN) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 36.05,
+      "uncertainty": [
+        35.97,
+        36.07
+      ],
+      "gap34_pct": 48.76,
+      "nonconserved_pct": 15.19,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S077",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "MCH",
+      "label": "Mixed Chaparral conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Mixed Chaparral' (MCH) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 31.07,
+      "uncertainty": [
+        29.75,
+        31.74
+      ],
+      "gap34_pct": 36.34,
+      "nonconserved_pct": 32.58,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S078",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "IRH",
+      "label": "Irrigated Hayfield conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Irrigated Hayfield' (IRH) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 4.15,
+      "uncertainty": [
+        4.05,
+        4.22
+      ],
+      "gap34_pct": 5.05,
+      "nonconserved_pct": 90.79,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S079",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "RIV",
+      "label": "Riverine conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Riverine' (RIV) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 17.64,
+      "uncertainty": [
+        17.71,
+        17.83
+      ],
+      "gap34_pct": 8.63,
+      "nonconserved_pct": 73.73,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S080",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "LPN",
+      "label": "Lodgepole Pine conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Lodgepole Pine' (LPN) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 71.08,
+      "uncertainty": [
+        71.08,
+        71.08
+      ],
+      "gap34_pct": 26.28,
+      "nonconserved_pct": 2.65,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S081",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "IRF",
+      "label": "Irrigated Row and Field Crops conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Irrigated Row and Field Crops' (IRF) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 2.98,
+      "uncertainty": [
+        2.96,
+        2.98
+      ],
+      "gap34_pct": 2.37,
+      "nonconserved_pct": 94.65,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S082",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "COW",
+      "label": "Coastal Oak Woodland conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Coastal Oak Woodland' (COW) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 22.04,
+      "uncertainty": [
+        21.81,
+        22.69
+      ],
+      "gap34_pct": 13.45,
+      "nonconserved_pct": 64.51,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S083",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "EST",
+      "label": "Estuarine conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Estuarine' (EST) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 28.05,
+      "uncertainty": [
+        27.61,
+        28.28
+      ],
+      "gap34_pct": 3.58,
+      "nonconserved_pct": 68.38,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S084",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "LAC",
+      "label": "Lacustrine conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Lacustrine' (LAC) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 23.71,
+      "uncertainty": [
+        23.55,
+        23.83
+      ],
+      "gap34_pct": 37.44,
+      "nonconserved_pct": 38.85,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S085",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "VIN",
+      "label": "Vineyard conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Vineyard' (VIN) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 0.64,
+      "uncertainty": [
+        0.58,
+        0.72
+      ],
+      "gap34_pct": 0.78,
+      "nonconserved_pct": 98.57,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S086",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "SEW",
+      "label": "Saline Emergent Wetland conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Saline Emergent Wetland' (SEW) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 37.68,
+      "uncertainty": [
+        37.54,
+        37.86
+      ],
+      "gap34_pct": 19.11,
+      "nonconserved_pct": 43.21,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S087",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "VRI",
+      "label": "Valley Foothill Riparian conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Valley Foothill Riparian' (VRI) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 20.74,
+      "uncertainty": [
+        20.46,
+        21.4
+      ],
+      "gap34_pct": 12.81,
+      "nonconserved_pct": 66.45,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S088",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "PPN",
+      "label": "Ponderosa Pine conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Ponderosa Pine' (PPN) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 9.93,
+      "uncertainty": [
+        9.92,
+        9.94
+      ],
+      "gap34_pct": 51.5,
+      "nonconserved_pct": 38.57,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S089",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "CRC",
+      "label": "Chamise-Redshank Chaparral conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Chamise-Redshank Chaparral' (CRC) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 26.58,
+      "uncertainty": [
+        25.35,
+        29.41
+      ],
+      "gap34_pct": 30.26,
+      "nonconserved_pct": 43.16,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S090",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "DOR",
+      "label": "Deciduous Orchard conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Deciduous Orchard' (DOR) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 0.73,
+      "uncertainty": [
+        0.72,
+        0.74
+      ],
+      "gap34_pct": 0.81,
+      "nonconserved_pct": 98.45,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S091",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "SMC",
+      "label": "Sierran Mixed Conifer conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Sierran Mixed Conifer' (SMC) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 20.18,
+      "uncertainty": [
+        20.11,
+        20.26
+      ],
+      "gap34_pct": 50.8,
+      "nonconserved_pct": 29.02,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S092",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "ASP",
+      "label": "Aspen conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Aspen' (ASP) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 29.72,
+      "uncertainty": [
+        29.71,
+        29.71
+      ],
+      "gap34_pct": 61.47,
+      "nonconserved_pct": 8.81,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S093",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "ADS",
+      "label": "Alpine-Dwarf Shrub conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Alpine-Dwarf Shrub' (ADS) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 80.11,
+      "uncertainty": [
+        80.11,
+        80.11
+      ],
+      "gap34_pct": 19.08,
+      "nonconserved_pct": 0.81,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S094",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "LSG",
+      "label": "Low Sage conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Low Sage' (LSG) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 14.19,
+      "uncertainty": [
+        14.08,
+        14.29
+      ],
+      "gap34_pct": 73.49,
+      "nonconserved_pct": 12.32,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S095",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "JUN",
+      "label": "Juniper conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Juniper' (JUN) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 17.22,
+      "uncertainty": [
+        17.21,
+        17.25
+      ],
+      "gap34_pct": 53.87,
+      "nonconserved_pct": 28.91,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S096",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "SGB",
+      "label": "Sagebrush conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Sagebrush' (SGB) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 22.85,
+      "uncertainty": [
+        22.54,
+        22.94
+      ],
+      "gap34_pct": 50.11,
+      "nonconserved_pct": 27.05,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S097",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "EPN",
+      "label": "Eastside Pine conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Eastside Pine' (EPN) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 8.47,
+      "uncertainty": [
+        8.4,
+        8.5
+      ],
+      "gap34_pct": 63.79,
+      "nonconserved_pct": 27.74,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S098",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "BBR",
+      "label": "Bitterbrush conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Bitterbrush' (BBR) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 13.59,
+      "uncertainty": [
+        13.43,
+        13.69
+      ],
+      "gap34_pct": 69.12,
+      "nonconserved_pct": 17.29,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S099",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "DGR",
+      "label": "Dryland Grain Crops conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Dryland Grain Crops' (DGR) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 7.21,
+      "uncertainty": [
+        7.18,
+        7.27
+      ],
+      "gap34_pct": 1.73,
+      "nonconserved_pct": 91.06,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S100",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "IGR",
+      "label": "Irrigated Grain Crops conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Irrigated Grain Crops' (IGR) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 1.37,
+      "uncertainty": [
+        1.36,
+        1.39
+      ],
+      "gap34_pct": 2.59,
+      "nonconserved_pct": 96.04,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S101",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "VOW",
+      "label": "Valley Oak Woodland conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Valley Oak Woodland' (VOW) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 10.54,
+      "uncertainty": [
+        10.3,
+        10.95
+      ],
+      "gap34_pct": 7.18,
+      "nonconserved_pct": 82.28,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S102",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "BOW",
+      "label": "Blue Oak Woodland conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Blue Oak Woodland' (BOW) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 10.3,
+      "uncertainty": [
+        10.21,
+        10.6
+      ],
+      "gap34_pct": 10.07,
+      "nonconserved_pct": 79.62,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S103",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "FEW",
+      "label": "Fresh Emergent Wetland conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Fresh Emergent Wetland' (FEW) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 51.97,
+      "uncertainty": [
+        51.87,
+        52.16
+      ],
+      "gap34_pct": 15.5,
+      "nonconserved_pct": 32.53,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S104",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "ASC",
+      "label": "Alkali Desert Scrub conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Alkali Desert Scrub' (ASC) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 19.73,
+      "uncertainty": [
+        19.71,
+        19.74
+      ],
+      "gap34_pct": 33.93,
+      "nonconserved_pct": 46.35,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S105",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "EUC",
+      "label": "Eucalyptus conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Eucalyptus' (EUC) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 11.36,
+      "uncertainty": [
+        10.76,
+        11.79
+      ],
+      "gap34_pct": 12.41,
+      "nonconserved_pct": 76.23,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S106",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "RIC",
+      "label": "Rice conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Rice' (RIC) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 2.1,
+      "uncertainty": [
+        2.07,
+        2.14
+      ],
+      "gap34_pct": 2.15,
+      "nonconserved_pct": 95.75,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S107",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "BOP",
+      "label": "Blue Oak-Foothill Pine conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Blue Oak-Foothill Pine' (BOP) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 9.37,
+      "uncertainty": [
+        9.29,
+        9.66
+      ],
+      "gap34_pct": 14.63,
+      "nonconserved_pct": 76.0,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S108",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "EOR",
+      "label": "Evergreen Orchard conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Evergreen Orchard' (EOR) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 0.81,
+      "uncertainty": [
+        0.8,
+        0.81
+      ],
+      "gap34_pct": 0.39,
+      "nonconserved_pct": 98.81,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S109",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "DSC",
+      "label": "Desert Scrub conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Desert Scrub' (DSC) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 50.13,
+      "uncertainty": [
+        50.13,
+        50.13
+      ],
+      "gap34_pct": 23.41,
+      "nonconserved_pct": 26.46,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S110",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "PJN",
+      "label": "Pinyon-Juniper conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Pinyon-Juniper' (PJN) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 52.63,
+      "uncertainty": [
+        52.6,
+        52.68
+      ],
+      "gap34_pct": 37.93,
+      "nonconserved_pct": 9.44,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S111",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "DRI",
+      "label": "Desert Riparian conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Desert Riparian' (DRI) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 16.46,
+      "uncertainty": [
+        16.36,
+        16.38
+      ],
+      "gap34_pct": 36.34,
+      "nonconserved_pct": 47.2,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S112",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "WAT",
+      "label": "Water conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Water' (WAT) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 9.38,
+      "uncertainty": [
+        9.09,
+        9.18
+      ],
+      "gap34_pct": 2.77,
+      "nonconserved_pct": 87.84,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S113",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "OVN",
+      "label": "Orchard - Vineyard conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Orchard - Vineyard' (OVN) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 2.57,
+      "uncertainty": [
+        2.57,
+        2.57
+      ],
+      "gap34_pct": 3.06,
+      "nonconserved_pct": 94.37,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S114",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "DSW",
+      "label": "Desert Wash conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Desert Wash' (DSW) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 65.43,
+      "uncertainty": [
+        65.42,
+        65.45
+      ],
+      "gap34_pct": 15.81,
+      "nonconserved_pct": 18.76,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S115",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "JST",
+      "label": "Joshua Tree conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Joshua Tree' (JST) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 63.11,
+      "uncertainty": [
+        63.1,
+        63.13
+      ],
+      "gap34_pct": 16.91,
+      "nonconserved_pct": 19.97,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S116",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "DSS",
+      "label": "Desert Succulent Shrub conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Desert Succulent Shrub' (DSS) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 37.17,
+      "uncertainty": [
+        37.18,
+        37.19
+      ],
+      "gap34_pct": 33.2,
+      "nonconserved_pct": 29.63,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S117",
+      "group": "Representation: finer habitat (CWHR 60-class)",
+      "feature_key": "POS",
+      "label": "Palm Oasis conserved in 30x30",
+      "definition": "Proportional % of the statewide extent of CWHR habitat 'Palm Oasis' (POS) within 30x30 Conservation Areas.",
+      "metric": "percent_of_feature",
+      "reported_value": 49.77,
+      "uncertainty": [
+        47.97,
+        48.05
+      ],
+      "gap34_pct": 16.93,
+      "nonconserved_pct": 33.29,
+      "source": "Tables 4-8 / WHRTYPE %feature"
+    },
+    {
+      "id": "S118",
+      "group": "Representation: richness/ranked biodiversity",
+      "feature_key": "BioRankSW",
+      "label": "BioRankSW",
+      "definition": "ACE top-ranked biodiversity, statewide (Rank 5), CDFW 2018: % of extent within 30x30. Threshold feature (top quintile) - CA-level comparison N/A.",
+      "metric": "percent_of_feature",
+      "reported_value": 21.09,
+      "uncertainty": [
+        20.74,
+        21.38
+      ],
+      "gap34_pct": 29.1,
+      "nonconserved_pct": 49.81,
+      "source": "Tables 9-10 / ACE %feature"
+    },
+    {
+      "id": "S119",
+      "group": "Representation: richness/ranked biodiversity",
+      "feature_key": "BioRankEco",
+      "label": "BioRankEco",
+      "definition": "ACE top-ranked biodiversity, per-ecoregion (Rank 5): % of extent within 30x30. Threshold feature.",
+      "metric": "percent_of_feature",
+      "reported_value": 22.61,
+      "uncertainty": [
+        22.47,
+        22.74
+      ],
+      "gap34_pct": 28.39,
+      "nonconserved_pct": 49.0,
+      "source": "Tables 9-10 / ACE %feature"
+    },
+    {
+      "id": "S120",
+      "group": "Representation: richness/ranked biodiversity",
+      "feature_key": "RarRankSW",
+      "label": "RarRankSW",
+      "definition": "ACE top-ranked RARE biodiversity, statewide (Rank 5): % within 30x30. Threshold feature.",
+      "metric": "percent_of_feature",
+      "reported_value": 23.42,
+      "uncertainty": [
+        23.08,
+        23.8
+      ],
+      "gap34_pct": 26.18,
+      "nonconserved_pct": 50.4,
+      "source": "Tables 9-10 / ACE %feature"
+    },
+    {
+      "id": "S121",
+      "group": "Representation: richness/ranked biodiversity",
+      "feature_key": "RarRankEco",
+      "label": "RarRankEco",
+      "definition": "ACE top-ranked RARE biodiversity, per-ecoregion (Rank 5): % within 30x30. Threshold feature.",
+      "metric": "percent_of_feature",
+      "reported_value": 24.91,
+      "uncertainty": [
+        24.75,
+        25.05
+      ],
+      "gap34_pct": 29.87,
+      "nonconserved_pct": 45.22,
+      "source": "Tables 9-10 / ACE %feature"
+    },
+    {
+      "id": "S122",
+      "group": "Representation: richness/ranked biodiversity",
+      "feature_key": "NtvRept",
+      "label": "NtvRept",
+      "definition": "Reptile richness, all native (top 20%), ACE/CDFW: % within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 40.93,
+      "uncertainty": [
+        40.62,
+        41.05
+      ],
+      "gap34_pct": 23.91,
+      "nonconserved_pct": 35.16,
+      "source": "Tables 9-10 / ACE %feature"
+    },
+    {
+      "id": "S123",
+      "group": "Representation: richness/ranked biodiversity",
+      "feature_key": "NtvAmph",
+      "label": "NtvAmph",
+      "definition": "Amphibian richness, all native (top 20%): % within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 19.48,
+      "uncertainty": [
+        19.09,
+        19.7
+      ],
+      "gap34_pct": 23.69,
+      "nonconserved_pct": 56.83,
+      "source": "Tables 9-10 / ACE %feature"
+    },
+    {
+      "id": "S124",
+      "group": "Representation: richness/ranked biodiversity",
+      "feature_key": "NtvMamm",
+      "label": "NtvMamm",
+      "definition": "Mammal richness, all native (top 20%): % within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 22.23,
+      "uncertainty": [
+        22.19,
+        22.25
+      ],
+      "gap34_pct": 47.47,
+      "nonconserved_pct": 30.29,
+      "source": "Tables 9-10 / ACE %feature"
+    },
+    {
+      "id": "S125",
+      "group": "Representation: richness/ranked biodiversity",
+      "feature_key": "NtvBird",
+      "label": "NtvBird",
+      "definition": "Bird richness, all native (top 20%): % within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 11.88,
+      "uncertainty": [
+        11.74,
+        11.95
+      ],
+      "gap34_pct": 14.63,
+      "nonconserved_pct": 73.49,
+      "source": "Tables 9-10 / ACE %feature"
+    },
+    {
+      "id": "S126",
+      "group": "Representation: richness/ranked biodiversity",
+      "feature_key": "NtvPlnt",
+      "label": "NtvPlnt",
+      "definition": "Plant richness, all native (top 20%), ACE: % within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 26.69,
+      "uncertainty": [
+        26.62,
+        26.67
+      ],
+      "gap34_pct": 39.36,
+      "nonconserved_pct": 33.95,
+      "source": "Tables 9-10 / ACE %feature"
+    },
+    {
+      "id": "S127",
+      "group": "Representation: richness/ranked biodiversity",
+      "feature_key": "RarRept",
+      "label": "RarRept",
+      "definition": "Reptile richness, rare subset (top 5%): % within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 22.31,
+      "uncertainty": [
+        21.72,
+        22.85
+      ],
+      "gap34_pct": 21.65,
+      "nonconserved_pct": 56.04,
+      "source": "Tables 9-10 / ACE %feature"
+    },
+    {
+      "id": "S128",
+      "group": "Representation: richness/ranked biodiversity",
+      "feature_key": "RarAmph",
+      "label": "RarAmph",
+      "definition": "Amphibian richness, rare subset (top 5%): % within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 26.13,
+      "uncertainty": [
+        25.86,
+        26.47
+      ],
+      "gap34_pct": 26.27,
+      "nonconserved_pct": 47.6,
+      "source": "Tables 9-10 / ACE %feature"
+    },
+    {
+      "id": "S129",
+      "group": "Representation: richness/ranked biodiversity",
+      "feature_key": "RarMamm",
+      "label": "RarMamm",
+      "definition": "Mammal richness, rare subset (top 5%): % within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 23.29,
+      "uncertainty": [
+        23.11,
+        23.49
+      ],
+      "gap34_pct": 23.37,
+      "nonconserved_pct": 53.33,
+      "source": "Tables 9-10 / ACE %feature"
+    },
+    {
+      "id": "S130",
+      "group": "Representation: richness/ranked biodiversity",
+      "feature_key": "RarBird",
+      "label": "RarBird",
+      "definition": "Bird richness, rare subset (top 5%): % within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 16.03,
+      "uncertainty": [
+        15.69,
+        16.5
+      ],
+      "gap34_pct": 28.06,
+      "nonconserved_pct": 55.91,
+      "source": "Tables 9-10 / ACE %feature"
+    },
+    {
+      "id": "S131",
+      "group": "Representation: richness/ranked biodiversity",
+      "feature_key": "RarPlnt",
+      "label": "RarPlnt",
+      "definition": "Plant richness, rare subset (top 5%): % within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 31.95,
+      "uncertainty": [
+        31.75,
+        32.13
+      ],
+      "gap34_pct": 25.61,
+      "nonconserved_pct": 42.44,
+      "source": "Tables 9-10 / ACE %feature"
+    },
+    {
+      "id": "S132",
+      "group": "Representation: richness/ranked biodiversity",
+      "feature_key": "ReptEndem",
+      "label": "ReptEndem",
+      "definition": "Reptile richness, endemic subset (top 5%): % within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 18.56,
+      "uncertainty": [
+        17.98,
+        19.65
+      ],
+      "gap34_pct": 18.6,
+      "nonconserved_pct": 62.84,
+      "source": "Tables 9-10 / ACE %feature"
+    },
+    {
+      "id": "S133",
+      "group": "Representation: richness/ranked biodiversity",
+      "feature_key": "AmphEndem",
+      "label": "AmphEndem",
+      "definition": "Amphibian richness, endemic subset (top 5%): % within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 27.46,
+      "uncertainty": [
+        27.14,
+        27.86
+      ],
+      "gap34_pct": 22.95,
+      "nonconserved_pct": 49.58,
+      "source": "Tables 9-10 / ACE %feature"
+    },
+    {
+      "id": "S134",
+      "group": "Representation: richness/ranked biodiversity",
+      "feature_key": "MammEndem",
+      "label": "MammEndem",
+      "definition": "Mammal richness, endemic subset (top 5%): % within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 20.49,
+      "uncertainty": [
+        20.41,
+        20.56
+      ],
+      "gap34_pct": 15.17,
+      "nonconserved_pct": 64.34,
+      "source": "Tables 9-10 / ACE %feature"
+    },
+    {
+      "id": "S135",
+      "group": "Representation: richness/ranked biodiversity",
+      "feature_key": "BirdEndem",
+      "label": "BirdEndem",
+      "definition": "Bird richness, endemic subset (top 5%): % within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 24.27,
+      "uncertainty": [
+        23.42,
+        25.31
+      ],
+      "gap34_pct": 20.98,
+      "nonconserved_pct": 54.75,
+      "source": "Tables 9-10 / ACE %feature"
+    },
+    {
+      "id": "S136",
+      "group": "Representation: richness/ranked biodiversity",
+      "feature_key": "PlntEndem",
+      "label": "PlntEndem",
+      "definition": "Plant richness, endemic subset (top 5%): % within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 26.07,
+      "uncertainty": [
+        25.83,
+        26.34
+      ],
+      "gap34_pct": 23.07,
+      "nonconserved_pct": 50.86,
+      "source": "Tables 9-10 / ACE %feature"
+    },
+    {
+      "id": "S137",
+      "group": "Representation: richness/ranked biodiversity",
+      "feature_key": "plant",
+      "label": "plant",
+      "definition": "Plant species richness, top 20% (Kling et al. 2019): % within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 40.59,
+      "uncertainty": [
+        40.25,
+        40.86
+      ],
+      "gap34_pct": 36.56,
+      "nonconserved_pct": 22.85,
+      "source": "Table 11 / Kling %feature"
+    },
+    {
+      "id": "S138",
+      "group": "Representation: richness/ranked biodiversity",
+      "feature_key": "endp",
+      "label": "endp",
+      "definition": "Rarity-weighted endemic plant richness, top 20% (Kling et al. 2019): % within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 33.9,
+      "uncertainty": [
+        33.42,
+        34.1
+      ],
+      "gap34_pct": 22.26,
+      "nonconserved_pct": 43.84,
+      "source": "Table 11 / Kling %feature"
+    },
+    {
+      "id": "S139",
+      "group": "Representation: connectivity",
+      "feature_key": "chn",
+      "label": "chn",
+      "definition": "Channelized connectivity (Cameron et al. 2022): % of extent within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 22.65,
+      "uncertainty": [
+        22.37,
+        23.33
+      ],
+      "gap34_pct": 23.46,
+      "nonconserved_pct": 53.88,
+      "source": "Table 12 / connectivity %feature"
+    },
+    {
+      "id": "S140",
+      "group": "Representation: connectivity",
+      "feature_key": "int",
+      "label": "int",
+      "definition": "Intensified connectivity (Cameron et al. 2022): % within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 22.11,
+      "uncertainty": [
+        21.71,
+        22.5
+      ],
+      "gap34_pct": 33.59,
+      "nonconserved_pct": 44.3,
+      "source": "Table 12 / connectivity %feature"
+    },
+    {
+      "id": "S141",
+      "group": "Representation: connectivity",
+      "feature_key": "diff",
+      "label": "diff",
+      "definition": "Diffuse (well-connected) connectivity (Cameron et al. 2022): % within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 36.82,
+      "uncertainty": [
+        36.73,
+        36.98
+      ],
+      "gap34_pct": 31.57,
+      "nonconserved_pct": 31.61,
+      "source": "Table 12 / connectivity %feature"
+    },
+    {
+      "id": "S142",
+      "group": "Representation: connectivity",
+      "feature_key": "clink",
+      "label": "clink",
+      "definition": "Climate migration routes / climate linkages (Schloss et al. 2022): % within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 41.74,
+      "uncertainty": [
+        41.34,
+        42.11
+      ],
+      "gap34_pct": 30.76,
+      "nonconserved_pct": 27.51,
+      "source": "Table 12 / connectivity %feature"
+    },
+    {
+      "id": "S143",
+      "group": "Representation: connectivity",
+      "feature_key": "scmlinkage",
+      "label": "scmlinkage",
+      "definition": "Regional connectivity linkages (South Coast Missing Linkages, Beier et al. 2006): % of linkage extent within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 27.2,
+      "uncertainty": [
+        26.36,
+        29.14
+      ],
+      "gap34_pct": 21.01,
+      "nonconserved_pct": 51.78,
+      "source": "Table 12 / connectivity %feature"
+    },
+    {
+      "id": "S144",
+      "group": "Representation: freshwater",
+      "feature_key": "gde",
+      "label": "gde",
+      "definition": "Groundwater-dependent ecosystems (Klausmeyer et al. 2018): % of GDE extent within 30x30. KEY FEATURE.",
+      "metric": "percent_of_feature",
+      "reported_value": 33.49,
+      "uncertainty": [
+        33.38,
+        33.63
+      ],
+      "gap34_pct": 25.7,
+      "nonconserved_pct": 40.81,
+      "source": "Table 13 / freshwater %feature"
+    },
+    {
+      "id": "S145",
+      "group": "Representation: freshwater",
+      "feature_key": "wetlands",
+      "label": "wetlands",
+      "definition": "Wetlands = freshwater emergent + freshwater forested/shrub + estuarine & marine wetland (NWI 2019, 3 WETLAND_TYPE classes): % of wetland extent within 30x30. KEY FEATURE. NOTE: distinct from the FVEG CWHR13 'Wetland' habitat class.",
+      "metric": "percent_of_feature",
+      "reported_value": 32.21,
+      "uncertainty": [
+        32.1,
+        32.42
+      ],
+      "gap34_pct": 19.65,
+      "nonconserved_pct": 48.14,
+      "source": "Table 13 / freshwater %feature"
+    },
+    {
+      "id": "S146",
+      "group": "Representation: freshwater",
+      "feature_key": "fwa_rich",
+      "label": "fwa_rich",
+      "definition": "Watersheds with the highest freshwater species richness (top, Howard et al. 2015): % of extent within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 21.71,
+      "uncertainty": [
+        21.38,
+        21.95
+      ],
+      "gap34_pct": 34.19,
+      "nonconserved_pct": 44.09,
+      "source": "Table 13 / freshwater %feature"
+    },
+    {
+      "id": "S147",
+      "group": "Representation: freshwater",
+      "feature_key": "stream_1_2",
+      "label": "stream_1_2",
+      "definition": "Headwater streams (NHD order 1-2, USGS 2020): % of stream length within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 27.03,
+      "uncertainty": [
+        26.82,
+        27.5
+      ],
+      "gap34_pct": 26.7,
+      "nonconserved_pct": 46.27,
+      "source": "Table 13 / freshwater %feature"
+    },
+    {
+      "id": "S148",
+      "group": "Representation: freshwater",
+      "feature_key": "stream_3_5",
+      "label": "stream_3_5",
+      "definition": "Mid-sized streams (NHD order 3-5): % of length within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 24.0,
+      "uncertainty": [
+        23.84,
+        24.36
+      ],
+      "gap34_pct": 22.53,
+      "nonconserved_pct": 53.47,
+      "source": "Table 13 / freshwater %feature"
+    },
+    {
+      "id": "S149",
+      "group": "Representation: freshwater",
+      "feature_key": "stream_6_9",
+      "label": "stream_6_9",
+      "definition": "Major rivers (NHD order 6-9): % of length within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 21.76,
+      "uncertainty": [
+        21.75,
+        21.89
+      ],
+      "gap34_pct": 17.4,
+      "nonconserved_pct": 60.84,
+      "source": "Table 13 / freshwater %feature"
+    },
+    {
+      "id": "S150",
+      "group": "Representation: freshwater",
+      "feature_key": "stream_peren",
+      "label": "stream_peren",
+      "definition": "Perennial streams (NHD): % of length within 30x30.",
+      "metric": "percent_of_feature",
+      "reported_value": 29.51,
+      "uncertainty": [
+        29.41,
+        29.72
+      ],
+      "gap34_pct": 30.43,
+      "nonconserved_pct": 40.06,
+      "source": "Table 13 / freshwater %feature"
+    },
+    {
+      "id": "S151",
+      "group": "Representation: freshwater",
+      "feature_key": "flood",
+      "label": "flood",
+      "definition": "100-year floodplain / flood hazard zone (First Street Foundation 2020): % within 30x30. KEY FEATURE.",
+      "metric": "percent_of_feature",
+      "reported_value": 14.26,
+      "uncertainty": [
+        14.18,
+        14.37
+      ],
+      "gap34_pct": 12.98,
+      "nonconserved_pct": 72.77,
+      "source": "Table 13 / flood %feature"
+    },
+    {
+      "id": "S152",
+      "group": "Representation: climate/disturbance",
+      "feature_key": "miroc",
+      "label": "miroc",
+      "definition": "Mid-century habitat climate exposure / projected climate stress (Thorne et al. 2016, MIROC): % of climate-stressed extent within 30x30; as %network the network share projected to be climate-stressed.",
+      "metric": "percent_of_feature",
+      "reported_value": 31.73,
+      "uncertainty": [
+        31.49,
+        31.93
+      ],
+      "gap34_pct": 28.82,
+      "nonconserved_pct": 39.46,
+      "source": "Richness/Tables / %feature"
+    },
+    {
+      "id": "S153",
+      "group": "Representation: climate/disturbance",
+      "feature_key": "slr5ft",
+      "label": "slr5ft",
+      "definition": "Sea-level-rise inundation zone (NOAA, 5 ft): % of the SLR-exposed area within 30x30 (representation); as %network it is the network's SLR-at-risk share.",
+      "metric": "percent_of_feature",
+      "reported_value": 21.12,
+      "uncertainty": [
+        20.93,
+        21.1
+      ],
+      "gap34_pct": 4.32,
+      "nonconserved_pct": 74.56,
+      "source": "Richness/Tables / %feature"
+    },
+    {
+      "id": "S154",
+      "group": "Representation: climate/disturbance",
+      "feature_key": "fire_perimeter",
+      "label": "fire_perimeter",
+      "definition": "Historic fire perimeters (CAL FIRE, past decade): % of burned-area extent within 30x30; as %network the share of the network burned in the past decade.",
+      "metric": "percent_of_feature",
+      "reported_value": 28.64,
+      "uncertainty": [
+        28.3,
+        29.13
+      ],
+      "gap34_pct": 42.69,
+      "nonconserved_pct": 28.67,
+      "source": "Richness/Tables / %feature"
+    }
+  ]
+}
