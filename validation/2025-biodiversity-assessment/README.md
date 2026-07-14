@@ -16,6 +16,7 @@ extracted, defined precisely, and re-derived from scratch against our own
 | `QUERIES.md` | The canonical SQL for each overlay family, copy-paste runnable. |
 | `report_qa_answer_key.json` | Validated answer key (value + tolerance) for grading LLM answers. |
 | `headless-questions.txt` | 30 natural-language questions (one per category) for the headless model test. |
+| `model-performance.md` | Token/API-call/tool-call, wall-time and cost stats + the full 30-question scorecard across the three models (qwen / nemotron-ultra / glm-5.2); justifies the glm-5.2 default. |
 | `scripts/` | Generators that build the two JSON records from the report's shipped result CSVs + our reproduced values. |
 
 ## Source of the reported numbers
