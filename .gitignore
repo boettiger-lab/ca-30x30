@@ -1,6 +1,11 @@
 # Spreadsheets / working data files (not part of the deployed app)
 *.xlsx
 *.xls
+*.docx
+*.zip
+
+# Collaborator validation working files / internal notes (not part of the deployed app)
+collab-validation/
 
 # Claude Code local/agent state
 .claude/
