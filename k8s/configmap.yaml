@@ -104,11 +104,27 @@ data:
         # Clients POST to /api/llm/chat/completions with a dummy bearer
         # token; nginx rewrites the Authorization header using the
         # ${PROXY_KEY} substituted in at container startup.
-        location /api/llm/ {
-            proxy_pass https://open-llm-proxy.nrp-nautilus.io/v1/;
-            proxy_set_header Authorization "Bearer ${PROXY_KEY}";
-            proxy_set_header Host open-llm-proxy.nrp-nautilus.io;
+        # IPv4-only: open-llm-proxy.nrp-nautilus.io advertises a AAAA (IPv6)
+        # record, but pods have no working IPv6 egress. A literal-hostname
+        # proxy_pass resolves once at startup and can latch onto the
+        # unreachable IPv6 address, so connect() fails (101: Network
+        # unreachable) → nginx marks the upstream down → intermittent 502s in
+        # the browser (geo-agent-ops#64, open-llm-proxy#71). A runtime resolver
+        # with ipv6=off + a variabled proxy_pass forces resolution back onto
+        # IPv4 on every request. 10.96.0.10 is the in-cluster CoreDNS ClusterIP
+        # (kube-dns); the nginx:alpine build here rejects `local=on`.
+        # Remove once open-llm-proxy#71 lands the service-side AAAA fix.
+        location ~ ^/api/llm/(.*)$ {
+            resolver 10.96.0.10 ipv6=off valid=30s;
+            set $llm_upstream "open-llm-proxy.nrp-nautilus.io";
+            # A variabled proxy_pass drops nginx's implicit URI rewrite, so
+            # reconstruct the /v1/ path (and any query string) from the regex
+            # capture above.
+            proxy_pass https://$llm_upstream:443/v1/$1$is_args$args;
             proxy_ssl_server_name on;
+            proxy_ssl_name open-llm-proxy.nrp-nautilus.io;
+            proxy_set_header Host open-llm-proxy.nrp-nautilus.io;
+            proxy_set_header Authorization "Bearer ${PROXY_KEY}";
 
             # Allow long agent loops (multi-turn tool use)
             proxy_read_timeout 300s;
