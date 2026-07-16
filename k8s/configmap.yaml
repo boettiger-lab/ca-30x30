@@ -51,6 +51,12 @@ data:
                 "api_key": "unused"
             },
             {
+                "value": "deepseek/deepseek-v4-flash",
+                "label": "DeepSeek V4 Flash (OpenRouter)",
+                "endpoint": "/api/llm",
+                "api_key": "unused"
+            },
+            {
                 "value": "qwen3-small",
                 "label": "NRP Qwen3 Small",
                 "endpoint": "/api/llm",
