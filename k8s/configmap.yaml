@@ -106,35 +106,40 @@ data:
         add_header Access-Control-Allow-Methods "GET, POST, OPTIONS";
         add_header Access-Control-Allow-Headers "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Accept";
 
-        # ── Reverse proxy to open-llm-proxy ──────────────────────────
+        # ── Reverse proxy to open-llm-proxy ─────────────
         # Clients POST to /api/llm/chat/completions with a dummy bearer
         # token; nginx rewrites the Authorization header using the
-        # ${PROXY_KEY} substituted in at container startup.
-        # IPv4-only: open-llm-proxy.nrp-nautilus.io advertises a AAAA (IPv6)
-        # record, but pods have no working IPv6 egress. A literal-hostname
-        # proxy_pass resolves once at startup and can latch onto the
-        # unreachable IPv6 address, so connect() fails (101: Network
-        # unreachable) → nginx marks the upstream down → intermittent 502s in
-        # the browser (geo-agent-ops#64, open-llm-proxy#71). A runtime resolver
-        # with ipv6=off + a variabled proxy_pass forces resolution back onto
-        # IPv4 on every request. 10.96.0.10 is the in-cluster CoreDNS ClusterIP
-        # (kube-dns); the nginx:alpine build here rejects `local=on`.
-        # Remove once open-llm-proxy#71 lands the service-side AAAA fix.
-        location ~ ^/api/llm/(.*)$ {
-            resolver 10.96.0.10 ipv6=off valid=30s;
-            set $llm_upstream "open-llm-proxy.nrp-nautilus.io";
-            # A variabled proxy_pass drops nginx's implicit URI rewrite, so
-            # reconstruct the /v1/ path (and any query string) from the regex
-            # capture above.
-            proxy_pass https://$llm_upstream:443/v1/$1$is_args$args;
-            proxy_ssl_server_name on;
-            proxy_ssl_name open-llm-proxy.nrp-nautilus.io;
-            proxy_set_header Host open-llm-proxy.nrp-nautilus.io;
+        # ${PROXY_KEY} substituted in at container startup. The browser
+        # never receives the key.
+        #
+        # In-cluster upstream (geo-agent-ops#73): proxy the open-llm-proxy
+        # ClusterIP service directly over HTTP inside the cluster, NOT its
+        # public hostname (open-llm-proxy.nrp-nautilus.io). Routing through the
+        # public ingress exposed the app to NRP's heterogeneous edge: nginx
+        # latched onto a single flapping anycast VIP and hard-failed ~12% of
+        # /api/llm connects (502/504 "while connecting to upstream") for a
+        # resolver window — invisible in the proxy logs because the request
+        # died here, at the app's nginx, before reaching the proxy. It also
+        # subsumes the earlier IPv6-unreachable failure the #64 IPv4-forcing
+        # block worked around: an in-cluster ClusterIP is IPv4 and single-VIP,
+        # so both failure modes disappear. The Origin header still forwards by
+        # default, so proxy logging/routing is unchanged.
+        #
+        # Cross-namespace apps (e.g. schmidtdse) use this same FQDN; the
+        # ClusterIP is reachable cluster-wide. The service lives only in the
+        # biodiversity namespace: ClusterIP open-llm-proxy:8002 (http).
+        location /api/llm/ {
+            proxy_pass http://open-llm-proxy.biodiversity.svc.cluster.local:8002/v1/;
             proxy_set_header Authorization "Bearer ${PROXY_KEY}";
 
-            # Allow long agent loops (multi-turn tool use)
-            proxy_read_timeout 300s;
-            proxy_send_timeout 300s;
+            # Allow long agent loops (multi-turn tool use). 600s keeps the
+            # timeout uniform across the whole chain: the geo-agent client
+            # defaults to 600s (app/agent.js _llmTimeoutMs) and open-llm-proxy's
+            # httpx timeout is 600s, so this sidecar was the odd hop at 300s —
+            # cutting off slow-decode models (e.g. glm-5.2) the rest of the
+            # chain would still wait for.
+            proxy_read_timeout 600s;
+            proxy_send_timeout 600s;
 
             # Don't buffer streaming responses
             proxy_buffering off;
