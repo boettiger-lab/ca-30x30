@@ -29,24 +29,16 @@
         "default_endpoint": "https://openrouter.ai/api/v1",
         "models": [
             {
-                "value": "qwen/qwen3-235b-a22b",
-                "label": "Qwen3 235B"
+                "value": "z-ai/glm-5.2",
+                "label": "GLM-5.2"
             },
             {
-                "value": "moonshotai/kimi-k2",
-                "label": "Kimi K2"
+                "value": "moonshotai/kimi-k3",
+                "label": "Kimi K3"
             },
             {
-                "value": "minimax/minimax-m1",
-                "label": "MiniMax M1"
-            },
-            {
-                "value": "anthropic/claude-sonnet-4",
-                "label": "Claude Sonnet"
-            },
-            {
-                "value": "google/gemini-2.5-flash",
-                "label": "Gemini Flash"
+                "value": "anthropic/claude-sonnet-5",
+                "label": "Claude Sonnet 5"
             }
         ]
     },

@@ -21,62 +21,20 @@ data:
         },
         "llm_models": [
             {
+                "value": "z-ai/glm-5.2",
+                "label": "GLM-5.2",
+                "endpoint": "/api/llm",
+                "api_key": "unused"
+            },
+            {
+                "value": "moonshotai/kimi-k3",
+                "label": "Kimi K3",
+                "endpoint": "/api/llm",
+                "api_key": "unused"
+            },
+            {
                 "value": "anthropic/claude-sonnet-5",
                 "label": "Claude Sonnet 5",
-                "endpoint": "/api/llm",
-                "api_key": "unused"
-            },
-            {
-                "value": "qwen3",
-                "label": "NRP Qwen3",
-                "endpoint": "/api/llm",
-                "api_key": "unused"
-            },
-            {
-                "value": "gemma",
-                "label": "NRP Gemma",
-                "endpoint": "/api/llm",
-                "api_key": "unused"
-            },
-            {
-                "value": "qwen",
-                "label": "DSE-nimbus",
-                "endpoint": "/api/llm",
-                "api_key": "unused"
-            },
-            {
-                "value": "z-ai/glm-5.2",
-                "label": "GLM-5.2 (OpenRouter)",
-                "endpoint": "/api/llm",
-                "api_key": "unused"
-            },
-            {
-                "value": "deepseek/deepseek-v4-flash",
-                "label": "DeepSeek V4 Flash (OpenRouter)",
-                "endpoint": "/api/llm",
-                "api_key": "unused"
-            },
-            {
-                "value": "qwen3-small",
-                "label": "NRP Qwen3 Small",
-                "endpoint": "/api/llm",
-                "api_key": "unused"
-            },
-            {
-                "value": "gpt-oss",
-                "label": "NRP GPT-OSS 120B",
-                "endpoint": "/api/llm",
-                "api_key": "unused"
-            },
-            {
-                "value": "kimi",
-                "label": "NRP Kimi K2.5",
-                "endpoint": "/api/llm",
-                "api_key": "unused"
-            },
-            {
-                "value": "minimax-m2",
-                "label": "NRP minimax-m2",
                 "endpoint": "/api/llm",
                 "api_key": "unused"
             }
