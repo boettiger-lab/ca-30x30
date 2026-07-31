@@ -43,6 +43,27 @@ Instead, add a "Discovering data" section directing the agent to verify against 
 
 ---
 
+## Known upstream data divergences — DO NOT re-derive
+
+Several published-assessment numbers our catalog cannot currently reproduce are **already
+diagnosed and owned elsewhere**. They have been independently rediscovered more than once,
+each time costing hours. Before investigating any mismatch against the 2025 Biodiversity
+Assessment, check this table; if it is listed, cite the issue and move on.
+
+| Divergence | Status | Owner |
+|---|---|---|
+| **Conifer Woodland `whr13num=32`: 28.8% vs report 33.3%** — and its dominant member **pinyon-juniper `whrnum=40`: ~41.9% vs 52.6%**. Cause is a *footprint* difference: ~340k extra ac of PJ on non-conserved private land, **~88% of it in Mono County / eastern-central Sierra Great Basin fringe** (38–39.5°N, −119/−120°: Mono Basin, Bodie Hills, Sweetwater Mtns, Bridgeport). Juniper `whrnum=26` reproduces the report *exactly*, so the conserved layer, overlay method, and 60→13 crosswalk are all sound. **Not** a mode-vs-fractions hex artifact — both builds give the same footprint. | Open, *waiting on collaborator*: needs to know which FVEG build the assessment's PJN layer used | [data-workflows#413](https://github.com/boettiger-lab/data-workflows/issues/413) |
+| **`cwhr13` maps ~96.5M ac statewide vs the assessment's 101.50M** (its 13 class totals sum to 101,496,435 ac — full state extent, no nodata). ~5M ac of California carries `whr13num=0` in our build and a real class in theirs. Plausibly the same FVEG-build provenance question as #413. | Open | ca-30x30#73 + provenance in [data-workflows#417](https://github.com/boettiger-lab/data-workflows/issues/417) |
+| **Wetlands**: assessment feature total 1,735,518 ac vs our NWI CA total 9.14M; no type-subset reconciles. **SLR 5ft**: assessment 642,610 ac vs our NOAA-derived 3.90M (confirmed by both hex and vector). Source layers genuinely differ — method is sound. | Needs source provenance from the partner | see `collab-validation/` |
+| **Streams by order** — `public-usgs-nhd` denies `ListBucket`, so glob reads 403. Workaround: enumerate `h0` explicitly. | Filed | [data-workflows#411](https://github.com/boettiger-lab/data-workflows/issues/411) |
+| **FVEG vintage** — `fveg22_1` is CURRENT, not stale. Do not "fix" it. | Settled | — |
+
+Reproduced-and-matching items (statewide headline, all 20 ecoregions, 12 of 13 WHR13
+classes, ACE ranks, plant/endemic top-20% after data-workflows#345) are recorded in
+ca-30x30#82; do not re-verify those either unless a run contradicts them.
+
+---
+
 ## Training & evaluation workflow (regression fixes)
 
 Partner-reported agent failures (wrong numbers, hallucinated codes, speculation) are diagnosed and fixed through a fixed loop: **observe logs → reproduce headless → trace each issue to the layer that owns it → fix in that layer → verify → deploy.** The canonical reference is the **`geo-agent-training` skill** in `boettiger-lab/open-llm-proxy` (`.claude/skills/geo-agent-training/SKILL.md`) — read it before working a batch of issues.
