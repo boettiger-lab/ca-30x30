@@ -61,7 +61,36 @@ Assessment, check this table; if it is listed, cite the issue and move on.
 
 Reproduced-and-matching items (statewide headline, all 20 ecoregions, 12 of 13 WHR13
 classes, ACE ranks, plant/endemic top-20% after data-workflows#345) are recorded in
-ca-30x30#82; do not re-verify those either unless a run contradicts them.
+ca-30x30#82 (closed); do not re-verify those either unless a run contradicts them.
+
+---
+
+## Issue hygiene — one issue, one open question
+
+**Do not open meta-trackers, umbrella issues, or "batch" issues in this repo.** Two of them
+(#82, #90) grew into multi-thousand-word threads that interleaved finished work, cross-repo
+pointers, and unanswered questions. The cost is real: deciding whether anything was still
+actionable required re-reading the entire thread, every time, and two genuinely open
+partner questions (wetlands extent, floodplain source) sat for weeks with no issue at all
+because they were bullet points inside one.
+
+Every issue here must satisfy:
+
+- **One question or defect**, closable on its own without splitting.
+- **States the gap in numbers** (ours vs. theirs) rather than narrating an investigation.
+- **Names the next action and who takes it** — and if that person is a partner, the issue is
+  the *question*, phrased so it can be pasted into an email verbatim.
+- **Has an explicit "Done when:"** line.
+- **Links evidence, never restates it.** Analysis lives in the owning repo's issue or in
+  `collab-validation/`; this repo's issue is the pointer plus the outstanding decision.
+
+Labels that make the tracker scannable: `blocked:collaborator` (waiting on partner input —
+no engineering will help), `upstream` (fix belongs in another repo; this issue only tracks
+re-verification), `validation` (reproducing the 2025 assessment).
+
+Audit *results* — query banks, per-question grades, model comparisons — are records, not
+tasks. Post them, then close the issue. If an audit surfaces N live problems, open N issues
+and close the audit with an index comment linking them (see #90 for the pattern).
 
 ---
 
