@@ -134,6 +134,10 @@
 // Hex tile pyramids built from the public catalog via duckdb-mcp register_hex_tiles.
 // Native resolution 9; coarser levels are SUM rollups (zoom_offset 2, min_res 2),
 // so the pyramid resolution served at map zoom z is clamp(z + 2, 2, 9).
+//
+// If a tileset is ever evicted and a layer stops loading: the hash is a
+// deterministic function of the SQL, so re-running the same register_hex_tiles
+// query regenerates the identical URL. The three queries are in ca-30x30#103.
 // ---------------------------------------------------------------------------
 const TILES = {
   pj_all: { hash: 'd7d1172f6e33c691', prop: 'pj_acres',                  ramp: 'warm' },
