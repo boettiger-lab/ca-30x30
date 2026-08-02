@@ -52,10 +52,11 @@ Assessment, check this table; if it is listed, cite the issue and move on.
 
 | Divergence | Status | Owner |
 |---|---|---|
-| **Conifer Woodland `whr13num=32`: 28.8% vs report 33.3%** — and its dominant member **pinyon-juniper `whrnum=40`: ~41.9% vs 52.6%**. Cause is a *footprint* difference: ~340k extra ac of PJ on non-conserved private land, **~88% of it in Mono County / eastern-central Sierra Great Basin fringe** (38–39.5°N, −119/−120°: Mono Basin, Bodie Hills, Sweetwater Mtns, Bridgeport). Juniper `whrnum=26` reproduces the report *exactly*, so the conserved layer, overlay method, and 60→13 crosswalk are all sound. **Not** a mode-vs-fractions hex artifact — both builds give the same footprint. | Open, *waiting on collaborator*: needs to know which FVEG build the assessment's PJN layer used | [data-workflows#413](https://github.com/boettiger-lab/data-workflows/issues/413) |
+| **Conifer Woodland `whr13num=32`: 28.8% vs report 33.3%** — and its dominant member **pinyon-juniper `whrnum=40`: 41.7% vs 52.6%**. Cause is a *footprint* difference localized to **37.5–39.0°N / −119.5 to −118.0°W** (Mono Basin, Bodie Hills, Sweetwater Mtns, Bridgeport, Benton): 617k ac of our PJ sits in that box at 12.7% GAP 1+2, while the **rest of California is 58.2% — above the report's 52.6%**. Juniper `whrnum=26` reproduces the report *exactly*, so the conserved layer, overlay method, and 60→13 crosswalk are all sound. **Not** a mode-vs-fractions hex artifact. Do not re-derive: ca-30x30#103 holds the full analysis and runnable SQL. | Open, *waiting on collaborator*: needs TNC's statewide + in-box PJN acreage | ca-30x30#103 (data-workflows#413 closed — never a data-workflows defect) |
 | **The "`cwhr13` is missing ~5M acres" claim is FALSE — do not re-investigate.** Measured: the res-10 cell union is 102,834,000 ac (mode and fractional builds identical) vs California's 101,498,000 — **1.3% larger**, from boundary cells overhanging the state edge. `whr13num=0` nodata is 91,371 ac, not 5M. The ~96.5M figure in the `cwhr13-hex-fractions` STAC note is cell count x H3's **global average** res-10 area (0.0150475 km²); California's cells run ~6.6% larger (0.016040 km²), so the global constant understates by ~5%. Per-class percentages are unaffected (a uniform area scale cancels in a ratio). Agents quote that note to users, and one derived a bogus "3.718 ac/cell" from it. | Note fix open; data is correct | [data-workflows#504](https://github.com/boettiger-lab/data-workflows/issues/504) (ca-30x30#73 closed) |
-| **Wetlands**: assessment feature total 1,735,518 ac vs our NWI CA total 9.14M; no type-subset reconciles. **SLR 5ft**: assessment 642,610 ac vs our NOAA-derived 3.90M (confirmed by both hex and vector). Source layers genuinely differ — method is sound. | Needs source provenance from the partner | see `collab-validation/` |
-| **Streams by order** — `public-usgs-nhd` denies `ListBucket`, so glob reads 403. Workaround: enumerate `h0` explicitly. | Filed | [data-workflows#411](https://github.com/boettiger-lab/data-workflows/issues/411) |
+| **Wetlands**: assessment feature total 1,735,518 ac vs our NWI CA total 9.14M; no type-subset reconciles. Our *percentage* (30.1% vs 32%) nearly agrees, which masks the 5× extent difference — acreage answers are wrong. | Needs source definition from the partner | ca-30x30#105 |
+| **SLR 5ft**: assessment 642,610 ac vs our NOAA-derived 3.90M. Ingest verified faithful; NOAA's *connected* layer includes existing ocean. Newly-inundated-land reconstructions bracket the target (430k / 695k) — the residual is a land/ocean clip. | Needs clip definition from the partner | ca-30x30#104 (rebuild spec: data-workflows#363) |
+| **Streams by order** — `public-usgs-nhd` denies `ListBucket`, so glob reads 403. Workaround: enumerate `h0` explicitly. | Fixed | [data-workflows#411](https://github.com/boettiger-lab/data-workflows/issues/411) (closed) |
 | **FVEG vintage** — `fveg22_1` is CURRENT, not stale. Do not "fix" it. | Settled | — |
 | **The pinned area of California (101,498,000 ac / 410,749 km²) is deliberate — do not propose computing it at query time.** "The area of California" is not one number: different source polygons disagree (e.g. the US Census total excludes inland water bodies), so the app fixes one definition — the CA-Nature ecoregion extent, `SUM(Shape_Area)` over `ecoregion.parquet` in EPSG:3310 — to keep every percentage comparable across questions and to match the conserved-areas layer's own footprint. Re-derived 2026-07-31: exact match. Pinning it also fixed real non-determinism (#87: ad-hoc recomputation gave 25.6% vs 27.8% across runs). This and the statewide **30%** goal are the *only* hardcoded figures in `system-prompt.md`; every result — percent-conserved, the representation benchmark — is computed at query time. | Settled | ca-30x30#87 |
 
@@ -81,8 +82,20 @@ Every issue here must satisfy:
 - **Names the next action and who takes it** — and if that person is a partner, the issue is
   the *question*, phrased so it can be pasted into an email verbatim.
 - **Has an explicit "Done when:"** line.
-- **Links evidence, never restates it.** Analysis lives in the owning repo's issue or in
-  `collab-validation/`; this repo's issue is the pointer plus the outstanding decision.
+- **Carries runnable SQL for any numeric claim**, against public paths, with the expected
+  output in a trailing comment. A number nobody can re-derive gets re-derived from scratch.
+
+**Rewrite the body; do not append comments.** New findings *replace* the stale text — the
+issue must always read as the current state of the problem, not as a chronological log of
+how we got here. GitHub keeps the edit history if anyone needs the old version. An issue
+whose body is out of date and whose truth lives in comment #7 is the failure mode this
+section exists to prevent.
+
+**Keep an issue in exactly one repo — the one that will act on it.** A divergence traced to
+a *source-data* difference with a partner is not an ingest defect: it belongs here, not on
+`data-workflows`. (data-workflows#413 sat on the wrong tracker for three weeks because it
+was filed before the diagnosis was in.) Never leave the same open question live in two
+repos; the second copy becomes a stale duplicate the moment the first is answered.
 
 Labels that make the tracker scannable: `blocked:collaborator` (waiting on partner input —
 no engineering will help), `upstream` (fix belongs in another repo; this issue only tracks
