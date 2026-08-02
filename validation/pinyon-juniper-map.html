@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pinyon-juniper: where our layer differs from the 2025 Assessment</title>
+<title>Pinyon-juniper: our habitat layer includes 335k acres of Nevada</title>
 <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <style>
@@ -66,45 +66,59 @@
 <div id="map"></div>
 
 <div id="info" class="panel">
-  <h1>Pinyon-juniper: where the two layers disagree</h1>
+  <h1>Our pinyon-juniper layer includes 335,000 acres of Nevada</h1>
   <div class="sub">CA 30&times;30 Explorer &middot; validation against the 2025 Biodiversity Assessment</div>
 
-  <p>Our pinyon-juniper (CWHR <code>whrnum=40</code>, <code>WHRTYPE='PJN'</code>) comes out
-     <b>41.7%</b> inside 30&times;30 Conservation Areas (GAP&nbsp;1+2). The Assessment reports
-     <b>52.6%</b>.</p>
-
   <div class="key">
-    <b>The gap is one region.</b> Outside the dashed box our PJ is <b>58.2%</b> GAP&nbsp;1+2 &mdash;
-    <i>above</i> your 52.6%. Inside it, 12.7%. The statewide 41.7% is that 58.2% pulled down by
-    617,001&nbsp;ac of largely private PJ on the eastern Sierra&nbsp;/ Great Basin fringe.
+    <b>This was our defect, not a disagreement.</b> Our FVEG-derived habitat layer is not clipped
+    to California. <b>19.4%</b> of its pinyon-juniper &mdash; 335,544&nbsp;ac &mdash; lies in Nevada.
+    Nevada habitat cannot intersect a California conservation unit, so all of it scored as
+    non-conserved and pulled our percentage down.
   </div>
 
+  <p>Turn on <i>Non-conserved pinyon-juniper</i> and follow the band northeast: it runs straight
+     across the state line past Yerington and Hawthorne. That is not California habitat outside
+     conservation units &mdash; it is Nevada.</p>
+
   <table class="nums">
-    <thead><tr><th></th><th>PJ extent</th><th>GAP&nbsp;1+2</th></tr></thead>
+    <thead><tr><th>pinyon-juniper</th><th>acres</th><th>GAP&nbsp;1+2</th></tr></thead>
     <tbody>
-      <tr class="hi"><td>inside box</td><td>617,001 ac</td><td>12.7%</td></tr>
-      <tr><td>rest of CA</td><td>1,114,980 ac</td><td>58.2%</td></tr>
-      <tr><td>statewide</td><td>1,731,980 ac</td><td>41.7%</td></tr>
+      <tr><td>as published</td><td>1,731,980</td><td>41.7%</td></tr>
+      <tr><td>outside CA</td><td>335,544</td><td>0.0%</td></tr>
+      <tr class="hi"><td>California only</td><td>1,396,440</td><td>52.0%</td></tr>
+      <tr><td>2025 Assessment</td><td></td><td>52.6%</td></tr>
     </tbody>
   </table>
 
-  <p><b>Juniper is the control.</b> Same source raster, same crosswalk, same conserved layer,
-     same query &mdash; juniper (<code>whrnum=26</code>) reproduces the Assessment to within 1&nbsp;pp
-     (ours 16.2% vs 17.2%; non-conserved 29.1% vs 28.9%). Switch to the juniper layer: its
-     non-conserved acreage is spread across the Modoc Plateau and the northeast, with no
-     equivalent concentration. That rules out the conserved-areas layer, the overlay method,
-     the GAP apportionment and the crosswalk &mdash; all shared between the two classes.</p>
+  <p>Clipped to California we reproduce the Assessment to <b>0.6&nbsp;pp</b> &mdash; the same
+     discretization noise as every other habitat class.</p>
 
-  <p><b>What we would like to compare.</b> If our numbers hold outside the box, your layer would
-     need roughly <b>156,000&nbsp;ac</b> of PJN inside it against our 617,001 &mdash; a statewide
-     PJN total near 1.27M vs our 1.73M. The single most useful check is your total statewide
-     PJN acreage.</p>
+  <p><b>Juniper was the control that misled us.</b> Juniper (<code>whrnum=26</code>) is 99.9%
+     in-state, so it reproduced the Assessment all along. We read that as proof the pipeline was
+     sound &mdash; it was. The <i>extent</i> was not, and only the classes with out-of-state
+     coverage diverged. Switch to the juniper layer: almost nothing east of the line.</p>
+
+  <p>The same clip corrects a whole family of Great Basin classes that were all reading low:</p>
+
+  <table class="nums">
+    <thead><tr><th></th><th>published</th><th>CA-clipped</th><th>report</th></tr></thead>
+    <tbody>
+      <tr><td>pinyon-juniper</td><td>41.7</td><td>52.0</td><td>52.6</td></tr>
+      <tr><td>sagebrush</td><td>19.9</td><td>22.4</td><td>22.8</td></tr>
+      <tr><td>low sage</td><td>11.6</td><td>13.8</td><td>14.2</td></tr>
+      <tr><td>bitterbrush</td><td>12.1</td><td>13.6</td><td>13.6</td></tr>
+      <tr><td>conifer woodland</td><td>28.8</td><td>32.0</td><td>33.3</td></tr>
+      <tr><td>shrub</td><td>26.6</td><td>27.6</td><td>27.8</td></tr>
+    </tbody>
+  </table>
 
   <p style="color:var(--muted);font-size:11.5px">
-     Box = 37.5&ndash;39.0&deg;N, &minus;119.5 to &minus;118.0&deg;W (Mono Basin, Bodie Hills,
-     Sweetwater Mtns, Bridgeport, Benton). Hexes are H3 resolution&nbsp;9 (~28&nbsp;ac), aggregated
-     up as you zoom out. Source: CAL FIRE FRAP <code>fveg22_1</code> &times; CA Nature
-     <code>conserved-areas-terrestrial-2025</code>. Full analysis and runnable SQL:
+     Hexes are H3 resolution&nbsp;9 (~28&nbsp;ac), aggregated up as you zoom out, and show the data
+     <b>as currently published</b> &mdash; unclipped. Source: CAL FIRE FRAP <code>fveg22_1</code>
+     &times; CA Nature <code>conserved-areas-terrestrial-2025</code>; boundary from US Census 2024
+     (mainland only). Ingest fix:
+     <a href="https://github.com/boettiger-lab/data-workflows/issues/505" target="_blank" rel="noopener">data-workflows#505</a>.
+     Corrected numbers:
      <a href="https://github.com/boettiger-lab/ca-30x30/issues/103" target="_blank" rel="noopener">ca-30x30#103</a>.</p>
 </div>
 
@@ -112,16 +126,17 @@
   <h2>Layer</h2>
   <label class="opt"><input type="radio" name="lyr" value="pj_nc" checked>
     <span class="lbl">Non-conserved pinyon-juniper
-      <span class="desc">PJ outside any conservation unit &mdash; the excess</span></span></label>
+      <span class="desc">the band crosses into Nevada</span></span></label>
   <label class="opt"><input type="radio" name="lyr" value="pj_all">
     <span class="lbl">All pinyon-juniper
       <span class="desc">our full PJ footprint, 1,731,980 ac</span></span></label>
   <label class="opt"><input type="radio" name="lyr" value="jn_nc">
     <span class="lbl">Non-conserved juniper <i>(control)</i>
-      <span class="desc">the class that matches your numbers</span></span></label>
+      <span class="desc">99.9% in-state — reproduces the Assessment</span></span></label>
   <hr>
   <label class="opt"><input type="checkbox" id="boxToggle" checked>
-    <span class="lbl">Show comparison box</span></label>
+    <span class="lbl">Show California boundary
+      <span class="desc">everything beyond it should not be in this layer</span></span></label>
   <div id="legend">
     <div class="bar" id="legendBar"></div>
     <div class="ends"><span>sparse</span><span>densest PJ hex</span></div>
@@ -183,19 +198,9 @@ function paintFor(prop, ramp) {
   return { 'fill-color': byZoom(colorAt), 'fill-opacity': byZoom(opacityAt) };
 }
 
-const BOX = { w: -119.5, e: -118.0, s: 37.5, n: 39.0 };
-const boxGeoJSON = {
-  type: 'Feature', properties: {},
-  geometry: { type: 'Polygon', coordinates: [[
-    [BOX.w, BOX.s], [BOX.e, BOX.s], [BOX.e, BOX.n], [BOX.w, BOX.n], [BOX.w, BOX.s]
-  ]] }
-};
-// Separate point feature so the label is drawn exactly once, rather than repeating
-// along every edge as it would with symbol-placement: 'line'.
-const boxLabelGeoJSON = {
-  type: 'Feature', properties: {},
-  geometry: { type: 'Point', coordinates: [(BOX.w + BOX.e) / 2, BOX.n] }
-};
+// California boundary (US Census 2024 TIGER, simplified, mainland only) — the reference
+// line for this map: hexes east of it are the defect.
+const CA_BOUNDARY = {"type":"MultiPolygon","coordinates":[[[[-120.001014,38.999574],[-118.714201,38.102105],[-117.500117,37.22038],[-116.094166,36.156263],[-114.633487,35.001857],[-114.634382,34.87289],[-114.586842,34.835672],[-114.552682,34.766871],[-114.470477,34.711368],[-114.450506,34.666836],[-114.457985,34.657113],[-114.424202,34.610453],[-114.43681,34.596074],[-114.380838,34.529724],[-114.386699,34.457911],[-114.373719,34.446938],[-114.335372,34.450038],[-114.226107,34.365916],[-114.176909,34.349306],[-114.138282,34.30323],[-114.131211,34.26273],[-114.164648,34.259699],[-114.229715,34.186928],[-114.287294,34.170529],[-114.320777,34.138635],[-114.366517,34.118577],[-114.41168,34.110031],[-114.434181,34.087379],[-114.438266,34.022609],[-114.465867,34.010987],[-114.459258,33.994711],[-114.522734,33.955039],[-114.535676,33.933552],[-114.50792,33.903807],[-114.525872,33.901008],[-114.503017,33.867998],[-114.529883,33.857563],[-114.51997,33.825381],[-114.52805,33.814963],[-114.504863,33.760465],[-114.512348,33.734214],[-114.494197,33.707922],[-114.531523,33.675108],[-114.514057,33.660179],[-114.533194,33.65166],[-114.521845,33.612544],[-114.540617,33.591412],[-114.524215,33.553068],[-114.592369,33.498675],[-114.643302,33.416746],[-114.725282,33.405048],[-114.698035,33.352442],[-114.731223,33.302433],[-114.672088,33.258499],[-114.689541,33.246428],[-114.673626,33.223121],[-114.675359,33.185488],[-114.706488,33.08816],[-114.68902,33.084035],[-114.66506,33.033906],[-114.645979,33.048902],[-114.618788,33.027202],[-114.575161,33.036541],[-114.52013,33.029984],[-114.492938,32.971781],[-114.468605,32.971649],[-114.480925,32.936276],[-114.462929,32.907944],[-114.468971,32.845155],[-114.529633,32.795477],[-114.526856,32.757094],[-114.617395,32.728257],[-114.701582,32.745632],[-114.719497,32.718739],[-117.205051,32.529508],[-117.223302,32.621238],[-117.268789,32.619415],[-117.309239,32.656401],[-117.342,32.840354],[-117.323279,32.903064],[-117.375872,33.075217],[-117.467871,33.212494],[-117.571531,33.312302],[-117.713571,33.408777],[-117.741409,33.410118],[-117.816356,33.490872],[-118.049848,33.620015],[-118.096473,33.653651],[-118.1259,33.697151],[-118.237008,33.690595],[-118.274239,33.663429],[-118.319135,33.659547],[-118.466962,33.725524],[-118.485577,33.753664],[-118.484483,33.803154],[-118.443968,33.839057],[-118.447254,33.84876],[-118.557356,33.987673],[-118.727459,33.980307],[-118.814752,33.947214],[-118.887301,33.987223],[-119.158963,34.040253],[-119.217993,34.062491],[-119.285743,34.140805],[-119.334887,34.236865],[-119.466995,34.29366],[-119.500953,34.326922],[-119.584795,34.36166],[-119.651357,34.366708],[-119.716129,34.336108],[-119.797067,34.365331],[-119.891521,34.357457],[-120.024356,34.409343],[-120.14728,34.422916],[-120.287125,34.417609],[-120.456015,34.391485],[-120.523646,34.419505],[-120.559439,34.488466],[-120.594334,34.504072],[-120.64236,34.503765],[-120.682206,34.525326],[-120.713329,34.57496],[-120.705315,34.621408],[-120.664691,34.696344],[-120.702093,34.748329],[-120.673281,34.838624],[-120.720319,34.869241],[-120.734382,34.901499],[-120.694715,35.028839],[-120.689606,35.098828],[-120.725503,35.113576],[-120.800411,35.116577],[-120.917792,35.187378],[-120.961253,35.249975],[-120.923435,35.348413],[-120.933292,35.392748],[-121.041635,35.41999],[-121.151056,35.516412],[-121.201555,35.58369],[-121.323512,35.624969],[-121.366362,35.680419],[-121.39346,35.763401],[-121.501047,35.842745],[-121.561461,35.943818],[-121.631818,35.978945],[-121.674359,36.064661],[-121.727812,36.129009],[-121.770693,36.162014],[-121.880193,36.210314],[-121.957666,36.285117],[-121.981042,36.419634],[-122.021998,36.508908],[-122.017455,36.537405],[-122.04405,36.578249],[-122.040733,36.60012],[-122.001124,36.647704],[-122.076399,36.910199],[-122.172024,36.942681],[-122.251082,36.985833],[-122.313899,37.054764],[-122.376086,37.065648],[-122.396916,37.109888],[-122.464117,37.177848],[-122.484046,37.249944],[-122.467005,37.349889],[-122.509889,37.441554],[-122.546996,37.457857],[-122.574963,37.499943],[-122.588177,37.579408],[-122.567497,37.639185],[-122.588174,37.789362],[-122.675654,37.848517],[-122.715845,37.845625],[-122.766771,37.865804],[-122.789027,37.893763],[-122.829804,37.910325],[-122.85046,37.945585],[-122.889291,37.974109],[-122.902284,37.977386],[-122.91917,37.954835],[-122.953224,37.941093],[-123.022507,37.942065],[-123.067965,37.958669],[-123.08513,38.008433],[-123.014817,38.149132],[-123.049617,38.214286],[-123.134523,38.296263],[-123.134312,38.345786],[-123.164757,38.388337],[-123.22022,38.441954],[-123.360929,38.510202],[-123.51058,38.68089],[-123.641253,38.764394],[-123.784676,38.893728],[-123.80986,38.961219],[-123.797217,38.989863],[-123.763148,39.00869],[-123.761965,39.041091],[-123.840771,39.187335],[-123.894936,39.348349],[-123.875126,39.494179],[-123.834649,39.549194],[-123.852516,39.592371],[-123.857183,39.674693],[-123.895741,39.711406],[-123.90097,39.780466],[-124.078596,39.972263],[-124.133255,39.999865],[-124.153762,40.063544],[-124.231204,40.093382],[-124.272099,40.13365],[-124.411026,40.225275],[-124.428222,40.258121],[-124.418276,40.314289],[-124.428055,40.361785],[-124.480543,40.428493],[-124.447677,40.529709],[-124.403367,40.61317],[-124.232622,40.869286],[-124.197619,40.950529],[-124.182694,41.001313],[-124.227079,41.046622],[-124.252474,41.134075],[-124.237625,41.165959],[-124.195532,41.184582],[-124.160704,41.289293],[-124.220032,41.302994],[-124.24242,41.3433],[-124.231087,41.368856],[-124.206515,41.384718],[-124.139973,41.381821],[-124.133231,41.432311],[-124.160493,41.543409],[-124.18499,41.565769],[-124.190113,41.60819],[-124.209785,41.635205],[-124.211706,41.681193],[-124.392055,41.772377],[-124.438909,41.824504],[-124.435015,41.856507],[-124.401242,41.885588],[-124.347647,41.883154],[-124.311936,41.858788],[-124.285031,41.859487],[-124.27612,41.903052],[-124.291939,41.928498],[-124.288578,41.969564],[-124.306995,41.992906],[-124.328835,41.998334],[-122.378049,42.009503],[-119.999234,41.994944],[-120.001014,38.999574]]]]};
 
 const map = new maplibregl.Map({
   container: 'map',
@@ -232,19 +237,16 @@ map.on('load', () => {
     });
   }
 
-  map.addSource('box', { type: 'geojson', data: boxGeoJSON });
+  map.addSource('ca', { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: CA_BOUNDARY } });
   map.addLayer({
-    id: 'box-line', type: 'line', source: 'box',
-    paint: { 'line-color': '#111', 'line-width': 2, 'line-dasharray': [2.5, 1.5], 'line-opacity': 0.85 }
+    id: 'box-line', type: 'line', source: 'ca',
+    paint: { 'line-color': '#111', 'line-width': 2.2, 'line-opacity': 0.9 }
   });
-  map.addSource('box-label-pt', { type: 'geojson', data: boxLabelGeoJSON });
   map.addLayer({
-    id: 'box-label', type: 'symbol', source: 'box-label-pt',
+    id: 'box-label', type: 'symbol', source: 'ca',
     layout: {
-      'text-field': 'comparison box  ·  37.5–39.0°N / −119.5 to −118.0°W',
-      'text-font': ['Open Sans Semibold'], 'text-size': 11.5,
-      'text-anchor': 'bottom', 'text-offset': [0, -0.5],
-      'text-allow-overlap': true, 'text-ignore-placement': true
+      'text-field': 'California', 'text-font': ['Open Sans Semibold'], 'text-size': 11,
+      'symbol-placement': 'line', 'symbol-spacing': 600, 'text-offset': [0, 0.8]
     },
     paint: { 'text-color': '#111', 'text-halo-color': '#fff', 'text-halo-width': 2 }
   });
