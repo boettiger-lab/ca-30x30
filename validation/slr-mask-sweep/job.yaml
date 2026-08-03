@@ -1,0 +1,75 @@
+# Sea-level-rise mask sweep — ca-30x30#104
+#
+# Downloads all 7 California NOAA SLR regions and measures every published
+# inundation level (ocean-connected and low-lying) in EPSG:3310, so the
+# water-level mask behind the assessment's 642,610-ac figure can be
+# identified rather than guessed.
+#
+#   kubectl create configmap slr-mask-sweep --from-file=sweep.R -n biodiversity
+#   kubectl apply -f job.yaml -n biodiversity
+#   kubectl logs -f job/slr-mask-sweep -n biodiversity
+#
+# Reads only from NOAA over HTTPS and writes nothing to S3 — no credentials
+# needed, and it cannot disturb the published dataset.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: slr-mask-sweep
+  labels:
+    k8s-app: slr-mask-sweep
+spec:
+  completions: 1
+  parallelism: 1
+  backoffLimit: 1
+  ttlSecondsAfterFinished: 86400
+  template:
+    metadata:
+      labels:
+        k8s-app: slr-mask-sweep
+    spec:
+      # Shared cluster etiquette: low priority, and keep CPU work off GPU nodes.
+      priorityClassName: opportunistic
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: feature.node.kubernetes.io/pci-10de.present
+                operator: NotIn
+                values:
+                - "true"
+      restartPolicy: Never
+      containers:
+        - name: sweep
+          image: ghcr.io/rocker-org/ml-spatial
+          imagePullPolicy: IfNotPresent
+          workingDir: /scratch
+          command: ["Rscript", "/scripts/sweep.R"]
+          env:
+            - name: GDAL_DATA
+              value: "/opt/conda/share/gdal"
+            - name: PROJ_LIB
+              value: "/opt/conda/share/proj"
+            - name: TMPDIR
+              value: "/scratch/tmp"
+          resources:
+            requests:
+              cpu: "4"
+              memory: 32Gi
+              ephemeral-storage: 40Gi
+            limits:
+              cpu: "4"
+              memory: 32Gi
+              ephemeral-storage: 40Gi
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+            - name: scratch
+              mountPath: /scratch
+      volumes:
+        - name: scripts
+          configMap:
+            name: slr-mask-sweep
+        - name: scratch
+          emptyDir:
+            sizeLimit: 40Gi
