@@ -30,6 +30,11 @@
     {"q": "What percent of the 100-year floodplain is conserved under 30x30 (GAP 1 or 2)?", "answer": 14.3, "unit": "percent_of_feature", "tolerance_pp": 1.5},
     {"q": "What percent of headwater streams are conserved under 30x30 (GAP 1 or 2)?", "answer": 27.0, "unit": "percent_of_feature", "tolerance_pp": 1.5},
     {"q": "What percent of major rivers are conserved under 30x30 (GAP 1 or 2)?", "answer": 21.8, "unit": "percent_of_feature", "tolerance_pp": 1.5},
-    {"q": "What percent of watersheds with the highest freshwater species richness are conserved under 30x30 (GAP 1 or 2)?", "answer": 21.7, "unit": "percent_of_feature", "tolerance_pp": 1.5}
+    {"q": "What percent of watersheds with the highest freshwater species richness are conserved under 30x30 (GAP 1 or 2)?", "answer": 21.7, "unit": "percent_of_feature", "tolerance_pp": 1.5},
+    {"q": "What percent of ACE statewide BioRank rank-5 areas is in other conserved or public lands (GAP 3 or 4)?", "answer": 29.1, "unit": "percent_of_feature", "tolerance_pp": 1.0, "short": "ACE BioRank g34", "traps": ["gap34-overlay-not-binary"]},
+    {"q": "What percent of ACE statewide BioRank rank-5 areas is outside any conserved-area unit?", "answer": 49.8, "unit": "percent_of_feature", "tolerance_pp": 1.0, "short": "ACE BioRank non-cons", "traps": ["res8-binary-collapse"]},
+    {"q": "What percent of native bird richness hotspots (top 20%) is outside any conserved-area unit?", "answer": 73.5, "unit": "percent_of_feature", "tolerance_pp": 1.5, "short": "bird top20 non-cons", "traps": ["res8-binary-collapse"]},
+    {"q": "Break down ACE statewide BioRank rank-5 areas into 30x30 conserved (GAP 1+2), other conserved or public lands (GAP 3+4), and land outside any conserved-area unit.", "answer": "21.1% GAP 1+2 / 29.1% GAP 3+4 / 49.8% outside any unit", "unit": "multi_percent", "tolerance_pp": 1.0, "short": "ACE 3-way split", "traps": ["res8-binary-collapse", "regap-as-category"]},
+    {"q": "How well is biodiversity protected in 30x30 lands?", "answer": "Open-ended. Any ACE feature reported must use the fractional overlay: BioRank 5 = 21.1/29.1/49.8, RareRank 5 = 23.4 GAP 1+2, NtvAmph = 19.5, NtvBird = 11.9, NtvRept = 40.9, NtvMamm = 22.2. Fails if the non-conserved share of any feature is understated by >2pp.", "unit": "multi_percent", "tolerance_pp": 2.0, "short": "biodiv open-ended", "traps": ["res8-binary-collapse", "regap-as-category"]}
   ]
 }

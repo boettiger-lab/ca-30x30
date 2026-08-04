@@ -1,5 +1,5 @@
 import json,re,glob,collections
-key=json.load(open('answer_key.json'))['questions']
+key=json.load(open('report_qa_answer_key.json'))['questions']
 LOGS={'glm-5.2':'glm_full.log','nemotron-ultra':'nemo_full.log','qwen':'qwen_full.log'}
 ORG={'glm-5.2':'report_glm','nemotron-ultra':'report_nemo','qwen':'report_qwen'}
 
@@ -55,6 +55,7 @@ short=[ "% CA in 30x30","% GAP3+4","% non-conserved","acres conserved","acres to
 rows=[]; tally={m:collections.Counter() for m in LOGS}
 for i,k in enumerate(key):
     q=k['q']; unit=k['unit']; exp=k['answer']; tol=k.get('tolerance_pp')
+    label = short[i] if i < len(short) else k.get('short', q[:24])
     expn=exp if isinstance(exp,(int,float)) else None
     cells={}
     for m in LOGS:
@@ -69,12 +70,12 @@ for i,k in enumerate(key):
         disp = f"{fmt(v1)}" if (v1==v2 or v2 is None) else f"{fmt(v1)}/{fmt(v2)}"
         cells[m]=(f"{''.join(marks)} {disp}{nd}", best)
     es = (f"{expn:g}" if isinstance(expn,(int,float)) and expn<1e4 else (f"{expn:,.0f}" if isinstance(expn,(int,float)) else str(exp)))
-    rows.append((i+1,short[i],es,cells))
+    rows.append((i+1,label,es,cells))
 
 # ---- write markdown ----
 o=[]
-o.append("# Model performance, cost & 30-question scorecard\n")
-o.append("Blind headless runs of the 30-question report set (`headless-questions.txt`), **2 trials each = 60 cells per model**, on the current deployed layer (mcp-data-server v0.8.5). The models never see the report value — this measures deployed behavior, unlike the answer-key-supervised reproduction in `reproduction_record.json`. `qwen` = DSE-Nimbus (self-hosted, no per-call $); `nemotron-ultra` + `glm-5.2` via OpenRouter.\n")
+o.append(f"# Model performance, cost & {len(key)}-question scorecard\n")
+o.append("Blind headless runs of the report question set (`headless-questions.txt`), **2 trials each = 60 cells per model**, on the current deployed layer (mcp-data-server v0.8.5). The models never see the report value — this measures deployed behavior, unlike the answer-key-supervised reproduction in `reproduction_record.json`. `qwen` = DSE-Nimbus (self-hosted, no per-call $); `nemotron-ultra` + `glm-5.2` via OpenRouter.\n")
 o.append("## Why glm-5.2 is the default\n")
 o.append("glm-5.2 is the most **accurate and most deterministic** of the three at essentially the **same cost and reasonable wall-time** — and it's the only open model that reproduces *both* the res-8 ACE/richness features and the 3-bucket land-status without an answer key.\n")
 o.append("| | **glm-5.2** ⭐ | nemotron-ultra | qwen (Nimbus) |")
@@ -95,7 +96,7 @@ trow("**Cost (USD, 60 cells)**","**$2.98**","$3.32","n/a (self-hosted)")
 trow("— input / output split","$1.81 / $1.17","$2.57 / $0.74","—")
 o.append("\n- **Cost is input-dominated** (61% glm, 78% nemotron): the agent resends growing context each turn, so input volume (6–8 M tok) dwarfs output (0.26–0.40 M) even though output bills ~9–10× more per token. glm's **85% prompt-cache hit** (vs nemotron 47%) is why it's cheaper despite emitting more reasoning.")
 o.append("- nemotron is fastest wall-clock but least accurate and least stable (3 timeouts, ~8 non-deterministic). qwen is slowest and weakest.\n")
-o.append("## 30-question scorecard\n")
+o.append(f"## {len(key)}-question scorecard\n")
 o.append("Per cell: `T1T2 value` — ✓ match · ~ close · ✗ mismatch · ⏱ timeout/no-answer · ⚠ trials disagree. Values are the extracted headline (heuristic).\n")
 o.append("| # | question | report | glm-5.2 | nemotron-ultra | qwen |")
 o.append("|--|--|--|--|--|--|")

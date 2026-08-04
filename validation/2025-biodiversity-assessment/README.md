@@ -74,7 +74,41 @@ as fully conserved.
 
 ## Headless model test
 
-`headless-questions.txt` (30 questions) + `report_qa_answer_key.json` drive a matrix
+`headless-questions.txt` (35 questions) + `report_qa_answer_key.json` drive a matrix
 run through the geo-agent headless runner (`open-llm-proxy/headless/run-matrix-k8s.sh`)
 on three models: `qwen` (DSE-Nimbus), `nvidia/nemotron-3-ultra-550b-a55b` and
 `z-ai/glm-5.2` (OpenRouter). Grading compares each model's answer to the validated key.
+
+### Q31–35 — the res-8 binary-collapse trap (added 2026-08-04)
+
+Questions 31–35 exist because a **live partner-facing failure went undetected by both
+records above**, and the reason is instructive:
+
+- `reproduction_record.json` reproduced ACE correctly (`BioRankSW` 21.53 vs report
+  21.09) — but with **hand-written canonical SQL** from `QUERIES.md`. That validates the
+  *catalog*, not the *agent*.
+- Q1–30 do test the agent on ACE, but every one asks for **a single number in a single
+  category** ("What percent of X is conserved under 30x30 (GAP 1 or 2)?"). Q19 passes:
+  21.17% on glm-5.2, kimi-k3 and claude-sonnet-5 independently.
+- **No question asked a feature for a multi-category breakdown.** That framing is what
+  triggers the failure: needing three mutually exclusive buckets, the model reaches for
+  `MIN(reGAP)` per cell — a *class* instead of a *fraction* — and collapses the res-10
+  conserved layer to the feature's res-8 grid. On 2026-08-04 the deployed app reported
+  BioRank-5 as **32.6 / 37.4 / 30.0** against the report's **21.1 / 29.1 / 49.8**.
+
+The **non-conserved** share is the sensitive detector (49.8 → 30.0, a ~20pp gap, vs
+11.5pp on GAP 1+2), which is why Q32/Q33 target it directly. Binarizing at res-10 costs
+only 0.17pp, so **habitat questions cannot detect this class of error at all** — only a
+feature whose native grid is coarser than res-10 can.
+
+Validated 2026-08-04 against the report's `Disc`/`g34`/`nonconserved` columns, all three
+categories within 0.5pp:
+
+| feature | GAP 1+2 | GAP 3+4 | outside any unit |
+|---|---|---|---|
+| `BioRankSW=5` | 21.05 / 21.09 | 29.54 / 29.10 | 49.40 / 49.81 |
+| `NtvAmph` p80 | 19.59 / 19.48 | 24.09 / 23.69 | 56.32 / 56.83 |
+| `NtvBird` p80 | 11.93 / 11.88 | 14.77 / 14.63 | 73.30 / 73.49 |
+| `NtvRept` p80 | 40.98 / 40.93 | 24.00 / 23.91 | 35.02 / 35.16 |
+
+Q34–35 are non-numeric (`unit: multi_percent`) and are graded by review, like Q6/8/18.
