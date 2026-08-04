@@ -79,27 +79,44 @@ run through the geo-agent headless runner (`open-llm-proxy/headless/run-matrix-k
 on three models: `qwen` (DSE-Nimbus), `nvidia/nemotron-3-ultra-550b-a55b` and
 `z-ai/glm-5.2` (OpenRouter). Grading compares each model's answer to the validated key.
 
-### Q31–35 — the res-8 binary-collapse trap (added 2026-08-04)
+### Q31–35 — reGAP-as-category, the route that survived the #312 rollup fix (added 2026-08-04)
 
-Questions 31–35 exist because a **live partner-facing failure went undetected by both
-records above**, and the reason is instructive:
+> **This bank is superseded.** `geo-agent-benchmark` is now the documented home for these
+> question banks. Q31–35 are recorded here for continuity but the durable gate belongs in
+> `geo-agent-benchmark/suite/questions/ca-30x30/` with a trap tag — see below.
 
-- `reproduction_record.json` reproduced ACE correctly (`BioRankSW` 21.53 vs report
-  21.09) — but with **hand-written canonical SQL** from `QUERIES.md`. That validates the
-  *catalog*, not the *agent*.
-- Q1–30 do test the agent on ACE, but every one asks for **a single number in a single
-  category** ("What percent of X is conserved under 30x30 (GAP 1 or 2)?"). Q19 passes:
-  21.17% on glm-5.2, kimi-k3 and claude-sonnet-5 independently.
-- **No question asked a feature for a multi-category breakdown.** That framing is what
-  triggers the failure: needing three mutually exclusive buckets, the model reaches for
-  `MIN(reGAP)` per cell — a *class* instead of a *fraction* — and collapses the res-10
-  conserved layer to the feature's res-8 grid. On 2026-08-04 the deployed app reported
-  BioRank-5 as **32.6 / 37.4 / 30.0** against the report's **21.1 / 29.1 / 49.8**.
+**The res-8 rollup error was already caught and fixed.** `geo-agent-benchmark`'s
+`car-19-ace-biorank5` carries trap `h3-rollup-mean-not-max-res8` and was promoted to the
+`regression` tier on 2026-07-31 as the gate for exactly this. Pre-fix it measured
+**32.7%** (claude-sonnet-5, kimi-k3) and **52.1%** (deepseek-v4-flash t2) against 21.1
+gold. `mcp-data-server#312` was closed 2026-08-03 16:42Z, fixed by **#350** (a *guidance*
+change — h3-guide gained an explicit coarser-feature rollup rule) and shipped as prod
+`v0.8.12` at 21:04Z. Post-fix car-19 passes **21.2 on 8/8 cells**, with five more
+questions fixed alongside it (`suite/findings/312-rollup-postfix.md`).
+
+**Then on 2026-08-04 19:27 — about 22 hours after that prod rollout — the deployed app
+reported BioRank-5 as 32.6 / 37.4 / 30.0 against the report's 21.1 / 29.1 / 49.8.**
+
+The same numeric error, by a route the fix cannot reach. #350 prescribes a
+GAP-proportional rollup *instead of* `MAX` when coarsening a weight. Asked instead for
+three mutually exclusive conservation categories, the model never computes a weight at
+all — it classifies each h8 cell by `MIN(reGAP)`, a status code. There is no rollup
+operator for the h3-guide rule to correct. The model complied with the letter of #350
+while reproducing the identical 32.x% by categorising instead of weighting.
+
+Nothing in the bank covers this. The trap inventory is entirely operator- and
+column-choice traps; the only `reGAP` mention (`clarify-ca-endemic-gap1.yaml`) observes
+that "reGAP=1 gives the same" answer for that question — the very coincidence that makes
+reGAP look safe. And `car-02-pct-gap34` / `car-03-pct-nonconserved` are **statewide**
+figures from the direct acre columns, so no question asks a *feature* for a
+multi-category split.
 
 The **non-conserved** share is the sensitive detector (49.8 → 30.0, a ~20pp gap, vs
 11.5pp on GAP 1+2), which is why Q32/Q33 target it directly. Binarizing at res-10 costs
 only 0.17pp, so **habitat questions cannot detect this class of error at all** — only a
 feature whose native grid is coarser than res-10 can.
+
+Proposed trap tag for the benchmark: **`gap-status-is-fraction-not-category`**.
 
 Validated 2026-08-04 against the report's `Disc`/`g34`/`nonconserved` columns, all three
 categories within 0.5pp:
