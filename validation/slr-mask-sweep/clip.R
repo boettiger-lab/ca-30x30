@@ -1,18 +1,23 @@
 # Sea-level-rise land-clip test — ca-30x30#104
 #
-# The level sweep (sweep.R) ruled out any pure choice of inundation level: no
-# `connected(5) - connected(N)` combination lands on the assessment's 642,610 ac.
-# Remaining hypothesis: the assessment removed existing open water with a *spatial
-# land clip* rather than by subtracting NOAA's 0 ft connected surface.
+# sweep.R ruled out any pure choice of inundation level: no connected(5)-connected(N)
+# combination lands on the assessment's 642,610 ac. Remaining hypothesis — existing
+# water was removed by a *spatial land clip* rather than by subtracting NOAA's 0 ft
+# connected surface, which would keep currently-tidal ground below MHHW.
 #
-# Known reference points (CA totals, acres):
+# Reference points (CA totals, acres):
 #     connected 5 ft, unclipped                       3,901,527
 #     connected 5 ft - connected 0 ft                   429,804
 #     connected (5-0) + low-lying 5 ft                  694,828
 #     TARGET (2025 Biodiversity Assessment slr5ft)      642,610
 #
-# This measures each of those three definitions clipped to two candidate land
-# masks, so the combination reproducing 642,610 can be named exactly.
+# NOAA's connected levels are strictly nested (verified against sweep-results.tsv:
+# connected area increases monotonically 0->10 ft), and NOAA builds low-lying as
+# disjoint from connected. So every quantity we need follows from three plain
+# intersections per region:
+#     (conn5 - conn0) n CA  ==  area(conn5 n CA) - area(conn0 n CA)
+# No st_union and no st_difference — the first version of this script spent its
+# time there and was reaped before finishing.
 
 suppressPackageStartupMessages({library(sf)})
 sf_use_s2(FALSE)
@@ -24,26 +29,20 @@ EPSG    <- 3310
 SCRATCH <- "/scratch"
 dir.create(SCRATCH, showWarnings = FALSE, recursive = TRUE)
 
-acres <- function(g) if (is.null(g) || !length(g)) 0 else sum(as.numeric(st_area(g))) / ACRE_M2
 clean <- function(g) st_make_valid(st_transform(st_geometry(g), EPSG))
+acres <- function(g) if (is.null(g) || !length(g)) 0 else sum(as.numeric(st_area(g))) / ACRE_M2
 
-message("=== loading land masks")
-# Masks ship in the ConfigMap as GeoJSON: this image's GDAL has no Parquet driver,
-# so reading the catalog's .parquet boundaries over /vsicurl silently fails.
-masks <- list()
-masks$ca_ecoregion <- tryCatch(
-  st_union(clean(st_read("/scripts/ca-ecoregion-mask.geojson", quiet = TRUE))),
-  error = function(err) { message("  ecoregion mask FAILED: ", conditionMessage(err)); NULL })
+message("=== loading land mask")
+# Mask ships in the ConfigMap as GeoJSON: this image's GDAL has no Parquet driver,
+# so /vsicurl reads of the catalog's .parquet boundaries fail (silently, if allowed).
+MASK <- tryCatch(st_union(clean(st_read("/scripts/ca-ecoregion-mask.geojson", quiet = TRUE))),
+                 error = function(e) NULL)
+if (is.null(MASK)) stop("CA mask unavailable — aborting")
+message(sprintf("  ca_ecoregion mask: %.0f ac (pinned CA extent is 101,498,000)", acres(MASK)))
 
-for (m in names(masks)) {
-  message(sprintf("  mask %-13s %s", m,
-                  if (is.null(masks[[m]])) "UNAVAILABLE" else sprintf("%.0f ac", acres(masks[[m]]))))
-}
-if (!length(Filter(Negate(is.null), masks))) stop("no usable land mask — aborting")
-
-cat("RESULT\tregion\tdefinition\tmask\tacres\n")
-emit <- function(reg, defn, mask, g) {
-  cat(sprintf("RESULT\t%s\t%s\t%s\t%.1f\n", reg, defn, mask, acres(g))); flush(stdout())
+cat("RESULT\tregion\tlayer_level\tmask\tacres\n")
+emit <- function(reg, lvl, mask, v) {
+  cat(sprintf("RESULT\t%s\t%s\t%s\t%.1f\n", reg, lvl, mask, v)); flush(stdout())
 }
 
 for (r in REGIONS) {
@@ -58,40 +57,21 @@ for (r in REGIONS) {
   src <- list.files(exdir, pattern = "\\.gpkg$", recursive = TRUE, full.names = TRUE)
   if (!length(src)) { d <- list.dirs(exdir, recursive = TRUE); src <- d[grepl("\\.gdb$", d)] }
   if (!length(src)) { message("  no OGR source"); next }
-  src <- src[1]
+  src  <- src[1]
   lyrs <- st_layers(src)$name
 
-  pick <- function(pat) { h <- lyrs[grepl(pat, lyrs)]; if (length(h)) h[1] else NA_character_ }
-  l5   <- pick("_slr_5_0ft$"); l0 <- pick("_slr_0_0ft$"); lo5 <- pick("_low_5_0ft$")
-  message(sprintf("  layers: 5ft=%s 0ft=%s low5=%s", l5, l0, lo5))
-
-  g5  <- if (!is.na(l5))  clean(st_read(src, l5,  quiet = TRUE)) else NULL
-  g0  <- if (!is.na(l0))  clean(st_read(src, l0,  quiet = TRUE)) else NULL
-  glo <- if (!is.na(lo5)) clean(st_read(src, lo5, quiet = TRUE)) else NULL
-
-  defs <- list()
-  defs[["connected5"]] <- if (!is.null(g5)) st_union(g5) else NULL
-  defs[["connected5_minus_0"]] <- tryCatch(
-    if (!is.null(g5) && !is.null(g0)) st_difference(st_union(g5), st_union(g0)) else NULL,
-    error = function(e) { message("  difference failed: ", conditionMessage(e)); NULL })
-  defs[["connected5_minus_0_plus_low5"]] <- tryCatch(
-    if (!is.null(defs[["connected5_minus_0"]]) && !is.null(glo))
-      st_union(defs[["connected5_minus_0"]], st_union(glo)) else defs[["connected5_minus_0"]],
-    error = function(e) { message("  union failed: ", conditionMessage(e)); NULL })
-
-  for (dn in names(defs)) {
-    g <- defs[[dn]]
+  for (spec in list(c("conn0", "_slr_0_0ft$"), c("conn5", "_slr_5_0ft$"), c("low5", "_low_5_0ft$"))) {
+    tag <- spec[1]; hit <- lyrs[grepl(spec[2], lyrs)]
+    if (!length(hit)) { message("  no layer for ", tag); next }
+    g <- tryCatch(clean(st_read(src, hit[1], quiet = TRUE)),
+                  error = function(e) { message("  read ", tag, " failed"); NULL })
     if (is.null(g)) next
-    emit(r, dn, "none", g)
-    for (mn in names(masks)) {
-      if (is.null(masks[[mn]])) next
-      gi <- tryCatch(st_intersection(g, masks[[mn]]),
-                     error = function(e) { message("  clip ", dn, "/", mn, " failed"); NULL })
-      if (!is.null(gi)) emit(r, dn, mn, gi)
-    }
+    emit(r, tag, "none", acres(g))
+    gi <- tryCatch(st_intersection(g, MASK),
+                   error = function(e) { message("  clip ", tag, " failed: ", conditionMessage(e)); NULL })
+    if (!is.null(gi)) emit(r, tag, "ca_ecoregion", acres(gi))
+    rm(g, gi); gc(verbose = FALSE)
   }
-
-  rm(g5, g0, glo, defs); gc(verbose = FALSE)
   unlink(dest); unlink(exdir, recursive = TRUE)
 }
 

@@ -16,12 +16,29 @@ NOAA-only definitions bracket it and nothing in between is a natural datum —
 the target sits between subtracting the 0.5 ft and 1.0 ft connected surfaces,
 which is not a definition anyone would choose.
 
-## `clip.R` — land clip (the remaining hypothesis)
+## `clip.R` — land clip (complete, hypothesis rejected)
 
-Tests whether the assessment removed existing open water with a *spatial land
-clip* instead of by subtracting NOAA's 0 ft surface. Clips each candidate
-definition to the CA-Nature ecoregion extent — the app's own definition of
-California, and the same one behind the pinned 101,498,000-ac denominator.
+Tested whether the assessment removed existing open water with a *spatial land
+clip* instead of by subtracting NOAA's 0 ft surface. Clips against the CA-Nature
+ecoregion extent — the app's own definition of California, and the same one
+behind the pinned 101,498,000-ac denominator. Results: `clip-results.tsv`.
+
+**Conclusion: the land clip is nearly a no-op and does not explain the gap.**
+Once the 0 ft surface is subtracted, clipping changes the total by 0.6%
+(427,260 clipped vs 429,804 unclipped) — the subtraction has already removed the
+ocean. Clipping the raw 5 ft surface to land gives 889,511 ac (+38%), also not
+the target.
+
+Both self-testable hypotheses — level choice and land clip — are therefore
+eliminated. The closest reproducible definition stays `connected(5−0) +
+low-lying 5 ft` at 692,275 ac, **+7.7%** vs the assessment's 642,610.
+
+NOAA's connected levels are strictly nested (verified in `sweep-results.tsv`)
+and low-lying is disjoint from connected, so the script needs only three plain
+intersections per region — no `st_union`, no `st_difference`. The first version
+did use those, spent all its time there, and was reaped before finishing;
+results now also get captured locally while the job runs, because **NRP reaps
+completed Jobs and their logs go with them**.
 
 The mask ships in the ConfigMap as GeoJSON: **the `ml-spatial` image's GDAL has
 no Parquet driver**, so reading the catalog's `.parquet` boundaries over
