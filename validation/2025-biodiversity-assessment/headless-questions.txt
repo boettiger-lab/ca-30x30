@@ -28,8 +28,3 @@ What percent of the 100-year floodplain is conserved under 30x30 (GAP 1 or 2)?
 What percent of headwater streams are conserved under 30x30 (GAP 1 or 2)?
 What percent of major rivers are conserved under 30x30 (GAP 1 or 2)?
 What percent of watersheds with the highest freshwater species richness are conserved under 30x30 (GAP 1 or 2)?
-What percent of ACE statewide BioRank rank-5 areas is in other conserved or public lands (GAP 3 or 4)?
-What percent of ACE statewide BioRank rank-5 areas is outside any conserved-area unit?
-What percent of native bird richness hotspots (top 20%) is outside any conserved-area unit?
-Break down ACE statewide BioRank rank-5 areas into 30x30 conserved (GAP 1+2), other conserved or public lands (GAP 3+4), and land outside any conserved-area unit.
-How well is biodiversity protected in 30x30 lands?

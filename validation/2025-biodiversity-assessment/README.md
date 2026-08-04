@@ -72,60 +72,17 @@ Two real methodology bugs were found and fixed during reproduction (documented i
 (not a flat 49), and DuckDB's `LEAST(NULL,1) → 1` silently scoring unconserved cells
 as fully conserved.
 
-## Headless model test
+## Benchmarking
 
-`headless-questions.txt` (35 questions) + `report_qa_answer_key.json` drive a matrix
-run through the geo-agent headless runner (`open-llm-proxy/headless/run-matrix-k8s.sh`)
-on three models: `qwen` (DSE-Nimbus), `nvidia/nemotron-3-ultra-550b-a55b` and
-`z-ai/glm-5.2` (OpenRouter). Grading compares each model's answer to the validated key.
+Question banks, gold answers and run results live in
+**[`geo-agent-benchmark`](https://github.com/boettiger-lab/geo-agent-benchmark)**, which
+supersedes the `headless-questions.txt` + `report_qa_answer_key.json` pair kept here for
+provenance. The ca-30x30 questions are `suite/questions/ca-30x30/*.yaml`; the gold derived
+from this directory carries `validation_level: L3` (matches the published report).
 
-### Q31–35 — reGAP-as-category, the route that survived the #312 rollup fix (added 2026-08-04)
+Run the gate before shipping any prompt or guidance change:
 
-> **This bank is superseded.** `geo-agent-benchmark` is now the documented home for these
-> question banks. Q31–35 are recorded here for continuity but the durable gate belongs in
-> `geo-agent-benchmark/suite/questions/ca-30x30/` with a trap tag — see below.
-
-**The res-8 rollup error was already caught and fixed.** `geo-agent-benchmark`'s
-`car-19-ace-biorank5` carries trap `h3-rollup-mean-not-max-res8` and was promoted to the
-`regression` tier on 2026-07-31 as the gate for exactly this. Pre-fix it measured
-**32.7%** (claude-sonnet-5, kimi-k3) and **52.1%** (deepseek-v4-flash t2) against 21.1
-gold. `mcp-data-server#312` was closed 2026-08-03 16:42Z, fixed by **#350** (a *guidance*
-change — h3-guide gained an explicit coarser-feature rollup rule) and shipped as prod
-`v0.8.12` at 21:04Z. Post-fix car-19 passes **21.2 on 8/8 cells**, with five more
-questions fixed alongside it (`suite/findings/312-rollup-postfix.md`).
-
-**Then on 2026-08-04 19:27 — about 22 hours after that prod rollout — the deployed app
-reported BioRank-5 as 32.6 / 37.4 / 30.0 against the report's 21.1 / 29.1 / 49.8.**
-
-The same numeric error, by a route the fix cannot reach. #350 prescribes a
-GAP-proportional rollup *instead of* `MAX` when coarsening a weight. Asked instead for
-three mutually exclusive conservation categories, the model never computes a weight at
-all — it classifies each h8 cell by `MIN(reGAP)`, a status code. There is no rollup
-operator for the h3-guide rule to correct. The model complied with the letter of #350
-while reproducing the identical 32.x% by categorising instead of weighting.
-
-Nothing in the bank covers this. The trap inventory is entirely operator- and
-column-choice traps; the only `reGAP` mention (`clarify-ca-endemic-gap1.yaml`) observes
-that "reGAP=1 gives the same" answer for that question — the very coincidence that makes
-reGAP look safe. And `car-02-pct-gap34` / `car-03-pct-nonconserved` are **statewide**
-figures from the direct acre columns, so no question asks a *feature* for a
-multi-category split.
-
-The **non-conserved** share is the sensitive detector (49.8 → 30.0, a ~20pp gap, vs
-11.5pp on GAP 1+2), which is why Q32/Q33 target it directly. Binarizing at res-10 costs
-only 0.17pp, so **habitat questions cannot detect this class of error at all** — only a
-feature whose native grid is coarser than res-10 can.
-
-Proposed trap tag for the benchmark: **`gap-status-is-fraction-not-category`**.
-
-Validated 2026-08-04 against the report's `Disc`/`g34`/`nonconserved` columns, all three
-categories within 0.5pp:
-
-| feature | GAP 1+2 | GAP 3+4 | outside any unit |
-|---|---|---|---|
-| `BioRankSW=5` | 21.05 / 21.09 | 29.54 / 29.10 | 49.40 / 49.81 |
-| `NtvAmph` p80 | 19.59 / 19.48 | 24.09 / 23.69 | 56.32 / 56.83 |
-| `NtvBird` p80 | 11.93 / 11.88 | 14.77 / 14.63 | 73.30 / 73.49 |
-| `NtvRept` p80 | 40.98 / 40.93 | 24.00 / 23.91 | 35.02 / 35.16 |
-
-Q34–35 are non-numeric (`unit: multi_percent`) and are graded by review, like Q6/8/18.
+```bash
+cd ../geo-agent-benchmark
+APP_REPO=boettiger-lab/ca-30x30 TIER=regression ./scripts/run_benchmark.sh
+```

@@ -8,6 +8,7 @@ This is a **template repo** for creating geo-agent map applications. The core li
 |---|---|
 | `geo-agent` | Core library (map, chat, agent, tools). Source of truth for all functionality. |
 | `geo-agent-template` | Starter template. Users fork this and configure three files for their dataset. |
+| `geo-agent-benchmark` | **Benchmark home** — question banks, gold answers, traps, run results for all geo-agent apps. Run the gate here before shipping a prompt or guidance change. |
 
 **Full docs:** [boettiger-lab.github.io/geo-agent](https://boettiger-lab.github.io/geo-agent/)
 — includes the complete configuration reference, deployment guide, and agent loop internals.
@@ -126,19 +127,21 @@ The LLM's context is assembled from four layers, each owned by a different repo.
 
 Prefer fixing the root cause in the correct layer over papering over it in `system-prompt.md`. Before adding anything to the system prompt, ask: *could STAC metadata, an MCP tool description, or the framework fix this instead?* If yes, file the issue there. After tracing a batch, the app repo gets the app-layer edits plus one summary issue linking all the cross-repo issues filed.
 
-### Verify with the headless runner — don't close on faith
+### Verify against the benchmark — don't close on faith
 
-Before claiming an issue fixed, **reproduce it through the headless runner**, which replays the full geo-agent tool-use loop (catalog load, MCP connect, prompt assembly, tool calls) through the live proxy using *this repo's current `system-prompt.md` and `layers-input.json`*. It imports the framework from a sibling `geo-agent` checkout, so behavior matches the browser by construction.
+**The benchmark home is [`boettiger-lab/geo-agent-benchmark`](https://github.com/boettiger-lab/geo-agent-benchmark)** (private): question banks, gold answers, traps and run results for every geo-agent app. Read its `AGENTS.md` before running anything. It supersedes the older banks in `open-llm-proxy/headless/baseline/` and `validation/2025-biodiversity-assessment/`. `open-llm-proxy/headless` is the *executor* only; the benchmark supplies the questions.
 
-- **Matrix sweeps (model × question × trial) run as a Kubernetes Job**, never locally — it mounts `PROXY_KEY` from the `open-llm-proxy-secrets` Secret in `biodiversity`:
+Before claiming an issue fixed, reproduce it through a benchmark run, which replays the full geo-agent tool-use loop (catalog load, MCP connect, prompt assembly, tool calls) through the live proxy using *this repo's current `system-prompt.md` and `layers-input.json`*.
+
+- **Run the gate before shipping any prompt or guidance change** (Kubernetes Job; mounts `PROXY_KEY` from the `open-llm-proxy-secrets` Secret in `biodiversity`):
   ```bash
-  cd ../open-llm-proxy/headless
-  TAG=ca30x30-regress QUESTIONS_FILE=runs/ca30x30-regression-q.txt \
-    MODELS="qwen3" TRIALS=3 \
-    ./run-matrix-k8s.sh boettiger-lab/ca-30x30
-  kubectl -n biodiversity logs -f job/<JOB_NAME>      # printed on launch
+  cd ../geo-agent-benchmark
+  APP_REPO=boettiger-lab/ca-30x30 TIER=regression ./scripts/run_benchmark.sh
+  APP_REPO=boettiger-lab/ca-30x30 TIER=commentary ./scripts/run_benchmark.sh   # after a system-prompt change
   ```
-  Re-running the *same* question with `TRIALS>1` is how determinism regressions are checked. The Job clones the app repo at `main` (override with `APP_BRANCH`), so it tests exactly what is deployed.
+  Tiers are `smoke ⊂ regression ⊂ full`, plus `commentary` for unsupported-commentary compliance. A **guidance**-change gate must target dev MCP with `MCP_URL=https://dev-duckdb-mcp.nrp-nautilus.io/mcp`; a deployed-behaviour measurement uses the default (prod).
+- New regressions become a question YAML with a `trap` tag in `suite/questions/ca-30x30/` — not an ad-hoc question list. Record the outcome on the question, and add gold only at `validation_level` L2 (operator SQL committed) or L3 (matches the published report).
+- Ad-hoc matrix sweep outside a tier (MRE work): `cd ../open-llm-proxy/headless && TAG=<tag> QUESTIONS_FILE=runs/<file>.txt MODELS="…" TRIALS=2 ./run-matrix-k8s.sh boettiger-lab/ca-30x30`. Re-running the *same* question with `TRIALS>1` is how determinism regressions are checked. The Job clones the app repo at `main` (override with `APP_BRANCH`), so it tests exactly what is deployed.
 - Per-cell transcripts + `summary.tsv` print to the Job's stdout; the full request/response pairs land in the proxy logs. Analyze them per `open-llm-proxy/AGENTS.md` + `LOGGING.md` (`./sync-logs.sh` then DuckDB over the consolidated parquet, filtered by the `--origin` tag).
 - Single ad-hoc repro of one failure: `node run.js "QUESTION" --config layers-input.json --system-prompt system-prompt.md --model qwen3` (see `headless/README.md`). Not for matrix work.
 
