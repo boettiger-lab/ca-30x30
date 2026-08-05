@@ -13,7 +13,7 @@ data:
   config.template.json: |
     {
         "mcp_server_url": "${MCP_SERVER_URL}",
-        "llm_model": "deepseek/deepseek-v4-flash",
+        "llm_model": "z-ai/glm-5.2",
         "transcription_model": {
             "value": "gemma-4-e4b",
             "endpoint": "/api/llm",
@@ -21,14 +21,14 @@ data:
         },
         "llm_models": [
             {
-                "value": "deepseek/deepseek-v4-flash",
-                "label": "DeepSeek V4 Flash",
+                "value": "z-ai/glm-5.2",
+                "label": "GLM-5.2",
                 "endpoint": "/api/llm",
                 "api_key": "unused"
             },
             {
-                "value": "z-ai/glm-5.2",
-                "label": "GLM-5.2",
+                "value": "deepseek/deepseek-v4-flash",
+                "label": "DeepSeek V4 Flash",
                 "endpoint": "/api/llm",
                 "api_key": "unused"
             },
