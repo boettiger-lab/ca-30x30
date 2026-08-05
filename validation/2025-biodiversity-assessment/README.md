@@ -72,9 +72,17 @@ Two real methodology bugs were found and fixed during reproduction (documented i
 (not a flat 49), and DuckDB's `LEAST(NULL,1) → 1` silently scoring unconserved cells
 as fully conserved.
 
-## Headless model test
+## Benchmarking
 
-`headless-questions.txt` (30 questions) + `report_qa_answer_key.json` drive a matrix
-run through the geo-agent headless runner (`open-llm-proxy/headless/run-matrix-k8s.sh`)
-on three models: `qwen` (DSE-Nimbus), `nvidia/nemotron-3-ultra-550b-a55b` and
-`z-ai/glm-5.2` (OpenRouter). Grading compares each model's answer to the validated key.
+Question banks, gold answers and run results live in
+**[`geo-agent-benchmark`](https://github.com/boettiger-lab/geo-agent-benchmark)**, which
+supersedes the `headless-questions.txt` + `report_qa_answer_key.json` pair kept here for
+provenance. The ca-30x30 questions are `suite/questions/ca-30x30/*.yaml`; the gold derived
+from this directory carries `validation_level: L3` (matches the published report).
+
+Run the gate before shipping any prompt or guidance change:
+
+```bash
+cd ../geo-agent-benchmark
+APP_REPO=boettiger-lab/ca-30x30 TIER=regression ./scripts/run_benchmark.sh
+```
