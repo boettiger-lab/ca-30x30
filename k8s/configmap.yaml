@@ -27,8 +27,8 @@ data:
                 "api_key": "unused"
             },
             {
-                "value": "deepseek/deepseek-v4-flash",
-                "label": "DeepSeek V4 Flash",
+                "value": "deepseek/deepseek-v4-flash-0731",
+                "label": "DeepSeek V4 Flash (0731)",
                 "endpoint": "/api/llm",
                 "api_key": "unused"
             },
