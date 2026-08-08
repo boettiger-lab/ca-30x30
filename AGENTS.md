@@ -140,7 +140,7 @@ Before claiming an issue fixed, reproduce it through a benchmark run, which repl
   APP_REPO=boettiger-lab/ca-30x30 TIER=regression ./scripts/run_benchmark.sh
   APP_REPO=boettiger-lab/ca-30x30 TIER=commentary ./scripts/run_benchmark.sh   # after a system-prompt change
   ```
-  Tiers are `smoke ⊂ regression ⊂ full`, plus `commentary` for unsupported-commentary compliance. A **guidance**-change gate must target dev MCP with `MCP_URL=https://dev-duckdb-mcp.nrp-nautilus.io/mcp`; a deployed-behaviour measurement uses the default (prod).
+  Tiers are `smoke ⊂ regression ⊂ full`, plus `commentary` for unsupported-commentary compliance. Gates run against the default (prod) MCP. Set `MCP_URL=https://dev-duckdb-mcp.nrp-nautilus.io/mcp` only to test against an unreleased `mcp-data-server` build; a dev run does not measure deployed behaviour.
 - New regressions become a question YAML with a `trap` tag in `suite/questions/ca-30x30/` — not an ad-hoc question list. Record the outcome on the question, and add gold only at `validation_level` L2 (operator SQL committed) or L3 (matches the published report).
 - Ad-hoc matrix sweep outside a tier (MRE work): `cd ../open-llm-proxy/headless && TAG=<tag> QUESTIONS_FILE=runs/<file>.txt MODELS="…" TRIALS=2 ./run-matrix-k8s.sh boettiger-lab/ca-30x30`. Re-running the *same* question with `TRIALS>1` is how determinism regressions are checked. The Job clones the app repo at `main` (override with `APP_BRANCH`), so it tests exactly what is deployed.
 - Per-cell transcripts + `summary.tsv` print to the Job's stdout; the full request/response pairs land in the proxy logs. Analyze them per `open-llm-proxy/AGENTS.md` + `LOGGING.md` (`./sync-logs.sh` then DuckDB over the consolidated parquet, filtered by the `--origin` tag).
