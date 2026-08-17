@@ -1310,12 +1310,12 @@
             ]
         },
         {
-            "collection_id": "usgs-nhd-streams-by-order",
-            "collection_url": "https://s3-west.nrp-nautilus.io/public-usgs-nhd/streams-by-order/stac-collection.json",
+            "collection_id": "usgs-nhdplus-hr-flowline",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-usgs-nhd/nhdplus-hr/flowline/stac-collection.json",
             "assets": [
                 {
-                    "id": "streams-by-order-pmtiles",
-                    "display_name": "Streams by Order (NHD)",
+                    "id": "flowline-pmtiles",
+                    "display_name": "Stream Order (NHDPlus HR)",
                     "group": "Freshwater Resources",
                     "visible": false,
                     "layer_type": "line",
@@ -1328,7 +1328,7 @@
                             ],
                             [
                                 "get",
-                                "STREAMORDER"
+                                "streamorde"
                             ],
                             1,
                             0.3,
@@ -1340,8 +1340,31 @@
                         "line-opacity": 0.8
                     },
                     "tooltip_fields": [
+                        "gnis_name",
+                        "streamorde",
+                        "ftype",
+                        "lengthkm"
+                    ]
+                }
+            ]
+        },
+        {
+            "collection_id": "usgs-nhd-streams-by-order",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-usgs-nhd/streams-by-order/stac-collection.json",
+            "assets": [
+                {
+                    "id": "streams-by-order-pmtiles",
+                    "display_name": "Stream Extent (NHD)",
+                    "group": "Freshwater Resources",
+                    "visible": false,
+                    "layer_type": "line",
+                    "default_style": {
+                        "line-color": "#64B5F6",
+                        "line-width": 0.5,
+                        "line-opacity": 0.8
+                    },
+                    "tooltip_fields": [
                         "GNIS_NAME",
-                        "STREAMORDER",
                         "FTYPE",
                         "LENGTHKM"
                     ]
