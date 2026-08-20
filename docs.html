@@ -166,6 +166,41 @@ p.lede { font-size: 1.05rem; color: var(--ink-soft); }
     border-left-color: #2e7d32;
 }
 
+.report-card {
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 1.2rem 1.4rem;
+    margin: 1rem 0 0.4rem;
+    background: #fff;
+}
+.report-card .rc-title {
+    font-size: 1.12rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 0.3rem;
+}
+.report-card .rc-meta {
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    margin-bottom: 0.9rem;
+}
+.report-card .rc-cta {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.55rem 1.1rem;
+    border-radius: 6px;
+    font-weight: 500;
+}
+.report-card .rc-cta:hover { text-decoration: none; opacity: 0.9; }
+.report-card .rc-cite {
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+    margin-top: 0.9rem;
+    line-height: 1.5;
+}
+
 .foot {
     text-align: center;
     color: var(--ink-soft);
@@ -200,6 +235,7 @@ p.lede { font-size: 1.05rem; color: var(--ink-soft); }
         </h1>
         <p class="tag">An interactive map and AI assistant for exploring California's conserved lands, biodiversity, habitat connectivity, and climate data — and tracking progress toward the state's goal of conserving 30% of its lands and coastal waters by 2030.</p>
         <a href="/" class="cta">← Open the App</a>
+        <a href="https://cabiodiversitynetwork.org/wp-content/uploads/2026/08/CBN-Biodiversity-Assessment-2025-Final-Report.pdf" class="cta" style="margin-left:0.6rem;" target="_blank" rel="noopener">Read the CBN Assessment (PDF) ↗</a>
     </div>
 </header>
 
@@ -210,6 +246,20 @@ p.lede { font-size: 1.05rem; color: var(--ink-soft); }
     <p class="lede">A project of the <a href="https://dse.berkeley.edu" target="_blank" rel="noopener">Eric and Wendy Schmidt Center for Data Science &amp; Environment (DSE)</a> at UC Berkeley.</p>
     <p>In 2020 California committed to <a href="https://www.californianature.ca.gov/" target="_blank" rel="noopener">conserving 30% of its lands and coastal waters by 2030</a> — the "30x30" goal — to protect biodiversity, expand access to nature, and build climate resilience. Meeting it depends on knowing what is already conserved, where biodiversity and habitat connectivity are concentrated, and how a changing climate is reshaping the landscape. This app brings the state's 30x30 conservation inventory together with the biodiversity, connectivity, wetland, and climate-hazard datasets that inform those decisions, and pairs them with an AI assistant that can both drive the map and answer quantitative questions about the data.</p>
     <p>This is a <strong>work in progress</strong> — layers, models, and capabilities are being added and refined.</p>
+</section>
+
+<section>
+    <h2>The report this app accompanies</h2>
+    <p>This app is the <strong>interactive companion appendix</strong> to the California Biodiversity Network's 2025 biodiversity assessment, published in August 2026. The report presents the analysis; this app lets you explore the same conservation, biodiversity, habitat and climate datasets behind it, ask your own questions of them, and take the numbers further than a printed table can go.</p>
+
+    <div class="report-card">
+        <div class="rc-title">California's 30x30 Initiative in 2025: A Biodiversity Assessment of the State's 30x30 Conservation Areas</div>
+        <div class="rc-meta">California Biodiversity Network · August 2026 · 51 pp.</div>
+        <a class="rc-cta" href="https://cabiodiversitynetwork.org/wp-content/uploads/2026/08/CBN-Biodiversity-Assessment-2025-Final-Report.pdf" target="_blank" rel="noopener">Read the full report (PDF) ↗</a>
+        <div class="rc-cite">Schloss, C., Howard, J., Olliff Yang, R., Roth, N., Dickison, C., Canales, A., Stanley, C.&nbsp;K., Webb, M., Ackerly, D., Boettiger, C., Buhler, C., Monfort, S., Bucciarelli, G., Meyer, R., Levi Simons, A., Bando, J., Chamberlin, L., Veloz, S., Hill, A., Johnson, R., Hill, R., Kochanek, A., Rademacher, D., Micheli, L., Penrod, K., Rapacciuolo, G., Spatz, D., &amp; Gluesenkamp, D. (2026). <em>California's 30x30 Initiative in 2025: A Biodiversity Assessment of the State's 30x30 Conservation Areas.</em> California Biodiversity Network.</div>
+    </div>
+
+    <p>DSE at UC Berkeley is among the report's authors and contributed to its analysis, and this app follows the report's conventions — the same conserved-areas inventory, the same definitions of habitats and features, and the same measure of representation. Figures here are computed live from the source data, so they may differ slightly from the report's published tables where data vintages or methods differ; the assistant will always tell you which dataset and method produced a number.</p>
 </section>
 
 <section>
