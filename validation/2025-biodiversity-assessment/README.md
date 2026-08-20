@@ -1,11 +1,20 @@
 # 2025 Biodiversity Assessment — statistic extraction & independent reproduction
 
 Independent validation of the quantitative claims in the California Biodiversity
-Network draft report *"California's 30x30 Initiative in 2025: A Biodiversity
+Network report *"California's 30x30 Initiative in 2025: A Biodiversity
 Assessment of the State's 30x30 Conservation Areas."* This app is built to
 accompany that report, so every headline number it might be asked about is
 extracted, defined precisely, and re-derived from scratch against our own
 `duckdb-geo` catalog.
+
+> **The report is now published** (2026-08-07):
+> <https://cabiodiversitynetwork.org/wp-content/uploads/2026/08/CBN-Biodiversity-Assessment-2025-Final-Report.pdf>
+>
+> The records here were extracted from the **pre-publication draft**
+> (`V2025_WORKING_MASTER_DRAFT…`, pub-date tag 2026-07-08) and the authors' shipped
+> result CSVs. They are kept as the historical record of that reproduction — do not
+> rewrite their values. Check any figure that drives a live decision against the
+> published PDF, and say which version it came from.
 
 ## Contents
 

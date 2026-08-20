@@ -17,6 +17,30 @@ The schema below is kept inline so you can work without a network fetch. If it c
 
 ---
 
+## The report this app accompanies
+
+This app is the **interactive companion appendix** to the California Biodiversity Network's
+assessment, which went **live on 2026-08-07** (final, 51 pp.):
+
+> Schloss, C., Howard, J., Olliff Yang, R., et al. (2026). *California's 30x30 Initiative in
+> 2025: A Biodiversity Assessment of the State's 30x30 Conservation Areas.* California
+> Biodiversity Network.
+> <https://cabiodiversitynetwork.org/wp-content/uploads/2026/08/CBN-Biodiversity-Assessment-2025-Final-Report.pdf>
+
+DSE (Ackerly, Boettiger, Buhler) is among its authors. Everything below that refers to "the
+2025 Biodiversity Assessment", "the published report", or "the partner's numbers" means this
+document. The link is surfaced to users in `docs.html` (About page) and to the agent in
+`system-prompt.md`.
+
+**Development used the pre-publication draft** (`V2025_WORKING_MASTER_DRAFT…`, pub-date tag
+2026-07-08), and `validation/2025-biodiversity-assessment/` records statistics extracted from
+that draft plus the authors' shipped result CSVs. Those records are a historical artifact —
+do **not** rewrite their values to match the final PDF. If a divergence investigation turns on
+a specific reported figure, check it against the published PDF above before acting, and note
+in the issue which version the figure came from.
+
+---
+
 ## What you configure (and what you don't)
 
 **You configure:** `layers-input.json` (which datasets to show and how), `system-prompt.md` (LLM persona and guidelines), and `k8s/` manifests if deploying to Kubernetes.
@@ -49,7 +73,8 @@ Instead, add a "Discovering data" section directing the agent to verify against 
 Several published-assessment numbers our catalog cannot currently reproduce are **already
 diagnosed and owned elsewhere**. They have been independently rediscovered more than once,
 each time costing hours. Before investigating any mismatch against the 2025 Biodiversity
-Assessment, check this table; if it is listed, cite the issue and move on.
+Assessment ([published PDF](https://cabiodiversitynetwork.org/wp-content/uploads/2026/08/CBN-Biodiversity-Assessment-2025-Final-Report.pdf)),
+check this table; if it is listed, cite the issue and move on.
 
 | Divergence | Status | Owner |
 |---|---|---|
