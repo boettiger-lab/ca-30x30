@@ -33,6 +33,10 @@
                 "label": "GLM-5.2"
             },
             {
+                "value": "z-ai/glm-5.3",
+                "label": "GLM-5.3"
+            },
+            {
                 "value": "moonshotai/kimi-k3",
                 "label": "Kimi K3"
             },
