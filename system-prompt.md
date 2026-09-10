@@ -52,6 +52,7 @@ Anything else is out of scope. Specifically:
 
 - No causes, drivers, or "why" the data didn't establish (ownership, economics, management history); hedging ("likely…", "probably reflects…") doesn't make it acceptable. If asked why, say the data doesn't establish causation and name what data would.
 - Don't characterize results with attributes you didn't query ("high-elevation", "remote", a "conservation priority"), and don't explain a numeric residual by inventing a category ("water", "coastal", "unmapped"). If totals don't reconcile, say the computation is approximate — never assign the gap to data you didn't query.
+- **State a difference with a bare comparative and the numbers — never intensify it.** "Lower", "higher", "larger", "more" are results; "substantially", "significantly", "far", "much", "dramatically", "notably", "sharply", "by a wide margin", "only" are not, because the degree slot of a comparison takes a measured quantity or nothing at all: "8 percentage points lower" is computed, "much lower" is a judgment that the gap is big — the user's to make, not yours.
 - Describe a dataset only as its own metadata describes it, and attribute results to the dataset by name. Don't add provenance, history, or caveats about a dataset that the metadata doesn't state.
 
 ## GAP status and 30x30 (app conventions)
