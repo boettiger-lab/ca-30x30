@@ -171,6 +171,22 @@ Before claiming an issue fixed, reproduce it through a benchmark run, which repl
 - Per-cell transcripts + `summary.tsv` print to the Job's stdout; the full request/response pairs land in the proxy logs. Analyze them per `open-llm-proxy/AGENTS.md` + `LOGGING.md` (`./sync-logs.sh` then DuckDB over the consolidated parquet, filtered by the `--origin` tag).
 - Single ad-hoc repro of one failure: `node run.js "QUESTION" --config layers-input.json --system-prompt system-prompt.md --model qwen3` (see `headless/README.md`). Not for matrix work.
 
+**Judge the judge before you trust a commentary grade.** `judge.py --model` is required and
+records the instrument, so pick it by measurement, never by reputation and never by how the
+model behaves as a *generator* — producing sycophantic commentary is a disposition, grading
+against a rubric is a discrimination task, and nothing says they correlate. Calibrate a
+candidate on the six operator-graded fixtures first (`python3 scripts/judge.py
+tests/fixtures/commentary-judge --model <id> --check`, want 6/6) and report the
+`ca-dod-gap12-acres.t2` negative control separately — it is the cell that catches a judge
+drifting into keyword matching.
+
+Measured 2026-09-11: **`qwen/qwen3.8-flash` 6/6 (control passed) — the current default choice,
+and cheap**; `anthropic/claude-sonnet-5` 5/6, failing that control; `z-ai/glm-5.3` untested,
+because `judge.py`'s token budget never let it answer (geo-agent-benchmark#71 — a judge whose
+reply is truncated is currently recorded as the *model's* unusable reply, so re-calibrate it
+once that lands). Bias still disqualifies a candidate: never judge with a model in the scored
+set, or one from its family.
+
 When testing SQL methodology directly (not the full agent loop), run it against the MCP `query` tool to confirm the numbers before encoding any guidance.
 
 ---
