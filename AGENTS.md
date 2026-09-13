@@ -138,6 +138,36 @@ and close the audit with an index comment linking them (see #90 for the pattern)
 
 Partner-reported agent failures (wrong numbers, hallucinated codes, speculation) are diagnosed and fixed through a fixed loop: **observe logs → reproduce headless → trace each issue to the layer that owns it → fix in that layer → verify → deploy.** The canonical reference is the **`geo-agent-training` skill** in `boettiger-lab/open-llm-proxy` (`.claude/skills/geo-agent-training/SKILL.md`) — read it before working a batch of issues.
 
+### A reported behaviour class becomes an elicitor set before it becomes a prompt edit
+
+When a client reports a class of unacceptable behaviour, the order is fixed. Skipping step 2
+cost a full day on the intensifier class (2026-09-13): the fix was A/B'd against the standing
+`commentary` tier, whose best question provokes that class under 20% of the time, returned
+3/51 vs 3/51, and was nearly discarded — a 30-trial run on one real elicitor then showed
+8/30 -> 1/30, p = 0.026.
+
+1. **Name the class abstractly**, in terms that decide a borderline case — "intensified
+   comparatives: an amplifier in the degree slot of a comparison (`much lower`, `by a wide
+   margin`) rather than a measure phrase (`8 points lower`) or nothing".
+2. **Build 2-4 elicitors that reliably reproduce it on the reported model** — the model the
+   app actually ships, not the free benchmark default. Mine the proxy logs for real
+   instances first (join `type='request'`.`user_question` to `type='response'` content on
+   `request_id`), then probe candidates at >=5 trials each and **keep only those firing
+   >=3/5**. A prompt that fires 2/5 is not an instrument: two sibling prompts built from the
+   same theory as our one good elicitor scored **0/19** with no rule in the prompt at all.
+   If nothing clears the bar, say so — the class cannot be A/B'd yet, and no prompt edit
+   should be defended by a null result from a set that never provoked the behaviour.
+3. **Check that no gold answer contains the class.** A reference answer exhibiting the
+   violation trains the judge to bless it. `gold.accept`/`gold.value` in
+   `suite/questions/*/*.yaml` plus `suite/gold/*.md` (verified clean for intensifiers
+   2026-09-13).
+4. **A/B the candidate prompt language against the proven elicitors first** — enough trials
+   for the base rate (30 per arm at a ~25% base detects an eightfold drop), both arms on the
+   same model and serving stack, run concurrently. Only then run the broad tier, and only as
+   a regression check that the edit broke nothing else. Score a hit by what the model
+   *asserts*: phrases it quotes in order to refute are not violations, and counting them
+   inflated one measurement by 25%.
+
 ### Hard boundary — edit only this repo
 
 The LLM's context is assembled from four layers, each owned by a different repo. **You make code/config edits *only* in this app repo. For a root cause in any other layer, open a GitHub issue on the owning repo** (with log evidence, root cause, exact proposed change, and how to verify) — never edit another repo's code, and never open a PR there. Their agents/maintainers action it. Reading sibling repos and their git history for diagnosis is encouraged.
