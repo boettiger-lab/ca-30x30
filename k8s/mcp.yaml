@@ -22,7 +22,15 @@ metadata:
   labels:
     app: ca30x30-mcp
 spec:
-  replicas: 1
+  # 2, not 1. A single pod is a single point of failure for the whole app: on
+  # 2026-09-15 a benchmark cell's SQL spilled past the namespace LimitRange's
+  # default 50Gi ephemeral-storage limit and the pod was Evicted mid-query
+  # ("Pod ephemeral local storage usage exceeds the total limit of containers
+  # 50Gi"), taking the app's only MCP backend down until it rescheduled. The
+  # shared duckdb-mcp has the identical limit and the identical eviction — it
+  # just has 6 replicas to hide it. Unbounded DuckDB temp spill against that
+  # limit is an mcp-data-server concern; this is the app-side mitigation.
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
