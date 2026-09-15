@@ -47,6 +47,10 @@ in the issue which version the figure came from.
 
 **You do not write JavaScript.** The core map, chat, agent, and tool modules are loaded from the CDN. Do not create or modify JS files in a client app repo.
 
+**After editing `collections` in `layers-input.json`, run `python3 scripts/build-stac-catalog.py` and commit `stac/catalog.json`.** That file is the agent's whole data universe: the app pod serves it at `/stac/catalog.json` and the dedicated `ca30x30-mcp` replica (`k8s/mcp.yaml`) reads it as `STAC_CATALOG_URL` with `STAC_DISCOVERY=0`, so `get_stac_details` resolves only IDs this app configures — the fix for the agent answering about unconfigured datasets like NLCD (ca-30x30#126). A layer added to `layers-input.json` but missing from the catalog renders on the map and is unreachable to SQL. CI (`.github/workflows/stac-catalog.yml`) fails on a stale catalog.
+
+This repo's own `.mcp.json` stays on the shared `duckdb-mcp` on purpose — development sessions want whole-catalog discovery; scoping the app should not scope the toolbox used to build it.
+
 ### Writing the system prompt
 
 **Keep `system-prompt.md` lean.** The MCP query tool (`list_datasets`, `get_schema`) already provides the agent with dataset titles, descriptions, column schemas, coded values, and exact S3 parquet paths at runtime. Do not duplicate any of this in the system prompt — it drifts out of sync and can contradict the tools.

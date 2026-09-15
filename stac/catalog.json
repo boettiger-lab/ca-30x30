@@ -1,0 +1,199 @@
+{
+  "type": "Catalog",
+  "stac_version": "1.0.0",
+  "id": "ca-30x30",
+  "title": "California 30x30 — app data scope",
+  "description": "Curated STAC catalog: exactly the collections this app configures in layers-input.json. Served to ca30x30-mcp as STAC_CATALOG_URL so the agent's data universe is the app's own.",
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://ca-30x30.nrp-nautilus.io/stac/catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "root",
+      "href": "https://ca-30x30.nrp-nautilus.io/stac/catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-ca30x30/conserved-areas-terrestrial-2025/stac-collection.json",
+      "type": "application/json",
+      "title": "ca30x30-conserved-areas-terrestrial-2025"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-ca30x30/ca-climate-zones/stac-collection.json",
+      "type": "application/json",
+      "title": "ca-climate-zones"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-ca30x30/ecoregion/stac-collection.json",
+      "type": "application/json",
+      "title": "ca30x30-ecoregion"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-ca30x30/cwhr13/stac-collection.json",
+      "type": "application/json",
+      "title": "cwhr13"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-ca30x30/cwhr/stac-collection.json",
+      "type": "application/json",
+      "title": "cwhr"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-cdfw/ace/terrestrial-biodiversity-summary/stac-collection.json",
+      "type": "application/json",
+      "title": "ace-terrestrial-biodiversity-summary"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-ca30x30/plant-richness/stac-collection.json",
+      "type": "application/json",
+      "title": "plant-richness"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-ca30x30/rarity-weighted-endemic-plant-richness/stac-collection.json",
+      "type": "application/json",
+      "title": "rarity-weighted-endemic-plant-richness"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-ca30x30/freshwater-species-richness/stac-collection.json",
+      "type": "application/json",
+      "title": "freshwater-species-richness"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-connectivity/present-day-connectivity/categories/stac-collection.json",
+      "type": "application/json",
+      "title": "present-day-connectivity-categories"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-connectivity/climate-migration-routes/stac-collection.json",
+      "type": "application/json",
+      "title": "climate-migration-routes"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-connectivity/regional-connectivity-linkages/stac-collection.json",
+      "type": "application/json",
+      "title": "regional-connectivity-linkages"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-wetlands/nwi/stac-collection.json",
+      "type": "application/json",
+      "title": "wetlands-nwi"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-ca30x30/groundwater-dependent-ecosystems/vegetation/stac-collection.json",
+      "type": "application/json",
+      "title": "gde-vegetation"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-ca30x30/groundwater-dependent-ecosystems/wetlands/stac-collection.json",
+      "type": "application/json",
+      "title": "gde-wetlands"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-hazard/sea-level-rise/stac-collection.json",
+      "type": "application/json",
+      "title": "sea-level-rise"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-hazard/flood-hazard/stac-collection.json",
+      "type": "application/json",
+      "title": "flood-hazard"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-hazard/mid-century-habitat-climate-exposure/stac-collection.json",
+      "type": "application/json",
+      "title": "mid-century-habitat-climate-exposure"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-fire/calfire-2025/firep/stac-collection.json",
+      "type": "application/json",
+      "title": "calfire-2025-firep"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-calenviroscreen/stac-collection.json",
+      "type": "application/json",
+      "title": "calenviroscreen-5-0"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-census/census-2024/state/stac-collection.json",
+      "type": "application/json",
+      "title": "census-2024-state"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-census/census-2024/county/stac-collection.json",
+      "type": "application/json",
+      "title": "census-2024-county"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-census/census-2024/tract/stac-collection.json",
+      "type": "application/json",
+      "title": "census-2024-tract"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-usgs-wbd/wbd/hu8/stac-collection.json",
+      "type": "application/json",
+      "title": "usgs-wbd-hu8"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-usgs-wbd/wbd/hu12/stac-collection.json",
+      "type": "application/json",
+      "title": "usgs-wbd-hu12"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-usgs-nhd/nhdplus-hr/flowline/stac-collection.json",
+      "type": "application/json",
+      "title": "usgs-nhdplus-hr-flowline"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-usgs-nhd/streams-by-order/stac-collection.json",
+      "type": "application/json",
+      "title": "usgs-nhd-streams-by-order"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-usgs-nhd/perennial-streams/stac-collection.json",
+      "type": "application/json",
+      "title": "usgs-nhd-perennial-streams"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-ca30x30/fmmp-2022/stac-collection.json",
+      "type": "application/json",
+      "title": "fmmp-2022"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3-west.nrp-nautilus.io/public-ca-dac/stac-collection.json",
+      "type": "application/json",
+      "title": "ca-dac-eda-2023"
+    }
+  ]
+}

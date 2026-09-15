@@ -1,0 +1,23 @@
+# Keeps stac/catalog.json in lockstep with layers-input.json (ca-30x30#126).
+# The curated catalog is the agent's data universe — a collection added to
+# layers-input.json but missing from the catalog is a dataset the map shows
+# and the agent cannot resolve.
+name: stac-catalog
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  in-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/build-stac-catalog.py
+      - name: Fail if stac/catalog.json is stale
+        run: |
+          if ! git diff --exit-code -- stac/catalog.json; then
+            echo "::error::stac/catalog.json is out of date — run scripts/build-stac-catalog.py and commit the result"
+            exit 1
+          fi
