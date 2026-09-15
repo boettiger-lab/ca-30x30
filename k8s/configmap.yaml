@@ -115,6 +115,14 @@ data:
             proxy_buffering off;
         }
 
+        # Curated STAC catalog (ca-30x30#126). Explicit block because the
+        # catch-all below has `try_files ... /index.html`, which would hand
+        # back the SPA instead of a 404 for a missing catalog — ca30x30-mcp
+        # would then boot degraded with no visible cause.
+        location /stac/ {
+            alias /usr/share/nginx/html/stac/;
+        }
+
         location / {
             try_files $uri $uri/ /index.html;
             add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";

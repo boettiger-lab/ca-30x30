@@ -1,0 +1,165 @@
+# Dedicated mcp-data-server replica for this app (ca-30x30#126).
+#
+# The shared `duckdb-mcp` serves ~6 public apps plus unscoped Claude Code
+# clients off the whole 314-collection catalog, so the agent could fetch S3
+# paths and schemas for datasets this app never configures (e.g. NLCD).
+# Catalog scope is a *deployment* property (mcp-data-server#420,
+# geo-agent#354), so the fix is a replica of our own reading a curated
+# catalog: `stac/catalog.json`, generated from `layers-input.json` by
+# `scripts/build-stac-catalog.py` and served by the app pod's nginx.
+#
+# `STAC_DISCOVERY=0` drops `browse_stac_catalog` and `catalog://list`; the
+# curated catalog is what closes the `get_stac_details(<any id>)` path, which
+# discovery gating alone does not.
+#
+# Shape follows `wyoming-mcp` (same image digest, us-west affinity, resources,
+# probes) minus its private-S3 / auth-token plumbing: this app's data is public.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ca30x30-mcp
+  namespace: biodiversity
+  labels:
+    app: ca30x30-mcp
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: ca30x30-mcp
+  template:
+    metadata:
+      labels:
+        app: ca30x30-mcp
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: topology.kubernetes.io/region
+                operator: In
+                values:
+                - us-west
+      containers:
+      - name: server
+        image: ghcr.io/boettiger-lab/mcp-data-server:v0.9.0@sha256:84c62dab4064b881be2c3020ca5045ff516231b015f3dedf0ad7cb3e9e140beb
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+        env:
+        # Read the catalog over the in-cluster Service, not the public ingress
+        # — the same lesson as the /api/llm upstream in configmap.yaml. The
+        # document itself keeps absolute public hrefs (STAC requires an
+        # absolute `self`, and pystac resolves relative child hrefs against the
+        # base), which is what STAC_PUBLIC_CATALOG_URL reports to clients.
+        - name: STAC_CATALOG_URL
+          value: "http://ca-30x30.biodiversity.svc.cluster.local/stac/catalog.json"
+        - name: STAC_PUBLIC_CATALOG_URL
+          value: "https://ca-30x30.nrp-nautilus.io/stac/catalog.json"
+        # No browse_stac_catalog / catalog://list. The app forwards each
+        # configured collection's STAC inline on every call, so nothing this
+        # app does depends on discovery.
+        - name: STAC_DISCOVERY
+          value: "0"
+        # The catalog is served by the app pod, so a cold cluster start can
+        # race. Boot degraded and let the periodic refresh pick it up
+        # (mcp-data-server#262) rather than crash-looping behind nginx.
+        - name: STAC_ALLOW_DEGRADED_START
+          value: "true"
+        # Hex-tile URLs handed to the browser are built from this
+        # (tiles/pyramid.py:167), so it must match the ingress host below.
+        # TILE_BUCKET_BASE is deliberately unset: the default
+        # s3://public-output is written anonymously against the default
+        # endpoint, exactly as on the shared duckdb-mcp, which sets no S3 env
+        # either.
+        - name: MCP_PUBLIC_BASE_URL
+          value: "https://ca30x30-mcp.nrp-nautilus.io"
+        - name: POD_MEMORY_LIMIT
+          valueFrom:
+            resourceFieldRef:
+              containerName: server
+              resource: limits.memory
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "2Gi"
+          limits:
+            cpu: "64"
+            memory: "160Gi"
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 2
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 6
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ca30x30-mcp
+  namespace: biodiversity
+  labels:
+    app: ca30x30-mcp
+spec:
+  type: ClusterIP
+  selector:
+    app: ca30x30-mcp
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+      name: http
+---
+# Dedicated host rather than a same-origin /api/mcp proxy through the app's
+# nginx: it mirrors today's cross-origin duckdb-mcp exactly (identical CORS
+# preflight behaviour, no nginx change) and keeps the hex-tile endpoint
+# (/tiles/hex/...) on the same host the server advertises via
+# MCP_PUBLIC_BASE_URL. Wyoming needs the proxy shape only because of its auth
+# sidecar. CORS/timeout annotations are copied from mcp-server-duckdb-ingress.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ca30x30-mcp-ingress
+  namespace: biodiversity
+  annotations:
+    haproxy-ingress.github.io/balance-algorithm: leastconn
+    haproxy-ingress.github.io/cors-enable: "true"
+    haproxy-ingress.github.io/cors-allow-origin: "*"
+    haproxy-ingress.github.io/cors-allow-methods: "GET, POST, OPTIONS"
+    haproxy-ingress.github.io/cors-allow-headers: "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,mcp-session-id"
+    haproxy-ingress.github.io/cors-allow-credentials: "true"
+    haproxy-ingress.github.io/cors-max-age: "86400"
+    haproxy-ingress.github.io/timeout-client: "600s"
+    haproxy-ingress.github.io/timeout-server: "600s"
+    haproxy-ingress.github.io/timeout-tunnel: "3600s"
+spec:
+  ingressClassName: haproxy
+  tls:
+    - hosts:
+        - ca30x30-mcp.nrp-nautilus.io
+  rules:
+    - host: ca30x30-mcp.nrp-nautilus.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ca30x30-mcp
+                port:
+                  number: 8000

@@ -1,7 +1,7 @@
 {
-    "catalog": "https://s3-west.nrp-nautilus.io/public-data/stac/catalog.json",
+    "catalog": "https://ca-30x30.nrp-nautilus.io/stac/catalog.json",
     "titiler_url": "https://titiler.nrp-nautilus.io",
-    "mcp_url": "https://duckdb-mcp.nrp-nautilus.io/mcp",
+    "mcp_url": "https://ca30x30-mcp.nrp-nautilus.io/mcp",
     "auto_approve": true,
     "draw_enabled": true,
     "geolocate": {
