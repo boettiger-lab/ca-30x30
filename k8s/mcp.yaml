@@ -30,7 +30,9 @@ spec:
   # shared duckdb-mcp has the identical limit and the identical eviction — it
   # just has 6 replicas to hide it. Unbounded DuckDB temp spill against that
   # limit is an mcp-data-server concern; this is the app-side mitigation.
-  replicas: 2
+  # 6 for the in-person conference-room test on 2026-09-29 (matches the shared
+  # duckdb-mcp); the sessionless leastconn ingress spreads load across them.
+  replicas: 6
   strategy:
     type: RollingUpdate
     rollingUpdate:
