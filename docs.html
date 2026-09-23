@@ -243,9 +243,23 @@ p.lede { font-size: 1.05rem; color: var(--ink-soft); }
 
 <section>
     <h2>About this project</h2>
-    <p class="lede">A project of the <a href="https://dse.berkeley.edu" target="_blank" rel="noopener">Eric and Wendy Schmidt Center for Data Science &amp; Environment (DSE)</a> at UC Berkeley.</p>
-    <p>In 2020 California committed to <a href="https://www.californianature.ca.gov/" target="_blank" rel="noopener">conserving 30% of its lands and coastal waters by 2030</a> — the "30x30" goal — to protect biodiversity, expand access to nature, and build climate resilience. Meeting it depends on knowing what is already conserved, where biodiversity and habitat connectivity are concentrated, and how a changing climate is reshaping the landscape. This app brings the state's 30x30 conservation inventory together with the biodiversity, connectivity, wetland, and climate-hazard datasets that inform those decisions, and pairs them with an AI assistant that can both drive the map and answer quantitative questions about the data.</p>
+    <p class="lede">Welcome to the 30x30 Biodiversity Assessment Geospatial Companion Tool. This tool is designed to explore and analyze conservation status and distribution of habitats and other important ecological features across the state to enhance knowledge of biodiversity conservation in support of 30x30. It is intended to be a companion tool to the California Biodiversity Network's (CBN's) <a href="https://cabiodiversitynetwork.org/wp-content/uploads/2026/08/CBN-Biodiversity-Assessment-2025-Final-Report.pdf" target="_blank" rel="noopener">30x30 Biodiversity Assessment</a> and draws upon datasets vetted by the CBN Biodiversity Assessment working group. It is currently based upon the 2025 Conservation Area data.</p>
+    <p>This tool reduces the technical barrier to data access by allowing plain-language queries (through an AI-LLM interface) for users to explore beyond the statewide assessment, for example, by local jurisdiction or managing agency. Users can explore the data through a web map itself or by asking questions such as:</p>
+    <ul>
+        <li><em>"What is the most under-represented habitat in the Central Coast ecoregion?"</em></li>
+        <li><em>"Where are the most species rich areas that are unprotected in Merced county?"</em></li>
+        <li><em>"What agency manages the most oak woodlands in lands that count toward 30x30?"</em></li>
+    </ul>
+    <p>In 2020 California committed to <a href="https://www.californianature.ca.gov/" target="_blank" rel="noopener">conserving 30% of its lands and coastal waters by 2030</a> — the "30x30" goal — to protect biodiversity, expand access to nature, and build climate resilience. Meeting it depends on knowing what is already conserved, where biodiversity and habitat connectivity are concentrated, and how a changing climate is reshaping the landscape.</p>
     <p>This is a <strong>work in progress</strong> — layers, models, and capabilities are being added and refined.</p>
+</section>
+
+<section>
+    <h2>Testing, guardrails &amp; your responsibility</h2>
+    <p>The tool was developed by the <a href="https://boettiger-lab.github.io" target="_blank" rel="noopener">Boettiger Lab</a> at UC Berkeley, a part of the <a href="https://dse.berkeley.edu" target="_blank" rel="noopener">Eric and Wendy Schmidt Center for Data Science &amp; Environment (DSE)</a>. While the tool has undergone initial testing and the developers have implemented guardrails to keep the tool from making value judgements and to stay focused on CBN vetted datasets, LLM interface tools are extremely difficult to comprehensively test because they can provide boundless queries. Feel free to explore the application and please <a href="https://github.com/boettiger-lab/ca-30x30/issues" target="_blank" rel="noopener">let the developers know</a> if you are seeing any inappropriate results (see <a href="https://github.com/boettiger-lab/ca-30x30/tree/main/validation/2025-biodiversity-assessment" target="_blank" rel="noopener">proposed tool benchmarks</a>).</p>
+    <div class="callout">
+        <strong>It is the responsibility of the user</strong> to review the results and methodological steps the tool provides and make their own judgements about the accuracy, value, and interpretation of the results.
+    </div>
 </section>
 
 <section>
