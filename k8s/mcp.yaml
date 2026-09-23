@@ -57,7 +57,7 @@ spec:
                 - us-west
       containers:
       - name: server
-        image: ghcr.io/boettiger-lab/mcp-data-server:v0.9.0@sha256:84c62dab4064b881be2c3020ca5045ff516231b015f3dedf0ad7cb3e9e140beb
+        image: ghcr.io/boettiger-lab/mcp-data-server:v0.9.1@sha256:1dd614eba3e85ee3dfc96fea7bc7757ab690651833cc7caf474e516aabc7f5c6
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
@@ -94,6 +94,14 @@ spec:
             resourceFieldRef:
               containerName: server
               resource: limits.memory
+        # Caps each DuckDB connection's spill at 50% of the container's
+        # ephemeral-storage limit, so a runaway query fails with a DuckDB error
+        # instead of the pod being evicted (mcp-data-server#423, ca-30x30#127).
+        - name: POD_EPHEMERAL_LIMIT
+          valueFrom:
+            resourceFieldRef:
+              containerName: server
+              resource: limits.ephemeral-storage
         resources:
           requests:
             cpu: "250m"
