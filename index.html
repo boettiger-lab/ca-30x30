@@ -130,8 +130,11 @@
 <body>
     <!--
         Splash screen: a non-modal <dialog open> covering the viewport. The AGREE
-        button submits a method="dialog" form, which closes the dialog natively —
-        no JavaScript. It is shown on every page load.
+        button submits a method="dialog" form, which closes the dialog natively.
+        The script below remembers acceptance in localStorage so the splash is
+        shown once per browser. Bump SPLASH_VERSION when the acknowledgement
+        text changes to ask everyone again. Candidate for an upstream geo-agent
+        option; this inline script is the stopgap.
     -->
     <dialog id="splash" open aria-labelledby="splash-title">
         <div class="splash-card">
@@ -144,6 +147,19 @@
             </form>
         </div>
     </dialog>
+    <script>
+        (function () {
+            var KEY = 'ca30x30-splash-accepted';
+            var SPLASH_VERSION = '2026-09-24';
+            var splash = document.getElementById('splash');
+            try {
+                if (localStorage.getItem(KEY) === SPLASH_VERSION) splash.close();
+            } catch (e) { /* storage blocked: show the splash every time */ }
+            splash.addEventListener('close', function () {
+                try { localStorage.setItem(KEY, SPLASH_VERSION); } catch (e) {}
+            });
+        })();
+    </script>
 
     <!-- Map -->
     <div id="map"></div>
