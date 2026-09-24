@@ -54,9 +54,97 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/boettiger-lab/geo-agent@v3.28.1/app/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/boettiger-lab/geo-agent@v3.28.1/app/chat.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/boettiger-lab/geo-agent@v3.28.1/app/sidebar.css">
+
+    <!-- Splash / acknowledgement screen (#129) -->
+    <style>
+        #splash[open] {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            width: 100%;
+            height: 100%;
+            max-width: none;
+            max-height: none;
+            margin: 0;
+            padding: 16px;
+            border: 0;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(13, 38, 20, 0.72);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        }
+        #splash .splash-card {
+            max-width: 640px;
+            max-height: 100%;
+            overflow-y: auto;
+            background: #f6faf6;
+            color: #14241a;
+            border-radius: 10px;
+            padding: 1.75rem 2rem;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        #splash h1 {
+            margin: 0 0 0.9rem;
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: #1b5e20;
+        }
+        #splash p { margin: 0 0 0.9rem; }
+        #splash a { color: #2e7d32; }
+        #splash .splash-ack {
+            background: #e6f1e7;
+            border-left: 3px solid #2e7d32;
+            padding: 0.75rem 1rem;
+            border-radius: 0 6px 6px 0;
+        }
+        #splash .splash-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1.2rem;
+        }
+        #splash button {
+            background: #2e7d32;
+            color: #fff;
+            border: 0;
+            border-radius: 6px;
+            padding: 0.6rem 1.6rem;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+        }
+        #splash button:hover { background: #1b5e20; }
+        @media (max-width: 600px) {
+            #splash .splash-card { padding: 1.25rem; font-size: 14px; }
+        }
+    </style>
 </head>
 
 <body>
+    <!--
+        Splash screen: a non-modal <dialog open> covering the viewport. The AGREE
+        button submits a method="dialog" form, which closes the dialog natively —
+        no JavaScript. It is shown on every page load.
+    -->
+    <dialog id="splash" open aria-labelledby="splash-title">
+        <div class="splash-card">
+            <h1 id="splash-title">30x30 Biodiversity Assessment Geospatial Companion Tool</h1>
+            <p>Welcome to the 30x30 Biodiversity Assessment Geospatial Companion Tool. This tool is designed to explore and analyze conservation status and distribution of habitats and other important ecological features across the state to enhance knowledge of biodiversity conservation in support of 30x30. It is intended to be a companion tool to the California Biodiversity Network's (CBN's) <a href="https://cabiodiversitynetwork.org/wp-content/uploads/2026/08/CBN-Biodiversity-Assessment-2025-Final-Report.pdf" target="_blank" rel="noopener">30x30 Biodiversity Assessment</a> and draws upon datasets vetted by the CBN Biodiversity Assessment working group. It is currently based upon the 2025 Conservation Area data.</p>
+            <p class="splash-ack">LLM interface tools are extremely difficult to comprehensively test (see <a href="https://github.com/boettiger-lab/ca-30x30/tree/main/validation/2025-biodiversity-assessment" target="_blank" rel="noopener">proposed tool benchmarks</a>). It is the responsibility of the user to review the results and methodological steps the tool provides and make their own judgements about the accuracy, value, and interpretation of the results. Click <strong>AGREE</strong> to acknowledge this responsibility and enter the application.</p>
+            <form method="dialog" class="splash-actions">
+                <a href="docs.html">About this tool</a>
+                <button type="submit" autofocus>AGREE</button>
+            </form>
+        </div>
+    </dialog>
+
     <!-- Map -->
     <div id="map"></div>
 
