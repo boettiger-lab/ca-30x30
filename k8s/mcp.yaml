@@ -55,6 +55,13 @@ spec:
                 operator: In
                 values:
                 - us-west
+              # Flaky node: a replica there could not reach the app pod's
+              # stac/catalog.json for 38h, booted DEGRADED, passed readiness,
+              # and answered "dataset not found" after a 15s stall (2026-09-24).
+              - key: kubernetes.io/hostname
+                operator: NotIn
+                values:
+                - nautilus-it-gpu06.fullerton.edu
       containers:
       - name: server
         image: ghcr.io/boettiger-lab/mcp-data-server:v0.9.1@sha256:1dd614eba3e85ee3dfc96fea7bc7757ab690651833cc7caf474e516aabc7f5c6
