@@ -1,0 +1,58 @@
+name: Sync app to GitHub Pages
+
+# Copies the static app onto the root of the orphan `gh-pages` branch, which Pages serves.
+# Only the app files listed below are touched; everything else on that branch (the unlisted
+# logs/<uuid>/ pages, robots.txt, README.md) is left alone.
+# Without the k8s-injected config.json, the app falls back to the `llm` block in
+# layers-input.json: visitors supply their own OpenRouter key.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - index.html
+      - docs.html
+      - layers-input.json
+      - system-prompt.md
+      - stac/**
+      - .github/workflows/gh-pages.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gh-pages-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: app
+
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+
+      - name: Copy app files
+        run: |
+          rm -rf site/stac
+          cp app/index.html app/docs.html app/layers-input.json app/system-prompt.md site/
+          cp -r app/stac site/stac
+
+      - name: Commit and push
+        working-directory: site
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
+          git add -A index.html docs.html layers-input.json system-prompt.md stac
+          if git diff --cached --quiet; then
+            echo "gh-pages already up to date"
+          else
+            git commit -m "Sync app from main@${GITHUB_SHA::7}"
+            git push
+          fi
