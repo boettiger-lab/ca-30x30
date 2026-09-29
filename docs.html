@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — California 30x30</title>
+<style>
+:root {
+    --ink: #14241a;
+    --ink-soft: #4a5b50;
+    --paper: #f6faf6;
+    --rule: #dde7df;
+    --accent: #2e7d32;
+    --accent-dark: #1b5e20;
+    --accent-soft: #e6f1e7;
+    --link: #2e7d32;
+    --max: 880px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+header.hero {
+    background: linear-gradient(135deg, #0d3a1a 0%, var(--accent) 100%);
+    color: #fff;
+    padding: 3.5rem 1.5rem 2.5rem;
+    border-bottom: 1px solid var(--rule);
+}
+.hero-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+}
+.hero h1 {
+    font-size: 2.1rem;
+    margin: 0 0 0.4rem 0;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+.hero .tag {
+    font-size: 1.05rem;
+    opacity: 0.92;
+    margin: 0 0 1.4rem 0;
+    max-width: 60ch;
+}
+.hero .cta {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    padding: 0.55rem 1.1rem;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.35);
+    font-weight: 500;
+    transition: background 0.15s;
+}
+.hero .cta:hover { background: rgba(255,255,255,0.28); text-decoration: none; }
+.hero .badge {
+    display: inline-block;
+    margin-left: 0.6rem;
+    padding: 0.18rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.18);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    vertical-align: middle;
+}
+
+main {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+}
+
+section { margin-bottom: 2.8rem; }
+
+h2 {
+    font-size: 1.45rem;
+    color: var(--accent-dark);
+    border-bottom: 2px solid var(--accent-soft);
+    padding-bottom: 0.4rem;
+    margin: 0 0 1rem 0;
+    font-weight: 600;
+}
+h3 {
+    font-size: 1.12rem;
+    color: var(--ink);
+    margin: 1.4rem 0 0.5rem 0;
+    font-weight: 600;
+}
+p { margin: 0.5rem 0 0.9rem; }
+p.lede { font-size: 1.05rem; color: var(--ink-soft); }
+
+.layer-group {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 0.9rem 0;
+}
+.layer-group h3 {
+    margin-top: 0;
+    color: var(--accent-dark);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.layer-group h3::before {
+    content: "";
+    display: inline-block;
+    width: 4px;
+    height: 1.1em;
+    background: var(--accent);
+    border-radius: 2px;
+}
+.layer {
+    padding: 0.55rem 0;
+    border-top: 1px solid var(--rule);
+}
+.layer:first-of-type { border-top: 0; padding-top: 0; }
+.layer .name {
+    font-weight: 600;
+    color: var(--ink);
+}
+.layer .source {
+    color: var(--ink-soft);
+    font-size: 0.93rem;
+    margin: 0.1rem 0 0.15rem;
+}
+.layer .links {
+    font-size: 0.88rem;
+}
+.layer .links a { margin-right: 0.9rem; }
+.lic {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--accent-dark);
+    background: var(--accent-soft);
+    border-radius: 4px;
+    padding: 0.05rem 0.4rem;
+    margin-top: 0.2rem;
+}
+
+.callout {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    padding: 0.9rem 1.1rem;
+    border-radius: 0 6px 6px 0;
+    margin: 1rem 0;
+    font-size: 0.97rem;
+}
+.callout.green {
+    background: #e8f3ea;
+    border-left-color: #2e7d32;
+}
+
+.report-card {
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 1.2rem 1.4rem;
+    margin: 1rem 0 0.4rem;
+    background: #fff;
+}
+.report-card .rc-title {
+    font-size: 1.12rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 0.3rem;
+}
+.report-card .rc-meta {
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    margin-bottom: 0.9rem;
+}
+.report-card .rc-cta {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.55rem 1.1rem;
+    border-radius: 6px;
+    font-weight: 500;
+}
+.report-card .rc-cta:hover { text-decoration: none; opacity: 0.9; }
+.report-card .rc-cite {
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+    margin-top: 0.9rem;
+    line-height: 1.5;
+}
+
+.foot {
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 0.88rem;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+}
+.foot .partners {
+    display: flex;
+    justify-content: center;
+    gap: 1.8rem;
+    flex-wrap: wrap;
+    margin: 0.6rem 0 1rem;
+    font-weight: 500;
+    color: var(--ink);
+}
+
+@media (max-width: 600px) {
+    .hero h1 { font-size: 1.6rem; }
+    main { padding: 1.5rem 1rem 3rem; }
+    h2 { font-size: 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+    <div class="hero-inner">
+        <h1>California 30x30
+            <span class="badge">work in progress</span>
+        </h1>
+        <p class="tag">An interactive map and AI assistant for exploring California's conserved lands, biodiversity, habitat connectivity, and climate data — and tracking progress toward the state's goal of conserving 30% of its lands and coastal waters by 2030.</p>
+        <a href="./" class="cta">← Open the App</a>
+        <a href="https://cabiodiversitynetwork.org/wp-content/uploads/2026/08/CBN-Biodiversity-Assessment-2025-Final-Report.pdf" class="cta" style="margin-left:0.6rem;" target="_blank" rel="noopener">Read the CBN Assessment (PDF) ↗</a>
+    </div>
+</header>
+
+<main>
+
+<section>
+    <h2>About this project</h2>
+    <p class="lede">Welcome to the 30x30 Biodiversity Assessment Geospatial Companion Tool. This tool is designed to explore and analyze conservation status and distribution of habitats and other important ecological features across the state to enhance knowledge of biodiversity conservation in support of 30x30. It is intended to be a companion tool to the California Biodiversity Network's (CBN's) <a href="https://cabiodiversitynetwork.org/wp-content/uploads/2026/08/CBN-Biodiversity-Assessment-2025-Final-Report.pdf" target="_blank" rel="noopener">30x30 Biodiversity Assessment</a> and draws upon datasets vetted by the CBN Biodiversity Assessment working group. It is currently based upon the 2025 Conservation Area data.</p>
+    <p>This tool reduces the technical barrier to data access by allowing plain-language queries (through an AI-LLM interface) for users to explore beyond the statewide assessment, for example, by local jurisdiction or managing agency. Users can explore the data through a web map itself or by asking questions such as:</p>
+    <ul>
+        <li><em>"What is the most under-represented habitat in the Central Coast ecoregion?"</em></li>
+        <li><em>"Where are the most species rich areas that are unprotected in Merced county?"</em></li>
+        <li><em>"What agency manages the most oak woodlands in lands that count toward 30x30?"</em></li>
+    </ul>
+    <p>In 2020 California committed to <a href="https://www.californianature.ca.gov/" target="_blank" rel="noopener">conserving 30% of its lands and coastal waters by 2030</a> — the "30x30" goal — to protect biodiversity, expand access to nature, and build climate resilience. Meeting it depends on knowing what is already conserved, where biodiversity and habitat connectivity are concentrated, and how a changing climate is reshaping the landscape.</p>
+    <p>This is a <strong>work in progress</strong> — layers, models, and capabilities are being added and refined.</p>
+</section>
+
+<section>
+    <h2>Testing, guardrails &amp; your responsibility</h2>
+    <p>The tool was developed by the <a href="https://boettiger-lab.github.io" target="_blank" rel="noopener">Boettiger Lab</a> at UC Berkeley, a part of the <a href="https://dse.berkeley.edu" target="_blank" rel="noopener">Eric and Wendy Schmidt Center for Data Science &amp; Environment (DSE)</a>. While the tool has undergone initial testing and the developers have implemented guardrails to keep the tool from making value judgements and to stay focused on CBN vetted datasets, LLM interface tools are extremely difficult to comprehensively test because they can provide boundless queries. Feel free to explore the application and please <a href="https://github.com/boettiger-lab/ca-30x30/issues" target="_blank" rel="noopener">let the developers know</a> if you are seeing any inappropriate results (see <a href="https://github.com/boettiger-lab/ca-30x30/tree/main/validation/2025-biodiversity-assessment" target="_blank" rel="noopener">proposed tool benchmarks</a>).</p>
+    <div class="callout">
+        <strong>It is the responsibility of the user</strong> to review the results and methodological steps the tool provides and make their own judgements about the accuracy, value, and interpretation of the results.
+    </div>
+</section>
+
+<section>
+    <h2>The report this app accompanies</h2>
+    <p>This app is the <strong>interactive companion appendix</strong> to the California Biodiversity Network's 2025 biodiversity assessment, published in August 2026. The report presents the analysis; this app lets you explore the same conservation, biodiversity, habitat and climate datasets behind it, ask your own questions of them, and take the numbers further than a printed table can go.</p>
+
+    <div class="report-card">
+        <div class="rc-title">California's 30x30 Initiative in 2025: A Biodiversity Assessment of the State's 30x30 Conservation Areas</div>
+        <div class="rc-meta">California Biodiversity Network · August 2026 · 51 pp.</div>
+        <a class="rc-cta" href="https://cabiodiversitynetwork.org/wp-content/uploads/2026/08/CBN-Biodiversity-Assessment-2025-Final-Report.pdf" target="_blank" rel="noopener">Read the full report (PDF) ↗</a>
+        <div class="rc-cite">Schloss, C., Howard, J., Olliff Yang, R., Roth, N., Dickison, C., Canales, A., Stanley, C.&nbsp;K., Webb, M., Ackerly, D., Boettiger, C., Buhler, C., Monfort, S., Bucciarelli, G., Meyer, R., Levi Simons, A., Bando, J., Chamberlin, L., Veloz, S., Hill, A., Johnson, R., Hill, R., Kochanek, A., Rademacher, D., Micheli, L., Penrod, K., Rapacciuolo, G., Spatz, D., &amp; Gluesenkamp, D. (2026). <em>California's 30x30 Initiative in 2025: A Biodiversity Assessment of the State's 30x30 Conservation Areas.</em> California Biodiversity Network.</div>
+    </div>
+
+    <p>DSE at UC Berkeley is among the report's authors and contributed to its analysis, and this app follows the report's conventions — the same conserved-areas inventory, the same definitions of habitats and features, and the same measure of representation. Figures here are computed live from the source data, so they may differ slightly from the report's published tables where data vintages or methods differ; the assistant will always tell you which dataset and method produced a number.</p>
+</section>
+
+<section>
+    <h2>How it works</h2>
+    <p>This app is powered by <a href="https://boettiger-lab.github.io/geo-agent/" target="_blank" rel="noopener"><strong>GLEN</strong></a>, DSE's open-source framework for AI-assisted geospatial exploration. Open datasets stream straight to your browser from cloud-native formats — no tile server in between — and an AI assistant answers questions by writing live queries against the same data. Full technical details are in the <a href="https://boettiger-lab.github.io/geo-agent/docs/" target="_blank" rel="noopener">GLEN documentation</a>.</p>
+
+    <div class="callout green">
+        <strong>🌱 Low-carbon, open models.</strong> Be patient. While much faster than most humans, GLEN makes use of more environmentally-friendly AI models. (Check out the <a href="https://carbon-dashboard.nrp-nautilus.io" target="_blank" rel="noopener">carbon dashboard 🌱</a> to see the CO₂/energy use of this deployment.)
+    </div>
+</section>
+
+<section>
+    <h2>Exploring the map</h2>
+    <p>The map is built on <a href="https://maplibre.org" target="_blank" rel="noopener">MapLibre GL</a> — the open-source engine behind the familiar Mapbox-style interactive maps. <strong>Scroll or pinch to zoom</strong>, <strong>drag to pan</strong>, and <strong>hold Ctrl and drag</strong> to tilt and rotate the view. Use the <strong>locate-me button</strong> in the top-left corner to jump the map to your current position.</p>
+    <p>The <strong>Overlays</strong> panel lists every data layer, organized into groups — conserved areas, biodiversity, connectivity, climate, and more. <strong>Toggle a layer on or off</strong> with its checkbox, and <strong>hover any feature</strong> for a tooltip of its live attributes — names, categories, ranks, acreages — straight from the source data. When layers overlap, use the <strong>send-to-back button (↩)</strong> in the Overlays header to drop the topmost layer beneath the others.</p>
+</section>
+
+<section>
+    <h2>Asking the assistant</h2>
+    <p>The Data Assistant understands plain English and does two kinds of things: it can <strong>drive the map</strong> for you, and it can <strong>answer analytical questions</strong> about the data. Just type what you want — if it can't do something, it will say so and usually suggest the closest thing it can.</p>
+
+    <p><strong>Map operations</strong> happen right away on the layers already loaded — no hunting through menus:</p>
+    <ul>
+        <li><strong>Filter a layer:</strong> <em>"Show only GAP status 1 and 2 conserved lands."</em></li>
+        <li><strong>Recolor or restyle a layer:</strong> <em>"Color conserved areas by managing agency"</em>, <em>"Make the habitat layer 50% transparent."</em></li>
+        <li><strong>Fly somewhere:</strong> <em>"Fly to the Sierra Nevada"</em>, <em>"Zoom to San Diego County."</em></li>
+        <li><strong>Show or hide layers:</strong> <em>"Turn on bird species richness"</em>, <em>"Show the historic fire perimeters."</em></li>
+    </ul>
+
+    <p><strong>Analytical questions</strong> are answered by writing live spatial queries over the underlying data, returning a number or a downloadable table:</p>
+    <ul>
+        <li><em>"How many acres of California are conserved at GAP status 1 or 2?"</em></li>
+        <li><em>"Which ecoregion has the most conserved acreage?"</em></li>
+        <li><em>"Where is rare-species biodiversity highest relative to its ecoregion?"</em></li>
+    </ul>
+
+    <div class="callout">
+        <strong>✏️ Draw an area to ask about it.</strong> Use the <strong>draw tool</strong> on the map to sketch a polygon — a watershed, a proposed acquisition, a county, anywhere in the state — then ask the assistant about it: <em>"How many acres inside the area I drew are already conserved?"</em>, <em>"What habitat types does this polygon contain?"</em>, <em>"What's the average biodiversity rank here?"</em> Your drawn shape becomes a live spatial filter for any query.
+    </div>
+</section>
+
+<section>
+    <h2>Data layers &amp; sources</h2>
+    <p>Every layer draws from a public, primary source. Click "STAC" beside any entry to see the full machine-readable metadata — schemas, column descriptions, license, lineage, and download URLs.</p>
+
+    <div class="layer-group">
+        <h3>Progress &amp; Protections</h3>
+        <div class="layer">
+            <div class="name">Conserved Areas, Terrestrial (2025)</div>
+            <div class="source">California's statewide inventory of lands conserved toward the 30x30 goal — one polygon per conserved unit, attributed with managing agency, access type, and GAP/reGAP biodiversity-protection status (1–4). The primary reference for tracking conservation progress.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/conserved-areas-terrestrial-2025/stac-collection.json" target="_blank" rel="noopener">STAC</a><a href="https://www.californianature.ca.gov/" target="_blank" rel="noopener">Source: California Nature</a></div>
+            <span class="lic">California Natural Resources Agency (CNRA) — CA Nature 30x30</span>
+        </div>
+        <div class="layer">
+            <div class="name">Disadvantaged Communities (DAC, 2023)</div>
+            <div class="source">California disadvantaged and economically distressed communities by census tract (2023), used to track equitable access to nature alongside the conserved network.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca-dac/stac-collection.json" target="_blank" rel="noopener">STAC</a></div>
+            <span class="lic">CalEPA / OEHHA — DAC &amp; EDA designations</span>
+        </div>
+        <div class="layer">
+            <div class="name">CalEnviroScreen 5.0</div>
+            <div class="source">OEHHA's cumulative environmental-justice screening tool — a per-census-tract score combining pollution burden and population-characteristic indicators. Useful context for siting and equity questions.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-calenviroscreen/stac-collection.json" target="_blank" rel="noopener">STAC</a><a href="https://oehha.ca.gov/calenviroscreen" target="_blank" rel="noopener">Source: OEHHA</a></div>
+            <span class="lic">California OEHHA / CalEPA</span>
+        </div>
+    </div>
+
+    <div class="layer-group">
+        <h3>Ecoregions</h3>
+        <div class="layer">
+            <div class="name">Ecoregions (20-class)</div>
+            <div class="source">California's Bailey/ECOMAP-derived ecoregions as used by the CNRA / ACE program — the standard regional framework for normalizing biodiversity and conservation metrics within the state.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/ecoregion/stac-collection.json" target="_blank" rel="noopener">STAC</a></div>
+            <span class="lic">CNRA / ACE — Bailey-derived ecoregions</span>
+        </div>
+    </div>
+
+    <div class="layer-group">
+        <h3>Habitat Types</h3>
+        <div class="layer">
+            <div class="name">CWHR Major Habitat Types (13-class) &amp; Habitat Types (60+ class)</div>
+            <div class="source">California Wildlife Habitat Relationships vegetation classes derived from CAL FIRE's FVEG statewide vegetation map — a coarse 13-class major-habitat grouping and the full 60+ class typology, both as categorical rasters.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/cwhr13/stac-collection.json" target="_blank" rel="noopener">STAC (13-class)</a><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/cwhr/stac-collection.json" target="_blank" rel="noopener">STAC (60+ class)</a><a href="https://frap.fire.ca.gov/mapping/gis-data/" target="_blank" rel="noopener">Source: CAL FIRE FRAP</a></div>
+            <span class="lic">CAL FIRE FRAP — FVEG / CWHR</span>
+        </div>
+    </div>
+
+    <div class="layer-group">
+        <h3>ACE Biodiversity</h3>
+        <div class="layer">
+            <div class="name">ACE Terrestrial Biodiversity Summary</div>
+            <div class="source">CDFW's Areas of Conservation Emphasis (ACE v3.0) terrestrial biodiversity summary, on a statewide hexagon grid. A single dataset whose columns drive 16 map layers: BioRank and Rare Rank (statewide and ecoregion-normalized, 1–5 quantiles), and native, rare, and endemic species richness for amphibians, reptiles, birds, and mammals.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-cdfw/ace/terrestrial-biodiversity-summary/stac-collection.json" target="_blank" rel="noopener">STAC</a><a href="https://wildlife.ca.gov/Data/Analysis/ACE" target="_blank" rel="noopener">Source: CDFW ACE</a></div>
+            <span class="lic">California Department of Fish and Wildlife (CDFW) — ACE v3.0 (ds2739)</span>
+        </div>
+    </div>
+
+    <div class="layer-group">
+        <h3>Biodiversity: Communities, Species &amp; Richness</h3>
+        <div class="layer">
+            <div class="name">Plant &amp; Rarity-Weighted Endemic Plant Richness</div>
+            <div class="source">Modeled plant species richness and rarity-weighted endemic plant richness for California (Kling et al. 2018), as continuous rasters — highlighting centers of overall plant diversity and of range-restricted endemic diversity.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/plant-richness/stac-collection.json" target="_blank" rel="noopener">STAC (richness)</a><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/rarity-weighted-endemic-plant-richness/stac-collection.json" target="_blank" rel="noopener">STAC (endemic)</a></div>
+            <span class="lic">Kling et al. 2018</span>
+        </div>
+    </div>
+
+    <div class="layer-group">
+        <h3>Freshwater Resources</h3>
+        <div class="layer">
+            <div class="name">Freshwater Species Richness (HUC12)</div>
+            <div class="source">Freshwater species richness summarized by HUC12 subwatershed (Howard et al. 2015 / TNC California Freshwater Species Database) — a choropleth of freshwater biodiversity, including vulnerable and listed species counts.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/freshwater-species-richness/stac-collection.json" target="_blank" rel="noopener">STAC</a></div>
+            <span class="lic">Howard et al. 2015 / TNC (ds1197)</span>
+        </div>
+        <div class="layer">
+            <div class="name">Wetlands (National Wetlands Inventory)</div>
+            <div class="source">US Fish &amp; Wildlife Service National Wetlands Inventory, filtered to freshwater emergent, freshwater forested/shrub, and estuarine &amp; marine wetland classes.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-wetlands/nwi/stac-collection.json" target="_blank" rel="noopener">STAC</a><a href="https://www.fws.gov/program/national-wetlands-inventory" target="_blank" rel="noopener">Source: USFWS NWI</a></div>
+            <span class="lic">USFWS — National Wetlands Inventory</span>
+        </div>
+        <div class="layer">
+            <div class="name">Groundwater-Dependent Ecosystems</div>
+            <div class="source">Mapped groundwater-dependent ecosystems (Klausmeyer et al. 2018) — vegetation and wetland features that rely on groundwater, provided as separate vegetation and wetland layers.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/groundwater-dependent-ecosystems/vegetation/stac-collection.json" target="_blank" rel="noopener">STAC (vegetation)</a><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-ca30x30/groundwater-dependent-ecosystems/wetlands/stac-collection.json" target="_blank" rel="noopener">STAC (wetlands)</a></div>
+            <span class="lic">Klausmeyer et al. 2018 / TNC</span>
+        </div>
+        <div class="layer">
+            <div class="name">Streams by Order &amp; Perennial Streams (NHD)</div>
+            <div class="source">USGS National Hydrography Dataset stream flowlines — one layer classified by Strahler stream order, and one filtered to perennial streams.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-usgs-nhd/streams-by-order/stac-collection.json" target="_blank" rel="noopener">STAC (by order)</a><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-usgs-nhd/perennial-streams/stac-collection.json" target="_blank" rel="noopener">STAC (perennial)</a><a href="https://www.usgs.gov/national-hydrography" target="_blank" rel="noopener">Source: USGS NHD</a></div>
+            <span class="lic">USGS National Hydrography Dataset</span>
+        </div>
+        <div class="layer">
+            <div class="name">Watersheds — USGS WBD (HUC8 &amp; HUC12)</div>
+            <div class="source">USGS Watershed Boundary Dataset subbasins (HUC8) and subwatersheds (HUC12) — nested hydrologic units for watershed-scale summaries.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-usgs-wbd/wbd/hu8/stac-collection.json" target="_blank" rel="noopener">STAC (HUC8)</a><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-usgs-wbd/wbd/hu12/stac-collection.json" target="_blank" rel="noopener">STAC (HUC12)</a><a href="https://www.usgs.gov/national-hydrography/watershed-boundary-dataset" target="_blank" rel="noopener">Source: USGS WBD</a></div>
+            <span class="lic">USGS Watershed Boundary Dataset</span>
+        </div>
+    </div>
+
+    <div class="layer-group">
+        <h3>Connectivity &amp; Resilience</h3>
+        <div class="layer">
+            <div class="name">Present-day Connectivity &amp; Climate Migration Routes</div>
+            <div class="source">Present-day terrestrial connectivity categories (Cameron et al. 2022) and modeled climate migration routes (Schloss et al. 2022) — categorical rasters showing where the landscape supports movement today and where species are expected to track suitable climate over time.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-connectivity/present-day-connectivity/categories/stac-collection.json" target="_blank" rel="noopener">STAC (connectivity)</a><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-connectivity/climate-migration-routes/stac-collection.json" target="_blank" rel="noopener">STAC (migration)</a></div>
+            <span class="lic">Cameron et al. 2022 · Schloss et al. 2022</span>
+        </div>
+        <div class="layer">
+            <div class="name">Regional Connectivity Linkages</div>
+            <div class="source">South Coast Missing Linkages (Beier et al. 2006) — mapped landscape linkages designed to maintain connectivity between protected core areas, as polygons.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-connectivity/regional-connectivity-linkages/stac-collection.json" target="_blank" rel="noopener">STAC</a></div>
+            <span class="lic">Beier et al. 2006</span>
+        </div>
+    </div>
+
+    <div class="layer-group">
+        <h3>Climate-Related Risks</h3>
+        <div class="layer">
+            <div class="name">Sea-Level Rise Inundation (5 ft)</div>
+            <div class="source">NOAA sea-level-rise inundation extent at 5 feet — the coastal area exposed under that scenario.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-hazard/sea-level-rise/stac-collection.json" target="_blank" rel="noopener">STAC</a><a href="https://coast.noaa.gov/slr/" target="_blank" rel="noopener">Source: NOAA</a></div>
+            <span class="lic">NOAA Office for Coastal Management</span>
+        </div>
+        <div class="layer">
+            <div class="name">Mid-Century Habitat Climate Exposure</div>
+            <div class="source">Modeled mid-century habitat climate exposure (Thorne et al. 2016), shown here for the CNRM (warm-wet) scenario — higher values indicate habitat more exposed to projected climate change.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-hazard/mid-century-habitat-climate-exposure/stac-collection.json" target="_blank" rel="noopener">STAC</a></div>
+            <span class="lic">Thorne et al. 2016</span>
+        </div>
+        <div class="layer">
+            <div class="name">Historic Fire Perimeters (1878–2025)</div>
+            <div class="source">CAL FIRE's statewide record of mapped wildfire perimeters from 1878 through 2025, colored by year of burn.</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-fire/calfire-2025/firep/stac-collection.json" target="_blank" rel="noopener">STAC</a><a href="https://frap.fire.ca.gov/mapping/gis-data/" target="_blank" rel="noopener">Source: CAL FIRE FRAP</a></div>
+            <span class="lic">CAL FIRE FRAP — Fire Perimeters</span>
+        </div>
+    </div>
+
+    <div class="layer-group">
+        <h3>Counties &amp; Reference Boundaries</h3>
+        <div class="layer">
+            <div class="name">County, State &amp; Census-Tract Boundaries</div>
+            <div class="source">US Census TIGER/Line 2024 administrative boundaries — counties, states, and census tracts — for reference and for summarizing metrics by jurisdiction. (Census counties stand in for the CNRA 30×30 county tiling.)</div>
+            <div class="links"><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-census/census-2024/county/stac-collection.json" target="_blank" rel="noopener">STAC (county)</a><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-census/census-2024/state/stac-collection.json" target="_blank" rel="noopener">STAC (state)</a><a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-census/census-2024/tract/stac-collection.json" target="_blank" rel="noopener">STAC (tract)</a><a href="https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html" target="_blank" rel="noopener">Source: US Census</a></div>
+            <span class="lic">US Census Bureau — TIGER/Line 2024</span>
+        </div>
+    </div>
+
+    <p style="margin-top: 1.6rem;">Browse the full STAC catalog at <a href="https://radiantearth.github.io/stac-browser/#/external/s3-west.nrp-nautilus.io/public-data/stac/catalog.json" target="_blank" rel="noopener">radiantearth.github.io / stac-browser</a> to explore additional datasets not yet enabled in the app.</p>
+</section>
+
+<div class="foot">
+    <div class="partners">
+        <span><a href="https://dse.berkeley.edu" target="_blank" rel="noopener">Schmidt Center for Data Science &amp; Environment</a></span>
+    </div>
+    <div>Built by DSE at UC Berkeley with <a href="https://github.com/boettiger-lab/geo-agent" target="_blank" rel="noopener">GLEN</a> · <a href="https://github.com/boettiger-lab/ca-30x30" target="_blank" rel="noopener">Source on GitHub</a></div>
+    <div style="margin-top:0.4rem;">A work in progress — feedback welcome via <a href="https://github.com/boettiger-lab/ca-30x30/issues" target="_blank" rel="noopener">GitHub issues</a>.</div>
+</div>
+
+</main>
+
+</body>
+</html>
