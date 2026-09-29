@@ -39,6 +39,12 @@ data:
                 "api_key": "unused"
             },
             {
+                "value": "deepseek-v4-flash",
+                "label": "DeepSeek V4 Flash (NRP)",
+                "endpoint": "/api/llm",
+                "api_key": "unused"
+            },
+            {
                 "value": "moonshotai/kimi-k3",
                 "label": "Kimi K3",
                 "endpoint": "/api/llm",
