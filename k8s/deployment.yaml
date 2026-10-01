@@ -6,7 +6,7 @@ metadata:
   labels:
     app: ca-30x30
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -20,6 +20,15 @@ spec:
       labels:
         app: ca-30x30
     spec:
+      # Two replicas on distinct nodes: a single NotReady node must not take
+      # the app down.
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app: ca-30x30
+            topologyKey: kubernetes.io/hostname
       initContainers:
       - name: git-clone
         image: alpine/git:2.52.0
