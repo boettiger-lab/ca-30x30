@@ -44,6 +44,7 @@ spec:
           cp /tmp/repo/docs.html /usr/share/nginx/html/
           cp /tmp/repo/layers-input.json /usr/share/nginx/html/
           cp /tmp/repo/system-prompt.md /usr/share/nginx/html/
+          cp -r /tmp/repo/assets /usr/share/nginx/html/
           # Curated STAC catalog served at /stac/catalog.json and read by
           # ca30x30-mcp as STAC_CATALOG_URL (ca-30x30#126).
           cp -r /tmp/repo/stac /usr/share/nginx/html/

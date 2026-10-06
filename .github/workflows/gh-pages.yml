@@ -15,6 +15,7 @@ on:
       - layers-input.json
       - system-prompt.md
       - stac/**
+      - assets/**
       - .github/workflows/gh-pages.yml
   workflow_dispatch:
 
@@ -40,16 +41,17 @@ jobs:
 
       - name: Copy app files
         run: |
-          rm -rf site/stac
+          rm -rf site/stac site/assets
           cp app/index.html app/docs.html app/layers-input.json app/system-prompt.md site/
           cp -r app/stac site/stac
+          cp -r app/assets site/assets
 
       - name: Commit and push
         working-directory: site
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
-          git add -A index.html docs.html layers-input.json system-prompt.md stac
+          git add -A index.html docs.html layers-input.json system-prompt.md stac assets
           if git diff --cached --quiet; then
             echo "gh-pages already up to date"
           else

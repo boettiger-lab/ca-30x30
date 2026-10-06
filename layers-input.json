@@ -64,6 +64,59 @@
         "docs": "/docs.html",
         "carbon": true
     },
+    "header": {
+        "enabled": true,
+        "mode": "solid",
+        "title": "30x30 Biodiversity Assessment Companion",
+        "partner": [
+            {
+                "src": "assets/cbn-mark.png",
+                "alt": "California Biodiversity Network",
+                "href": "https://cabiodiversitynetwork.org/"
+            },
+            {
+                "src": "assets/ca-30x30-mark.png",
+                "alt": "30x30 California",
+                "href": "https://www.californianature.ca.gov/pages/30x30"
+            }
+        ],
+        "nav": [
+            {
+                "label": "About",
+                "href": "docs.html",
+                "external": false,
+                "icon": "info"
+            },
+            {
+                "label": "Assessment",
+                "href": "https://www.scienceforconservation.org/assets/downloads/AppendixC_TNC_CBN_Biodiversity_Assessment_2026_Final.pdf"
+            },
+            {
+                "label": "State Report",
+                "href": "https://resources.ca.gov/-/media/B504D73B899048079266A6F97A5EFA79.ashx"
+            },
+            {
+                "label": "GitHub",
+                "href": "https://github.com/boettiger-lab/ca-30x30",
+                "icon": "github"
+            },
+            {
+                "label": "Carbon",
+                "href": "https://carbon-api.nrp-nautilus.io/",
+                "icon": "leaf"
+            },
+            {
+                "label": "Contact us",
+                "href": "mailto:dse@berkeley.edu",
+                "external": false,
+                "icon": "mail"
+            }
+        ]
+    },
+    "theme": {
+        "mode": "light",
+        "primary": "#2e7d32"
+    },
     "collections": [
         {
             "collection_id": "ca30x30-conserved-areas-terrestrial-2025",
