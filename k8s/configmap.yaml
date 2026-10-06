@@ -45,14 +45,20 @@ data:
                 "api_key": "unused"
             },
             {
-                "value": "moonshotai/kimi-k3",
-                "label": "Kimi K3",
+                "value": "xiaomi/mimo-v2.6-pro",
+                "label": "MiMo V2.6 Pro",
                 "endpoint": "/api/llm",
                 "api_key": "unused"
             },
             {
-                "value": "anthropic/claude-sonnet-5",
-                "label": "Claude Sonnet 5",
+                "value": "xiaomi/mimo-v2.6-flash",
+                "label": "MiMo V2.6 Flash",
+                "endpoint": "/api/llm",
+                "api_key": "unused"
+            },
+            {
+                "value": "moonshotai/kimi-k3",
+                "label": "Kimi K3",
                 "endpoint": "/api/llm",
                 "api_key": "unused"
             }

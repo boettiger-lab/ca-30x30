@@ -41,12 +41,16 @@
                 "label": "GLM-5.3"
             },
             {
-                "value": "moonshotai/kimi-k3",
-                "label": "Kimi K3"
+                "value": "xiaomi/mimo-v2.6-pro",
+                "label": "MiMo V2.6 Pro"
             },
             {
-                "value": "anthropic/claude-sonnet-5",
-                "label": "Claude Sonnet 5"
+                "value": "xiaomi/mimo-v2.6-flash",
+                "label": "MiMo V2.6 Flash"
+            },
+            {
+                "value": "moonshotai/kimi-k3",
+                "label": "Kimi K3"
             }
         ]
     },
