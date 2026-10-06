@@ -88,12 +88,14 @@
                 "icon": "info"
             },
             {
-                "label": "Assessment",
-                "href": "https://www.scienceforconservation.org/assets/downloads/AppendixC_TNC_CBN_Biodiversity_Assessment_2026_Final.pdf"
+                "label": "CBN Assessment",
+                "href": "https://www.scienceforconservation.org/assets/downloads/AppendixC_TNC_CBN_Biodiversity_Assessment_2026_Final.pdf",
+                "variant": "doc"
             },
             {
                 "label": "State Report",
-                "href": "https://resources.ca.gov/-/media/B504D73B899048079266A6F97A5EFA79.ashx"
+                "href": "https://resources.ca.gov/-/media/B504D73B899048079266A6F97A5EFA79.ashx",
+                "variant": "doc"
             },
             {
                 "label": "GitHub",
