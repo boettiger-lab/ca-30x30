@@ -1,0 +1,1226 @@
+{
+ "generated": "2026-10-12T19:11:17.660Z",
+ "catalog": "https://s3-west.nrp-nautilus.io/public-data/stac/catalog.json",
+ "datasets": [
+  {
+   "id": "ca30x30-ecoregion",
+   "prefixes": [
+    "s3://public-ca30x30/ecoregion/hex",
+    "s3://public-ca30x30/ecoregion/hex-res8",
+    "s3://public-ca30x30/ecoregion.parquet",
+    "https://s3-west.nrp-nautilus.io/public-ca30x30/ecoregion.pmtiles"
+   ],
+   "stac": {
+    "id": "ca30x30-ecoregion",
+    "title": "California 30x30 Ecoregions (CNRA / ACE Bailey-derived, 2024)",
+    "license": "CC-BY-4.0",
+    "providers": [
+     {
+      "name": "California Department of Fish and Wildlife (CDFW) / California Natural Resources Agency (CNRA)",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://wildlife.ca.gov/Data/Analysis/ACE"
+     },
+     {
+      "name": "USDA Forest Service (Bailey / ECOMAP ecological sections)",
+      "roles": [
+       "producer"
+      ],
+      "url": "https://www.fs.usda.gov/"
+     },
+     {
+      "name": "Boettiger Lab",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://github.com/boettiger-lab"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-ca30x30/ecoregion/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "license",
+      "href": "https://data.cnra.ca.gov/dataset/areas-of-conservation-emphasis-ace",
+      "type": "text/html",
+      "title": "CNRA Open Data terms (Creative Commons Attribution)"
+     }
+    ]
+   }
+  },
+  {
+   "id": "ca30x30-conserved-areas-terrestrial-2025",
+   "prefixes": [
+    "s3://public-ca30x30/conserved-areas-terrestrial-2025/hex-weights",
+    "https://s3-west.nrp-nautilus.io/public-ca30x30/conserved-areas-terrestrial-2025.pmtiles"
+   ],
+   "stac": {
+    "id": "ca30x30-conserved-areas-terrestrial-2025",
+    "title": "30x30 Conserved Areas, Terrestrial (2025)",
+    "license": "CC-BY-4.0",
+    "providers": [
+     {
+      "name": "CA Nature working group, California Natural Resources Agency (CNRA)",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://www.californianature.ca.gov/datasets/CAnature::30x30-conserved-areas-terrestrial-2025/about"
+     },
+     {
+      "name": "Boettiger Lab",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://github.com/boettiger-lab"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-ca30x30/conserved-areas-terrestrial-2025/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "license",
+      "href": "https://creativecommons.org/licenses/by/4.0/",
+      "type": "text/html",
+      "title": "Creative Commons Attribution 4.0 International (CC-BY-4.0)"
+     }
+    ]
+   }
+  },
+  {
+   "id": "census-2024-county",
+   "prefixes": [
+    "s3://public-census/census-2024/county/hex",
+    "s3://public-census/census-2024/county.parquet",
+    "https://s3-west.nrp-nautilus.io/public-census/census-2024/county.pmtiles"
+   ],
+   "stac": {
+    "id": "census-2024-county",
+    "title": "US Census 2024 County Boundaries with H3 Indexing",
+    "license": "public-domain",
+    "providers": [
+     {
+      "name": "US Census Bureau",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html"
+     },
+     {
+      "name": "Boettiger Lab",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://github.com/boettiger-lab"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-census/census-2024/county/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "about",
+      "href": "https://www.census.gov/programs-surveys/geography/technical-documentation/complete-technical-documentation/tiger-geo-line.html"
+     },
+     {
+      "rel": "license",
+      "href": "https://www.usa.gov/government-works",
+      "title": "U.S. Government Works"
+     }
+    ]
+   }
+  },
+  {
+   "id": "census-2024-tract",
+   "prefixes": [
+    "s3://public-census/census-2024/tract/hex"
+   ],
+   "stac": {
+    "id": "census-2024-tract",
+    "title": "US Census 2024 Census Tract Boundaries with H3 Indexing",
+    "license": "public-domain",
+    "providers": [
+     {
+      "name": "US Census Bureau",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html"
+     },
+     {
+      "name": "Boettiger Lab",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://github.com/boettiger-lab"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-census/census-2024/tract/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "about",
+      "href": "https://www.census.gov/programs-surveys/geography/about/glossary.html#par_textimage_13"
+     },
+     {
+      "rel": "license",
+      "href": "https://www.usa.gov/government-works",
+      "title": "U.S. Government Works"
+     }
+    ]
+   }
+  },
+  {
+   "id": "census-2024-cd",
+   "prefixes": [
+    "s3://public-census/census-2024/cd/hex",
+    "s3://public-census/census-2024/cd.parquet",
+    "https://s3-west.nrp-nautilus.io/public-census/census-2024/cd.pmtiles"
+   ],
+   "stac": {
+    "id": "census-2024-cd",
+    "title": "US Census 2024 Congressional District Boundaries with H3 Indexing",
+    "license": "public-domain",
+    "providers": [
+     {
+      "name": "US Census Bureau",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html"
+     },
+     {
+      "name": "Boettiger Lab",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://github.com/boettiger-lab"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-census/census-2024/cd/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "about",
+      "href": "https://www.census.gov/programs-surveys/geography/guidance/geo-areas/congressional-dist.html"
+     },
+     {
+      "rel": "license",
+      "href": "https://www.usa.gov/government-works",
+      "title": "U.S. Government Works"
+     }
+    ]
+   }
+  },
+  {
+   "id": "census-2025-sldu",
+   "prefixes": [
+    "s3://public-census/census-2025/sldu/hex",
+    "s3://public-census/census-2025/sldu.parquet",
+    "https://s3-west.nrp-nautilus.io/public-census/census-2025/sldu.pmtiles"
+   ],
+   "stac": {
+    "id": "census-2025-sldu",
+    "title": "US Census 2025 State Legislative Districts — Upper Chamber",
+    "license": "public-domain",
+    "providers": [
+     {
+      "name": "US Census Bureau",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html"
+     },
+     {
+      "name": "Boettiger Lab",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://github.com/boettiger-lab"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-census/census-2025/sldu/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "about",
+      "href": "https://www.census.gov/programs-surveys/geography/about/glossary.html"
+     },
+     {
+      "rel": "license",
+      "href": "https://www.usa.gov/government-works",
+      "title": "U.S. Government Works"
+     }
+    ]
+   }
+  },
+  {
+   "id": "census-2025-sldl",
+   "prefixes": [
+    "s3://public-census/census-2025/sldl/hex",
+    "s3://public-census/census-2025/sldl.parquet",
+    "https://s3-west.nrp-nautilus.io/public-census/census-2025/sldl.pmtiles"
+   ],
+   "stac": {
+    "id": "census-2025-sldl",
+    "title": "US Census 2025 State Legislative Districts — Lower Chamber",
+    "license": "public-domain",
+    "providers": [
+     {
+      "name": "US Census Bureau",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html"
+     },
+     {
+      "name": "Boettiger Lab",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://github.com/boettiger-lab"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-census/census-2025/sldl/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "about",
+      "href": "https://www.census.gov/programs-surveys/geography/about/glossary.html"
+     },
+     {
+      "rel": "license",
+      "href": "https://www.usa.gov/government-works",
+      "title": "U.S. Government Works"
+     }
+    ]
+   }
+  },
+  {
+   "id": "cwhr13",
+   "prefixes": [
+    "s3://public-ca30x30/cwhr13/hex-fractions",
+    "s3://public-ca30x30/cwhr13/hex"
+   ],
+   "stac": {
+    "id": "cwhr13",
+    "title": "CAL FIRE FVEG — CWHR 13-class major habitat types",
+    "license": "CC-BY-4.0",
+    "providers": [
+     {
+      "name": "CAL FIRE — Fire and Resource Assessment Program (FRAP)",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program"
+     },
+     {
+      "name": "California Department of Fish and Wildlife (VegCAMP)",
+      "roles": [
+       "producer"
+      ]
+     },
+     {
+      "name": "USDA Forest Service Region 5 (MARS Lab)",
+      "roles": [
+       "producer"
+      ]
+     },
+     {
+      "name": "boettiger-lab / cirrus",
+      "roles": [
+       "processor",
+       "host"
+      ]
+     }
+    ],
+    "sci:citation": "CAL FIRE Fire and Resource Assessment Program (FRAP), WHR13 Types (California Vegetation - WHR13 Types), edition fveg22_1 (FGDC record ds1327). Upstream last updated 2024-12-27; raw staged to s3://public-ca30x30/raw/fveg221gdb.zip on 2026-06-17 (SHA-256 6b6bc73c8b97eb3637ab283dfdeefebc0e284a40ce5280de0393900544e94cff). No stable public direct-download URL exists for the raster geodatabase. Reclassified and processed to COG and H3 by the Boettiger Lab, UC Berkeley.",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-ca30x30/cwhr13/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "license",
+      "href": "https://data.ca.gov/dataset/california-vegetation-whr13-types",
+      "type": "text/html",
+      "title": "CAL FIRE / California Open Data — California Vegetation - WHR13 Types (CC-BY)"
+     },
+     {
+      "rel": "about",
+      "href": "https://data.ca.gov/dataset/california-vegetation-whr13-types",
+      "type": "text/html",
+      "title": "Upstream dataset landing page (data.ca.gov)"
+     }
+    ]
+   }
+  },
+  {
+   "id": "cwhr",
+   "prefixes": [
+    "s3://public-ca30x30/cwhr/hex-fractions"
+   ],
+   "stac": {
+    "id": "cwhr",
+    "title": "CAL FIRE FVEG — CWHR habitat types (60+ class)",
+    "license": "CC-BY-4.0",
+    "providers": [
+     {
+      "name": "CAL FIRE — Fire and Resource Assessment Program (FRAP)",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program"
+     },
+     {
+      "name": "California Department of Fish and Wildlife (VegCAMP)",
+      "roles": [
+       "producer"
+      ]
+     },
+     {
+      "name": "USDA Forest Service Region 5 (MARS Lab)",
+      "roles": [
+       "producer"
+      ]
+     },
+     {
+      "name": "boettiger-lab / cirrus",
+      "roles": [
+       "processor",
+       "host"
+      ]
+     }
+    ],
+    "sci:citation": "CAL FIRE Fire and Resource Assessment Program (FRAP), WHRTYPE (California Vegetation - WHRTYPE), edition fveg22_1 (FGDC record ds1327). Upstream last updated 2024-12-27; raw staged to s3://public-ca30x30/raw/fveg221gdb.zip on 2026-06-17 (SHA-256 6b6bc73c8b97eb3637ab283dfdeefebc0e284a40ce5280de0393900544e94cff). No stable public direct-download URL exists for the raster geodatabase. Reclassified and processed to COG and H3 by the Boettiger Lab, UC Berkeley.",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-ca30x30/cwhr/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "license",
+      "href": "https://data.ca.gov/dataset/california-vegetation-whrtype",
+      "type": "text/html",
+      "title": "CAL FIRE / California Open Data — California Vegetation - WHRTYPE (CC-BY)"
+     },
+     {
+      "rel": "about",
+      "href": "https://data.ca.gov/dataset/california-vegetation-whrtype",
+      "type": "text/html",
+      "title": "Upstream dataset landing page (data.ca.gov)"
+     }
+    ]
+   }
+  },
+  {
+   "id": "ace-terrestrial-biodiversity-summary",
+   "prefixes": [
+    "s3://public-cdfw/ace/terrestrial-biodiversity-summary/hex"
+   ],
+   "stac": {
+    "id": "ace-terrestrial-biodiversity-summary",
+    "title": "ACE v3.0 — Terrestrial Biodiversity Summary (ds2739)",
+    "license": "CC-BY-4.0",
+    "providers": [
+     {
+      "name": "California Department of Fish and Wildlife (ACE 3 Working Group / ACE 3 Development Team)",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://wildlife.ca.gov/Data/Analysis/ACE"
+     },
+     {
+      "name": "Boettiger Lab",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://boettigerlab.berkeley.edu"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-cdfw/ace/terrestrial-biodiversity-summary/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "license",
+      "href": "https://creativecommons.org/licenses/by/4.0/",
+      "type": "text/html",
+      "title": "CC-BY-4.0"
+     }
+    ]
+   }
+  },
+  {
+   "id": "plant-richness",
+   "prefixes": [
+    "s3://public-ca30x30/plant-richness/p80-hex"
+   ],
+   "stac": {
+    "id": "plant-richness",
+    "title": "Plant species richness (Kling et al. 2018)",
+    "license": "other",
+    "providers": [
+     {
+      "name": "Kling et al. 2018 (Phil. Trans. R. Soc. B)",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://royalsocietypublishing.org/doi/full/10.1098/rstb.2017.0397"
+     },
+     {
+      "name": "California Biodiversity Network (CBN)",
+      "roles": [
+       "producer"
+      ]
+     },
+     {
+      "name": "boettiger-lab / cirrus",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://s3-west.nrp-nautilus.io"
+     }
+    ],
+    "sci:citation": "Kling, M.M., Mishler, B.D., Thornhill, A.H., Baldwin, B.G., & Ackerly, D.D. (2018). Facets of phylodiversity: evolutionary diversification, divergence and survival as conservation targets. Philosophical Transactions of the Royal Society B, 373(1763), 20170397. https://doi.org/10.1098/rstb.2017.0397",
+    "sci:doi": "10.1098/rstb.2017.0397",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-ca30x30/plant-richness/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1098/rstb.2017.0397",
+      "type": "text/html",
+      "title": "Kling et al. (2018) Phil. Trans. R. Soc. B 373:20170397"
+     },
+     {
+      "rel": "license",
+      "href": "https://royalsocietypublishing.org/doi/full/10.1098/rstb.2017.0397",
+      "type": "text/html",
+      "title": "Terms of use: free use with attribution to Kling et al. (2018)"
+     }
+    ]
+   }
+  },
+  {
+   "id": "rarity-weighted-endemic-plant-richness",
+   "prefixes": [
+    "s3://public-ca30x30/rarity-weighted-endemic-plant-richness/p80-hex"
+   ],
+   "stac": {
+    "id": "rarity-weighted-endemic-plant-richness",
+    "title": "Rarity-weighted endemic plant richness (Kling et al. 2018)",
+    "license": "other",
+    "providers": [
+     {
+      "name": "Kling et al. 2018 (Phil. Trans. R. Soc. B)",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://royalsocietypublishing.org/doi/full/10.1098/rstb.2017.0397"
+     },
+     {
+      "name": "California Biodiversity Network (CBN)",
+      "roles": [
+       "producer"
+      ]
+     },
+     {
+      "name": "boettiger-lab / cirrus",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://s3-west.nrp-nautilus.io"
+     }
+    ],
+    "sci:citation": "Kling, M.M., Mishler, B.D., Thornhill, A.H., Baldwin, B.G., & Ackerly, D.D. (2018). Facets of phylodiversity: evolutionary diversification, divergence and survival as conservation targets. Philosophical Transactions of the Royal Society B, 373(1763), 20170397. https://doi.org/10.1098/rstb.2017.0397",
+    "sci:doi": "10.1098/rstb.2017.0397",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-ca30x30/rarity-weighted-endemic-plant-richness/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1098/rstb.2017.0397",
+      "type": "text/html",
+      "title": "Kling et al. (2018) Phil. Trans. R. Soc. B 373:20170397"
+     },
+     {
+      "rel": "license",
+      "href": "https://royalsocietypublishing.org/doi/full/10.1098/rstb.2017.0397",
+      "type": "text/html",
+      "title": "Terms of use: free use with attribution to Kling et al. (2018)"
+     }
+    ]
+   }
+  },
+  {
+   "id": "present-day-connectivity-categories",
+   "prefixes": [
+    "s3://public-connectivity/present-day-connectivity-categories/hex-fractions"
+   ],
+   "stac": {
+    "id": "present-day-connectivity-categories",
+    "title": "Present-day Connectivity - Connectivity Categories (Cameron et al. 2022)",
+    "license": "CC0-1.0",
+    "providers": [
+     {
+      "name": "Cameron, Schloss, Theobald, Morrison (2022)",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://doi.org/10.5061/dryad.7sqv9s4v3"
+     },
+     {
+      "name": "Boettiger Lab",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://github.com/boettiger-lab"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-connectivity/present-day-connectivity/categories/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1111/csp2.12698",
+      "title": "Cameron et al. 2022, Conservation Science and Practice"
+     },
+     {
+      "rel": "license",
+      "href": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "type": "text/html",
+      "title": "CC0 1.0 (Dryad)"
+     }
+    ]
+   }
+  },
+  {
+   "id": "climate-migration-routes",
+   "prefixes": [
+    "s3://public-connectivity/climate-migration-routes/hex-fractions"
+   ],
+   "stac": {
+    "id": "climate-migration-routes",
+    "title": "Climate Migration Routes (Schloss et al. 2022)",
+    "license": "CC0-1.0",
+    "providers": [
+     {
+      "name": "Schloss, Cameron, Theobald, Morrison (2022)",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://doi.org/10.5061/dryad.d7wm37q1m"
+     },
+     {
+      "name": "Boettiger Lab",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://github.com/boettiger-lab"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-connectivity/climate-migration-routes/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1002/eap.2468",
+      "title": "Schloss et al. 2022, Ecological Applications"
+     },
+     {
+      "rel": "license",
+      "href": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "type": "text/html",
+      "title": "CC0 1.0 (Dryad)"
+     }
+    ]
+   }
+  },
+  {
+   "id": "regional-connectivity-linkages",
+   "prefixes": [
+    "s3://public-connectivity/regional-connectivity-linkages/hex"
+   ],
+   "stac": {
+    "id": "regional-connectivity-linkages",
+    "title": "South Coast Missing Linkages (Beier et al. 2006) - Regional Connectivity Linkages",
+    "license": "CC-BY-4.0",
+    "providers": [
+     {
+      "name": "South Coast Missing Linkages Project (Beier et al. 2006)",
+      "roles": [
+       "producer"
+      ],
+      "url": "https://scwildlands.org/reports/"
+     },
+     {
+      "name": "California Department of Fish and Wildlife (BIOS ds419)",
+      "roles": [
+       "licensor",
+       "host"
+      ],
+      "url": "https://wildlife.ca.gov/Data/BIOS"
+     },
+     {
+      "name": "Boettiger Lab",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://github.com/boettiger-lab"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-connectivity/regional-connectivity-linkages/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "about",
+      "href": "https://map.dfg.ca.gov/metadata/ds0419.html",
+      "title": "CDFW BIOS ds419 metadata: South Coast Missing Linkages"
+     },
+     {
+      "rel": "license",
+      "href": "https://creativecommons.org/licenses/by/4.0/",
+      "type": "text/html",
+      "title": "Creative Commons Attribution 4.0 (CDFW BIOS terms)"
+     }
+    ]
+   }
+  },
+  {
+   "id": "wetlands-nwi",
+   "prefixes": [
+    "s3://public-wetlands/nwi-v2/hex"
+   ],
+   "stac": {
+    "id": "wetlands-nwi",
+    "title": "US National Wetlands Inventory (NWI)",
+    "license": "public-domain",
+    "providers": [
+     {
+      "name": "U.S. Fish & Wildlife Service",
+      "roles": [
+       "producer"
+      ],
+      "url": "https://www.fws.gov/program/national-wetlands-inventory"
+     },
+     {
+      "name": "Source Cooperative (giswqs)",
+      "roles": [
+       "host"
+      ],
+      "url": "https://data.source.coop/giswqs/nwi/"
+     },
+     {
+      "name": "Boettiger Lab, UC Berkeley",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://github.com/boettiger-lab"
+     }
+    ],
+    "sci:citation": "U.S. Fish & Wildlife Service, National Wetlands Inventory (product line \"NWI Version 2\"). Accessed 2026-05-12 via the Source Cooperative mirror data.source.coop/giswqs/nwi/wetlands/. Upstream edition not determinable: FWS republishes in place biannually with no dated archive. Processed to EPSG:4326 GeoParquet, PMTiles and H3 by the Boettiger Lab, UC Berkeley.",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-wetlands/nwi/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "about",
+      "href": "https://www.fws.gov/program/national-wetlands-inventory",
+      "type": "text/html",
+      "title": "NWI official product page (USFWS)"
+     },
+     {
+      "rel": "license",
+      "href": "https://www.usa.gov/government-works",
+      "type": "text/html"
+     }
+    ]
+   }
+  },
+  {
+   "id": "gde-vegetation",
+   "prefixes": [
+    "s3://public-ca30x30/groundwater-dependent-ecosystems/vegetation/hex"
+   ],
+   "stac": {
+    "id": "gde-vegetation",
+    "title": "Groundwater-Dependent Ecosystems — Vegetation (Klausmeyer et al. 2018)",
+    "license": "ODC-By-1.0",
+    "providers": [
+     {
+      "name": "Klausmeyer et al. (2018), The Nature Conservancy",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://data.cnra.ca.gov/dataset/natural-communities-commonly-associated-with-groundwater"
+     },
+     {
+      "name": "CA Dept. of Water Resources / CA Dept. of Fish and Wildlife / TNC (NCCAG working group)",
+      "roles": [
+       "producer"
+      ]
+     },
+     {
+      "name": "CDFW BIOS (Biogeographic Information and Observation System)",
+      "roles": [
+       "host"
+      ],
+      "url": "https://map.dfg.ca.gov/metadata/ds2788.html"
+     },
+     {
+      "name": "boettiger-lab / cirrus",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://s3-west.nrp-nautilus.io"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-ca30x30/groundwater-dependent-ecosystems/vegetation/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "license",
+      "href": "https://opendatacommons.org/licenses/by/1-0/",
+      "type": "text/html"
+     }
+    ]
+   }
+  },
+  {
+   "id": "gde-wetlands",
+   "prefixes": [
+    "s3://public-ca30x30/groundwater-dependent-ecosystems/wetlands/hex"
+   ],
+   "stac": {
+    "id": "gde-wetlands",
+    "title": "Groundwater-Dependent Ecosystems — Wetlands (Klausmeyer et al. 2018)",
+    "license": "ODC-By-1.0",
+    "providers": [
+     {
+      "name": "Klausmeyer et al. (2018), The Nature Conservancy",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://data.cnra.ca.gov/dataset/natural-communities-commonly-associated-with-groundwater"
+     },
+     {
+      "name": "CA Dept. of Water Resources / CA Dept. of Fish and Wildlife / TNC (NCCAG working group)",
+      "roles": [
+       "producer"
+      ]
+     },
+     {
+      "name": "CDFW BIOS (Biogeographic Information and Observation System)",
+      "roles": [
+       "host"
+      ],
+      "url": "https://map.dfg.ca.gov/metadata/ds2788.html"
+     },
+     {
+      "name": "boettiger-lab / cirrus",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://s3-west.nrp-nautilus.io"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-ca30x30/groundwater-dependent-ecosystems/wetlands/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "license",
+      "href": "https://opendatacommons.org/licenses/by/1-0/",
+      "type": "text/html"
+     }
+    ]
+   }
+  },
+  {
+   "id": "flood-hazard",
+   "prefixes": [
+    "s3://public-hazard/flood-hazard/hex"
+   ],
+   "stac": {
+    "id": "flood-hazard",
+    "title": "FEMA National Flood Hazard Layer — Flood Hazard Zones (National)",
+    "license": "public-domain",
+    "providers": [
+     {
+      "name": "FEMA — Federal Emergency Management Agency",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://www.fema.gov/flood-maps/national-flood-hazard-layer"
+     },
+     {
+      "name": "NRP / boettiger-lab",
+      "roles": [
+       "processor",
+       "host"
+      ]
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-hazard/flood-hazard/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "about",
+      "href": "https://www.fema.gov/flood-maps/national-flood-hazard-layer",
+      "type": "text/html"
+     }
+    ]
+   }
+  },
+  {
+   "id": "freshwater-species-richness",
+   "prefixes": [
+    "s3://public-ca30x30/freshwater-species-richness.parquet",
+    "s3://public-ca30x30/freshwater-species-richness/hex"
+   ],
+   "stac": {
+    "id": "freshwater-species-richness",
+    "title": "Freshwater Species Richness (Howard et al. 2015 / TNC California Freshwater Species Database, ds1197)",
+    "license": "other",
+    "providers": [
+     {
+      "name": "The Nature Conservancy (California Freshwater Species Database / Aquarius)",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://doi.org/10.1371/journal.pone.0130710"
+     },
+     {
+      "name": "Howard, J.K., Klausmeyer, K.R., Fesenmyer, K.A., et al. (2015), PLOS ONE 10(7): e0130710",
+      "roles": [
+       "producer"
+      ],
+      "url": "https://doi.org/10.1371/journal.pone.0130710"
+     },
+     {
+      "name": "California Department of Fish and Wildlife (CDFW) BIOS (ds1197)",
+      "roles": [
+       "distributor"
+      ],
+      "url": "https://map.dfg.ca.gov/metadata/ds1197.html"
+     },
+     {
+      "name": "Boettiger Lab",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://github.com/boettiger-lab"
+     }
+    ],
+    "sci:citation": "Howard, J.K., Klausmeyer, K.R., Fesenmyer, K.A., Furnish, J., Gardali, T., Grantham, T., Katz, J.V.E., Kupferberg, S., McIntyre, P., Moyle, P.B., Ode, P.R., Peek, R., Quiñones, R.M., Rehn, A.C., Santos, N., Schoenig, S., Serpa, L., Shedd, J.D., Slusark, J., Viers, J.H., Wright, A., Morrison, S.A. (2015). Patterns of Freshwater Species Richness, Endemism, and Vulnerability in California. PLOS ONE 10(7): e0130710. https://doi.org/10.1371/journal.pone.0130710",
+    "sci:doi": "10.1371/journal.pone.0130710",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-ca30x30/freshwater-species-richness/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1371/journal.pone.0130710",
+      "type": "text/html",
+      "title": "Howard et al. (2015), Patterns of Freshwater Species Richness, Endemism, and Vulnerability in California, PLOS ONE 10(7): e0130710 (CC-BY-4.0)"
+     },
+     {
+      "rel": "license",
+      "href": "https://filelib.wildlife.ca.gov/Public/BDB/GIS/BIOS/metadata/DS1197.html",
+      "type": "text/html",
+      "title": "CDFW BIOS ds1197 metadata (use constraints: redistribution permitted with original source data + attribution); companion paper CC-BY-4.0 (doi:10.1371/journal.pone.0130710)"
+     }
+    ]
+   }
+  },
+  {
+   "id": "usgs-nhdplus-hr-flowline",
+   "prefixes": [
+    "s3://public-usgs-nhd/nhdplus-hr/flowline/hex"
+   ],
+   "stac": {
+    "id": "usgs-nhdplus-hr-flowline",
+    "title": "USGS NHDPlus High Resolution — Flowlines + network VAA (national)",
+    "license": "public-domain",
+    "providers": [
+     {
+      "name": "U.S. Geological Survey",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://www.usgs.gov/national-hydrography/nhdplus-high-resolution"
+     },
+     {
+      "name": "Boettiger Lab",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://github.com/boettiger-lab"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-usgs-nhd/nhdplus-hr/flowline/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "about",
+      "href": "https://www.usgs.gov/national-hydrography/nhdplus-high-resolution",
+      "title": "USGS NHDPlus High Resolution"
+     },
+     {
+      "rel": "license",
+      "href": "https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits",
+      "title": "USGS Public Domain",
+      "type": "text/html"
+     }
+    ]
+   }
+  },
+  {
+   "id": "fire-perimeters",
+   "prefixes": [
+    "s3://public-fire/calfire-2025/firep/hex"
+   ],
+   "stac": {
+    "id": "fire-perimeters",
+    "title": "Wildfire: hazard potential, observed burn severity, and fire perimeters",
+    "license": "various",
+    "providers": [
+     {
+      "name": "CAL FIRE FRAP",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program"
+     },
+     {
+      "name": "USGS",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://www.sciencebase.gov/catalog/item/61aa537dd34eb622f699df81"
+     },
+     {
+      "name": "Boettiger Lab, UC Berkeley",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://s3-west.nrp-nautilus.io/public-fire/"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-fire/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "about",
+      "href": "https://www.fire.ca.gov/what-we-do/fire-resource-assessment-program",
+      "type": "text/html",
+      "title": "CAL FIRE FRAP"
+     },
+     {
+      "rel": "about",
+      "href": "https://www.sciencebase.gov/catalog/item/61aa537dd34eb622f699df81",
+      "type": "text/html",
+      "title": "USGS Combined Wildland Fire Datasets"
+     }
+    ]
+   }
+  },
+  {
+   "id": "sea-level-rise",
+   "prefixes": [
+    "s3://public-hazard/sea-level-rise/hex"
+   ],
+   "stac": {
+    "id": "sea-level-rise",
+    "title": "Sea Level Rise Inundation — NOAA (National, 5 ft)",
+    "license": "public-domain",
+    "providers": [
+     {
+      "name": "NOAA Office for Coastal Management",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://coast.noaa.gov/slrdata/"
+     },
+     {
+      "name": "NRP / boettiger-lab",
+      "roles": [
+       "processor",
+       "host"
+      ]
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-hazard/sea-level-rise/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "about",
+      "href": "https://coast.noaa.gov/slr/",
+      "type": "text/html"
+     }
+    ]
+   }
+  },
+  {
+   "id": "mid-century-habitat-climate-exposure",
+   "prefixes": [
+    "s3://public-hazard/mid-century-habitat-climate-exposure/miroc/hex",
+    "s3://public-hazard/mid-century-habitat-climate-exposure/cnrm/hex"
+   ],
+   "stac": {
+    "id": "mid-century-habitat-climate-exposure",
+    "title": "Mid-Century Habitat Climate Exposure (Thorne et al. 2016)",
+    "license": "CC-BY-4.0",
+    "providers": [
+     {
+      "name": "Thorne et al. / UC Davis",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://www.pnas.org/doi/10.1073/pnas.2310074121"
+     },
+     {
+      "name": "California Department of Fish and Wildlife",
+      "roles": [
+       "funder"
+      ],
+      "url": "https://wildlife.ca.gov/"
+     },
+     {
+      "name": "NRP / boettiger-lab",
+      "roles": [
+       "processor",
+       "host"
+      ]
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-hazard/mid-century-habitat-climate-exposure/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1073/pnas.2310074121"
+     },
+     {
+      "rel": "license",
+      "href": "https://creativecommons.org/licenses/by/4.0/",
+      "type": "text/html",
+      "title": "CC BY 4.0"
+     },
+     {
+      "rel": "about",
+      "href": "https://wildlife.ca.gov/Data/BIOS/Citing-BIOS",
+      "title": "BIOS citation standard (attribution)",
+      "type": "text/html"
+     }
+    ]
+   }
+  }
+ ]
+}

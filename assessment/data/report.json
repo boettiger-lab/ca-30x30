@@ -1,0 +1,879 @@
+{
+ "source": "California Biodiversity Network (2026). California's 30x30 Initiative in 2025: A Biodiversity Assessment of the State's 30x30 Conservation Areas. Final report, 2026-08-05.",
+ "url": "https://cabiodiversitynetwork.org/wp-content/uploads/2026/08/CBN-Biodiversity-Assessment-2025-Final-Report.pdf",
+ "note": "Transcribed from the published PDF (Tables 3-13 are raster images). pct is the proportional estimate as printed; lower/upper the printed uncertainty range; need the table cell colour; key the Key Feature outline; pathway_green the green (GAP 3-4) share of the pathway pie, measured from the image to the nearest 0.05.",
+ "land": {
+  "frac_gap12": 0.261,
+  "frac_gap34": 0.255,
+  "frac_none": 0.484
+ },
+ "network": {
+  "ecoregion": {
+   "Mojave Desert": 0.279,
+   "Sierra Nevada": 0.175,
+   "Southern California Mountains and Valleys": 0.094,
+   "Southeastern Great Basin": 0.075,
+   "Sonoran Desert": 0.06
+  },
+  "habitat": {
+   "cwhr13:41": 0.39,
+   "cwhr13:31": 0.15,
+   "cwhr13:70": 0.13
+  },
+  "climate_stressed": 0.32,
+  "sea_level_rise": 0.005,
+  "burned_past_decade": 0.14
+ },
+ "features": {
+  "cwhr13:52": {
+   "table": 3,
+   "label": "Hardwood Woodland",
+   "pct": 14,
+   "lower": 13.4,
+   "upper": 14,
+   "need": "under",
+   "key": false,
+   "pathway_green": 0.15
+  },
+  "cwhr13:60": {
+   "table": 3,
+   "label": "Grassland",
+   "pct": 16,
+   "lower": 15.8,
+   "upper": 16,
+   "need": "under",
+   "key": false,
+   "pathway_green": 0.15
+  },
+  "cwhr13:51": {
+   "table": 3,
+   "label": "Hardwood Forest",
+   "pct": 22,
+   "lower": 21.5,
+   "upper": 21.9,
+   "need": "slightly_under",
+   "key": false,
+   "pathway_green": 0.5
+  },
+  "cwhr13:31": {
+   "table": 3,
+   "label": "Conifer Forest",
+   "pct": 24,
+   "lower": 24.1,
+   "upper": 24.2,
+   "need": "slightly_under",
+   "key": false,
+   "pathway_green": 0.55
+  },
+  "cwhr13:70": {
+   "table": 3,
+   "label": "Shrub",
+   "pct": 28,
+   "lower": 27,
+   "upper": 28,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.55
+  },
+  "cwhr13:32": {
+   "table": 3,
+   "label": "Conifer Woodland",
+   "pct": 33,
+   "lower": 33.2,
+   "upper": 33.3,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.7
+  },
+  "cwhr13:41": {
+   "table": 3,
+   "label": "Desert Shrub",
+   "pct": 48,
+   "lower": 48.2,
+   "upper": 48.3,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.45
+  },
+  "cwhr13:42": {
+   "table": 3,
+   "label": "Desert Woodland",
+   "pct": 57,
+   "lower": 56.6,
+   "upper": 56.6,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.45
+  },
+  "cwhr:20": {
+   "table": 4,
+   "label": "Eastside Pine",
+   "pct": 8.5,
+   "lower": 8.4,
+   "upper": 8.5,
+   "need": "under",
+   "key": false,
+   "pathway_green": 0.7
+  },
+  "cwhr:42": {
+   "table": 4,
+   "label": "Ponderosa Pine",
+   "pct": 9.9,
+   "lower": 9.9,
+   "upper": 9.9,
+   "need": "under",
+   "key": false,
+   "pathway_green": 0.6
+  },
+  "cwhr:35": {
+   "table": 4,
+   "label": "Montane Hardwood-Conifer",
+   "pct": 15.4,
+   "lower": 15.4,
+   "upper": 15.6,
+   "need": "under",
+   "key": false,
+   "pathway_green": 0.35
+  },
+  "cwhr:27": {
+   "table": 4,
+   "label": "Klamath Mixed Conifer",
+   "pct": 16.8,
+   "lower": 16.8,
+   "upper": 16.8,
+   "need": "under",
+   "key": false,
+   "pathway_green": 0.7
+  },
+  "cwhr:14": {
+   "table": 4,
+   "label": "Douglas Fir",
+   "pct": 16.8,
+   "lower": 16.7,
+   "upper": 16.8,
+   "need": "under",
+   "key": false,
+   "pathway_green": 0.55
+  },
+  "cwhr:26": {
+   "table": 4,
+   "label": "Juniper",
+   "pct": 17.2,
+   "lower": 17.2,
+   "upper": 17.2,
+   "need": "under",
+   "key": false,
+   "pathway_green": 0.65
+  },
+  "cwhr:51": {
+   "table": 4,
+   "label": "Sierran Mixed Conifer",
+   "pct": 20.2,
+   "lower": 20.1,
+   "upper": 20.3,
+   "need": "slightly_under",
+   "key": false,
+   "pathway_green": 0.65
+  },
+  "cwhr:44": {
+   "table": 4,
+   "label": "Redwood",
+   "pct": 23.9,
+   "lower": 24.1,
+   "upper": 24.1,
+   "need": "slightly_under",
+   "key": false,
+   "pathway_green": 0.1
+  },
+  "cwhr:58": {
+   "table": 4,
+   "label": "White Fir",
+   "pct": 26.3,
+   "lower": 26.2,
+   "upper": 26.2,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.8
+  },
+  "cwhr:11": {
+   "table": 4,
+   "label": "Closed-Cone Pine-Cypress",
+   "pct": 30.1,
+   "lower": 30.1,
+   "upper": 30.4,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.45
+  },
+  "cwhr:24": {
+   "table": 4,
+   "label": "Jeffrey Pine",
+   "pct": 36.1,
+   "lower": 36,
+   "upper": 36.1,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.75
+  },
+  "cwhr:45": {
+   "table": 4,
+   "label": "Red Fir",
+   "pct": 47.6,
+   "lower": 47.6,
+   "upper": 47.6,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.85
+  },
+  "cwhr:40": {
+   "table": 4,
+   "label": "Pinyon-Juniper",
+   "pct": 52.6,
+   "lower": 52.6,
+   "upper": 52.7,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.8
+  },
+  "cwhr:29": {
+   "table": 4,
+   "label": "Lodgepole Pine",
+   "pct": 71.1,
+   "lower": 71.1,
+   "upper": 71.1,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.9
+  },
+  "cwhr:48": {
+   "table": 4,
+   "label": "Subalpine Conifer",
+   "pct": 85.8,
+   "lower": 85.7,
+   "upper": 85.8,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.95
+  },
+  "cwhr:8": {
+   "table": 5,
+   "label": "Blue Oak-Foothill Pine",
+   "pct": 9.4,
+   "lower": 9.3,
+   "upper": 9.7,
+   "need": "under",
+   "key": false,
+   "pathway_green": 0.15
+  },
+  "cwhr:9": {
+   "table": 5,
+   "label": "Blue Oak Woodland",
+   "pct": 10.3,
+   "lower": 10.2,
+   "upper": 10.6,
+   "need": "under",
+   "key": false,
+   "pathway_green": 0.1
+  },
+  "cwhr:55": {
+   "table": 5,
+   "label": "Valley Oak Woodland",
+   "pct": 10.5,
+   "lower": 10.3,
+   "upper": 10.9,
+   "need": "under",
+   "key": false,
+   "pathway_green": 0.05
+  },
+  "cwhr:77": {
+   "table": 5,
+   "label": "Eucalyptus",
+   "pct": 11.4,
+   "lower": 10.8,
+   "upper": 11.8,
+   "need": "under",
+   "key": false,
+   "pathway_green": 0.15
+  },
+  "cwhr:36": {
+   "table": 5,
+   "label": "Montane Hardwood",
+   "pct": 20.4,
+   "lower": 20.2,
+   "upper": 20.7,
+   "need": "slightly_under",
+   "key": false,
+   "pathway_green": 0.5
+  },
+  "cwhr:56": {
+   "table": 5,
+   "label": "Valley Foothill Riparian",
+   "pct": 20.7,
+   "lower": 20.5,
+   "upper": 21.4,
+   "need": "slightly_under",
+   "key": false,
+   "pathway_green": 0.15
+  },
+  "cwhr:10": {
+   "table": 5,
+   "label": "Coastal Oak Woodland",
+   "pct": 22,
+   "lower": 21.8,
+   "upper": 22.7,
+   "need": "slightly_under",
+   "key": false,
+   "pathway_green": 0.15
+  },
+  "cwhr:5": {
+   "table": 5,
+   "label": "Aspen",
+   "pct": 29.7,
+   "lower": 29.7,
+   "upper": 29.7,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.9
+  },
+  "cwhr:37": {
+   "table": 5,
+   "label": "Montane Riparian",
+   "pct": 43.8,
+   "lower": 43.4,
+   "upper": 44.1,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.3
+  },
+  "cwhr:7": {
+   "table": 6,
+   "label": "Bitterbrush",
+   "pct": 13.6,
+   "lower": 13.4,
+   "upper": 13.7,
+   "need": "under",
+   "key": false,
+   "pathway_green": 0.8
+  },
+  "cwhr:30": {
+   "table": 6,
+   "label": "Low Sage",
+   "pct": 14.2,
+   "lower": 14.1,
+   "upper": 14.3,
+   "need": "under",
+   "key": false,
+   "pathway_green": 0.85
+  },
+  "cwhr:3": {
+   "table": 6,
+   "label": "Annual Grassland",
+   "pct": 15.2,
+   "lower": 15.1,
+   "upper": 15.4,
+   "need": "under",
+   "key": false,
+   "pathway_green": 0.15
+  },
+  "cwhr:50": {
+   "table": 6,
+   "label": "Sagebrush",
+   "pct": 22.8,
+   "lower": 22.5,
+   "upper": 22.9,
+   "need": "slightly_under",
+   "key": false,
+   "pathway_green": 0.65
+  },
+  "cwhr:12": {
+   "table": 6,
+   "label": "Chamise-Redshank Chaparral",
+   "pct": 26.6,
+   "lower": 25.3,
+   "upper": 29.4,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.4
+  },
+  "cwhr:13": {
+   "table": 6,
+   "label": "Coastal Scrub",
+   "pct": 26.6,
+   "lower": 26.1,
+   "upper": 27.6,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.2
+  },
+  "cwhr:39": {
+   "table": 6,
+   "label": "Perennial Grassland",
+   "pct": 30.8,
+   "lower": 30.8,
+   "upper": 30.9,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.6
+  },
+  "cwhr:32": {
+   "table": 6,
+   "label": "Mixed Chaparral",
+   "pct": 31.1,
+   "lower": 29.7,
+   "upper": 31.7,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.5
+  },
+  "cwhr:34": {
+   "table": 6,
+   "label": "Montane Chaparral",
+   "pct": 32.1,
+   "lower": 32.1,
+   "upper": 32.2,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.75
+  },
+  "cwhr:1": {
+   "table": 6,
+   "label": "Alpine-Dwarf Shrub",
+   "pct": 80.1,
+   "lower": 80.1,
+   "upper": 80.1,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.95
+  },
+  "cwhr:15": {
+   "table": 7,
+   "label": "Desert Riparian",
+   "pct": 16.5,
+   "lower": 16.4,
+   "upper": 16.4,
+   "need": "under",
+   "key": false,
+   "pathway_green": 0.45
+  },
+  "cwhr:4": {
+   "table": 7,
+   "label": "Alkali Desert Scrub",
+   "pct": 19.7,
+   "lower": 19.7,
+   "upper": 19.7,
+   "need": "under",
+   "key": false,
+   "pathway_green": 0.4
+  },
+  "cwhr:18": {
+   "table": 7,
+   "label": "Desert Succulent Shrub",
+   "pct": 37.2,
+   "lower": 37.2,
+   "upper": 37.2,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.55
+  },
+  "cwhr:41": {
+   "table": 7,
+   "label": "Palm Oasis",
+   "pct": 49.8,
+   "lower": 48,
+   "upper": 48,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.35
+  },
+  "cwhr:17": {
+   "table": 7,
+   "label": "Desert Scrub",
+   "pct": 50.1,
+   "lower": 50.1,
+   "upper": 50.1,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.45
+  },
+  "cwhr:25": {
+   "table": 7,
+   "label": "Joshua Tree",
+   "pct": 63.1,
+   "lower": 63.1,
+   "upper": 63.1,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.45
+  },
+  "cwhr:19": {
+   "table": 7,
+   "label": "Desert Wash",
+   "pct": 65.4,
+   "lower": 65.4,
+   "upper": 65.5,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.45
+  },
+  "cwhr:43": {
+   "table": 8,
+   "label": "Riverine",
+   "pct": 17.6,
+   "lower": 17.7,
+   "upper": 17.8,
+   "need": "under",
+   "key": false,
+   "pathway_green": 0.1
+  },
+  "cwhr:28": {
+   "table": 8,
+   "label": "Lacustrine",
+   "pct": 23.7,
+   "lower": 23.6,
+   "upper": 23.8,
+   "need": "slightly_under",
+   "key": false,
+   "pathway_green": 0.5
+  },
+  "cwhr:21": {
+   "table": 8,
+   "label": "Estuarine",
+   "pct": 28,
+   "lower": 27.6,
+   "upper": 28.3,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.05
+  },
+  "cwhr:49": {
+   "table": 8,
+   "label": "Saline Emergent Wetland",
+   "pct": 37.7,
+   "lower": 37.5,
+   "upper": 37.9,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.3
+  },
+  "cwhr:59": {
+   "table": 8,
+   "label": "Wet Meadow",
+   "pct": 42.7,
+   "lower": 42.6,
+   "upper": 42.9,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.35
+  },
+  "cwhr:22": {
+   "table": 8,
+   "label": "Fresh Emergent Wetland",
+   "pct": 52,
+   "lower": 51.9,
+   "upper": 52.2,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.3
+  },
+  "ace:BioRankSW": {
+   "table": 9,
+   "label": "Top Ranked Biodversity Statewide",
+   "pct": 21,
+   "lower": 20.7,
+   "upper": 21.4,
+   "need": "not_applicable",
+   "key": false,
+   "pathway_green": 0.35
+  },
+  "ace:BioRankEco": {
+   "table": 9,
+   "label": "Top Ranked Biodversity per Ecoregion",
+   "pct": 23,
+   "lower": 22.5,
+   "upper": 22.7,
+   "need": "not_applicable",
+   "key": false,
+   "pathway_green": 0.35
+  },
+  "ace:RarRankSW": {
+   "table": 9,
+   "label": "Top Ranked Rare Biodversity Statewide",
+   "pct": 23,
+   "lower": 23.1,
+   "upper": 23.8,
+   "need": "not_applicable",
+   "key": false,
+   "pathway_green": 0.35
+  },
+  "ace:RarRankEco": {
+   "table": 9,
+   "label": "Top Ranked Rare Biodversity per Ecoregion",
+   "pct": 25,
+   "lower": 24.7,
+   "upper": 25.1,
+   "need": "not_applicable",
+   "key": false,
+   "pathway_green": 0.4
+  },
+  "ace:NtvRept": {
+   "table": 10,
+   "label": "Reptile Richness",
+   "pct": 41,
+   "lower": 40.6,
+   "upper": 41,
+   "need": "not_applicable",
+   "key": false,
+   "pathway_green": 0.4
+  },
+  "ace:NtvAmph": {
+   "table": 10,
+   "label": "Amphibian Richness",
+   "pct": 19,
+   "lower": 19.1,
+   "upper": 19.7,
+   "need": "not_applicable",
+   "key": false,
+   "pathway_green": 0.3
+  },
+  "ace:NtvMamm": {
+   "table": 10,
+   "label": "Mammal Richness",
+   "pct": 22,
+   "lower": 22.2,
+   "upper": 22.3,
+   "need": "not_applicable",
+   "key": false,
+   "pathway_green": 0.6
+  },
+  "ace:NtvBird": {
+   "table": 10,
+   "label": "Bird Richness",
+   "pct": 12,
+   "lower": 11.7,
+   "upper": 12,
+   "need": "not_applicable",
+   "key": false,
+   "pathway_green": 0.15
+  },
+  "ace:RarRept": {
+   "table": 10,
+   "label": "Rare Reptile Richness",
+   "pct": 22,
+   "lower": 21.7,
+   "upper": 22.8,
+   "need": "not_applicable",
+   "key": false,
+   "pathway_green": 0.3
+  },
+  "ace:RarAmph": {
+   "table": 10,
+   "label": "Rare Amphibian Richness",
+   "pct": 26,
+   "lower": 25.9,
+   "upper": 26.5,
+   "need": "not_applicable",
+   "key": false,
+   "pathway_green": 0.35
+  },
+  "ace:RarMamm": {
+   "table": 10,
+   "label": "Rare Mammal Richness",
+   "pct": 23,
+   "lower": 23.1,
+   "upper": 23.5,
+   "need": "not_applicable",
+   "key": false,
+   "pathway_green": 0.3
+  },
+  "ace:RarBird": {
+   "table": 10,
+   "label": "Rare Bird Richness",
+   "pct": 16,
+   "lower": 15.7,
+   "upper": 16.5,
+   "need": "not_applicable",
+   "key": false,
+   "pathway_green": 0.35
+  },
+  "ace:ReptEndem": {
+   "table": 10,
+   "label": "Endemic Reptile Richness",
+   "pct": 19,
+   "lower": 18,
+   "upper": 19.7,
+   "need": "not_applicable",
+   "key": false,
+   "pathway_green": 0.2
+  },
+  "ace:AmphEndem": {
+   "table": 10,
+   "label": "Endemic Amphibian Richness",
+   "pct": 27,
+   "lower": 27.1,
+   "upper": 27.9,
+   "need": "not_applicable",
+   "key": false,
+   "pathway_green": 0.3
+  },
+  "ace:MammEndem": {
+   "table": 10,
+   "label": "Endemic Mammal Richness",
+   "pct": 20,
+   "lower": 20.4,
+   "upper": 20.6,
+   "need": "not_applicable",
+   "key": false,
+   "pathway_green": 0.2
+  },
+  "ace:BirdEndem": {
+   "table": 10,
+   "label": "Endemic Bird Richness",
+   "pct": 24,
+   "lower": 23.4,
+   "upper": 25.3,
+   "need": "not_applicable",
+   "key": false,
+   "pathway_green": 0.25
+  },
+  "kling:plant": {
+   "table": 11,
+   "label": "Plant Richness",
+   "pct": 41,
+   "lower": 40.2,
+   "upper": 40.9,
+   "need": "not_applicable",
+   "key": false,
+   "pathway_green": 0.6
+  },
+  "kling:endp": {
+   "table": 11,
+   "label": "Endemic Plant Rarity Weighted Richness",
+   "pct": 34,
+   "lower": 33.4,
+   "upper": 34.1,
+   "need": "not_applicable",
+   "key": false,
+   "pathway_green": 0.35
+  },
+  "conn:chn": {
+   "table": 12,
+   "label": "Channelized Connectivity",
+   "pct": 23,
+   "lower": 22.4,
+   "upper": 23.3,
+   "need": "not_applicable",
+   "key": true,
+   "pathway_green": 0.3
+  },
+  "conn:int": {
+   "table": 12,
+   "label": "Intensified Connectivity",
+   "pct": 22,
+   "lower": 21.7,
+   "upper": 22.5,
+   "need": "slightly_under",
+   "key": false,
+   "pathway_green": 0.45
+  },
+  "conn:diff": {
+   "table": 12,
+   "label": "Diffuse Connectivity",
+   "pct": 37,
+   "lower": 36.7,
+   "upper": 37,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.5
+  },
+  "conn:clink": {
+   "table": 12,
+   "label": "Climate Linkage",
+   "pct": 42,
+   "lower": 41.3,
+   "upper": 42.1,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.55
+  },
+  "link:scml": {
+   "table": 12,
+   "label": "South Coast Missing Linkages",
+   "pct": 27,
+   "lower": 26.4,
+   "upper": 29.1,
+   "need": "not_applicable",
+   "key": true,
+   "pathway_green": 0.3
+  },
+  "fw:wetlands": {
+   "table": 13,
+   "label": "Remaining Wetlands",
+   "pct": 32,
+   "lower": 32.1,
+   "upper": 32.4,
+   "need": "not_applicable",
+   "key": true,
+   "pathway_green": 0.3
+  },
+  "fw:gde": {
+   "table": 13,
+   "label": "Groundwater Dependent Ecosystems",
+   "pct": 33,
+   "lower": 33.4,
+   "upper": 33.6,
+   "need": "not_applicable",
+   "key": true,
+   "pathway_green": 0.4
+  },
+  "fw:rivers": {
+   "table": 13,
+   "label": "Rivers (order 6+)",
+   "pct": 22,
+   "lower": 21.7,
+   "upper": 21.9,
+   "need": "slightly_under",
+   "key": false,
+   "pathway_green": 0.2
+  },
+  "fw:streams": {
+   "table": 13,
+   "label": "Streams (3-5)",
+   "pct": 24,
+   "lower": 23.8,
+   "upper": 24.4,
+   "need": "slightly_under",
+   "key": false,
+   "pathway_green": 0.3
+  },
+  "fw:headwaters": {
+   "table": 13,
+   "label": "Headwaters (order 1-2)",
+   "pct": 27,
+   "lower": 26.8,
+   "upper": 27.5,
+   "need": "on_par",
+   "key": false,
+   "pathway_green": 0.35
+  },
+  "fw:floodplain": {
+   "table": 13,
+   "label": "100yr Floodplain",
+   "pct": 14,
+   "lower": 14.2,
+   "upper": 14.4,
+   "need": "under",
+   "key": false,
+   "pathway_green": 0.15
+  },
+  "fw:fwrich": {
+   "table": 13,
+   "label": "Watersheds with top 20% freshwater species richness",
+   "pct": 22,
+   "lower": 21.4,
+   "upper": 22,
+   "need": "not_applicable",
+   "key": false,
+   "pathway_green": 0.45
+  }
+ }
+}

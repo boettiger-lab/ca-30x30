@@ -1,0 +1,28 @@
+{
+    "label": "Habitats",
+    "color": "#8a6d1f",
+    "blurb": "Major and finer habitat types (CAL FIRE FVEG 2022, CWHR classes): how much of each is in 30x30, and where the rest lies (report Tables 3–8, Figure 7).",
+    "queries": {
+        "cwhr13": { "file": "cwhr13.sql" },
+        "cwhr": { "file": "cwhr.sql" }
+    },
+    "charts": [
+        {
+            "type": "representation", "query": "cwhr13", "title": "Major habitats",
+            "subtitle": "Share of each habitat's extent in this area by conservation status (report Table 3)",
+            "where": { "natural": true }, "wide": true
+        },
+        {
+            "query": "cwhr13", "title": "What the 30x30 network is made of",
+            "subtitle": "Each major habitat's share of this area's 30x30 acres (report Figure 7)",
+            "category": "label", "format": "pct", "sort": "desc",
+            "series": [ { "field": "share_of_network", "label": "Share of 30x30 network", "color": "#1b6e3a" } ]
+        },
+        {
+            "type": "representation", "query": "cwhr", "title": "Finer habitat types",
+            "subtitle": "CWHR habitat types, grouped as in the report's Tables 4–8",
+            "group_field": "grp", "wide": true
+        }
+    ],
+    "method": "Habitat extent comes from the fractional resolution-10 H3 version of CAL FIRE's FVEG 2022 vegetation map in CWHR classes, restricted to California's land grid (the source map extends into Nevada). Each cell's habitat area is weighted by the cell's GAP 1–2 and GAP 3–4 shares from the 2025 30x30 Conserved Areas inventory (the report's proportional estimate). Need classes follow the report: under 20% in 30x30 is under-represented, 20% up to California's current level is slightly under-represented, at or above it is on par — always measured against California's level, even for a smaller area. The pathway pie splits the part of each habitat outside 30x30 between other conserved or public land (GAP 3–4) and non-conserved land. Agricultural, urban, barren and water classes are omitted from the tables, as in the report, but count in the network composition."
+}
