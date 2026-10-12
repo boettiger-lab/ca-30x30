@@ -1,0 +1,110 @@
+{
+    "title": "30x30 Biodiversity Assessment Explorer",
+    "mcp_url": "https://duckdb-mcp.nrp-nautilus.io/mcp",
+    "view": { "center": [-119.4, 37.2], "zoom": 5.4 },
+    "project_url": "https://github.com/boettiger-lab/ca-30x30/tree/main/assessment",
+
+    "overview": "overview",
+    "themes": ["habitat", "richness", "connectivity", "freshwater", "climate"],
+
+    "land_cells": "SELECT DISTINCT e.h0, e.h8, e.h9, e.h10 FROM read_parquet('s3://public-ca30x30/ecoregion/hex/h0=*/data_0.parquet') e JOIN ({{AOI10}}) a ON e.h0 = a.h0 AND e.h10 = a.h10",
+    "land": "SELECT c.h0, c.h8, c.h9, c.h10, h3_cell_area(c.h10, 'km^2') AS area_km2, COALESCE(w.w1 + w.w2, 0) AS w12, COALESCE(w.w3 + w.w4, 0) AS w34 FROM ({{CELLS}}) c LEFT JOIN read_parquet('s3://public-ca30x30/conserved-areas-terrestrial-2025/hex-weights/h0=*/data_0.parquet') w ON w.h0 = c.h0 AND w.h10 = c.h10",
+
+    "statewide": {
+        "aoi": "SELECT DISTINCT h0, h8 FROM read_parquet('s3://public-ca30x30/ecoregion/hex-res8/h0=*/data_0.parquet')",
+        "aoi10": "SELECT DISTINCT h0, h8, h10 FROM read_parquet('s3://public-ca30x30/ecoregion/hex/h0=*/data_0.parquet')",
+        "cells": "SELECT DISTINCT h0, h8, h9, h10 FROM read_parquet('s3://public-ca30x30/ecoregion/hex/h0=*/data_0.parquet')"
+    },
+
+    "conserved": {
+        "url": "https://s3-west.nrp-nautilus.io/public-ca30x30/conserved-areas-terrestrial-2025.pmtiles",
+        "source_layer": "conserved-areas-terrestrial-2025"
+    },
+
+    "jurisdictions": [
+        {
+            "id": "ecoregion",
+            "label": "Ecoregions",
+            "peer_label": "California ecoregions",
+            "singular": "Ecoregion",
+            "description": "The 20 ecoregions used by California's 30x30 initiative and the 2025 Biodiversity Assessment",
+            "aoi": "SELECT DISTINCT h0, h8 FROM read_parquet('s3://public-ca30x30/ecoregion/hex/h0=*/data_0.parquet') WHERE CA_Ecoregi = '{{ID}}'",
+            "aoi10": "SELECT DISTINCT h0, h8, h10 FROM read_parquet('s3://public-ca30x30/ecoregion/hex/h0=*/data_0.parquet') WHERE CA_Ecoregi = '{{ID}}'",
+            "list": "SELECT CA_Ecoregi AS id, CA_Ecoregi AS name, MIN(ST_XMin(geom)) AS xmin, MIN(ST_YMin(geom)) AS ymin, MAX(ST_XMax(geom)) AS xmax, MAX(ST_YMax(geom)) AS ymax FROM read_parquet('s3://public-ca30x30/ecoregion.parquet') GROUP BY CA_Ecoregi ORDER BY CA_Ecoregi",
+            "boundary": {
+                "url": "https://s3-west.nrp-nautilus.io/public-ca30x30/ecoregion.pmtiles",
+                "source_layer": "ecoregion",
+                "id_prop": "CA_Ecoregi",
+                "name_prop": "CA_Ecoregi"
+            }
+        },
+        {
+            "id": "county",
+            "label": "Counties",
+            "peer_label": "California counties",
+            "singular": "County",
+            "description": "California's 58 counties (2024 Census)",
+            "aoi": "SELECT DISTINCT h0, h8 FROM read_parquet('s3://public-census/census-2024/county/hex/h0=*/data_0.parquet') WHERE STATEFP = '06' AND GEOID = '{{ID}}'",
+            "aoi10": "SELECT DISTINCT h0, h8, h10 FROM read_parquet('s3://public-census/census-2024/tract/hex/h0=*/data_0.parquet') WHERE STATEFP = '06' AND GEOID LIKE '{{ID}}%'",
+            "list": "SELECT GEOID AS id, NAMELSAD AS name, ST_XMin(geom) AS xmin, ST_YMin(geom) AS ymin, ST_XMax(geom) AS xmax, ST_YMax(geom) AS ymax FROM read_parquet('s3://public-census/census-2024/county.parquet') WHERE STATEFP = '06' ORDER BY NAME",
+            "boundary": {
+                "url": "https://s3-west.nrp-nautilus.io/public-census/census-2024/county.pmtiles",
+                "source_layer": "county",
+                "id_prop": "GEOID",
+                "name_prop": "NAMELSAD",
+                "filter": ["==", ["get", "STATEFP"], "06"]
+            }
+        },
+        {
+            "id": "cd",
+            "label": "Congressional",
+            "peer_label": "California congressional districts",
+            "singular": "Congressional district",
+            "description": "U.S. House districts (119th Congress)",
+            "aoi": "SELECT DISTINCT h0, h8 FROM read_parquet('s3://public-census/census-2024/cd/hex/h0=*/data_0.parquet') WHERE STATEFP = '06' AND GEOID = '{{ID}}'",
+            "aoi10": "SELECT DISTINCT h0, h8, h10 FROM read_parquet('s3://public-census/census-2024/cd/hex/h0=*/data_0.parquet') WHERE STATEFP = '06' AND GEOID = '{{ID}}'",
+            "list": "SELECT GEOID AS id, NAMELSAD AS name, ST_XMin(geom) AS xmin, ST_YMin(geom) AS ymin, ST_XMax(geom) AS xmax, ST_YMax(geom) AS ymax FROM read_parquet('s3://public-census/census-2024/cd.parquet') WHERE STATEFP = '06' ORDER BY GEOID",
+            "boundary": {
+                "url": "https://s3-west.nrp-nautilus.io/public-census/census-2024/cd.pmtiles",
+                "source_layer": "cd",
+                "id_prop": "GEOID",
+                "name_prop": "NAMELSAD",
+                "filter": ["==", ["get", "STATEFP"], "06"]
+            }
+        },
+        {
+            "id": "sldu",
+            "label": "State Senate",
+            "peer_label": "State Senate districts",
+            "singular": "Senate district",
+            "description": "California State Senate districts (upper chamber)",
+            "aoi": "SELECT DISTINCT h0, h8 FROM read_parquet('s3://public-census/census-2025/sldu/hex/h0=*/data_0.parquet') WHERE STATEFP = '06' AND GEOID = '{{ID}}'",
+            "aoi10": "SELECT DISTINCT h0, h8, h10 FROM read_parquet('s3://public-census/census-2025/sldu/hex/h0=*/data_0.parquet') WHERE STATEFP = '06' AND GEOID = '{{ID}}'",
+            "list": "SELECT GEOID AS id, NAMELSAD AS name, ST_XMin(geom) AS xmin, ST_YMin(geom) AS ymin, ST_XMax(geom) AS xmax, ST_YMax(geom) AS ymax FROM read_parquet('s3://public-census/census-2025/sldu.parquet') WHERE STATEFP = '06' ORDER BY GEOID",
+            "boundary": {
+                "url": "https://s3-west.nrp-nautilus.io/public-census/census-2025/sldu.pmtiles",
+                "source_layer": "sldu",
+                "id_prop": "GEOID",
+                "name_prop": "NAMELSAD",
+                "filter": ["==", ["get", "STATEFP"], "06"]
+            }
+        },
+        {
+            "id": "sldl",
+            "label": "State Assembly",
+            "peer_label": "State Assembly districts",
+            "singular": "Assembly district",
+            "description": "California State Assembly districts (lower chamber)",
+            "aoi": "SELECT DISTINCT h0, h8 FROM read_parquet('s3://public-census/census-2025/sldl/hex/h0=*/data_0.parquet') WHERE STATEFP = '06' AND GEOID = '{{ID}}'",
+            "aoi10": "SELECT DISTINCT h0, h8, h10 FROM read_parquet('s3://public-census/census-2025/sldl/hex/h0=*/data_0.parquet') WHERE STATEFP = '06' AND GEOID = '{{ID}}'",
+            "list": "SELECT GEOID AS id, NAMELSAD AS name, ST_XMin(geom) AS xmin, ST_YMin(geom) AS ymin, ST_XMax(geom) AS xmax, ST_YMax(geom) AS ymax FROM read_parquet('s3://public-census/census-2025/sldl.parquet') WHERE STATEFP = '06' ORDER BY GEOID",
+            "boundary": {
+                "url": "https://s3-west.nrp-nautilus.io/public-census/census-2025/sldl.pmtiles",
+                "source_layer": "sldl",
+                "id_prop": "GEOID",
+                "name_prop": "NAMELSAD",
+                "filter": ["==", ["get", "STATEFP"], "06"]
+            }
+        }
+    ]
+}

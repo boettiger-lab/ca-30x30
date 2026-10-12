@@ -1,0 +1,131 @@
+{
+    "label": "Land characterization",
+    "color": "#1b6e3a",
+    "blurb": "How much of the area's land is in 30x30 Conservation Areas, other conserved or public land, or neither — and how the 30x30 network is spread across ecoregions.",
+    "queries": {
+        "protection": {
+            "file": "protection.sql"
+        },
+        "ecoregions": {
+            "file": "ecoregions.sql"
+        }
+    },
+    "headlines": [
+        {
+            "query": "protection",
+            "field": "frac_gap12",
+            "label": "In 30x30 Conservation Areas",
+            "format": "pct",
+            "report": "land.frac_gap12",
+            "detail_field": "gap12_acres",
+            "detail_format": "acres",
+            "detail_template": "{} in GAP 1–2"
+        },
+        {
+            "query": "protection",
+            "field": "frac_gap34",
+            "label": "Other conserved or public (GAP 3–4)",
+            "format": "pct",
+            "report": "land.frac_gap34",
+            "detail_field": "gap34_acres",
+            "detail_format": "acres",
+            "detail_template": "{}"
+        },
+        {
+            "query": "protection",
+            "field": "frac_none",
+            "label": "Non-conserved",
+            "format": "pct",
+            "report": "land.frac_none",
+            "detail_field": "none_acres",
+            "detail_format": "acres",
+            "detail_template": "{}"
+        },
+        {
+            "query": "protection",
+            "field": "land_acres",
+            "label": "Land area",
+            "format": "acres",
+            "compare": false
+        }
+    ],
+    "charts": [
+        {
+            "query": "protection",
+            "title": "Land by conservation status",
+            "subtitle": "Share of land area. Only GAP 1–2 counts toward 30x30; GAP 3–4 is other conserved or public land.",
+            "statewide_row": true,
+            "report_row": "land",
+            "category": "__label",
+            "stacked": true,
+            "format": "pct",
+            "domain_max": 1,
+            "show_total": false,
+            "wide": true,
+            "series": [
+                {
+                    "field": "frac_gap12",
+                    "label": "30x30 (GAP 1–2)",
+                    "color": "#1b6e3a"
+                },
+                {
+                    "field": "frac_gap34",
+                    "label": "Other conserved or public (GAP 3–4)",
+                    "color": "#7dbb63"
+                },
+                {
+                    "field": "frac_none",
+                    "label": "Non-conserved",
+                    "color": "#ece3b5"
+                }
+            ]
+        },
+        {
+            "query": "ecoregions",
+            "title": "Conservation status by ecoregion",
+            "subtitle": "Share of each ecoregion's land in this area (report Figure 5)",
+            "category": "label",
+            "stacked": true,
+            "format": "pct",
+            "domain_max": 1,
+            "show_total": false,
+            "label_width": 260,
+            "series": [
+                {
+                    "field": "frac_gap12",
+                    "label": "30x30 (GAP 1–2)",
+                    "color": "#1b6e3a"
+                },
+                {
+                    "field": "frac_gap34",
+                    "label": "GAP 3–4",
+                    "color": "#7dbb63"
+                },
+                {
+                    "field": "frac_none",
+                    "label": "Non-conserved",
+                    "color": "#ece3b5"
+                }
+            ],
+            "wide": true
+        },
+        {
+            "query": "ecoregions",
+            "title": "Where the 30x30 network is",
+            "subtitle": "Each ecoregion's share of this area's 30x30 acres (report Figure 6)",
+            "category": "label",
+            "format": "pct",
+            "sort": "desc",
+            "label_width": 260,
+            "series": [
+                {
+                    "field": "share_of_network",
+                    "label": "Share of 30x30 network",
+                    "color": "#1b6e3a"
+                }
+            ],
+            "wide": true
+        }
+    ],
+    "method": "Land area is California's 30x30 ecoregion land grid (resolution-10 H3 cells, about 3.7 acres each), the same definition of California the 30x30 program uses; a region's land is the grid cells inside it. Each cell's conservation status is its share in GAP 1–2 and GAP 3–4 from the 2025 30x30 Conserved Areas inventory; because a conserved-area unit's GAP percentages are not mapped within the unit, the unit's split is applied evenly across it — the report's 'proportional estimate'. Land outside every conserved-area unit is non-conserved. Statewide this reproduces the report's 26.1% / 25.5% / 48.4% to within 0.2 points."
+}

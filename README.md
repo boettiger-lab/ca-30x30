@@ -13,6 +13,12 @@ This app is the interactive companion appendix to the California Biodiversity Ne
 
 DSE is among the report's authors; the app follows its conventions (the same conserved-areas inventory, feature definitions, and representation measure) but computes every figure live from the source data.
 
+## Assessment Explorer (no LLM)
+
+[`assessment/`](assessment/) is a companion map + dashboard that shows the report's analyses for California or any ecoregion, county, district or
+drawn area, using fixed, reviewable SQL instead of an AI agent. Statewide, it reproduces the report's tables (74 of 85 values within half a
+percentage point). **Live:** <https://boettiger-lab.github.io/ca-30x30/assessment/>
+
 ## Repository contents
 
 The map, chat, and agent code live in the [GLEN](https://github.com/boettiger-lab/geo-agent) library (loaded from CDN); this repo only carries the configuration — `index.html`, `layers-input.json`, `system-prompt.md`, and `k8s/`. See [AGENTS.md](AGENTS.md) to configure or deploy, and the [About page](https://ca-30x30.nrp-nautilus.io/docs.html) for data sources.
