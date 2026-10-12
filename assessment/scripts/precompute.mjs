@@ -76,7 +76,7 @@ if (what === 'areas') {
     await mkdir(`${root}/data/areas/${jur.id}`, { recursive: true });
     for (const f of list) {
         if (ids.length && !ids.includes(String(f.id))) continue;
-        const file = `${root}/data/areas/${jur.id}/${encodeURIComponent(f.id)}.json`;
+        const file = `${root}/data/areas/${jur.id}/${f.id}.json`;
         if (!force) { try { await readFile(file); continue; } catch { /* not yet */ } }
         const aoi = jurisdictionAoi(jur, f);
         const out = { generated: null, id: f.id, name: f.name, results: {} };
