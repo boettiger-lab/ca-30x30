@@ -42,6 +42,10 @@ export const NEED = {
     not_applicable: { label: 'Not applicable', cls: 'need-na', note: 'threshold features are not classed' },
 };
 
+/** The report's definition of a Key Feature (Methods, "Representation framework"). */
+export const KEY_FEATURE = 'Key Features are rare (3% of the state or less), historically converted (such as wetlands), or critical ' +
+    'to ecosystem function (such as connectivity linkages and groundwater-dependent ecosystems).';
+
 export function needClass(frac, stateLevel, applies = true) {
     if (!applies || frac == null || !Number.isFinite(frac)) return 'not_applicable';
     if (frac < 0.20) return 'under';
@@ -71,6 +75,13 @@ export function renderRepresentation(container, spec, rows, ctx) {
         (state != null ? `<span><i class="tick state"></i>California in 30x30 (${fmt(state, 'pct')})</span>` : '') +
         (area != null ? `<span><i class="tick area"></i>${escapeHtml(ctx.areaLabel || 'This area')} in 30x30 (${fmt(area, 'pct')})</span>` : '');
     container.appendChild(lg);
+    if (rows.some(r => keys.has(r.feature))) {
+        const kn = document.createElement('div');
+        kn.className = 'key-note';
+        kn.innerHTML = `<span class="key-badge">Key feature</span> ${escapeHtml(KEY_FEATURE)} The report recommends conserving all remaining ` +
+            'extent wherever feasible, so these are not given a need class against the California level.';
+        container.appendChild(kn);
+    }
 
     const groups = new Map();
     for (const r of rows) {
@@ -109,7 +120,7 @@ export function renderRepresentation(container, spec, rows, ctx) {
         const ext = measure === 'miles' ? fmtMiles(r.miles) : fmt(r.acres, 'acres');
 
         tr.innerHTML = `
-            <td class="c-feat">${escapeHtml(r.label)}${isKey ? ' <span class="key-badge" title="Key Feature in the report: historically converted, rare, or critical for ecosystem function — conservation of all remaining extent is recommended">Key feature</span>' : ''}</td>
+            <td class="c-feat">${escapeHtml(r.label)}${isKey ? ` <span class="key-badge" title="${escapeHtml(KEY_FEATURE)} The report recommends conserving all remaining extent.">Key feature</span>` : ''}</td>
             <td class="c-pct"><span class="pct ${N.cls}${isKey ? ' key' : ''}">${f12 == null ? '—' : fmt(f12, 'pct')}</span><span class="need-label">${need === 'not_applicable' ? '' : escapeHtml(N.label)}</span></td>
             <td class="c-bar"><div class="sbar">${STATUS.map(s => `<span class="${s.cls}" style="width:${(100 * Math.max(0, num(r[s.key]) ?? 0)).toFixed(2)}%"></span>`).join('')}
                 ${state != null ? `<i class="tick state" style="left:${(100 * state).toFixed(2)}%"></i>` : ''}
@@ -202,6 +213,8 @@ export const REP_CSS = `
 .need-na { background: #fff; box-shadow: inset 0 0 0 1px rgba(30,40,30,.18); }
 .pct.key { box-shadow: inset 0 0 0 2px #8b1a1a; }
 .need-label { display: block; font-size: 10.5px; color: #77706b; margin-top: 2px; }
+.key-note { font-size: 11.5px; color: #5d5852; margin: 0 0 8px; line-height: 1.45; }
+.key-note .key-badge { margin-left: 0; }
 .key-badge { display: inline-block; font-size: 10px; font-weight: 600; color: #8b1a1a; border: 1px solid #8b1a1a; border-radius: 3px; padding: 0 4px; margin-left: 4px; vertical-align: 1px; white-space: nowrap; }
 .sbar { position: relative; display: flex; gap: 2px; height: 14px; }
 .sbar span { display: block; height: 100%; min-width: 0; }
