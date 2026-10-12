@@ -15,6 +15,7 @@
  *   node scripts/precompute.mjs lists [jur ...]       # pick lists only
  *   node scripts/precompute.mjs statewide [theme ...]
  *   node scripts/precompute.mjs areas <jur> [id ...]  # e.g. areas ecoregion; skips files already written unless --force
+ *   node scripts/precompute.mjs areas <jur> --theme climate   # re-run only these themes in files already written
  *   node scripts/precompute.mjs sources
  */
 
@@ -28,6 +29,8 @@ const argv = process.argv.slice(2);
 const force = argv.includes('--force') ? (argv.splice(argv.indexOf('--force'), 1), true) : false;
 const siteAt = argv.indexOf('--site');
 const site = siteAt >= 0 ? argv.splice(siteAt, 2)[1] : '.';
+const themeAt = argv.indexOf('--theme');
+const onlyThemes = themeAt >= 0 ? argv.splice(themeAt, 2)[1].split(',') : null;
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..', site);
 const fetchText = p => readFile(p, 'utf8');
 const [what = 'all', ...only] = argv;
@@ -77,12 +80,15 @@ if (what === 'areas') {
     for (const f of list) {
         if (ids.length && !ids.includes(String(f.id))) continue;
         const file = `${root}/data/areas/${jur.id}/${f.id}.json`;
-        if (!force) { try { await readFile(file); continue; } catch { /* not yet */ } }
+        let prior = null;
+        try { prior = JSON.parse(await readFile(file, 'utf8')); } catch { /* not yet */ }
+        if (prior && !force && !onlyThemes) continue;
         const aoi = jurisdictionAoi(jur, f);
-        const out = { generated: null, id: f.id, name: f.name, results: {} };
+        const out = onlyThemes && prior ? prior : { generated: null, id: f.id, name: f.name, results: {} };
         let failed = 0;
         const t0 = Date.now();
         for (const theme of [config.overview, ...config.themes]) {
+            if (onlyThemes && prior && !onlyThemes.includes(theme.id)) continue;
             out.results[theme.id] = {};
             for (const name of Object.keys(theme.queries)) {
                 try {

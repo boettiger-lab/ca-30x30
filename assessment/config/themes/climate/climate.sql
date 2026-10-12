@@ -2,8 +2,11 @@
 -- share of the area's 30x30 network each covers.
 --   Burned in the past decade: CAL FIRE fire perimeters, 2015 onward; res-10 presence.
 --   Mid-century climate exposure (Thorne et al. 2016): natural vegetation
---     (CWHR13 classes other than agriculture and urban) with exposure >= 0.95,
+--     (CWHR13 classes other than agriculture and urban) with exposure >= 0.9,
 --     separately for the MIROC5 (hot-dry) and CNRM-CM5 (warm-wet) models; res-9.
+--     The report states no cutoff; 0.9 on the res-9 cell mean reproduces its
+--     extents (MIROC5 25.5M vs 26.7M ac, CNRM-CM5 27.9M vs 28.5M) and its 32% of
+--     the network climate-stressed.
 --   Sea-level rise, 5 ft (NOAA): res-10 presence, California.
 --     NOTE: NOAA's inundation layer includes existing open water, so its extent
 --     differs from the report's (see ca-30x30#104).
@@ -26,11 +29,11 @@ nat AS MATERIALIZED (
 expo AS (
   SELECT 'miroc' AS code, n.area_km2 AS a, n.w12, n.w34 FROM nat n
   JOIN read_parquet('s3://public-hazard/mid-century-habitat-climate-exposure/miroc/hex/h0=*/data_0.parquet') x ON x.h0 = n.h0 AND x.h9 = n.h9
-  WHERE x.exposure >= 0.95
+  WHERE x.exposure >= 0.9
   UNION ALL
   SELECT 'cnrm', n.area_km2, n.w12, n.w34 FROM nat n
   JOIN read_parquet('s3://public-hazard/mid-century-habitat-climate-exposure/cnrm/hex/h0=*/data_0.parquet') x ON x.h0 = n.h0 AND x.h9 = n.h9
-  WHERE x.exposure >= 0.95
+  WHERE x.exposure >= 0.9
 ),
 f AS (
   SELECT x.code, l.area_km2 AS a, l.w12, l.w34
