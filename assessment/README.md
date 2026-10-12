@@ -20,19 +20,40 @@ candidates for a common library.
 ## Reproducing the report
 
 On the statewide view, every table row shows the report's published value beside this app's, compared at the precision the report printed.
-Of the 85 values in Tables 3–13, 74 agree within 0.5 percentage points, 80 within 1 point, and all within 2. The five beyond one point come from
-known data differences:
+Of the 85 values in Tables 3–13, 75 agree within 0.5 percentage points, 80 within 1 point, and 84 within 2. The need class matches on all 85
+rows. Every pathway pie but one, for rivers, is within 0.1 of the published pie.
+
+`scripts/validate.py` checks every number the app shows against the authors' result tables (`featureGAPSummary_*_wTotals.csv`, shared
+by the report's authors, not distributed here). For each feature it compares the extent, the shares in GAP 1–2, GAP 3–4 and non-conserved land,
+the share of the 30x30 network, the need class and the pathway pie. It also checks the ecoregion table and each ecoregion's own page.
+
+```sh
+python3 scripts/validate.py <dir with the CSVs>
+```
+
+What agrees:
+
+- **Land characterization.** The app gives 26.1 / 25.6 / 48.2% against the report's 26.1 / 25.5 / 48.4%.
+- **The 20 ecoregions.** Every ecoregion's shares, in the statewide table and on its own page, are within 0.8 points of the authors' tables, and
+  its area is within 0.2%.
+- **Network composition.** Ecoregion and habitat shares of the network are within 0.1 point of the authors' tables. The report's prose
+  rounds three habitat figures down (Conifer Forest 15%, Shrub 13%; the tables give 16.0 and 14.0).
+- **Climate.** About 32% of the network is projected to be climate-stressed: 31.4% (MIROC5) and 31.6% (CNRM-CM5) here, against 32.0 and
+  32.1. A burned share of 13.9% matches the report's 14%.
+
+Known differences, all from source data:
 
 | Feature | App | Report | Why |
 |---|---:|---:|---|
-| Streams (order 3–5) / Rivers (6+) | 26.0 / 20.0 | 24 / 22 | NHDPlus HR network, ~3× the channel length of the report's medium-resolution network |
-| 100-year floodplain | 16.0 | 14 | FEMA flood zones; the report used First Street Foundation, which the catalog does not carry |
-| Watersheds, top 20% freshwater richness | 20.0 | 22 | under investigation |
-| Riverine (CWHR) | 18.7 | 17.6 | under investigation |
+| Streams (order 3–5) / Rivers (6+) | 26.0 / 20.0 | 24 / 22 | NHDPlus HR network, ~3× the channel length of the report's medium-resolution network; GAP 3–4 shares differ by 4–8 points |
+| 100-year floodplain | 16.3 | 14 | FEMA flood zones; the report used First Street Foundation, which the catalog does not carry |
+| Watersheds, top 20% freshwater richness | 20.4 | 22 | GAP 3–4 share 29 vs 34%, not explained by the richness cutoff; likely a different edition of the richness data |
+| Riverine (CWHR) | 18.7 | 17.6 | a small, linear class, so it is sensitive to the cell grid |
+| Groundwater-dependent ecosystems (extent) | 2.5M ac | 4.3M ac | the catalog's layer totals 2.4M ac as mapped; the shares agree within 1 point (2.5 for non-conserved) |
+| South Coast Missing Linkages (extent) | 1.96M ac | 1.78M ac | the 11 linkage polygons sum to 1.94M ac; shares agree within 2 points |
+| Sea-level rise, 5 ft (extent) | 0.89M ac | 0.64M ac | NOAA's layer includes existing open water ([#104](https://github.com/boettiger-lab/ca-30x30/issues/104)) |
 
-Land characterization reproduces 26.1 / 25.5 / 48.4% as 26.1 / 25.6 / 48.2%. The report's prose figure that 32% of the network is projected to
-be climate-stressed is not reproduced (this app computes about 22% for either climate model); the report's own MIROC5 representation value,
-31.7%, is close to that 32%. The transcribed report values are in `data/report.json`.
+The transcribed report values are in `data/report.json`.
 
 ## How it works
 
@@ -60,6 +81,7 @@ data/
 scripts/
   precompute.mjs         regenerates data/ with the same engine
   run.mjs                run one section query for one area (for writing templates)
+  validate.py            compare every shown value with the report and its result tables
 ```
 
 ### SQL template contract
@@ -86,7 +108,9 @@ the area's own share is drawn as a second reference tick.
    `node scripts/run.mjs <theme> <query> [ecoregion Mono]`.
 2. Reference it in that theme's `theme.json`: a `"type": "representation"` chart, a bar chart, or a headline.
 3. Regenerate the data: `node scripts/precompute.mjs statewide` and `node scripts/precompute.mjs sources`, then
-   `node scripts/precompute.mjs areas ecoregion --force` and `areas county --force`, which take about an hour.
+   `node scripts/precompute.mjs areas ecoregion --theme <id>` and `areas county --theme <id>`, which re-run only that theme
+   (`--force` re-runs every theme, which takes about two hours).
+4. Check the result against the report with `python3 scripts/validate.py`.
 
 ## Run locally
 

@@ -1,6 +1,8 @@
 -- Freshwater features as in the 2025 Biodiversity Assessment (Table 13).
 --   Wetlands: NWI (California) freshwater emergent, freshwater forested/shrub,
---     and estuarine & marine wetland types; res-10 presence.
+--     and estuarine & marine wetland types; each feature's ACRES spread evenly
+--     over its res-10 cells (presence would count every touched cell in full,
+--     inflating thin wetlands by ~40%).
 --   Groundwater-dependent ecosystems: GDE vegetation or wetlands; res-10 presence.
 --   100-year floodplain: FEMA NFHL Special Flood Hazard Areas; res-10 presence.
 --     NOTE: the assessment used First Street Foundation flood zones, which this
@@ -10,10 +12,19 @@
 -- Presence cells are the area's res-10 California land cells; area-weighted.
 WITH land AS MATERIALIZED ({{LAND}}),
 cells AS (SELECT DISTINCT h0, h10 FROM land),
-wet AS (
-  SELECT DISTINCT 'wetlands' AS code, h0, h10 FROM read_parquet('s3://public-wetlands/nwi-v2/hex/h0=*/data_0.parquet')
+wsrc AS (
+  SELECT _cng_fid, ACRES, h0, h10 FROM read_parquet('s3://public-wetlands/nwi-v2/hex/h0=*/data_0.parquet')
   WHERE state_code = 'CA' AND WETLAND_TYPE IN ('Freshwater Emergent Wetland', 'Freshwater Forested/Shrub Wetland', 'Estuarine and Marine Wetland')
-    AND (h0, h10) IN (SELECT * FROM cells)
+),
+wper AS (
+  SELECT _cng_fid, ANY_VALUE(ACRES) / COUNT(*) / 247.105 AS km2 FROM wsrc
+  WHERE _cng_fid IN (SELECT _cng_fid FROM wsrc WHERE (h0, h10) IN (SELECT * FROM cells))
+  GROUP BY _cng_fid
+),
+wet AS (
+  SELECT s.h0, s.h10, SUM(p.km2) AS km2 FROM wsrc s JOIN wper p USING (_cng_fid)
+  WHERE (s.h0, s.h10) IN (SELECT * FROM cells)
+  GROUP BY s.h0, s.h10
 ),
 gde AS (
   SELECT DISTINCT 'gde' AS code, h0, h10 FROM (
@@ -37,8 +48,10 @@ fw AS (
 ),
 f AS (
   SELECT x.code, l.area_km2 AS a, l.w12, l.w34
-  FROM (SELECT * FROM wet UNION ALL SELECT * FROM gde UNION ALL SELECT * FROM fld) x
+  FROM (SELECT * FROM gde UNION ALL SELECT * FROM fld) x
   JOIN land l ON l.h0 = x.h0 AND l.h10 = x.h10
+  UNION ALL
+  SELECT 'wetlands', w.km2, l.w12, l.w34 FROM wet w JOIN land l ON l.h0 = w.h0 AND l.h10 = w.h10
   UNION ALL
   SELECT 'fwrich', l.area_km2, l.w12, l.w34 FROM fw JOIN land l ON l.h0 = fw.h0 AND l.h8 = fw.h8
 ),
