@@ -1,0 +1,12 @@
+{
+    "label": "Connectivity",
+    "color": "#7a5cc2",
+    "blurb": "Areas important for wildlife movement now and under climate change (report Table 12).",
+    "queries": { "connectivity": { "file": "connectivity.sql" } },
+    "charts": [
+        { "type": "representation", "query": "connectivity", "title": "Connectivity and climate linkages",
+          "subtitle": "Share of each feature's extent in this area by conservation status (report Table 12)",
+          "key_features": ["conn:chn", "link:scml"], "sort": "none", "wide": true }
+    ],
+    "method": "Present-day connectivity categories are Cameron et al. (2022): channelized, intensified and diffuse. Climate linkages are Schloss et al. (2022): every pixel that is also a climate-change linkage under either climate model. South Coast Missing Linkages are Beier et al. (2006). Connectivity layers are fractional resolution-9 H3 cells and linkages resolution-8 presence, applied to the area's resolution-10 land cells. Channelized connectivity and the South Coast linkages are Key Features in the report: conservation of all remaining extent is recommended, so they get no need class."
+}

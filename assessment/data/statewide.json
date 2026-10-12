@@ -1,0 +1,1342 @@
+{
+ "generated": "2026-10-12T19:06:58.382Z",
+ "results": {
+  "overview": {
+   "protection": [
+    {
+     "land_acres": 101471550.01847875,
+     "gap12_acres": 26519426.111013126,
+     "gap34_acres": 26010714.582746178,
+     "none_acres": 48941409.32471945,
+     "frac_gap12": 0.2613483888457773,
+     "frac_gap34": 0.25633504739022345,
+     "frac_none": 0.48231656376399923
+    }
+   ],
+   "ecoregions": [
+    {
+     "feature": "Mojave Desert",
+     "label": "Mojave Desert",
+     "acres": 16515709.850035066,
+     "gap12_acres": 7382218.188408254,
+     "gap34_acres": 3581965.285625455,
+     "frac_gap12": 0.44698158634656443,
+     "frac_gap34": 0.2168823089137673,
+     "frac_none": 0.33613610473966726,
+     "share_of_network": 0.278370208974565
+    },
+    {
+     "feature": "Sierra Nevada",
+     "label": "Sierra Nevada",
+     "acres": 12741453.419409141,
+     "gap12_acres": 4641909.540059946,
+     "gap34_acres": 5361784.221748478,
+     "frac_gap12": 0.3643155444879541,
+     "frac_gap34": 0.42081417600136856,
+     "frac_none": 0.21487027951067628,
+     "share_of_network": 0.1750380841813252
+    },
+    {
+     "feature": "Southern California Mountains and Valleys",
+     "label": "Southern California Mountains and Valleys",
+     "acres": 6811848.480604077,
+     "gap12_acres": 2482815.5208129175,
+     "gap34_acres": 1853486.310622495,
+     "frac_gap12": 0.3644848425331887,
+     "frac_gap34": 0.2720974073190376,
+     "frac_none": 0.36341775014777356,
+     "share_of_network": 0.09362252072950562
+    },
+    {
+     "feature": "Southeastern Great Basin",
+     "label": "Southeastern Great Basin",
+     "acres": 2726726.9690528894,
+     "gap12_acres": 1988705.9953164011,
+     "gap34_acres": 393064.2240802725,
+     "frac_gap12": 0.7293381471219192,
+     "frac_gap34": 0.14415239535948138,
+     "frac_none": 0.12650945751859954,
+     "share_of_network": 0.0749905366349735
+    },
+    {
+     "feature": "Sonoran Desert",
+     "label": "Sonoran Desert",
+     "acres": 3183071.3179369243,
+     "gap12_acres": 1627149.9254297933,
+     "gap34_acres": 883398.825605055,
+     "frac_gap12": 0.5111886486050882,
+     "frac_gap34": 0.27753032758864515,
+     "frac_none": 0.2112810238062658,
+     "share_of_network": 0.06135690563658401
+    },
+    {
+     "feature": "Klamath Mountains",
+     "label": "Klamath Mountains",
+     "acres": 5569461.812685936,
+     "gap12_acres": 1187009.2820448203,
+     "gap34_acres": 2901593.261386905,
+     "frac_gap12": 0.213128184008927,
+     "frac_gap34": 0.5209827015561452,
+     "frac_none": 0.2658891144349276,
+     "share_of_network": 0.044759991301315284
+    },
+    {
+     "feature": "Central Valley Coast Ranges",
+     "label": "Central Valley Coast Ranges",
+     "acres": 6140193.532886303,
+     "gap12_acres": 991875.428574487,
+     "gap34_acres": 849696.3138173206,
+     "frac_gap12": 0.1615381377251539,
+     "frac_gap34": 0.13838265997096452,
+     "frac_none": 0.7000792023038815,
+     "share_of_network": 0.03740184363049155
+    },
+    {
+     "feature": "Central California Coast",
+     "label": "Central California Coast",
+     "acres": 3588617.1771867233,
+     "gap12_acres": 830822.9620551968,
+     "gap34_acres": 324039.37876875093,
+     "frac_gap12": 0.23151618604983543,
+     "frac_gap34": 0.0902964464498216,
+     "frac_none": 0.6781873675003429,
+     "share_of_network": 0.03132884394169332
+    },
+    {
+     "feature": "Northern California Coast",
+     "label": "Northern California Coast",
+     "acres": 4341789.56192087,
+     "gap12_acres": 814147.1073597576,
+     "gap34_acres": 397089.89347889053,
+     "frac_gap12": 0.1875141795217655,
+     "frac_gap34": 0.09145765537821512,
+     "frac_none": 0.7210281651000194,
+     "share_of_network": 0.030700027366793392
+    },
+    {
+     "feature": "Northern California Coast Ranges",
+     "label": "Northern California Coast Ranges",
+     "acres": 3832496.011952602,
+     "gap12_acres": 680101.6826388995,
+     "gap34_acres": 1148424.9901541383,
+     "frac_gap12": 0.1774565923924856,
+     "frac_gap34": 0.29965458191541133,
+     "frac_none": 0.5228888256921032,
+     "share_of_network": 0.025645414791101526
+    },
+    {
+     "feature": "Southern Cascades",
+     "label": "Southern Cascades",
+     "acres": 4201502.719455411,
+     "gap12_acres": 565880.6353551912,
+     "gap34_acres": 1792974.2277071243,
+     "frac_gap12": 0.13468529550982639,
+     "frac_gap34": 0.42674594006677824,
+     "frac_none": 0.4385687644233953,
+     "share_of_network": 0.021338343936492265
+    },
+    {
+     "feature": "Sierra Nevada Foothills",
+     "label": "Sierra Nevada Foothills",
+     "acres": 4492497.845699694,
+     "gap12_acres": 524836.5704571897,
+     "gap34_acres": 595514.6836558839,
+     "frac_gap12": 0.11682511344097214,
+     "frac_gap34": 0.13255758914295798,
+     "frac_none": 0.7506172974160699,
+     "share_of_network": 0.01979064585561424
+    },
+    {
+     "feature": "Mono",
+     "label": "Mono",
+     "acres": 1970965.9677653261,
+     "gap12_acres": 514619.14279567834,
+     "gap34_acres": 1325976.7231114844,
+     "frac_gap12": 0.2610999637802735,
+     "frac_gap34": 0.6727547531502394,
+     "frac_none": 0.06614528306948775,
+     "share_of_network": 0.01940536498193545
+    },
+    {
+     "feature": "Colorado Desert",
+     "label": "Colorado Desert",
+     "acres": 2931712.4057401,
+     "gap12_acres": 450358.9224911603,
+     "gap34_acres": 1099383.7011334896,
+     "frac_gap12": 0.15361633754026732,
+     "frac_gap34": 0.37499711737787406,
+     "frac_none": 0.4713865450818586,
+     "share_of_network": 0.016982227315399303
+    },
+    {
+     "feature": "Southern California Coast",
+     "label": "Southern California Coast",
+     "acres": 3607355.347323626,
+     "gap12_acres": 432941.97736980533,
+     "gap34_acres": 465483.87611171236,
+     "frac_gap12": 0.12001644852953405,
+     "frac_gap34": 0.1290374336027264,
+     "frac_none": 0.7509461178677398,
+     "share_of_network": 0.016325465549573537
+    },
+    {
+     "feature": "Great Valley (South)",
+     "label": "Great Valley (South)",
+     "acres": 6748290.436742554,
+     "gap12_acres": 416903.9485857903,
+     "gap34_acres": 144280.0775803362,
+     "frac_gap12": 0.0617791946706776,
+     "frac_gap34": 0.02138024125262474,
+     "frac_none": 0.9168405640766977,
+     "share_of_network": 0.0157207002459475
+    },
+    {
+     "feature": "Great Valley (North)",
+     "label": "Great Valley (North)",
+     "acres": 5398041.277339479,
+     "gap12_acres": 388927.159549011,
+     "gap34_acres": 231377.7491843166,
+     "frac_gap12": 0.07204968238788656,
+     "frac_gap34": 0.04286327897410137,
+     "frac_none": 0.8850870386380121,
+     "share_of_network": 0.014665745703580499
+    },
+    {
+     "feature": "Modoc Plateau",
+     "label": "Modoc Plateau",
+     "acres": 3530832.3715713364,
+     "gap12_acres": 270717.4307829253,
+     "gap34_acres": 2098311.8112066924,
+     "frac_gap12": 0.07667241100501385,
+     "frac_gap34": 0.5942824780075512,
+     "frac_none": 0.3290451109874344,
+     "share_of_network": 0.010208268823377763
+    },
+    {
+     "feature": "Northwestern Basin and Range",
+     "label": "Northwestern Basin and Range",
+     "acres": 1288934.8752443523,
+     "gap12_acres": 196222.7875719841,
+     "gap34_acres": 433556.4285333064,
+     "frac_gap12": 0.15223638629126612,
+     "frac_gap34": 0.33636798635859244,
+     "frac_none": 0.5113956273501419,
+     "share_of_network": 0.007399209422955644
+    },
+    {
+     "feature": "Northern California Interior Coast Ranges",
+     "label": "Northern California Interior Coast Ranges",
+     "acres": 1850048.6379261485,
+     "gap12_acres": 131261.90335389762,
+     "gap34_acres": 129312.59923411826,
+     "frac_gap12": 0.07095051484756555,
+     "frac_gap34": 0.06989686464625815,
+     "frac_none": 0.8591526205061764,
+     "share_of_network": 0.004949650976775345
+    }
+   ]
+  },
+  "habitat": {
+   "cwhr13": [
+    {
+     "feature": "cwhr13:80",
+     "label": "Urban",
+     "natural": false,
+     "acres": 5173834.722469367,
+     "gap12_acres": 48750.837762254974,
+     "gap34_acres": 253639.17914491816,
+     "frac_gap12": 0.009422573463844083,
+     "frac_gap34": 0.049023440591055706,
+     "frac_none": 0.9415539859451002,
+     "share_of_network": 0.0018387134395849943
+    },
+    {
+     "feature": "cwhr13:10",
+     "label": "Agriculture",
+     "natural": false,
+     "acres": 10906135.258984271,
+     "gap12_acres": 258370.9286277435,
+     "gap34_acres": 239255.85019921119,
+     "frac_gap12": 0.0236904203452733,
+     "frac_gap34": 0.021937729958200973,
+     "frac_none": 0.9543718496965258,
+     "share_of_network": 0.009744860204919542
+    },
+    {
+     "feature": "cwhr13:52",
+     "label": "Hardwood Woodland",
+     "natural": true,
+     "acres": 6194053.299586631,
+     "gap12_acres": 842590.8761573387,
+     "gap34_acres": 724454.1974279666,
+     "frac_gap12": 0.136032228882107,
+     "frac_gap34": 0.11695963247140835,
+     "frac_none": 0.7470081386464849,
+     "share_of_network": 0.03177962142143364
+    },
+    {
+     "feature": "cwhr13:60",
+     "label": "Grassland",
+     "natural": true,
+     "acres": 11538692.010537347,
+     "gap12_acres": 1837113.8902439978,
+     "gap34_acres": 1635559.5696026164,
+     "frac_gap12": 0.1592133569876301,
+     "frac_gap34": 0.1417456647693684,
+     "frac_none": 0.6990409782430013,
+     "share_of_network": 0.06928959901188096
+    },
+    {
+     "feature": "cwhr13:51",
+     "label": "Hardwood Forest",
+     "natural": true,
+     "acres": 5344244.033330684,
+     "gap12_acres": 1157075.3575447742,
+     "gap34_acres": 2010501.5956048341,
+     "frac_gap12": 0.216508705502292,
+     "frac_gap34": 0.37619943682695806,
+     "frac_none": 0.4072918576707497,
+     "share_of_network": 0.043640891278742606
+    },
+    {
+     "feature": "cwhr13:90",
+     "label": "Water",
+     "natural": false,
+     "acres": 1855181.188817581,
+     "gap12_acres": 404664.5450763425,
+     "gap34_acres": 491379.70246967184,
+     "frac_gap12": 0.218126697012414,
+     "frac_gap34": 0.26486884700618263,
+     "frac_none": 0.5170044559814038,
+     "share_of_network": 0.01526255079315794
+    },
+    {
+     "feature": "cwhr13:31",
+     "label": "Conifer Forest",
+     "natural": true,
+     "acres": 17500568.756672036,
+     "gap12_acres": 4235405.294288187,
+     "gap34_acres": 7555701.061401942,
+     "frac_gap12": 0.2420152940842824,
+     "frac_gap34": 0.43174031464099444,
+     "frac_none": 0.32624439127472293,
+     "share_of_network": 0.15974487812241667
+    },
+    {
+     "feature": "cwhr13:70",
+     "label": "Shrub",
+     "natural": true,
+     "acres": 13316921.712540044,
+     "gap12_acres": 3704568.269928196,
+     "gap34_acres": 5252157.856708147,
+     "frac_gap12": 0.2781850302866723,
+     "frac_gap34": 0.394397291662561,
+     "frac_none": 0.3274176780507676,
+     "share_of_network": 0.13972353662916895
+    },
+    {
+     "feature": "cwhr13:32",
+     "label": "Conifer Woodland",
+     "natural": true,
+     "acres": 3058142.9049805244,
+     "gap12_acres": 1018552.7282380267,
+     "gap34_acres": 1427111.117105491,
+     "frac_gap12": 0.33306250227195094,
+     "frac_gap34": 0.46665939475270507,
+     "frac_none": 0.20027810297534288,
+     "share_of_network": 0.0384162955203048
+    },
+    {
+     "feature": "cwhr13:100",
+     "label": "Wetland",
+     "natural": false,
+     "acres": 874683.8828648602,
+     "gap12_acres": 404475.28978358384,
+     "gap34_acres": 153709.03040127803,
+     "frac_gap12": 0.46242453726116706,
+     "frac_gap34": 0.17573095081829265,
+     "frac_none": 0.36184451192054046,
+     "share_of_network": 0.015255412736331
+    },
+    {
+     "feature": "cwhr13:41",
+     "label": "Desert Shrub",
+     "natural": true,
+     "acres": 21482490.75030923,
+     "gap12_acres": 10374032.82763632,
+     "gap34_acres": 5170177.238638355,
+     "frac_gap12": 0.4829064258988214,
+     "frac_gap34": 0.24066935713978757,
+     "frac_none": 0.2764242169613902,
+     "share_of_network": 0.3912727341403643
+    },
+    {
+     "feature": "cwhr13:20",
+     "label": "Barren/Other",
+     "natural": false,
+     "acres": 3128126.8597309645,
+     "gap12_acres": 1617251.5323356932,
+     "gap34_acres": 881442.7767911758,
+     "frac_gap12": 0.5170031794921468,
+     "frac_gap34": 0.28177974114099213,
+     "frac_none": 0.20121707936686106,
+     "share_of_network": 0.06099714926329747
+    },
+    {
+     "feature": "cwhr13:42",
+     "label": "Desert Woodland",
+     "natural": true,
+     "acres": 1079276.947199931,
+     "gap12_acres": 610706.8930696894,
+     "gap34_acres": 212593.848381888,
+     "frac_gap12": 0.5658481770171255,
+     "frac_gap34": 0.19697803138799558,
+     "frac_none": 0.23717379159487872,
+     "share_of_network": 0.023033757438397164
+    }
+   ],
+   "cwhr": [
+    {
+     "feature": "cwhr:20",
+     "label": "Eastside Pine",
+     "grp": "Conifer forest & woodland",
+     "acres": 604812.983419989,
+     "gap12_acres": 51411.698227804416,
+     "gap34_acres": 385704.42680359073,
+     "frac_gap12": 0.08500428998248465,
+     "frac_gap34": 0.6377251106988112,
+     "frac_none": 0.2772705993187047
+    },
+    {
+     "feature": "cwhr:42",
+     "label": "Ponderosa Pine",
+     "grp": "Conifer forest & woodland",
+     "acres": 1845093.3125266728,
+     "gap12_acres": 183997.724137536,
+     "gap34_acres": 951361.9515758218,
+     "frac_gap12": 0.09972272019433494,
+     "frac_gap34": 0.5156172563831072,
+     "frac_none": 0.384660023422558
+    },
+    {
+     "feature": "cwhr:35",
+     "label": "Montane Hardwood-Conifer",
+     "grp": "Conifer forest & woodland",
+     "acres": 1859904.1756523827,
+     "gap12_acres": 288444.0929329923,
+     "gap34_acres": 584661.8872864947,
+     "frac_gap12": 0.15508545908383548,
+     "frac_gap34": 0.31435054286139114,
+     "frac_none": 0.5305639980547736
+    },
+    {
+     "feature": "cwhr:27",
+     "label": "Klamath Mixed Conifer",
+     "grp": "Conifer forest & woodland",
+     "acres": 1122762.1325137103,
+     "gap12_acres": 188538.35289707597,
+     "gap34_acres": 650303.9135879528,
+     "frac_gap12": 0.16792368342078343,
+     "frac_gap34": 0.5792000769851506,
+     "frac_none": 0.25287623959406613
+    },
+    {
+     "feature": "cwhr:14",
+     "label": "Douglas Fir",
+     "grp": "Conifer forest & woodland",
+     "acres": 2768671.0266027795,
+     "gap12_acres": 466754.77420228557,
+     "gap34_acres": 1214528.940391548,
+     "frac_gap12": 0.1685844109746054,
+     "frac_gap34": 0.4386685629031925,
+     "frac_none": 0.3927470261222018
+    },
+    {
+     "feature": "cwhr:26",
+     "label": "Juniper",
+     "grp": "Conifer forest & woodland",
+     "acres": 1671801.1335225431,
+     "gap12_acres": 288686.75857003214,
+     "gap34_acres": 900517.985785431,
+     "frac_gap12": 0.17268008304418306,
+     "frac_gap34": 0.538651378880219,
+     "frac_none": 0.2886685380755982
+    },
+    {
+     "feature": "cwhr:51",
+     "label": "Sierran Mixed Conifer",
+     "grp": "Conifer forest & woodland",
+     "acres": 4592062.759037729,
+     "gap12_acres": 929985.3911406654,
+     "gap34_acres": 2339115.8895054534,
+     "frac_gap12": 0.20252018318136936,
+     "frac_gap34": 0.5093823870115436,
+     "frac_none": 0.2880974298070873
+    },
+    {
+     "feature": "cwhr:44",
+     "label": "Redwood",
+     "grp": "Conifer forest & woodland",
+     "acres": 1183697.828469213,
+     "gap12_acres": 284320.57427162013,
+     "gap34_acres": 102771.78015266517,
+     "frac_gap12": 0.24019692140460414,
+     "frac_gap34": 0.08682264821383694,
+     "frac_none": 0.6729804303815589
+    },
+    {
+     "feature": "cwhr:58",
+     "label": "White Fir",
+     "grp": "Conifer forest & woodland",
+     "acres": 900971.5913938716,
+     "gap12_acres": 237170.44107116142,
+     "gap34_acres": 518452.04629175767,
+     "frac_gap12": 0.26323853419644533,
+     "frac_gap34": 0.5754366189167773,
+     "frac_none": 0.16132484688677684
+    },
+    {
+     "feature": "cwhr:11",
+     "label": "Closed-Cone Pine-Cypress",
+     "grp": "Conifer forest & woodland",
+     "acres": 184402.13240226876,
+     "gap12_acres": 55747.91367488483,
+     "gap34_acres": 58158.40853049188,
+     "frac_gap12": 0.302317077078437,
+     "frac_gap34": 0.3153890238298369,
+     "frac_none": 0.38229389909172606
+    },
+    {
+     "feature": "cwhr:24",
+     "label": "Jeffrey Pine",
+     "grp": "Conifer forest & woodland",
+     "acres": 358253.59206471365,
+     "gap12_acres": 129294.6149388927,
+     "gap34_acres": 174804.2416899957,
+     "frac_gap12": 0.36090249421850146,
+     "frac_gap34": 0.48793437263964595,
+     "frac_none": 0.15116313314185315
+    },
+    {
+     "feature": "cwhr:45",
+     "label": "Red Fir",
+     "grp": "Conifer forest & woodland",
+     "acres": 648543.4567698706,
+     "gap12_acres": 309235.8446972368,
+     "gap34_acres": 282035.4860498509,
+     "frac_gap12": 0.4768159195336175,
+     "frac_gap34": 0.4348752317301205,
+     "frac_none": 0.08830884873626221
+    },
+    {
+     "feature": "cwhr:40",
+     "label": "Pinyon-Juniper",
+     "grp": "Conifer forest & woodland",
+     "acres": 1386341.7714579792,
+     "gap12_acres": 729865.9696679948,
+     "gap34_acres": 526593.1313200605,
+     "frac_gap12": 0.5264690025897538,
+     "frac_gap34": 0.37984365916223983,
+     "frac_none": 0.0936873382480059
+    },
+    {
+     "feature": "cwhr:29",
+     "label": "Lodgepole Pine",
+     "grp": "Conifer forest & woodland",
+     "acres": 795664.2737840588,
+     "gap12_acres": 565480.7566735706,
+     "gap34_acres": 209362.29849385325,
+     "frac_gap12": 0.710702711313441,
+     "frac_gap34": 0.26312894193195063,
+     "frac_none": 0.026168346754607774
+    },
+    {
+     "feature": "cwhr:48",
+     "label": "Subalpine Conifer",
+     "grp": "Conifer forest & woodland",
+     "acres": 635729.4920347673,
+     "gap12_acres": 545023.1154224634,
+     "gap34_acres": 84439.79104247199,
+     "frac_gap12": 0.8573192250024743,
+     "frac_gap34": 0.13282346045046164,
+     "frac_none": 0.009857314547062956
+    },
+    {
+     "feature": "cwhr:15",
+     "label": "Desert Riparian",
+     "grp": "Desert",
+     "acres": 150709.21532710578,
+     "gap12_acres": 25032.99997073209,
+     "gap34_acres": 54548.64266278524,
+     "frac_gap12": 0.16610132244666917,
+     "frac_gap34": 0.3619462986678719,
+     "frac_none": 0.4719523788854594
+    },
+    {
+     "feature": "cwhr:4",
+     "label": "Alkali Desert Scrub",
+     "grp": "Desert",
+     "acres": 1926042.4846281682,
+     "gap12_acres": 380081.8353353231,
+     "gap34_acres": 655175.1250418824,
+     "frac_gap12": 0.19733824065085448,
+     "frac_gap34": 0.34016649698584767,
+     "frac_none": 0.46249526236329763
+    },
+    {
+     "feature": "cwhr:18",
+     "label": "Desert Succulent Shrub",
+     "grp": "Desert",
+     "acres": 184422.71635161585,
+     "gap12_acres": 68602.73612267913,
+     "gap34_acres": 61408.097329583885,
+     "frac_gap12": 0.3719863663209624,
+     "frac_gap34": 0.3329746928382982,
+     "frac_none": 0.29503894084073967
+    },
+    {
+     "feature": "cwhr:17",
+     "label": "Desert Scrub",
+     "grp": "Desert",
+     "acres": 18030110.20080332,
+     "gap12_acres": 9046654.19089164,
+     "gap34_acres": 4240316.022202321,
+     "frac_gap12": 0.5017525733419295,
+     "frac_gap34": 0.2351797063344292,
+     "frac_none": 0.2630677203236398
+    },
+    {
+     "feature": "cwhr:41",
+     "label": "Palm Oasis",
+     "grp": "Desert",
+     "acres": 894.1112651210276,
+     "gap12_acres": 448.81060734726657,
+     "gap34_acres": 151.95841449085623,
+     "frac_gap12": 0.5019628147583123,
+     "frac_gap34": 0.1699547029756828,
+     "frac_none": 0.3280824822660051
+    },
+    {
+     "feature": "cwhr:25",
+     "label": "Joshua Tree",
+     "grp": "Desert",
+     "acres": 927673.6206077038,
+     "gap12_acres": 585225.0824916104,
+     "gap34_acres": 157893.2473046119,
+     "frac_gap12": 0.6308523488123323,
+     "frac_gap34": 0.17020344633835616,
+     "frac_none": 0.1989442048493112
+    },
+    {
+     "feature": "cwhr:19",
+     "label": "Desert Wash",
+     "grp": "Desert",
+     "acres": 1341915.348526081,
+     "gap12_acres": 878694.065286685,
+     "gap34_acres": 213277.99406457177,
+     "frac_gap12": 0.6548058834350586,
+     "frac_gap34": 0.15893550535719697,
+     "frac_none": 0.18625861120774423
+    },
+    {
+     "feature": "cwhr:8",
+     "label": "Blue Oak-Foothill Pine",
+     "grp": "Hardwood woodland & forest",
+     "acres": 876428.2661351253,
+     "gap12_acres": 82398.5787987951,
+     "gap34_acres": 128405.53193526248,
+     "frac_gap12": 0.09401634107735535,
+     "frac_gap34": 0.1465100304232603,
+     "frac_none": 0.7594736284993844
+    },
+    {
+     "feature": "cwhr:9",
+     "label": "Blue Oak Woodland",
+     "grp": "Hardwood woodland & forest",
+     "acres": 3337165.0191429392,
+     "gap12_acres": 344415.9312245452,
+     "gap34_acres": 337993.3226114451,
+     "frac_gap12": 0.10320614331292467,
+     "frac_gap34": 0.10128157303358332,
+     "frac_none": 0.795512283653492
+    },
+    {
+     "feature": "cwhr:55",
+     "label": "Valley Oak Woodland",
+     "grp": "Hardwood woodland & forest",
+     "acres": 96345.07249068088,
+     "gap12_acres": 10157.62590925881,
+     "gap34_acres": 6889.366457666852,
+     "frac_gap12": 0.10542963585648163,
+     "frac_gap34": 0.07150720093477782,
+     "frac_none": 0.8230631632087406
+    },
+    {
+     "feature": "cwhr:77",
+     "label": "Eucalyptus",
+     "grp": "Hardwood woodland & forest",
+     "acres": 30795.175448104073,
+     "gap12_acres": 3603.76473793258,
+     "gap34_acres": 3816.4575458520244,
+     "frac_gap12": 0.11702367937489534,
+     "frac_gap34": 0.12393037189489328,
+     "frac_none": 0.7590459487302115
+    },
+    {
+     "feature": "cwhr:36",
+     "label": "Montane Hardwood",
+     "grp": "Hardwood woodland & forest",
+     "acres": 5022830.6502044955,
+     "gap12_acres": 1024904.3813895113,
+     "gap34_acres": 1928363.8193488484,
+     "frac_gap12": 0.2040491612727943,
+     "frac_gap34": 0.3839197364279719,
+     "frac_none": 0.4120311022992338
+    },
+    {
+     "feature": "cwhr:56",
+     "label": "Valley Foothill Riparian",
+     "grp": "Hardwood woodland & forest",
+     "acres": 504302.460720334,
+     "gap12_acres": 103659.18647634979,
+     "gap34_acres": 64244.1114572934,
+     "frac_gap12": 0.20554963449570599,
+     "frac_gap34": 0.12739202455115645,
+     "frac_none": 0.6670583409531377
+    },
+    {
+     "feature": "cwhr:10",
+     "label": "Coastal Oak Woodland",
+     "grp": "Hardwood woodland & forest",
+     "acres": 1349017.3056494403,
+     "gap12_acres": 298355.78901045624,
+     "gap34_acres": 183105.40742044707,
+     "frac_gap12": 0.22116527917099074,
+     "frac_gap34": 0.1357324377186525,
+     "frac_none": 0.6431022831103566
+    },
+    {
+     "feature": "cwhr:5",
+     "label": "Aspen",
+     "grp": "Hardwood woodland & forest",
+     "acres": 63894.7317055529,
+     "gap12_acres": 18986.466761318643,
+     "gap34_acres": 39307.89134715613,
+     "frac_gap12": 0.29715230433730094,
+     "frac_gap34": 0.6151976899801271,
+     "frac_none": 0.08765000568257175
+    },
+    {
+     "feature": "cwhr:37",
+     "label": "Montane Riparian",
+     "grp": "Hardwood woodland & forest",
+     "acres": 257518.65142063983,
+     "gap12_acres": 113184.5093939444,
+     "gap34_acres": 42829.88490882963,
+     "frac_gap12": 0.439519657195878,
+     "frac_gap34": 0.166317603298061,
+     "frac_none": 0.39416273950606073
+    },
+    {
+     "feature": "cwhr:7",
+     "label": "Bitterbrush",
+     "grp": "Shrub & grassland",
+     "acres": 431509.1134960035,
+     "gap12_acres": 58729.137100616135,
+     "gap34_acres": 298423.75785841997,
+     "frac_gap12": 0.1361017305632412,
+     "frac_gap34": 0.691581587792314,
+     "frac_none": 0.17231668164444525
+    },
+    {
+     "feature": "cwhr:30",
+     "label": "Low Sage",
+     "grp": "Shrub & grassland",
+     "acres": 447449.3989702026,
+     "gap12_acres": 63575.05353828056,
+     "gap34_acres": 328776.237345867,
+     "frac_gap12": 0.1420832247950215,
+     "frac_gap34": 0.734778587483948,
+     "frac_none": 0.1231381877210308
+    },
+    {
+     "feature": "cwhr:3",
+     "label": "Annual Grassland",
+     "grp": "Shrub & grassland",
+     "acres": 10489255.768137462,
+     "gap12_acres": 1596877.475429212,
+     "gap34_acres": 1309766.019949307,
+     "frac_gap12": 0.15223934955232418,
+     "frac_gap34": 0.12486739277803664,
+     "frac_none": 0.7228932576696394
+    },
+    {
+     "feature": "cwhr:50",
+     "label": "Sagebrush",
+     "grp": "Shrub & grassland",
+     "acres": 2397733.563060392,
+     "gap12_acres": 548417.0018426185,
+     "gap34_acres": 1202262.631279308,
+     "frac_gap12": 0.2287230784485646,
+     "frac_gap34": 0.5014162748528146,
+     "frac_none": 0.2698606466986204
+    },
+    {
+     "feature": "cwhr:13",
+     "label": "Coastal Scrub",
+     "grp": "Shrub & grassland",
+     "acres": 1881845.28158314,
+     "gap12_acres": 500362.8499988507,
+     "gap34_acres": 314499.65498270374,
+     "frac_gap12": 0.26588947289965864,
+     "frac_gap34": 0.16712301381021324,
+     "frac_none": 0.5669875132901279
+    },
+    {
+     "feature": "cwhr:12",
+     "label": "Chamise-Redshank Chaparral",
+     "grp": "Shrub & grassland",
+     "acres": 1228648.0657820113,
+     "gap12_acres": 326807.1634314361,
+     "gap34_acres": 372509.3024540341,
+     "frac_gap12": 0.26598923852407613,
+     "frac_gap34": 0.30318633368534137,
+     "frac_none": 0.43082442779058217
+    },
+    {
+     "feature": "cwhr:39",
+     "label": "Perennial Grassland",
+     "grp": "Shrub & grassland",
+     "acres": 724513.5529929294,
+     "gap12_acres": 223692.91260939682,
+     "gap34_acres": 306206.5201866076,
+     "frac_gap12": 0.308749107156564,
+     "frac_gap34": 0.4226373943202081,
+     "frac_none": 0.26861349852322747
+    },
+    {
+     "feature": "cwhr:32",
+     "label": "Mixed Chaparral",
+     "grp": "Shrub & grassland",
+     "acres": 5339346.191906959,
+     "gap12_acres": 1661236.824106907,
+     "gap34_acres": 1944242.819665506,
+     "frac_gap12": 0.31113113186496577,
+     "frac_gap34": 0.36413499889040074,
+     "frac_none": 0.32473386924463477
+    },
+    {
+     "feature": "cwhr:34",
+     "label": "Montane Chaparral",
+     "grp": "Shrub & grassland",
+     "acres": 1519045.0492127005,
+     "gap12_acres": 488299.22184186976,
+     "gap34_acres": 777783.2826594182,
+     "frac_gap12": 0.32145144220373734,
+     "frac_gap34": 0.512021209023743,
+     "frac_none": 0.16652734877251973
+    },
+    {
+     "feature": "cwhr:1",
+     "label": "Alpine-Dwarf Shrub",
+     "grp": "Shrub & grassland",
+     "acres": 71345.04852864378,
+     "gap12_acres": 57141.01806761578,
+     "gap34_acres": 13660.170462894703,
+     "frac_gap12": 0.800910774413093,
+     "frac_gap34": 0.19146627193631227,
+     "frac_none": 0.0076229536505941775
+    },
+    {
+     "feature": "cwhr:43",
+     "label": "Riverine",
+     "grp": "Wetland & aquatic",
+     "acres": 219040.27338651623,
+     "gap12_acres": 40995.760215272436,
+     "gap34_acres": 20615.766190501556,
+     "frac_gap12": 0.1871608338569398,
+     "frac_gap34": 0.09411861057223567,
+     "frac_none": 0.7187205555708245
+    },
+    {
+     "feature": "cwhr:28",
+     "label": "Lacustrine",
+     "grp": "Wetland & aquatic",
+     "acres": 1218596.468114928,
+     "gap12_acres": 289695.45663811214,
+     "gap34_acres": 455763.7148402509,
+     "frac_gap12": 0.23772878407094677,
+     "frac_gap34": 0.3740070866488569,
+     "frac_none": 0.38826412928019627
+    },
+    {
+     "feature": "cwhr:21",
+     "label": "Estuarine",
+     "grp": "Wetland & aquatic",
+     "acres": 159236.50776778976,
+     "gap12_acres": 45410.01862316077,
+     "gap34_acres": 6807.9573445327405,
+     "frac_gap12": 0.2851734144369767,
+     "frac_gap34": 0.042753746863505686,
+     "frac_none": 0.6720728386995177
+    },
+    {
+     "feature": "cwhr:49",
+     "label": "Saline Emergent Wetland",
+     "grp": "Wetland & aquatic",
+     "acres": 148947.28739532485,
+     "gap12_acres": 55798.28275048151,
+     "gap34_acres": 28904.85917781198,
+     "frac_gap12": 0.37461764981584283,
+     "frac_gap34": 0.19406099757355666,
+     "frac_none": 0.43132135261060034
+    },
+    {
+     "feature": "cwhr:59",
+     "label": "Wet Meadow",
+     "grp": "Wetland & aquatic",
+     "acres": 298178.3353898942,
+     "gap12_acres": 127492.99994192054,
+     "gap34_acres": 58212.20639516888,
+     "frac_gap12": 0.4275729817030883,
+     "frac_gap34": 0.1952261431705001,
+     "frac_none": 0.3772008751264113
+    },
+    {
+     "feature": "cwhr:22",
+     "label": "Fresh Emergent Wetland",
+     "grp": "Wetland & aquatic",
+     "acres": 427558.2600796411,
+     "gap12_acres": 221184.00709118161,
+     "gap34_acres": 66591.96482829715,
+     "frac_gap12": 0.5173189895804651,
+     "frac_gap34": 0.15574945228725806,
+     "frac_none": 0.32693155813227714
+    }
+   ]
+  },
+  "richness": {
+   "ace": [
+    {
+     "feature": "ace:BioRankSW",
+     "label": "Top-ranked biodiversity, statewide (rank 5)",
+     "grp": "Top-ranked biodiversity",
+     "acres": 19918479.757619288,
+     "gap12_acres": 4219205.185787424,
+     "gap34_acres": 5838704.851291773,
+     "frac_gap12": 0.21182365507455353,
+     "frac_gap34": 0.293130044177108,
+     "frac_none": 0.49504630074833833
+    },
+    {
+     "feature": "ace:BioRankEco",
+     "label": "Top-ranked biodiversity, by ecoregion (rank 5)",
+     "grp": "Top-ranked biodiversity",
+     "acres": 20075828.000761345,
+     "gap12_acres": 4551494.069239499,
+     "gap34_acres": 5731718.985199492,
+     "frac_gap12": 0.22671513568789745,
+     "frac_gap34": 0.2855034913121454,
+     "frac_none": 0.48778137299995783
+    },
+    {
+     "feature": "ace:RarRankSW",
+     "label": "Top-ranked rare species, statewide (rank 5)",
+     "grp": "Top-ranked biodiversity",
+     "acres": 17350638.755755074,
+     "gap12_acres": 4082760.775380688,
+     "gap34_acres": 4582153.857955219,
+     "frac_gap12": 0.2353089608315698,
+     "frac_gap34": 0.26409136415426515,
+     "frac_none": 0.5005996750141648
+    },
+    {
+     "feature": "ace:RarRankEco",
+     "label": "Top-ranked rare species, by ecoregion (rank 5)",
+     "grp": "Top-ranked biodiversity",
+     "acres": 16764126.666234083,
+     "gap12_acres": 4190324.854570151,
+     "gap34_acres": 5049024.312672174,
+     "frac_gap12": 0.24995783782821243,
+     "frac_gap34": 0.3011802769804765,
+     "frac_none": 0.448861885191311
+    },
+    {
+     "feature": "ace:NtvAmph",
+     "label": "Amphibians: native richness (top 20%)",
+     "grp": "Richness by taxon",
+     "acres": 22169624.762515765,
+     "gap12_acres": 4334819.299335203,
+     "gap34_acres": 5287473.295666873,
+     "frac_gap12": 0.1955296648351254,
+     "frac_gap34": 0.23850080244059402,
+     "frac_none": 0.5659695327242806
+    },
+    {
+     "feature": "ace:RarAmph",
+     "label": "Amphibians: rare richness (top 5%)",
+     "grp": "Richness by taxon",
+     "acres": 11432169.978390686,
+     "gap12_acres": 2996382.5702177375,
+     "gap34_acres": 3018772.4983236687,
+     "frac_gap12": 0.26210094635415315,
+     "frac_gap34": 0.26405944838379874,
+     "frac_none": 0.47383960526204794
+    },
+    {
+     "feature": "ace:AmphEndem",
+     "label": "Amphibians: endemic richness (top 5%)",
+     "grp": "Richness by taxon",
+     "acres": 7953945.2944154525,
+     "gap12_acres": 2186623.315873504,
+     "gap34_acres": 1839736.2328932276,
+     "frac_gap12": 0.2749105299239052,
+     "frac_gap34": 0.2312985775983304,
+     "frac_none": 0.49379089247776453
+    },
+    {
+     "feature": "ace:NtvRept",
+     "label": "Reptiles: native richness (top 20%)",
+     "grp": "Richness by taxon",
+     "acres": 23891897.953938685,
+     "gap12_acres": 9796803.434709275,
+     "gap34_acres": 5748646.260585996,
+     "frac_gap12": 0.41004709854347204,
+     "frac_gap34": 0.24061069872593804,
+     "frac_none": 0.34934220273059013
+    },
+    {
+     "feature": "ace:RarRept",
+     "label": "Reptiles: rare richness (top 5%)",
+     "grp": "Richness by taxon",
+     "acres": 10125269.95654373,
+     "gap12_acres": 2266388.7467021546,
+     "gap34_acres": 2233081.380642509,
+     "frac_gap12": 0.22383489590195466,
+     "frac_gap34": 0.22054536720764858,
+     "frac_none": 0.5556197368903972
+    },
+    {
+     "feature": "ace:ReptEndem",
+     "label": "Reptiles: endemic richness (top 5%)",
+     "grp": "Richness by taxon",
+     "acres": 6378698.27259676,
+     "gap12_acres": 1187339.0676019273,
+     "gap34_acres": 1209703.991061728,
+     "frac_gap12": 0.1861412810044334,
+     "frac_gap34": 0.189647470277546,
+     "frac_none": 0.6242112487180205
+    },
+    {
+     "feature": "ace:NtvBird",
+     "label": "Birds: native richness (top 20%)",
+     "grp": "Richness by taxon",
+     "acres": 20170677.650350828,
+     "gap12_acres": 2403827.9096108037,
+     "gap34_acres": 2987937.3484297604,
+     "frac_gap12": 0.11917437536209867,
+     "frac_gap34": 0.1481327201903795,
+     "frac_none": 0.7326929044475219
+    },
+    {
+     "feature": "ace:RarBird",
+     "label": "Birds: rare richness (top 5%)",
+     "grp": "Richness by taxon",
+     "acres": 5564026.358135465,
+     "gap12_acres": 892701.1681598646,
+     "gap34_acres": 1582741.2253425764,
+     "frac_gap12": 0.160441577861075,
+     "frac_gap34": 0.2844596922206101,
+     "frac_none": 0.5550987299183149
+    },
+    {
+     "feature": "ace:BirdEndem",
+     "label": "Birds: endemic richness (top 5%)",
+     "grp": "Richness by taxon",
+     "acres": 5698508.77542916,
+     "gap12_acres": 1385946.0545670239,
+     "gap34_acres": 1220548.3793108412,
+     "frac_gap12": 0.24321205936243326,
+     "frac_gap34": 0.21418732995088186,
+     "frac_none": 0.5426006106866847
+    },
+    {
+     "feature": "ace:NtvMamm",
+     "label": "Mammals: native richness (top 20%)",
+     "grp": "Richness by taxon",
+     "acres": 22738258.880895898,
+     "gap12_acres": 5064527.156203489,
+     "gap34_acres": 10823173.889813758,
+     "frac_gap12": 0.22273152851024028,
+     "frac_gap34": 0.47598956219585975,
+     "frac_none": 0.3012789092939001
+    },
+    {
+     "feature": "ace:RarMamm",
+     "label": "Mammals: rare richness (top 5%)",
+     "grp": "Richness by taxon",
+     "acres": 5638621.794345054,
+     "gap12_acres": 1317283.7318440613,
+     "gap34_acres": 1332503.8377261187,
+     "frac_gap12": 0.23361803289682573,
+     "frac_gap34": 0.23631729282898178,
+     "frac_none": 0.5300646742741921
+    },
+    {
+     "feature": "ace:MammEndem",
+     "label": "Mammals: endemic richness (top 5%)",
+     "grp": "Richness by taxon",
+     "acres": 5203760.493788404,
+     "gap12_acres": 1069584.879169726,
+     "gap34_acres": 802355.4218505309,
+     "frac_gap12": 0.2055407585430694,
+     "frac_gap34": 0.1541876154385433,
+     "frac_none": 0.6402716260183872
+    },
+    {
+     "feature": "ace:NtvPlnt",
+     "label": "Plants: native richness (top 20%)",
+     "grp": "Richness by taxon",
+     "acres": 24612067.744182367,
+     "gap12_acres": 6584546.051676088,
+     "gap34_acres": 9706168.382848622,
+     "frac_gap12": 0.267533232888671,
+     "frac_gap34": 0.394366230571704,
+     "frac_none": 0.33810053653962524
+    },
+    {
+     "feature": "ace:RarPlnt",
+     "label": "Plants: rare richness (top 5%)",
+     "grp": "Richness by taxon",
+     "acres": 5568747.182706862,
+     "gap12_acres": 1783017.106250303,
+     "gap34_acres": 1448431.7774090227,
+     "frac_gap12": 0.32018280732644294,
+     "frac_gap34": 0.26010011406281286,
+     "frac_none": 0.41971707861074425
+    },
+    {
+     "feature": "ace:PlntEndem",
+     "label": "Plants: endemic richness (top 5%)",
+     "grp": "Richness by taxon",
+     "acres": 6927191.445709966,
+     "gap12_acres": 1813317.0890301073,
+     "gap34_acres": 1620663.2549259088,
+     "frac_gap12": 0.2617680055822769,
+     "frac_gap34": 0.23395675832369137,
+     "frac_none": 0.5042752360940319
+    }
+   ],
+   "plants": [
+    {
+     "feature": "kling:plant",
+     "label": "Plant species richness (top 20%)",
+     "grp": "Plant richness",
+     "acres": 20094325.168252274,
+     "gap12_acres": 8300792.315851344,
+     "gap34_acres": 7349987.429271774,
+     "frac_gap12": 0.41309137014295233,
+     "frac_gap34": 0.36577428541289236,
+     "frac_none": 0.22113434444415436
+    },
+    {
+     "feature": "kling:endp",
+     "label": "Rarity-weighted endemic plant richness (top 20%)",
+     "grp": "Plant richness",
+     "acres": 19930788.61279405,
+     "gap12_acres": 6788994.952339668,
+     "gap34_acres": 4409664.861964534,
+     "frac_gap12": 0.34062851622346996,
+     "frac_gap34": 0.22124889022875216,
+     "frac_none": 0.43812259354777794
+    }
+   ]
+  },
+  "connectivity": {
+   "connectivity": [
+    {
+     "feature": "conn:chn",
+     "label": "Channelized connectivity",
+     "acres": 3092568.210128413,
+     "gap12_acres": 696043.0082983013,
+     "gap34_acres": 721549.0010484159,
+     "frac_gap12": 0.22506957357276833,
+     "frac_gap34": 0.2333170853549112,
+     "frac_none": 0.5416133410723203
+    },
+    {
+     "feature": "conn:int",
+     "label": "Intensified connectivity",
+     "acres": 15034770.355249366,
+     "gap12_acres": 3320097.2413647007,
+     "gap34_acres": 5045885.808856604,
+     "frac_gap12": 0.22082793171533174,
+     "frac_gap34": 0.33561442507133743,
+     "frac_none": 0.44355764321333124
+    },
+    {
+     "feature": "conn:diff",
+     "label": "Diffuse connectivity",
+     "acres": 55792657.82606193,
+     "gap12_acres": 20563130.184002846,
+     "gap34_acres": 17640307.407908704,
+     "frac_gap12": 0.36856337348383816,
+     "frac_gap34": 0.3161761438736934,
+     "frac_none": 0.3152604826424682
+    },
+    {
+     "feature": "conn:clink",
+     "label": "Climate linkages",
+     "acres": 15167987.478957973,
+     "gap12_acres": 6329511.378937064,
+     "gap34_acres": 4664471.575927329,
+     "frac_gap12": 0.4172940798980601,
+     "frac_gap34": 0.30752079551741385,
+     "frac_none": 0.2751851245845257
+    },
+    {
+     "feature": "link:scml",
+     "label": "South Coast Missing Linkages",
+     "acres": 1957462.8923596335,
+     "gap12_acres": 543847.0119254373,
+     "gap34_acres": 439675.8570419976,
+     "frac_gap12": 0.2778326036463732,
+     "frac_gap34": 0.2246151683171823,
+     "frac_none": 0.4975522280364445
+    }
+   ]
+  },
+  "freshwater": {
+   "freshwater": [
+    {
+     "feature": "fw:wetlands",
+     "label": "Remaining wetlands",
+     "measure": "acres",
+     "acres": 2369285.673444391,
+     "gap12_acres": 737481.4745671602,
+     "gap34_acres": 473997.90565359703,
+     "frac_gap12": 0.31126743508942656,
+     "frac_gap34": 0.20005941493940413,
+     "frac_none": 0.4886731499711694,
+     "ord": 1
+    },
+    {
+     "feature": "fw:gde",
+     "label": "Groundwater-dependent ecosystems",
+     "measure": "acres",
+     "acres": 2481028.311309423,
+     "gap12_acres": 818063.6353145244,
+     "gap34_acres": 588909.4889613249,
+     "frac_gap12": 0.3297276502591668,
+     "frac_gap34": 0.23736508216244967,
+     "frac_none": 0.4329072675783835,
+     "ord": 2
+    },
+    {
+     "feature": "fw:floodplain",
+     "label": "100-year floodplain (FEMA; assessment used First Street)",
+     "measure": "acres",
+     "acres": 7339957.888626274,
+     "gap12_acres": 1194041.9577552956,
+     "gap34_acres": 1013991.7106192119,
+     "frac_gap12": 0.16267694936036878,
+     "frac_gap34": 0.13814680220311015,
+     "frac_none": 0.6991762484365209,
+     "ord": 6
+    },
+    {
+     "feature": "fw:fwrich",
+     "label": "Watersheds with top 20% freshwater species richness",
+     "measure": "acres",
+     "acres": 24774431.119244426,
+     "gap12_acres": 5046863.833028535,
+     "gap34_acres": 7275515.206028773,
+     "frac_gap12": 0.2037126022687239,
+     "frac_gap34": 0.29367032369018786,
+     "frac_none": 0.5026170740410881,
+     "ord": 7
+    }
+   ],
+   "streams": [
+    {
+     "feature": "fw:rivers",
+     "label": "Rivers (order 6+)",
+     "measure": "miles",
+     "miles": 13808.223402997,
+     "frac_gap12": 0.20042282201105743,
+     "frac_gap34": 0.2576292191479023,
+     "frac_none": 0.5419479588410405,
+     "ord": 3
+    },
+    {
+     "feature": "fw:streams",
+     "label": "Streams (order 3-5)",
+     "measure": "miles",
+     "miles": 94080.96280244188,
+     "frac_gap12": 0.2597602792190698,
+     "frac_gap34": 0.289488306521113,
+     "frac_none": 0.450751414259817,
+     "ord": 4
+    },
+    {
+     "feature": "fw:headwaters",
+     "label": "Headwaters (order 1-2)",
+     "measure": "miles",
+     "miles": 398877.1487795992,
+     "frac_gap12": 0.2745014705327387,
+     "frac_gap34": 0.3100780714438117,
+     "frac_none": 0.41542045802344973,
+     "ord": 5
+    }
+   ]
+  },
+  "climate": {
+   "climate": [
+    {
+     "feature": "clim:fire",
+     "label": "Burned since 2015 (CAL FIRE perimeters)",
+     "acres": 12887883.324789766,
+     "gap12_acres": 3696637.764195252,
+     "gap34_acres": 5516533.598206885,
+     "frac_gap12": 0.2868304803074056,
+     "frac_gap34": 0.4280403119103248,
+     "frac_none": 0.28512920778227013,
+     "share_of_network": 0.1393935807178001
+    },
+    {
+     "feature": "clim:miroc",
+     "label": "Climate-exposed natural vegetation, mid-century (MIROC5, hot-dry)",
+     "acres": 17771259.822542943,
+     "gap12_acres": 5721762.990848899,
+     "gap34_acres": 5029851.442609064,
+     "frac_gap12": 0.32196721267846246,
+     "frac_gap34": 0.2830329134138632,
+     "frac_none": 0.3949998739076752,
+     "share_of_network": 0.21575742125402642
+    },
+    {
+     "feature": "clim:cnrm",
+     "label": "Climate-exposed natural vegetation, mid-century (CNRM-CM5, warm-wet)",
+     "acres": 19882955.47651234,
+     "gap12_acres": 5704084.893291312,
+     "gap34_acres": 5538779.4982370045,
+     "frac_gap12": 0.28688314974247797,
+     "frac_gap34": 0.278569225021901,
+     "frac_none": 0.4345476252356213,
+     "share_of_network": 0.2150908118981684
+    },
+    {
+     "feature": "clim:slr",
+     "label": "Sea-level rise, 5 ft (NOAA; extent differs from the report)",
+     "acres": 885543.0705422419,
+     "gap12_acres": 162137.9639784524,
+     "gap34_acres": 72625.32344600116,
+     "frac_gap12": 0.18309438509769035,
+     "frac_gap34": 0.08201218648973303,
+     "frac_none": 0.7348934284125765,
+     "share_of_network": 0.006113931851304977
+    }
+   ]
+  }
+ }
+}

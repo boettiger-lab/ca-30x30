@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30x30 Assessment Explorer</title>
+    <meta name="description" content="Explore California's 2025 30x30 Biodiversity Assessment for the whole state or any ecoregion, county, district or drawn area: habitats, species richness, connectivity, freshwater and climate features by conservation status, computed with fixed, reviewable SQL.">
+    <link rel="icon" type="image/svg+xml" href="https://cdn.jsdelivr.net/gh/boettiger-lab/geo-agent@v3.35.0/app/assets/favicon.svg">
+
+    <script src="https://unpkg.com/maplibre-gl@5.22.0/dist/maplibre-gl.js"
+        integrity="sha384-U054LTKiMIJKEecR8PKFiUZdvkGWHjfPBnen5hSmR9TwfOfgZmKbskC8Rs9dCm/1"
+        crossorigin="anonymous"></script>
+    <link href="https://unpkg.com/maplibre-gl@5.22.0/dist/maplibre-gl.css" rel="stylesheet"
+        integrity="sha384-MGCxhspF/+ufueUgol3FDkiAYQbpSNRhBT0VWHJt64U8qIy9qlnXWx8LAbj6niPH"
+        crossorigin="anonymous" />
+    <script src="https://unpkg.com/pmtiles@3.0.7/dist/pmtiles.js"
+        integrity="sha384-MjejsnWXHmuz93aE35YWLh5AbS/6ceRB3Vb+ukOwqFzJRTpQ8vvbkLbNV7I0QK4f"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="app/style.css">
+</head>
+
+<body>
+    <header id="app-header">
+        <div class="brand">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <h1>30x30 Biodiversity Assessment Explorer</h1>
+            <span class="brand-sub">California's 2025 assessment, for the state or any area</span>
+        </div>
+        <nav class="header-links">
+            <a href="https://cabiodiversitynetwork.org/wp-content/uploads/2026/08/CBN-Biodiversity-Assessment-2025-Final-Report.pdf" target="_blank" rel="noopener">Read the report</a>
+            <a href="https://ca-30x30.nrp-nautilus.io/" target="_blank" rel="noopener" title="Ask open-ended questions of the same data with an AI data assistant">Ask the data (AI explorer)</a>
+            <a href="https://github.com/boettiger-lab/ca-30x30/tree/main/assessment" target="_blank" rel="noopener">GitHub</a>
+        </nav>
+    </header>
+
+    <main id="layout">
+        <section id="map-wrap">
+            <div id="map"></div>
+            <div id="map-legend" class="map-overlay">
+                <div class="title">2025 30x30 Conserved Areas</div>
+                <div class="lg-row"><i class="s12"></i>Mostly GAP 1–2<span class="lg-long"> (30x30)</span></div>
+                <div class="lg-row"><i class="s34"></i>Mostly GAP 3–4<span class="lg-long"> (other conserved or public)</span></div>
+                <div class="lg-row"><i class="snone"></i>Non-conserved<span class="lg-long"> (unshaded)</span></div>
+                <label class="lg-toggle"><input type="checkbox" id="conserved-toggle" checked> Show conserved areas</label>
+            </div>
+            <div id="map-hint" class="map-overlay" hidden></div>
+        </section>
+
+        <aside id="sidebar">
+            <div class="sidebar-resize" title="Drag to resize"></div>
+
+            <section id="controls">
+                <div class="step" id="step-jur">
+                    <div class="step-label"><span class="step-num">1</span> Area</div>
+                    <div class="seg" id="jur-buttons" role="radiogroup" aria-label="Area type"></div>
+                </div>
+                <div class="step" id="step-place" hidden>
+                    <div class="step-label"><span class="step-num">2</span> <span id="place-label">Place</span></div>
+                    <div class="search">
+                        <input id="place-input" type="search" autocomplete="off" spellcheck="false"
+                            placeholder="Choose an area type first" disabled
+                            aria-autocomplete="list" aria-controls="place-results" aria-label="Search places">
+                        <ul id="place-results" role="listbox" hidden></ul>
+                    </div>
+                </div>
+                <div class="step" id="step-draw" hidden>
+                    <div class="step-label"><span class="step-num">2</span> Your area</div>
+                    <div class="draw-row">
+                        <button class="ghost-btn" id="draw-btn" type="button">Draw a polygon</button>
+                        <label class="ghost-btn upload">Upload GeoJSON<input type="file" id="upload-input" accept=".geojson,.json,application/geo+json,application/json" hidden></label>
+                        <button class="ghost-btn" id="draw-clear" type="button">Clear</button>
+                    </div>
+                    <div class="step-help" id="draw-help"></div>
+                </div>
+                <div class="step" id="step-themes">
+                    <div class="step-label">Sections</div>
+                    <div class="chips" id="theme-buttons" role="group" aria-label="Sections"></div>
+                </div>
+            </section>
+
+            <section id="report" aria-live="polite"></section>
+        </aside>
+    </main>
+
+    <div id="tooltip" role="tooltip" hidden></div>
+
+    <script type="module" src="app/main.js"></script>
+</body>
+
+</html>

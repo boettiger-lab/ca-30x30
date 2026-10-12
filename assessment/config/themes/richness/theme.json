@@ -1,0 +1,19 @@
+{
+    "label": "Species richness",
+    "color": "#2a78d6",
+    "blurb": "The most biodiverse and species-rich places (CDFW ACE; Kling et al. 2019) and how much of each lies in 30x30 (report Tables 9–11).",
+    "queries": {
+        "ace": { "file": "ace.sql" },
+        "plants": { "file": "plants.sql" }
+    },
+    "charts": [
+        { "type": "representation", "query": "ace", "title": "Top-ranked biodiversity", "subtitle": "ACE rank 5 (report Table 9)",
+          "need": false, "sort": "none", "where": { "grp": "Top-ranked biodiversity" }, "wide": true },
+        { "type": "representation", "query": "ace", "title": "Most species-rich areas by taxon",
+          "subtitle": "ACE richness: top 20% (native) or top 5% (rare, endemic) of California's hexagons (report Table 10)",
+          "need": false, "sort": "none", "where": { "grp": "Richness by taxon" }, "wide": true },
+        { "type": "representation", "query": "plants", "title": "Plant richness", "subtitle": "Top 20% statewide (report Table 11)",
+          "need": false, "sort": "none", "wide": true }
+    ],
+    "method": "ACE (CDFW Areas of Conservation Emphasis v3) features are defined as in the report: rank 5 for the BioRank and Rare Rank indices; for per-taxon richness, ACE hexagons at or above California's 80th percentile (native richness) or 95th percentile (rare and endemic richness). Thresholds are always computed over all of California's hexagons, so a feature means the same thing in any area. Plant richness and rarity-weighted endemic plant richness are Kling et al. (2019), statewide top 20%. These features sit on coarser grids (ACE hexagons; resolution-8 H3 cells, about 180 acres); within them, conservation status comes from each resolution-10 land cell. Like the report, these value-based features get no need class: a network that protects the richest places should hold more than its share of them."
+}

@@ -1,0 +1,17 @@
+{
+    "label": "Climate & disturbance",
+    "color": "#c2410c",
+    "blurb": "Recent fire, projected climate exposure and sea-level rise: how much of the 30x30 network they touch, and how much of each lies in 30x30.",
+    "queries": { "climate": { "file": "climate.sql" } },
+    "headlines": [
+        { "query": "climate", "row": { "feature": "clim:fire" }, "field": "share_of_network", "label": "30x30 network burned since 2015", "format": "pct", "report": "network.burned_past_decade" },
+        { "query": "climate", "row": { "feature": "clim:miroc" }, "field": "share_of_network", "label": "30x30 network climate-exposed (MIROC5)", "format": "pct", "report": "network.climate_stressed" },
+        { "query": "climate", "row": { "feature": "clim:slr" }, "field": "share_of_network", "label": "30x30 network in 5 ft sea-level rise zone", "format": "pct", "report": "network.sea_level_rise" }
+    ],
+    "charts": [
+        { "type": "representation", "query": "climate", "title": "Climate and disturbance features",
+          "subtitle": "Share of each feature's extent in this area by conservation status",
+          "need": false, "sort": "none", "wide": true }
+    ],
+    "method": "Burned area is every CAL FIRE fire perimeter from 2015 on (the report's 'past decade'), on resolution-10 cells; statewide this gives 13.9% of the 30x30 network burned (report: 14%). Climate exposure is Thorne et al. (2016) for mid-century, natural vegetation only (CWHR major-habitat classes other than agriculture and urban), with an exposure index of 0.95 or more counted as exposed, separately for the MIROC5 and CNRM-CM5 models; statewide, 32.2% of MIROC5-exposed natural vegetation lies in 30x30 (the report's draft analysis: 31.7%). The report's prose says 32% of the network's natural vegetation is projected to be stressed; this app computes about 22% of the network for either model, and has not reproduced the 32% figure. Sea-level rise is NOAA's 5-foot inundation layer, which includes existing open water and so does not match the report's extent (tracked in ca-30x30#104). The report publishes no need classes for these features."
+}

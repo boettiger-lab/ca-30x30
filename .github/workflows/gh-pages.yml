@@ -1,6 +1,7 @@
 name: Sync app to GitHub Pages
 
-# Copies the static app onto the root of the orphan `gh-pages` branch, which Pages serves.
+# Copies the static app onto the root of the orphan `gh-pages` branch, which Pages serves,
+# and the no-LLM Assessment Explorer (`assessment/`) to `assessment/` on that branch.
 # Only the app files listed below are touched; everything else on that branch (the unlisted
 # logs/<uuid>/ pages, robots.txt, README.md) is left alone.
 # Without the k8s-injected config.json, the app falls back to the `llm` block in
@@ -16,6 +17,7 @@ on:
       - system-prompt.md
       - stac/**
       - assets/**
+      - assessment/**
       - .github/workflows/gh-pages.yml
   workflow_dispatch:
 
@@ -41,17 +43,18 @@ jobs:
 
       - name: Copy app files
         run: |
-          rm -rf site/stac site/assets
+          rm -rf site/stac site/assets site/assessment
           cp app/index.html app/docs.html app/layers-input.json app/system-prompt.md site/
           cp -r app/stac site/stac
           cp -r app/assets site/assets
+          cp -r app/assessment site/assessment
 
       - name: Commit and push
         working-directory: site
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
-          git add -A index.html docs.html layers-input.json system-prompt.md stac assets
+          git add -A index.html docs.html layers-input.json system-prompt.md stac assets assessment
           if git diff --cached --quiet; then
             echo "gh-pages already up to date"
           else
