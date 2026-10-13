@@ -52,7 +52,7 @@ SELECT n.feature, n.label,
        SUM(a * w12) / SUM(a) AS frac_gap12,
        SUM(a * w34) / SUM(a) AS frac_gap34,
        1 - SUM(a * (w12 + w34)) / SUM(a) AS frac_none,
-       COALESCE(SUM(a * w12), 0) / ANY_VALUE(net.n) AS share_of_network
+       COALESCE(SUM(a * w12), 0) / NULLIF(ANY_VALUE(net.n), 0) AS share_of_network
 FROM names n LEFT JOIN f USING (code) CROSS JOIN net
 GROUP BY n.feature, n.label, n.ord
 ORDER BY n.ord

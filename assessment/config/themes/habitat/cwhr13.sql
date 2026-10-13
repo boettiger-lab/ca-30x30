@@ -21,7 +21,7 @@ SELECT 'cwhr13:' || f.code AS feature, n.label,
        SUM(a * w12) / SUM(a) AS frac_gap12,
        SUM(a * w34) / SUM(a) AS frac_gap34,
        1 - SUM(a * (w12 + w34)) / SUM(a) AS frac_none,
-       SUM(a * w12) / SUM(SUM(a * w12)) OVER () AS share_of_network
+       SUM(a * w12) / NULLIF(SUM(SUM(a * w12)) OVER (), 0) AS share_of_network
 FROM f JOIN names n USING (code)
 GROUP BY f.code, n.label
 ORDER BY frac_gap12

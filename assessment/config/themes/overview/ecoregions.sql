@@ -16,7 +16,7 @@ SELECT ecoregion AS feature, ecoregion AS label,
        SUM(area_km2 * w12) / SUM(area_km2) AS frac_gap12,
        SUM(area_km2 * w34) / SUM(area_km2) AS frac_gap34,
        1 - SUM(area_km2 * (w12 + w34)) / SUM(area_km2) AS frac_none,
-       SUM(area_km2 * w12) / SUM(SUM(area_km2 * w12)) OVER () AS share_of_network
+       SUM(area_km2 * w12) / NULLIF(SUM(SUM(area_km2 * w12)) OVER (), 0) AS share_of_network
 FROM eco
 GROUP BY ecoregion
 ORDER BY gap12_acres DESC
