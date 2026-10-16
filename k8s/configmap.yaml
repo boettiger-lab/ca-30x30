@@ -15,7 +15,7 @@ data:
         "mcp_server_url": "${MCP_SERVER_URL}",
         "llm_model": "deepseek/deepseek-v4-flash-0731",
         "transcription_model": {
-            "value": "gemma-4-e4b",
+            "value": "gemma-small",
             "endpoint": "/api/llm",
             "api_key": "unused"
         },
