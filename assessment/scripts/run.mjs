@@ -15,7 +15,7 @@ import { dirname, resolve, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { tokens } from '../app/tokens.js';
 
-const GLEN = 'v0.2.8';      // keep in step with index.html
+const GLEN = 'v0.2.10';      // keep in step with index.html
 
 async function glenEngine() {
     const dir = join(tmpdir(), `glen-charts-${GLEN}`, 'core');

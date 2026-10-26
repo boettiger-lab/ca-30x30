@@ -3,12 +3,13 @@
  * token, the representation table (report Tables 3-13), the 2025 Conserved
  * Areas map layer, polygon drawing, and the "How to read this" note.
  *
- * Passed to createExplorer({ extensions }) by index.html. The precompute CLI
- * reads only the tokens, from tokens.js (app.json "extensions").
+ * Passed to createExplorer({ extensions }) by index.html, and read by the
+ * glen-charts precompute CLI (app.json "extensions") for its tokens and the
+ * overlay's tile URL, so nothing here may touch the DOM at load time.
  */
 
-import { fmt, escapeHtml } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.2.8/core/format.js';
-import { polygonSource } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.2.8/sources/polygon-source.js';
+import { fmt, escapeHtml } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.2.10/core/format.js';
+import { polygonSource } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.2.10/sources/polygon-source.js';
 import { renderRepresentation, NEED, REP_CSS } from './represent.js';
 import { tokens } from './tokens.js';
 
