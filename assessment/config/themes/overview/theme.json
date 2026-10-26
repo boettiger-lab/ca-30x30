@@ -16,7 +16,7 @@
             "field": "frac_gap12",
             "label": "In 30x30 Conservation Areas",
             "format": "pct",
-            "report": "land.frac_gap12",
+            "reference": "land.frac_gap12",
             "detail_field": "gap12_acres",
             "detail_format": "acres",
             "detail_template": "{} in GAP 1–2"
@@ -26,7 +26,7 @@
             "field": "frac_gap34",
             "label": "Other conserved or public (GAP 3–4)",
             "format": "pct",
-            "report": "land.frac_gap34",
+            "reference": "land.frac_gap34",
             "detail_field": "gap34_acres",
             "detail_format": "acres",
             "detail_template": "{}"
@@ -36,7 +36,7 @@
             "field": "frac_none",
             "label": "Non-conserved",
             "format": "pct",
-            "report": "land.frac_none",
+            "reference": "land.frac_none",
             "detail_field": "none_acres",
             "detail_format": "acres",
             "detail_template": "{}"
@@ -55,7 +55,7 @@
             "title": "Land by conservation status",
             "subtitle": "Share of land area. Only GAP 1–2 counts toward 30x30; GAP 3–4 is other conserved or public land.",
             "statewide_row": true,
-            "report_row": "land",
+            "reference_row": "land",
             "category": "__label",
             "stacked": true,
             "format": "pct",

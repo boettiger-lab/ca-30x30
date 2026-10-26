@@ -4,9 +4,9 @@
     "blurb": "Recent fire, projected climate exposure and sea-level rise: how much of the 30x30 network they touch, and how much of each lies in 30x30.",
     "queries": { "climate": { "file": "climate.sql" } },
     "headlines": [
-        { "query": "climate", "row": { "feature": "clim:fire" }, "field": "share_of_network", "label": "30x30 network burned since 2015", "format": "pct", "report": "network.burned_past_decade" },
-        { "query": "climate", "row": { "feature": "clim:miroc" }, "field": "share_of_network", "label": "30x30 network climate-exposed (MIROC5)", "format": "pct", "report": "network.climate_stressed" },
-        { "query": "climate", "row": { "feature": "clim:slr" }, "field": "share_of_network", "label": "30x30 network in 5 ft sea-level rise zone", "format": "pct", "report": "network.sea_level_rise" }
+        { "query": "climate", "row": { "feature": "clim:fire" }, "field": "share_of_network", "label": "30x30 network burned since 2015", "format": "pct", "reference": "network.burned_past_decade" },
+        { "query": "climate", "row": { "feature": "clim:miroc" }, "field": "share_of_network", "label": "30x30 network climate-exposed (MIROC5)", "format": "pct", "reference": "network.climate_stressed" },
+        { "query": "climate", "row": { "feature": "clim:slr" }, "field": "share_of_network", "label": "30x30 network in 5 ft sea-level rise zone", "format": "pct", "reference": "network.sea_level_rise" }
     ],
     "charts": [
         { "type": "representation", "query": "climate", "title": "Climate and disturbance features",

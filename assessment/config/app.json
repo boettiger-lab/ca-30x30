@@ -1,8 +1,13 @@
 {
+    "id": "ca30x30",
     "title": "30x30 Biodiversity Assessment Explorer",
     "mcp_url": "https://duckdb-mcp.nrp-nautilus.io/mcp",
     "view": { "center": [-119.4, 37.2], "zoom": 5.4 },
     "project_url": "https://github.com/boettiger-lab/ca-30x30/tree/main/assessment",
+    "extensions": "app/tokens.js",
+    "format": { "pct_decimals": 1 },
+    "live_note": "Results for this area are computed live from the source data; larger areas can take a minute or two.",
+    "export_css": ":root { --accent: #1b6e3a; --primary: #1b6e3a; --series-protected: #1b6e3a; }",
 
     "overview": "overview",
     "themes": ["habitat", "richness", "connectivity", "freshwater", "climate"],
@@ -11,14 +16,23 @@
     "land": "SELECT c.h0, c.h8, c.h9, c.h10, h3_cell_area(c.h10, 'km^2') AS area_km2, COALESCE(w.w1 + w.w2, 0) AS w12, COALESCE(w.w3 + w.w4, 0) AS w34 FROM ({{CELLS}}) c LEFT JOIN read_parquet('s3://public-ca30x30/conserved-areas-terrestrial-2025/hex-weights/h0=*/data_0.parquet') w ON w.h0 = c.h0 AND w.h10 = c.h10",
 
     "statewide": {
+        "id": "CA",
+        "label": "California",
+        "kind_label": "Statewide",
+        "description": "The whole state, as in the report",
         "aoi": "SELECT DISTINCT h0, h8 FROM read_parquet('s3://public-ca30x30/ecoregion/hex-res8/h0=*/data_0.parquet')",
         "aoi10": "SELECT DISTINCT h0, h8, h10 FROM read_parquet('s3://public-ca30x30/ecoregion/hex/h0=*/data_0.parquet')",
         "cells": "SELECT DISTINCT h0, h8, h9, h10 FROM read_parquet('s3://public-ca30x30/ecoregion/hex/h0=*/data_0.parquet')"
     },
 
-    "conserved": {
-        "url": "https://s3-west.nrp-nautilus.io/public-ca30x30/conserved-areas-terrestrial-2025.pmtiles",
-        "source_layer": "conserved-areas-terrestrial-2025"
+    "reference": {
+        "values": "data/report.json",
+        "label": "Report",
+        "chart_label": "Report (2025)",
+        "title": "Published in the 2025 Biodiversity Assessment",
+        "citation": "Schloss, C., Howard, J., Olliff Yang, R., et al. (2026). California’s 30x30 Initiative in 2025: A Biodiversity Assessment of the State’s 30x30 Conservation Areas. California Biodiversity Network.",
+        "url": "https://cabiodiversitynetwork.org/wp-content/uploads/2026/08/CBN-Biodiversity-Assessment-2025-Final-Report.pdf",
+        "note": "Features, thresholds and the representation framework follow"
     },
 
     "jurisdictions": [

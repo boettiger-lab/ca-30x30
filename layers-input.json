@@ -87,6 +87,11 @@
                 "icon": "info"
             },
             {
+                "label": "Assessment Explorer",
+                "href": "https://boettiger-lab.github.io/ca-30x30/assessment/",
+                "variant": "chart"
+            },
+            {
                 "label": "CBN Assessment",
                 "href": "https://www.scienceforconservation.org/assets/downloads/AppendixC_TNC_CBN_Biodiversity_Assessment_2026_Final.pdf",
                 "variant": "doc"
