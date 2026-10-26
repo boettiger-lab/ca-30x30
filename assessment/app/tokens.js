@@ -5,8 +5,7 @@
  * app.land around app.land_cells (or the area's own `cells`, e.g. statewide),
  * so every metric is masked to California's land grid, the 30x30 denominator.
  *
- * Kept free of imports so the glen-charts precompute CLI can load it
- * (app.json "extensions") without the browser modules.
+ * Kept free of imports so scripts/run.mjs can load it without glen-charts.
  */
 
 export const tokens = {

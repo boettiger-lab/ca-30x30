@@ -4,7 +4,7 @@
     "mcp_url": "https://duckdb-mcp.nrp-nautilus.io/mcp",
     "view": { "center": [-119.4, 37.2], "zoom": 5.4 },
     "project_url": "https://github.com/boettiger-lab/ca-30x30/tree/main/assessment",
-    "extensions": "app/tokens.js",
+    "extensions": "app/extensions.js",
     "format": { "pct_decimals": 1 },
     "live_note": "Results for this area are computed live from the source data; larger areas can take a minute or two.",
     "export_css": ":root { --accent: #1b6e3a; --primary: #1b6e3a; --series-protected: #1b6e3a; }",

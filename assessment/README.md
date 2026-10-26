@@ -14,7 +14,7 @@ There is **no LLM** in the loop. Every number comes from a fixed, reviewable SQL
 SQL for the selected area, and **Export** downloads a self-contained report with every query as SQL / R / Python, its output, and data citations.
 It accompanies, and does not replace, the open-ended [AI data explorer](https://ca-30x30.nrp-nautilus.io/) at the root of this repo.
 
-The app is built on [glen-charts](https://github.com/SchmidtDSE/glen-charts) (v0.2.8), the shared library for no-LLM area explorers,
+The app is built on [glen-charts](https://github.com/SchmidtDSE/glen-charts) (v0.2.10), the shared library for no-LLM area explorers,
 loaded from jsDelivr at a pinned tag. This folder holds only the configuration, the SQL, the precomputed data and what is specific to the
 assessment.
 
@@ -64,7 +64,7 @@ app/
   extensions.js          what glen-charts does not provide: the representation chart type, the
                          conserved-areas layer, polygon drawing, the "How to read this" note
   represent.js           the representation table (report Tables 3–13) + its CSS
-  tokens.js              the {{LAND}} template token (also read by the precompute CLI)
+  tokens.js              the {{LAND}} template token
   style.css              palette overrides on glen-charts' stylesheet
 config/
   app.json               area types (AOI SQL, pick lists, boundary tiles), the land grid, sections,
@@ -108,10 +108,9 @@ the area's own share is drawn as a second reference tick.
    `node scripts/run.mjs <theme> <query> [ecoregion Mono]`.
 2. Reference it in that theme's `theme.json`: a `"type": "representation"` chart, a bar chart, or a headline.
 3. Regenerate the data with the glen-charts precompute CLI, from this folder:
-   `npx github:SchmidtDSE/glen-charts#v0.2.8 precompute statewide`, then `... precompute areas ecoregion --theme <id>`
+   `npx github:SchmidtDSE/glen-charts#v0.2.10 precompute statewide`, then `... precompute areas ecoregion --theme <id>`
    and the same for `county`, `cd`, `sldu` and `sldl`, which re-run only that theme (`--force` re-runs every theme, which takes
-   hours). If you run the `sources` job, add `https://s3-west.nrp-nautilus.io/public-ca30x30/conserved-areas-terrestrial-2025.pmtiles`
-   back to the conserved-areas entry's `prefixes`: the CLI does not see map layers defined in `app/extensions.js`.
+   hours).
 4. Check the result against the report with `python3 scripts/validate.py`.
 
 ## Run locally
