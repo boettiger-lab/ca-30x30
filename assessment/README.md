@@ -110,8 +110,8 @@ the area's own share is drawn as a second reference tick.
 3. Regenerate the data with the glen-charts precompute CLI, from this folder:
    `npx github:SchmidtDSE/glen-charts#v0.2.8 precompute statewide`, then `... precompute areas ecoregion --theme <id>`
    and the same for `county`, `cd`, `sldu` and `sldl`, which re-run only that theme (`--force` re-runs every theme, which takes
-   hours). Keep `data/sources.json` as it is unless a new dataset is added: the CLI's `sources` job currently drops two of its
-   citations (cwhr13 and the conserved-areas tiles).
+   hours). If you run the `sources` job, add `https://s3-west.nrp-nautilus.io/public-ca30x30/conserved-areas-terrestrial-2025.pmtiles`
+   back to the conserved-areas entry's `prefixes`: the CLI does not see map layers defined in `app/extensions.js`.
 4. Check the result against the report with `python3 scripts/validate.py`.
 
 ## Run locally
