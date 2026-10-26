@@ -18,6 +18,7 @@
         integrity="sha384-MjejsnWXHmuz93aE35YWLh5AbS/6ceRB3Vb+ukOwqFzJRTpQ8vvbkLbNV7I0QK4f"
         crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.2.8/core/style.css">
     <link rel="stylesheet" href="app/style.css">
 </head>
 
@@ -35,58 +36,13 @@
         </nav>
     </header>
 
-    <main id="layout">
-        <section id="map-wrap">
-            <div id="map"></div>
-            <div id="map-legend" class="map-overlay">
-                <div class="title">2025 30x30 Conserved Areas</div>
-                <div class="lg-row"><i class="s12"></i>Mostly GAP 1–2<span class="lg-long"> (30x30)</span></div>
-                <div class="lg-row"><i class="s34"></i>Mostly GAP 3–4<span class="lg-long"> (other conserved or public)</span></div>
-                <div class="lg-row"><i class="snone"></i>Non-conserved<span class="lg-long"> (unshaded)</span></div>
-                <label class="lg-toggle"><input type="checkbox" id="conserved-toggle" checked> Show conserved areas</label>
-            </div>
-            <div id="map-hint" class="map-overlay" hidden></div>
-        </section>
+    <main id="glen"></main>
 
-        <aside id="sidebar">
-            <div class="sidebar-resize" title="Drag to resize"></div>
-
-            <section id="controls">
-                <div class="step" id="step-jur">
-                    <div class="step-label"><span class="step-num">1</span> Area</div>
-                    <div class="seg" id="jur-buttons" role="radiogroup" aria-label="Area type"></div>
-                </div>
-                <div class="step" id="step-place" hidden>
-                    <div class="step-label"><span class="step-num">2</span> <span id="place-label">Place</span></div>
-                    <div class="search">
-                        <input id="place-input" type="search" autocomplete="off" spellcheck="false"
-                            placeholder="Choose an area type first" disabled
-                            aria-autocomplete="list" aria-controls="place-results" aria-label="Search places">
-                        <ul id="place-results" role="listbox" hidden></ul>
-                    </div>
-                </div>
-                <div class="step" id="step-draw" hidden>
-                    <div class="step-label"><span class="step-num">2</span> Your area</div>
-                    <div class="draw-row">
-                        <button class="ghost-btn" id="draw-btn" type="button">Draw a polygon</button>
-                        <label class="ghost-btn upload">Upload GeoJSON<input type="file" id="upload-input" accept=".geojson,.json,application/geo+json,application/json" hidden></label>
-                        <button class="ghost-btn" id="draw-clear" type="button">Clear</button>
-                    </div>
-                    <div class="step-help" id="draw-help"></div>
-                </div>
-                <div class="step" id="step-themes">
-                    <div class="step-label">Sections</div>
-                    <div class="chips" id="theme-buttons" role="group" aria-label="Sections"></div>
-                </div>
-            </section>
-
-            <section id="report" aria-live="polite"></section>
-        </aside>
-    </main>
-
-    <div id="tooltip" role="tooltip" hidden></div>
-
-    <script type="module" src="app/main.js"></script>
+    <script type="module">
+        import { createExplorer } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.2.8/core/explorer.js';
+        import extensions from './app/extensions.js';
+        createExplorer({ extensions });
+    </script>
 </body>
 
 </html>

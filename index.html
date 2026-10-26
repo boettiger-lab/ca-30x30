@@ -61,10 +61,13 @@
          The partner slot sets no gap of its own, so two marks would touch. -->
     <style>
         .app-header-partner-slot { gap: 14px; }
-        /* Document icon for the report links (nav entries with "variant": "doc").
-           The library ships no document icon; this matches its 14px stroke icons. */
+        /* Document icon for the report links (nav entries with "variant": "doc")
+           and a chart icon for the Assessment Explorer ("variant": "chart").
+           The library ships neither; these match its 14px stroke icons. */
         .app-header-link--doc::before,
-        .app-header-menu-link--doc::before {
+        .app-header-menu-link--doc::before,
+        .app-header-link--chart::before,
+        .app-header-menu-link--chart::before {
             content: "";
             flex: 0 0 auto;
             width: 14px;
@@ -73,7 +76,13 @@
             -webkit-mask: var(--doc-icon) center / contain no-repeat;
             mask: var(--doc-icon) center / contain no-repeat;
         }
+        .app-header-link--chart::before,
+        .app-header-menu-link--chart::before {
+            -webkit-mask-image: var(--chart-icon);
+            mask-image: var(--chart-icon);
+        }
         :root {
+            --chart-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 3v18h18'/%3E%3Cpath d='M18 17V9'/%3E%3Cpath d='M13 17V5'/%3E%3Cpath d='M8 17v-3'/%3E%3C/svg%3E");
             --doc-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/%3E%3Cpolyline points='14 2 14 8 20 8'/%3E%3Cline x1='16' y1='13' x2='8' y2='13'/%3E%3Cline x1='16' y1='17' x2='8' y2='17'/%3E%3C/svg%3E");
         }
         @media (min-width: 701px) {
