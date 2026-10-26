@@ -14,8 +14,9 @@ There is **no LLM** in the loop. Every number comes from a fixed, reviewable SQL
 SQL for the selected area, and **Export** downloads a self-contained report with every query as SQL / R / Python, its output, and data citations.
 It accompanies, and does not replace, the open-ended [AI data explorer](https://ca-30x30.nrp-nautilus.io/) at the root of this repo.
 
-The architecture is forked from [tpl-cities](https://github.com/boettiger-lab/tpl-cities) (`app/`, at `ca2ee19`), and the shared parts are
-candidates for a common library.
+The app is built on [glen-charts](https://github.com/SchmidtDSE/glen-charts) (v0.2.8), the shared library for no-LLM area explorers,
+loaded from jsDelivr at a pinned tag. This folder holds only the configuration, the SQL, the precomputed data and what is specific to the
+assessment.
 
 ## Reproducing the report
 
@@ -58,31 +59,30 @@ The transcribed report values are in `data/report.json`.
 ## How it works
 
 ```
-index.html               static shell (MapLibre + PMTiles from CDN, no build step)
+index.html               header + glen-charts (MapLibre, PMTiles and glen-charts from CDN, no build step)
 app/
-  mcp.js                 MCP client: one stateless POST per query, results as one JSON cell
-  engine.js              loads config, expands SQL templates, caches; precomputed results first
-  main.js                UI: area → sections → report; URL hash state
-  report.js              section card: headline tiles, charts, "Method & SQL"
+  extensions.js          what glen-charts does not provide: the representation chart type, the
+                         conserved-areas layer, polygon drawing, the "How to read this" note
   represent.js           the representation table (report Tables 3–13) + its CSS
-  charts.js, format.js   SVG bar charts, number formats
-  map.js                 basemap, conserved areas, boundaries, selection, drawn shapes
-  draw.js, polygon.js    draw / upload a polygon → H3-polyfill AOI
-  export.js, sources.js  self-contained HTML report with code and citations
+  tokens.js              the {{LAND}} template token (also read by the precompute CLI)
+  style.css              palette overrides on glen-charts' stylesheet
 config/
-  app.json               area types (AOI SQL, pick lists, boundary tiles), the land grid, sections
+  app.json               area types (AOI SQL, pick lists, boundary tiles), the land grid, sections,
+                         the report as reference values
   themes/<id>/           theme.json (tiles, charts, method) + *.sql templates
 data/
   statewide.json         every section's SQL run over California
-  areas/<type>/<id>.json the same for each ecoregion and county
+  areas/<type>/<id>.json the same for each ecoregion, county and district
   lists/*.json           pick lists (id, name, bbox)
   report.json            the report's published values, transcribed from its tables
   sources.json           STAC records of every dataset read (export citations)
 scripts/
-  precompute.mjs         regenerates data/ with the same engine
   run.mjs                run one section query for one area (for writing templates)
   validate.py            compare every shown value with the report and its result tables
 ```
+
+To move to a newer glen-charts, change the tag in `index.html`, `app/extensions.js`, `app/represent.js` and `scripts/run.mjs`, and
+check that the generated SQL is unchanged, so `data/` stays valid.
 
 ### SQL template contract
 
@@ -107,9 +107,11 @@ the area's own share is drawn as a second reference tick.
 1. Add a `.sql` file to a theme under `config/themes/<id>/`, following the contract above. Check it with
    `node scripts/run.mjs <theme> <query> [ecoregion Mono]`.
 2. Reference it in that theme's `theme.json`: a `"type": "representation"` chart, a bar chart, or a headline.
-3. Regenerate the data: `node scripts/precompute.mjs statewide` and `node scripts/precompute.mjs sources`, then
-   `node scripts/precompute.mjs areas ecoregion --theme <id>` and `areas county --theme <id>`, which re-run only that theme
-   (`--force` re-runs every theme, which takes about two hours).
+3. Regenerate the data with the glen-charts precompute CLI, from this folder:
+   `npx github:SchmidtDSE/glen-charts#v0.2.8 precompute statewide`, then `... precompute areas ecoregion --theme <id>`
+   and the same for `county`, `cd`, `sldu` and `sldl`, which re-run only that theme (`--force` re-runs every theme, which takes
+   hours). Keep `data/sources.json` as it is unless a new dataset is added: the CLI's `sources` job currently drops two of its
+   citations (cwhr13 and the conserved-areas tiles).
 4. Check the result against the report with `python3 scripts/validate.py`.
 
 ## Run locally

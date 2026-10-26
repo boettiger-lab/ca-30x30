@@ -26,8 +26,8 @@
  * framework); the area's own level is shown as a second reference tick.
  */
 
-import { fmt, escapeHtml } from './format.js';
-import { hover } from './charts.js';
+import { fmt, escapeHtml } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.2.8/core/format.js';
+import { hover } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.2.8/core/charts.js';
 
 export const STATUS = [
     { key: 'frac_gap12', label: '30x30 Conservation Areas (GAP 1–2)', short: '30x30', cls: 's12' },
@@ -183,8 +183,8 @@ const num = v => (v == null || !Number.isFinite(Number(v)) ? null : Number(v));
 const fmtMiles = v => (v == null ? '—' : (v >= 1e4 ? new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(v) : Math.round(v).toLocaleString('en-US')) + ' mi');
 
 /**
- * Styles for the table and status swatches — injected into the page and into
- * exported reports, so both render it the same way.
+ * Styles for the table and status swatches. Registered as the chart type's
+ * css, which glen-charts injects into the page and into exported reports.
  */
 export const REP_CSS = `
 .s12 { background: #1b6e3a; fill: #1b6e3a; }
@@ -229,10 +229,3 @@ export const REP_CSS = `
 .muted { color: #77706b; }
 @media (max-width: 560px) { .rep-table .c-ext, .rep-table .c-pie { display: none; } }
 `;
-
-if (typeof document !== 'undefined' && !document.getElementById('rep-css')) {
-    const st = document.createElement('style');
-    st.id = 'rep-css';
-    st.textContent = REP_CSS;
-    document.head.appendChild(st);
-}
