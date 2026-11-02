@@ -2,7 +2,7 @@
 
 ## Repo relationship
 
-This is a **template repo** for creating geo-agent map applications. The core library lives at [boettiger-lab/geo-agent](https://github.com/boettiger-lab/geo-agent) and is loaded from CDN — you never modify it here.
+This is a **template repo** for creating geo-agent map applications. The core library lives at [SchmidtDSE/glen](https://github.com/SchmidtDSE/glen) and is loaded from CDN — you never modify it here.
 
 | Repo | Purpose |
 |---|---|
@@ -10,7 +10,7 @@ This is a **template repo** for creating geo-agent map applications. The core li
 | `geo-agent-template` | Starter template. Users fork this and configure three files for their dataset. |
 | `glen-benchmark` | **Benchmark home** — question banks, gold answers, traps, run results for all geo-agent apps. Run the gate here before shipping a prompt or guidance change. |
 
-**Full docs:** [boettiger-lab.github.io/geo-agent](https://boettiger-lab.github.io/geo-agent/)
+**Full docs:** [schmidtdse.github.io/glen](https://schmidtdse.github.io/glen/)
 — includes the complete configuration reference, deployment guide, and agent loop internals.
 
 The schema below is kept inline so you can work without a network fetch. If it conflicts with the docs, the docs are authoritative.
@@ -242,7 +242,7 @@ Do **not** merge to main before verifying the CDN SHA is live — jsDelivr can t
 
 ## Deployment
 
-Full guide: [boettiger-lab.github.io/geo-agent/docs/guide/deployment](https://boettiger-lab.github.io/geo-agent/docs/guide/deployment)
+Full guide: [schmidtdse.github.io/glen/guide/deployment](https://schmidtdse.github.io/glen/guide/deployment)
 
 **Read the sections below before fetching that URL** — they cover the two common k8s patterns. Fetch the docs only if you need details beyond what's here (e.g., GitHub Pages, Hugging Face Spaces, private data modules).
 
@@ -278,24 +278,24 @@ git add <source-files> k8s/content-configmap.yaml && git commit -m "<message>" &
 
 The git push does **not** update running pods — step 3 does. Skipping `generate-configmap.sh` and re-applying serves the old ConfigMap.
 
-For private data modules (rclone sidecar, oauth2-proxy, private parquet credentials): [docs/guide/private-deployment](https://boettiger-lab.github.io/geo-agent/docs/guide/private-deployment)
+For private data modules (rclone sidecar, oauth2-proxy, private parquet credentials): [docs/guide/private-deployment](https://schmidtdse.github.io/glen/guide/private-deployment)
 
 ### CDN versioning
 
 `index.html` tracks `@main` by default:
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/gh/boettiger-lab/geo-agent@main/app/main.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@main/app/main.js"></script>
 ```
 
 **When testing a geo-agent PR:** pin to the PR's HEAD commit hash, verify jsDelivr serves it, then return to `@main` when done:
 
 ```bash
 # Get latest SHA from a PR
-gh pr view 166 --repo boettiger-lab/geo-agent --json headRefOid --jq '.headRefOid[:8]'
+gh pr view 166 --repo SchmidtDSE/glen --json headRefOid --jq '.headRefOid[:8]'
 
 # Verify jsDelivr serves it before deploying
-curl -sI https://cdn.jsdelivr.net/gh/boettiger-lab/geo-agent@<sha>/app/style.css | grep HTTP
+curl -sI https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@<sha>/app/style.css | grep HTTP
 # Must return HTTP/2 200
 ```
 

@@ -21,7 +21,7 @@ percentage point). **Live:** <https://boettiger-lab.github.io/ca-30x30/assessmen
 
 ## Repository contents
 
-The map, chat, and agent code live in the [GLEN](https://github.com/boettiger-lab/geo-agent) library (loaded from CDN); this repo only carries the configuration — `index.html`, `layers-input.json`, `system-prompt.md`, and `k8s/`. See [AGENTS.md](AGENTS.md) to configure or deploy, and the [About page](https://ca-30x30.nrp-nautilus.io/docs.html) for data sources.
+The map, chat, and agent code live in the [GLEN](https://github.com/SchmidtDSE/glen) library (loaded from CDN); this repo only carries the configuration — `index.html`, `layers-input.json`, `system-prompt.md`, and `k8s/`. See [AGENTS.md](AGENTS.md) to configure or deploy, and the [About page](https://ca-30x30.nrp-nautilus.io/docs.html) for data sources.
 
 A project of [Berkeley DSE](https://dse.berkeley.edu) with the California Biodiversity Network.
 
