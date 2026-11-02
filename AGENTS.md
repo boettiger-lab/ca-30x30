@@ -8,7 +8,7 @@ This is a **template repo** for creating geo-agent map applications. The core li
 |---|---|
 | `geo-agent` | Core library (map, chat, agent, tools). Source of truth for all functionality. |
 | `geo-agent-template` | Starter template. Users fork this and configure three files for their dataset. |
-| `geo-agent-benchmark` | **Benchmark home** — question banks, gold answers, traps, run results for all geo-agent apps. Run the gate here before shipping a prompt or guidance change. |
+| `glen-benchmark` | **Benchmark home** — question banks, gold answers, traps, run results for all geo-agent apps. Run the gate here before shipping a prompt or guidance change. |
 
 **Full docs:** [boettiger-lab.github.io/geo-agent](https://boettiger-lab.github.io/geo-agent/)
 — includes the complete configuration reference, deployment guide, and agent loop internals.
@@ -191,13 +191,13 @@ Prefer fixing the root cause in the correct layer over papering over it in `syst
 
 ### Verify against the benchmark — don't close on faith
 
-**The benchmark home is [`boettiger-lab/geo-agent-benchmark`](https://github.com/boettiger-lab/geo-agent-benchmark)** (private): question banks, gold answers, traps and run results for every geo-agent app. Read its `AGENTS.md` before running anything. It supersedes the older banks in `open-llm-proxy/headless/baseline/` and `validation/2025-biodiversity-assessment/`. `open-llm-proxy/headless` is the *executor* only; the benchmark supplies the questions.
+**The benchmark home is [`boettiger-lab/glen-benchmark`](https://github.com/boettiger-lab/glen-benchmark)** (private): question banks, gold answers, traps and run results for every geo-agent app. Read its `AGENTS.md` before running anything. It supersedes the older banks in `open-llm-proxy/headless/baseline/` and `validation/2025-biodiversity-assessment/`. `open-llm-proxy/headless` is the *executor* only; the benchmark supplies the questions.
 
 Before claiming an issue fixed, reproduce it through a benchmark run, which replays the full geo-agent tool-use loop (catalog load, MCP connect, prompt assembly, tool calls) through the live proxy using *this repo's current `system-prompt.md` and `layers-input.json`*.
 
 - **Run the gate before shipping any prompt or guidance change** (Kubernetes Job; mounts `PROXY_KEY` from the `open-llm-proxy-secrets` Secret in `biodiversity`):
   ```bash
-  cd ../geo-agent-benchmark
+  cd ../glen-benchmark
   APP_REPO=boettiger-lab/ca-30x30 TIER=regression ./scripts/run_benchmark.sh
   APP_REPO=boettiger-lab/ca-30x30 TIER=commentary ./scripts/run_benchmark.sh   # after a system-prompt change
   ```
@@ -218,7 +218,7 @@ drifting into keyword matching.
 
 Measured 2026-09-11: **`qwen/qwen3.8-flash` 6/6 (control passed) — the current default choice,
 and cheap**; `anthropic/claude-sonnet-5` 5/6, failing that control; `z-ai/glm-5.3` untested,
-because `judge.py`'s token budget never let it answer (geo-agent-benchmark#71 — a judge whose
+because `judge.py`'s token budget never let it answer (glen-benchmark#71 — a judge whose
 reply is truncated is currently recorded as the *model's* unusable reply, so re-calibrate it
 once that lands). Bias still disqualifies a candidate: never judge with a model in the scored
 set, or one from its family.
