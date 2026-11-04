@@ -56,7 +56,7 @@ def ref(r):
     return {'extent': t, 'gap12': r['Disc'] / t, 'gap34': r['g34'] / t, 'none': r['nonconserved'] / t}
 
 
-statewide = json.load(open(f'{ROOT}/data/statewide.json'))['results']
+statewide = json.load(open(f'{ROOT}/data/statewide/manager-all.json'))['results']
 report = json.load(open(f'{ROOT}/data/report.json'))
 rep = report['features']
 app = {}            # feature id -> row
@@ -222,7 +222,7 @@ print('\n# ecoregion table (statewide view) and each ecoregion page')
 worst = []
 for r in statewide['overview']['ecoregions']:
     g = ref(eco[r['feature']])
-    page = json.load(open(f"{ROOT}/data/areas/ecoregion/{r['feature']}.json"))['results']['overview']['protection'][0]
+    page = json.load(open(f"{ROOT}/data/areas/ecoregion/manager-all/{r['feature']}.json"))['results']['overview']['protection'][0]
     d = [100 * (r['frac_gap12'] - g['gap12']), 100 * (r['frac_gap34'] - g['gap34']), 100 * (r['frac_none'] - g['none']),
          100 * (r['share_of_network'] - eco_net[r['feature']]), r['acres'] / g['extent'] - 1,
          100 * (page['frac_gap12'] - r['frac_gap12']), 100 * (page['frac_gap34'] - r['frac_gap34'])]

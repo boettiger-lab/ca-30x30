@@ -5,7 +5,9 @@ A map + dashboard companion to California's 2025 30x30 Biodiversity Assessment
 Pick **California**, an **ecoregion**, **county**, **congressional or legislative district**, or **draw / upload a polygon**, and see the report's
 analyses for that area: land by conservation status, network composition, and the representation tables for habitats, species
 richness, connectivity, freshwater and climate features. Each table splits a feature between 30x30 Conservation Areas (GAP 1–2), other conserved or
-public land (GAP 3–4) and non-conserved land, with the report's need classes and pathway pies.
+public land (GAP 3–4) and non-conserved land, with the report's need classes and pathway pies. **Managed by** narrows the conserved
+land to one kind of manager (federal, state, local, non-profit or other) while keeping every share a share of the whole area; see
+[Manager filter](#manager-filter).
 
 **Live:** <https://boettiger-lab.github.io/ca-30x30/assessment/>
 
@@ -14,7 +16,7 @@ There is **no LLM** in the loop. Every number comes from a fixed, reviewable SQL
 SQL for the selected area, and **Export** downloads a self-contained report with every query as SQL / R / Python, its output, and data citations.
 It accompanies, and does not replace, the open-ended [AI data explorer](https://ca-30x30.nrp-nautilus.io/) at the root of this repo.
 
-The app is built on [glen-charts](https://github.com/SchmidtDSE/glen-charts) (v0.2.10), the shared library for no-LLM area explorers,
+The app is built on [glen-charts](https://github.com/SchmidtDSE/glen-charts) (v0.9.0), the shared library for no-LLM area explorers,
 loaded from jsDelivr at a pinned tag. This folder holds only the configuration, the SQL, the precomputed data and what is specific to the
 assessment.
 
@@ -71,8 +73,9 @@ config/
                          the report as reference values
   themes/<id>/           theme.json (tiles, charts, method) + *.sql templates
 data/
-  statewide.json         every section's SQL run over California
-  areas/<type>/<id>.json the same for each ecoregion, county and district
+  statewide/manager-<m>.json   every section's SQL run over California, for each manager setting
+  areas/<type>/manager-all/<id>.json   the same for each ecoregion, county and district (all managers;
+                         other settings run live)
   lists/*.json           pick lists (id, name, bbox)
   report.json            the report's published values, transcribed from its tables
   sources.json           STAC records of every dataset read (export citations)
@@ -86,13 +89,18 @@ check that the generated SQL is unchanged, so `data/` stays valid.
 
 ### SQL template contract
 
-`{{LAND}}` expands to the selected area's **California land cells at H3 resolution 10**, as `(h0, h8, h9, h10, area_km2, w12, w34)`.
-`w12` and `w34` are the cell's GAP 1–2 and GAP 3–4 shares from the 2025 Conserved Areas per-cell weights, and 0 for land outside every conserved unit.
+`{{LAND}}` expands to the selected area's **California land cells at H3 resolution 10**, as `(h0, h8, h9, h10, area_km2, w12, w34, wc)`.
+`w12` and `w34` are the cell's GAP 1–2 and GAP 3–4 shares from the 2025 Conserved Areas per-cell weights, and `wc` its whole conserved share,
+all 0 for land outside every conserved unit. With a manager selected, `w12` and `w34` count only that manager's land and `wc` still counts
+every manager's.
 The grid is the CA ecoregion land grid, the 30x30 denominator. A feature's share in 30x30 is then always
 
 ```sql
 SUM(a * w12) / SUM(a)        -- a = feature area (or length) in the cell
 ```
+
+Representation queries also return `frac_other = SUM(a * (wc - w12 - w34)) / SUM(a)`, other managers' conserved land, and compute
+`frac_none` from `wc`. With all managers `frac_other` is 0 and `frac_none` is unchanged.
 
 Features join `{{LAND}}` at their own resolution (`h10`, `h9` or `h8`), so every metric is masked to California and to the area, area-weighted,
 and uses the report's proportional estimate. Value thresholds (ACE top 20% / 5%, freshwater richness) are computed over **all of California**
@@ -108,10 +116,38 @@ the area's own share is drawn as a second reference tick.
    `node scripts/run.mjs <theme> <query> [ecoregion Mono]`.
 2. Reference it in that theme's `theme.json`: a `"type": "representation"` chart, a bar chart, or a headline.
 3. Regenerate the data with the glen-charts precompute CLI, from this folder:
-   `npx github:SchmidtDSE/glen-charts#v0.2.10 precompute statewide`, then `... precompute areas ecoregion --theme <id>`
+   `npx github:SchmidtDSE/glen-charts#v0.9.0 precompute statewide --param manager=all`, then `... precompute areas ecoregion --theme <id>`
    and the same for `county`, `cd`, `sldu` and `sldl`, which re-run only that theme (`--force` re-runs every theme, which takes
    hours).
 4. Check the result against the report with `python3 scripts/validate.py`.
+
+## Manager filter
+
+The `manager` param (app.json `params`, shown as **Managed by**) groups each conserved unit's `MNG_AG_LEV` from the 2025 Conserved
+Areas inventory:
+
+| Option | Levels | GAP 1–2 | GAP 3–4 |
+|---|---|---:|---:|
+| Federal | Federal | 21.29M ac | 22.87M ac |
+| State | State | 2.67M ac | 0.69M ac |
+| Local | City, County, Special District, Joint, JPA, Local Government | 0.67M ac | 1.47M ac |
+| Non-profit | Non Profit | 1.89M ac | 0.94M ac |
+| Other | Private, Tribal, Home Owners Association, Unknown, Government | 0.003M ac | 0.05M ac |
+
+The five options partition the network: they sum to the statewide 26.52M ac in GAP 1–2 and 26.01M ac in GAP 3–4. The manager is the
+managing agency, not the owner; for an easement (CCED) it is the easement holder.
+
+`app.land_manager` builds the filtered `{{LAND}}`. Each cell's GAP 1–2 weight goes to the selected manager in proportion to its units'
+GAP 1–2 percentages among all units in that cell (GAP 3–4 alike), from the unit-level hex asset. 99.6% of conserved land lies in cells
+with a single unit, where the split is exact.
+
+The denominator does not change: a feature's share in a manager's 30x30 land is a share of the feature's whole extent in the area.
+The representation table then drops the need classes and the report's values, which describe all managers together, and shows each
+manager's share of the feature's 30x30 acres in their place. Theme items that change meaning carry `"when": { "manager": ... }`
+(glen-charts ≥ 0.9), and the report comparison is limited to `manager: all`.
+
+Statewide results are precomputed for every option (`--param manager=all`). Named areas are precomputed for all managers only, so a
+county or ecoregion with a manager selected runs live.
 
 ## Run locally
 

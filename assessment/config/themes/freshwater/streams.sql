@@ -8,7 +8,8 @@
 -- medium-resolution network the assessment used; shares compare, lengths do not.
 WITH land AS MATERIALIZED ({{LAND}}),
 c8 AS MATERIALIZED (
-  SELECT h0, h8, SUM(area_km2 * w12) / SUM(area_km2) AS w12, SUM(area_km2 * w34) / SUM(area_km2) AS w34
+  SELECT h0, h8, SUM(area_km2 * w12) / SUM(area_km2) AS w12, SUM(area_km2 * w34) / SUM(area_km2) AS w34,
+         SUM(area_km2 * wc) / SUM(area_km2) AS wc
   FROM land GROUP BY h0, h8
 ),
 fl AS MATERIALIZED (
@@ -22,7 +23,7 @@ per AS (  -- each flowline's share of length per cell
 ),
 f AS (
   SELECT CASE WHEN ord <= 2 THEN 'headwaters' WHEN ord <= 5 THEN 'streams' ELSE 'rivers' END AS code,
-         p.km AS a, c.w12, c.w34
+         p.km AS a, c.w12, c.w34, c.wc
   FROM per p JOIN c8 c ON c.h0 = p.h0 AND c.h8 = p.h8
 ),
 names(code, feature, label, ord) AS (VALUES
@@ -33,7 +34,8 @@ SELECT n.feature, n.label, 'miles' AS measure,
        COALESCE(SUM(a), 0) * 0.621371 AS miles,
        SUM(a * w12) / SUM(a) AS frac_gap12,
        SUM(a * w34) / SUM(a) AS frac_gap34,
-       1 - SUM(a * (w12 + w34)) / SUM(a) AS frac_none,
+       1 - SUM(a * wc) / SUM(a) AS frac_none,
+       SUM(a * (wc - w12 - w34)) / SUM(a) AS frac_other,
        n.ord
 FROM names n LEFT JOIN f USING (code)
 GROUP BY n.feature, n.label, n.ord

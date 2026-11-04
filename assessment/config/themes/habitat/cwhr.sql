@@ -30,7 +30,7 @@ types(code, label, grp) AS (VALUES
   (43, 'Riverine', 'Wetland & aquatic'), (49, 'Saline Emergent Wetland', 'Wetland & aquatic'),
   (56, 'Valley Foothill Riparian', 'Hardwood woodland & forest'), (59, 'Wet Meadow', 'Wetland & aquatic')),
 f AS (
-  SELECT h.whrnum AS code, l.area_km2 * h.frac AS a, l.w12, l.w34
+  SELECT h.whrnum AS code, l.area_km2 * h.frac AS a, l.w12, l.w34, l.wc
   FROM read_parquet('s3://public-ca30x30/cwhr/hex-fractions/h0=*/data_0.parquet') h
   JOIN land l ON h.h0 = l.h0 AND h.h10 = l.h10
   WHERE h.whrnum IN (SELECT code FROM types)
@@ -41,7 +41,8 @@ SELECT 'cwhr:' || f.code AS feature, t.label, t.grp,
        SUM(a * w34) * 247.105 AS gap34_acres,
        SUM(a * w12) / SUM(a) AS frac_gap12,
        SUM(a * w34) / SUM(a) AS frac_gap34,
-       1 - SUM(a * (w12 + w34)) / SUM(a) AS frac_none
+       1 - SUM(a * wc) / SUM(a) AS frac_none,
+       SUM(a * (wc - w12 - w34)) / SUM(a) AS frac_other
 FROM f JOIN types t USING (code)
 GROUP BY f.code, t.label, t.grp
 ORDER BY t.grp, frac_gap12
