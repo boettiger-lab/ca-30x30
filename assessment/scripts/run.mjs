@@ -18,7 +18,7 @@ import { dirname, resolve, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { tokens } from '../app/tokens.js';
 
-const GLEN = 'v0.9.0';      // keep in step with index.html
+const GLEN = 'v0.10.0';      // keep in step with index.html
 
 async function glenEngine() {
     if (process.env.GLEN_DIR) return import(pathToFileURL(join(resolve(process.env.GLEN_DIR), 'core', 'engine.js')).href);
