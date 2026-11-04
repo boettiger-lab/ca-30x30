@@ -15,8 +15,14 @@
         {
             "query": "cwhr13", "title": "What the 30x30 network is made of",
             "subtitle": "Each major habitat's share of this area's 30x30 acres (report Figure 7)",
-            "category": "label", "format": "pct", "sort": "desc",
+            "category": "label", "format": "pct", "sort": "desc", "when": { "manager": "all" },
             "series": [ { "field": "share_of_network", "label": "Share of 30x30 network", "color": "#1b6e3a" } ]
+        },
+        {
+            "query": "cwhr13", "title": "What this manager's 30x30 land is made of",
+            "subtitle": "Each major habitat's share of this manager's 30x30 acres in this area",
+            "category": "label", "format": "pct", "sort": "desc", "when": { "manager": ["federal", "state", "local", "nonprofit", "other"] },
+            "series": [ { "field": "share_of_network", "label": "Share of this manager's 30x30 acres", "color": "#1b6e3a" } ]
         },
         {
             "type": "representation", "query": "cwhr", "title": "Finer habitat types",

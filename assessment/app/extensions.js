@@ -1,37 +1,60 @@
 /**
  * What the Assessment Explorer adds to glen-charts: the {{LAND}} template
  * token, the representation table (report Tables 3-13), the 2025 Conserved
- * Areas map layer, polygon drawing, and the "How to read this" note.
+ * Areas map layer, polygon drawing, and the "How to read this" note, each
+ * aware of the `manager` param (one kind of manager's conserved land).
  *
  * Passed to createExplorer({ extensions }) by index.html, and read by the
  * glen-charts precompute CLI (app.json "extensions") for its tokens and the
  * overlay's tile URL, so nothing here may touch the DOM at load time.
  */
 
-import { fmt, escapeHtml } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.2.10/core/format.js';
-import { polygonSource } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.2.10/sources/polygon-source.js';
+import { fmt, escapeHtml } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.9.0/core/format.js';
+import { paramKey, statewideAoi } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.9.0/core/engine.js';
+import { polygonSource } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.9.0/sources/polygon-source.js';
 import { renderRepresentation, NEED, REP_CSS } from './represent.js';
 import { tokens } from './tokens.js';
 
 const shortName = s => String(s).replace(/^(Congressional|State Senate|Assembly) District /, (m, k) => ({ Congressional: 'CD ', 'State Senate': 'SD ', Assembly: 'AD ' }[k]));
 
+/** The selected manager option ({ value, label, levels }), or null for all managers. */
+export function managerOf(app, params = {}) {
+    const p = (app.params || []).find(x => x.id === 'manager');
+    const o = p?.options.find(x => x.value === (params.manager ?? p.default));
+    return o?.levels ? o : null;
+}
+
+/** The same area with every manager counted. */
+function allManagers(app, aoi) {
+    const params = { ...(aoi.params || {}), manager: 'all' };
+    if (aoi.kind === 'state') return statewideAoi(app, params);
+    return { ...aoi, key: `${aoi.key.split('@')[0]}@${paramKey(app, params)}`, params };
+}
+
 /**
  * The representation table needs, beside the feature rows: California's share
  * in 30x30 (the need-class benchmark), the area's own share (a second tick),
- * and on the statewide view the report's published values.
+ * and on the statewide view the report's published values. With a manager
+ * selected, both levels are that manager's, and the same rows for every
+ * manager give the manager's share of each feature's 30x30 acres.
  */
 const representation = {
-    load({ engine, theme, chart, aoi, isRegion, opts }) {
+    load({ engine, theme, chart, aoi, isRegion, params, opts }) {
+        const app = engine.config.app;
         const overview = engine.config.overview;
+        const mgr = managerOf(app, params);
         return Promise.all([
             engine.run(theme, chart.query, aoi),
-            engine.runStatewide(overview, 'protection'),
+            engine.runStatewide(overview, 'protection', params),
             isRegion ? null : engine.run(overview, 'protection', aoi),
-        ]).then(([rows, st, ar]) => [rows, {
+            mgr ? engine.run(theme, chart.query, allManagers(app, aoi)) : null,
+        ]).then(([rows, st, ar, all]) => [rows, {
             stateLevel: st?.[0]?.frac_gap12 ?? null,
             areaLevel: ar?.[0]?.frac_gap12 ?? null,
             areaLabel: shortName(aoi.label),
             report: isRegion ? opts.reference?.values?.features ?? null : null,
+            manager: mgr,
+            all,
         }]);
     },
     render(el, chart, [rows, ctx]) {
@@ -58,12 +81,25 @@ const conserved = {
     toggle: 'Show conserved areas',
 };
 
+/**
+ * California's share in 30x30, all managers, into every .ca-level span once
+ * it loads (precomputed, so at once); the note is written before it is known.
+ */
+function fillLevel(engine) {
+    engine.runStatewide(engine.config.overview, 'protection', { manager: 'all' }).then(rows => {
+        const v = rows?.[0]?.frac_gap12;
+        if (v != null) document.querySelectorAll('.ca-level').forEach(el => { el.textContent = fmt(v, 'pct'); });
+    }).catch(() => {});
+}
+
 /** How to read the tables: the report's framework, in one collapsible note. */
 function reportHead(aoi, { engine, reference, isRegion }) {
-    const st = engine.statewide?.results?.overview?.protection?.[0]?.frac_gap12;
-    const lvl = st ? fmt(st, 'pct') : 'California’s level';
+    fillLevel(engine);
+    const lvl = '<span class="ca-level">California’s level</span>';
     // a drawn area never has a precomputed file (app.live_note covers named areas)
     const live = aoi.kind === 'polygon' ? '<p class="tile-note live-note">Results for this area are computed live from the source data; larger areas can take a minute or two.</p>' : '';
+    const mgr = managerOf(engine.config.app, aoi.params);
+    if (mgr) return `${live}${managerNote(mgr, isRegion)}`;
     return `${live}<details class="card framework">
         <summary><b>How to read this</b> — the report's representation framework</summary>
         <div class="framework-body">
@@ -81,6 +117,27 @@ function reportHead(aoi, { engine, reference, isRegion }) {
            Need classes always compare with California's level${isRegion ? '' : ', even for a smaller area; the area’s own share in 30x30 is the second tick on each bar'}.
            ${isRegion ? 'The <b>Report</b> column gives the published value and this app’s difference from it, in percentage points.' : ''}</p>
         <p class="tile-note">No AI model is involved: every number is fixed, reviewable SQL over public data — see “Method &amp; SQL” under each section, or Export.</p>
+        </div></details>`;
+}
+
+/** How to read the tables with one manager selected. */
+function managerNote(mgr, isRegion) {
+    const m = escapeHtml(mgr.label);
+    return `<details class="card framework" open>
+        <summary><b>How to read this</b>: ${m} land only</summary>
+        <div class="framework-body">
+        <p>Only conserved land with a <b>${m}</b> manager${mgr.levels.length > 1 || mgr.levels[0] !== mgr.label
+            ? ` (${escapeHtml(mgr.levels.join(', '))} in the 2025 Conserved Areas inventory)` : ''} counts as <span class="sw s12"></span> 30x30 (GAP 1–2) or <span class="sw s34"></span> GAP 3–4.
+           Other managers’ conserved land is shown separately (<span class="sw sother"></span>), and
+           <span class="sw snone"></span> non-conserved land is unchanged.</p>
+        <p>Every share is still a share of the whole ${isRegion ? 'state' : 'area'}: a habitat at 5% in ${m} 30x30 has 5% of its
+           ${isRegion ? 'California' : 'local'} extent on ${m} GAP 1–2 land, not 5% of ${m} land. <b>Share of 30x30</b> is ${m}’s part
+           of each feature’s 30x30 acres, all managers together. The tick marks ${m}’s share of all land in 30x30, so a feature
+           right of the tick is better represented in ${m} 30x30 than land as a whole.</p>
+        <p>Need classes and the report’s published values describe all managers together, so they are not shown here.
+           Choose <b>All</b> under “Managed by” to see them.</p>
+        <p class="tile-note">The manager is each unit’s managing agency level (CPAD / CCED); for an easement it is the easement holder,
+           so non-profit land includes easements on private land.</p>
         </div></details>`;
 }
 

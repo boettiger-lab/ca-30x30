@@ -47,13 +47,13 @@ fw AS (
   WHERE h.Freshwater_Species_Count >= fwq.q AND (h.h0, h.h8) IN (SELECT DISTINCT h0, h8 FROM land)
 ),
 f AS (
-  SELECT x.code, l.area_km2 AS a, l.w12, l.w34
+  SELECT x.code, l.area_km2 AS a, l.w12, l.w34, l.wc
   FROM (SELECT * FROM gde UNION ALL SELECT * FROM fld) x
   JOIN land l ON l.h0 = x.h0 AND l.h10 = x.h10
   UNION ALL
-  SELECT 'wetlands', w.km2, l.w12, l.w34 FROM wet w JOIN land l ON l.h0 = w.h0 AND l.h10 = w.h10
+  SELECT 'wetlands', w.km2, l.w12, l.w34, l.wc FROM wet w JOIN land l ON l.h0 = w.h0 AND l.h10 = w.h10
   UNION ALL
-  SELECT 'fwrich', l.area_km2, l.w12, l.w34 FROM fw JOIN land l ON l.h0 = fw.h0 AND l.h8 = fw.h8
+  SELECT 'fwrich', l.area_km2, l.w12, l.w34, l.wc FROM fw JOIN land l ON l.h0 = fw.h0 AND l.h8 = fw.h8
 ),
 names(code, feature, label, ord) AS (VALUES
   ('wetlands', 'fw:wetlands', 'Remaining wetlands', 1),
@@ -66,7 +66,8 @@ SELECT n.feature, n.label, 'acres' AS measure,
        SUM(a * w34) * 247.105 AS gap34_acres,
        SUM(a * w12) / SUM(a) AS frac_gap12,
        SUM(a * w34) / SUM(a) AS frac_gap34,
-       1 - SUM(a * (w12 + w34)) / SUM(a) AS frac_none,
+       1 - SUM(a * wc) / SUM(a) AS frac_none,
+       SUM(a * (wc - w12 - w34)) / SUM(a) AS frac_other,
        n.ord
 FROM names n LEFT JOIN f USING (code)
 GROUP BY n.feature, n.label, n.ord
