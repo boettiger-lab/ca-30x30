@@ -13,14 +13,15 @@ feat AS (
 names(code, label, ord) AS (VALUES
   ('plant', 'Plant species richness (top 20%)', 1),
   ('endp', 'Rarity-weighted endemic plant richness (top 20%)', 2)),
-f AS (SELECT feat.code, l.area_km2 AS a, l.w12, l.w34 FROM feat JOIN land l ON l.h0 = feat.h0 AND l.h8 = feat.h8)
+f AS (SELECT feat.code, l.area_km2 AS a, l.w12, l.w34, l.wc FROM feat JOIN land l ON l.h0 = feat.h0 AND l.h8 = feat.h8)
 SELECT 'kling:' || n.code AS feature, n.label, 'Plant richness' AS grp,
        COALESCE(SUM(a), 0) * 247.105 AS acres,
        SUM(a * w12) * 247.105 AS gap12_acres,
        SUM(a * w34) * 247.105 AS gap34_acres,
        SUM(a * w12) / SUM(a) AS frac_gap12,
        SUM(a * w34) / SUM(a) AS frac_gap34,
-       1 - SUM(a * (w12 + w34)) / SUM(a) AS frac_none
+       1 - SUM(a * wc) / SUM(a) AS frac_none,
+       SUM(a * (wc - w12 - w34)) / SUM(a) AS frac_other
 FROM names n LEFT JOIN f USING (code)
 GROUP BY n.code, n.label, n.ord
 ORDER BY n.ord

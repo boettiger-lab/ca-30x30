@@ -8,7 +8,7 @@ names(code, label) AS (VALUES
   (41, 'Desert Shrub'), (42, 'Desert Woodland'), (51, 'Hardwood Forest'), (52, 'Hardwood Woodland'),
   (60, 'Grassland'), (70, 'Shrub'), (80, 'Urban'), (90, 'Water'), (100, 'Wetland')),
 f AS (
-  SELECT h.whr13num AS code, l.area_km2 * h.frac AS a, l.w12, l.w34
+  SELECT h.whr13num AS code, l.area_km2 * h.frac AS a, l.w12, l.w34, l.wc
   FROM read_parquet('s3://public-ca30x30/cwhr13/hex-fractions/h0=*/data_0.parquet') h
   JOIN land l ON h.h0 = l.h0 AND h.h10 = l.h10
   WHERE h.whr13num <> 0
@@ -20,7 +20,8 @@ SELECT 'cwhr13:' || f.code AS feature, n.label,
        SUM(a * w34) * 247.105 AS gap34_acres,
        SUM(a * w12) / SUM(a) AS frac_gap12,
        SUM(a * w34) / SUM(a) AS frac_gap34,
-       1 - SUM(a * (w12 + w34)) / SUM(a) AS frac_none,
+       1 - SUM(a * wc) / SUM(a) AS frac_none,
+       SUM(a * (wc - w12 - w34)) / SUM(a) AS frac_other,
        SUM(a * w12) / NULLIF(SUM(SUM(a * w12)) OVER (), 0) AS share_of_network
 FROM f JOIN names n USING (code)
 GROUP BY f.code, n.label

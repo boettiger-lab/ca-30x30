@@ -27,16 +27,16 @@ nat AS MATERIALIZED (
   WHERE c.whr13num NOT IN (0, 10, 80)
 ),
 expo AS (
-  SELECT 'miroc' AS code, n.area_km2 AS a, n.w12, n.w34 FROM nat n
+  SELECT 'miroc' AS code, n.area_km2 AS a, n.w12, n.w34, n.wc FROM nat n
   JOIN read_parquet('s3://public-hazard/mid-century-habitat-climate-exposure/miroc/hex/h0=*/data_0.parquet') x ON x.h0 = n.h0 AND x.h9 = n.h9
   WHERE x.exposure >= 0.9
   UNION ALL
-  SELECT 'cnrm', n.area_km2, n.w12, n.w34 FROM nat n
+  SELECT 'cnrm', n.area_km2, n.w12, n.w34, n.wc FROM nat n
   JOIN read_parquet('s3://public-hazard/mid-century-habitat-climate-exposure/cnrm/hex/h0=*/data_0.parquet') x ON x.h0 = n.h0 AND x.h9 = n.h9
   WHERE x.exposure >= 0.9
 ),
 f AS (
-  SELECT x.code, l.area_km2 AS a, l.w12, l.w34
+  SELECT x.code, l.area_km2 AS a, l.w12, l.w34, l.wc
   FROM (SELECT * FROM fire UNION ALL SELECT * FROM slr) x JOIN land l ON l.h0 = x.h0 AND l.h10 = x.h10
   UNION ALL SELECT * FROM expo
 ),
@@ -51,7 +51,8 @@ SELECT n.feature, n.label,
        SUM(a * w34) * 247.105 AS gap34_acres,
        SUM(a * w12) / SUM(a) AS frac_gap12,
        SUM(a * w34) / SUM(a) AS frac_gap34,
-       1 - SUM(a * (w12 + w34)) / SUM(a) AS frac_none,
+       1 - SUM(a * wc) / SUM(a) AS frac_none,
+       SUM(a * (wc - w12 - w34)) / SUM(a) AS frac_other,
        COALESCE(SUM(a * w12), 0) / NULLIF(ANY_VALUE(net.n), 0) AS share_of_network
 FROM names n LEFT JOIN f USING (code) CROSS JOIN net
 GROUP BY n.feature, n.label, n.ord

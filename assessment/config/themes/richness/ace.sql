@@ -60,7 +60,7 @@ names(code, label, grp, ord) AS (VALUES
   ('RarPlnt', 'Plants: rare richness (top 5%)', 'Richness by taxon', 51),
   ('PlntEndem', 'Plants: endemic richness (top 5%)', 'Richness by taxon', 52)),
 f AS (
-  SELECT long.code, l.area_km2 AS a, l.w12, l.w34
+  SELECT long.code, l.area_km2 AS a, l.w12, l.w34, l.wc
   FROM long JOIN land l ON l.h0 = long.h0 AND l.h8 = long.h8
   WHERE long.present
 )
@@ -70,7 +70,8 @@ SELECT 'ace:' || n.code AS feature, n.label, n.grp,
        SUM(a * w34) * 247.105 AS gap34_acres,
        SUM(a * w12) / SUM(a) AS frac_gap12,
        SUM(a * w34) / SUM(a) AS frac_gap34,
-       1 - SUM(a * (w12 + w34)) / SUM(a) AS frac_none
+       1 - SUM(a * wc) / SUM(a) AS frac_none,
+       SUM(a * (wc - w12 - w34)) / SUM(a) AS frac_other
 FROM names n LEFT JOIN f USING (code)
 GROUP BY n.code, n.label, n.grp, n.ord
 ORDER BY n.ord

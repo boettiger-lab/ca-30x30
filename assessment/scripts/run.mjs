@@ -7,6 +7,9 @@
  *   node scripts/run.mjs <theme> <query>                 # statewide
  *   node scripts/run.mjs <theme> <query> <jur> <id>      # e.g. ecoregion Mono
  *   node scripts/run.mjs <theme> <query> --sql           # print the expanded SQL only
+ *   node scripts/run.mjs <theme> <query> --manager=federal   # one manager's conserved land
+ *
+ * GLEN_DIR=<glen-charts checkout> uses a local copy of the library instead.
  */
 
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
@@ -15,9 +18,10 @@ import { dirname, resolve, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { tokens } from '../app/tokens.js';
 
-const GLEN = 'v0.2.10';      // keep in step with index.html
+const GLEN = 'v0.9.0';      // keep in step with index.html
 
 async function glenEngine() {
+    if (process.env.GLEN_DIR) return import(pathToFileURL(join(resolve(process.env.GLEN_DIR), 'core', 'engine.js')).href);
     const dir = join(tmpdir(), `glen-charts-${GLEN}`, 'core');
     await mkdir(dir, { recursive: true });
     for (const f of ['engine.js', 'mcp.js']) {
@@ -32,14 +36,15 @@ const { loadConfig, Engine, statewideAoi, jurisdictionAoi } = await glenEngine()
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
 const sqlOnly = args.includes('--sql');
-const [themeId, query, jurId, ...idParts] = args.filter(a => a !== '--sql');
+const params = Object.fromEntries(args.filter(a => a.startsWith('--') && a.includes('=')).map(a => a.slice(2).split('=')));
+const [themeId, query, jurId, ...idParts] = args.filter(a => !a.startsWith('--'));
 const config = await loadConfig(root, p => readFile(p, 'utf8'), { themes: ['overview', themeId] });
 const engine = new Engine(config, { mcpUrl: process.env.MCP_URL || config.app.mcp_url, dataBase: null, tokens });
 const theme = config.themeById[themeId];
 if (!theme) throw new Error(`No theme ${themeId}`);
 const aoi = jurId
-    ? jurisdictionAoi(config.app.jurisdictions.find(j => j.id === jurId), { id: idParts.join(' '), name: idParts.join(' ') }, config.app)
-    : statewideAoi(config.app);
+    ? jurisdictionAoi(config.app.jurisdictions.find(j => j.id === jurId), { id: idParts.join(' '), name: idParts.join(' ') }, config.app, params)
+    : statewideAoi(config.app, params);
 const sql = engine.sqlFor(theme, query, aoi);
 if (sqlOnly) { console.log(sql); process.exit(0); }
 const t0 = Date.now();

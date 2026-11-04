@@ -28,10 +28,10 @@ lk AS (
   WHERE (h0, h8) IN (SELECT DISTINCT h0, h8 FROM land)
 ),
 f AS (
-  SELECT x.code, l.area_km2 * x.frac AS a, l.w12, l.w34
+  SELECT x.code, l.area_km2 * x.frac AS a, l.w12, l.w34, l.wc
   FROM (SELECT * FROM pd UNION ALL SELECT * FROM cl) x JOIN land l ON l.h0 = x.h0 AND l.h9 = x.h9
   UNION ALL
-  SELECT 'scml', l.area_km2, l.w12, l.w34 FROM lk JOIN land l ON l.h0 = lk.h0 AND l.h8 = lk.h8
+  SELECT 'scml', l.area_km2, l.w12, l.w34, l.wc FROM lk JOIN land l ON l.h0 = lk.h0 AND l.h8 = lk.h8
 ),
 names(code, feature, label, ord) AS (VALUES
   ('chn', 'conn:chn', 'Channelized connectivity', 1),
@@ -45,7 +45,8 @@ SELECT n.feature, n.label,
        SUM(a * w34) * 247.105 AS gap34_acres,
        SUM(a * w12) / SUM(a) AS frac_gap12,
        SUM(a * w34) / SUM(a) AS frac_gap34,
-       1 - SUM(a * (w12 + w34)) / SUM(a) AS frac_none
+       1 - SUM(a * wc) / SUM(a) AS frac_none,
+       SUM(a * (wc - w12 - w34)) / SUM(a) AS frac_other
 FROM names n LEFT JOIN f USING (code)
 GROUP BY n.feature, n.label, n.ord
 ORDER BY n.ord
