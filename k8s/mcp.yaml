@@ -64,7 +64,7 @@ spec:
                 - nautilus-it-gpu06.fullerton.edu
       containers:
       - name: server
-        image: ghcr.io/boettiger-lab/mcp-data-server:v0.9.1@sha256:1dd614eba3e85ee3dfc96fea7bc7757ab690651833cc7caf474e516aabc7f5c6
+        image: ghcr.io/schmidtdse/geo-query:v0.9.1@sha256:1dd614eba3e85ee3dfc96fea7bc7757ab690651833cc7caf474e516aabc7f5c6
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
