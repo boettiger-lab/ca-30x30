@@ -22,11 +22,22 @@
             { "value": "nonprofit", "label": "Non-profit", "levels": ["Non Profit"] },
             { "value": "other", "label": "Other", "levels": ["Private", "Tribal", "Home Owners Association", "Unknown", "Government"] }
         ]
+    }, {
+        "id": "agency", "label": "Federal agency", "token": "AGENCY", "default": "all", "when": { "manager": "federal" },
+        "help": "Count one federal agency's conserved land.",
+        "options": [
+            { "value": "all", "label": "All federal" },
+            { "value": "usfs", "label": "Forest Service", "agencies": ["United States Forest Service", "USFS"] },
+            { "value": "blm", "label": "BLM", "agencies": ["United States Bureau of Land Management", "BLM"] },
+            { "value": "nps", "label": "National Park Service", "agencies": ["United States National Park Service", "National Park Service", "NPS", "Golden Gate National Recreation Area"] },
+            { "value": "fws", "label": "Fish and Wildlife Service", "agencies": ["United States Fish and Wildlife Service"] },
+            { "value": "other", "label": "Other federal", "rest": true }
+        ]
     }],
 
     "land_cells": "SELECT DISTINCT e.h0, e.h8, e.h9, e.h10 FROM read_parquet('s3://public-ca30x30/ecoregion/hex/h0=*/data_0.parquet') e JOIN ({{AOI10}}) a ON e.h0 = a.h0 AND e.h10 = a.h10",
     "land": "SELECT c.h0, c.h8, c.h9, c.h10, h3_cell_area(c.h10, 'km^2') AS area_km2, COALESCE(w.w1 + w.w2, 0) AS w12, COALESCE(w.w3 + w.w4, 0) AS w34, COALESCE(w.w1 + w.w2 + w.w3 + w.w4, 0) AS wc FROM ({{CELLS}}) c LEFT JOIN read_parquet('s3://public-ca30x30/conserved-areas-terrestrial-2025/hex-weights/h0=*/data_0.parquet') w ON w.h0 = c.h0 AND w.h10 = c.h10",
-    "land_manager": "SELECT c.h0, c.h8, c.h9, c.h10, h3_cell_area(c.h10, 'km^2') AS area_km2, COALESCE((w.w1 + w.w2) * m.s12, 0) AS w12, COALESCE((w.w3 + w.w4) * m.s34, 0) AS w34, COALESCE(w.w1 + w.w2 + w.w3 + w.w4, 0) AS wc FROM ({{CELLS}}) c LEFT JOIN read_parquet('s3://public-ca30x30/conserved-areas-terrestrial-2025/hex-weights/h0=*/data_0.parquet') w ON w.h0 = c.h0 AND w.h10 = c.h10 LEFT JOIN (SELECT u.h0, u.h10, SUM(CASE WHEN u.MNG_AG_LEV IN ({{LEVELS}}) THEN COALESCE(u.Final_g1_p, 0) + COALESCE(u.Final_g2_p, 0) ELSE 0 END) / NULLIF(SUM(COALESCE(u.Final_g1_p, 0) + COALESCE(u.Final_g2_p, 0)), 0) AS s12, SUM(CASE WHEN u.MNG_AG_LEV IN ({{LEVELS}}) THEN COALESCE(u.Final_g3_p, 0) + COALESCE(u.Final_g4_p, 0) ELSE 0 END) / NULLIF(SUM(COALESCE(u.Final_g3_p, 0) + COALESCE(u.Final_g4_p, 0)), 0) AS s34 FROM read_parquet('s3://public-ca30x30/conserved-areas-terrestrial-2025/hex/h0=*/data_0.parquet') u SEMI JOIN ({{CELLS}}) k ON u.h0 = k.h0 AND u.h10 = k.h10 GROUP BY u.h0, u.h10) m ON m.h0 = c.h0 AND m.h10 = c.h10",
+    "land_manager": "SELECT c.h0, c.h8, c.h9, c.h10, h3_cell_area(c.h10, 'km^2') AS area_km2, COALESCE((w.w1 + w.w2) * m.s12, 0) AS w12, COALESCE((w.w3 + w.w4) * m.s34, 0) AS w34, COALESCE(w.w1 + w.w2 + w.w3 + w.w4, 0) AS wc FROM ({{CELLS}}) c LEFT JOIN read_parquet('s3://public-ca30x30/conserved-areas-terrestrial-2025/hex-weights/h0=*/data_0.parquet') w ON w.h0 = c.h0 AND w.h10 = c.h10 LEFT JOIN (SELECT u.h0, u.h10, SUM(CASE WHEN {{UNITS}} THEN COALESCE(u.Final_g1_p, 0) + COALESCE(u.Final_g2_p, 0) ELSE 0 END) / NULLIF(SUM(COALESCE(u.Final_g1_p, 0) + COALESCE(u.Final_g2_p, 0)), 0) AS s12, SUM(CASE WHEN {{UNITS}} THEN COALESCE(u.Final_g3_p, 0) + COALESCE(u.Final_g4_p, 0) ELSE 0 END) / NULLIF(SUM(COALESCE(u.Final_g3_p, 0) + COALESCE(u.Final_g4_p, 0)), 0) AS s34 FROM read_parquet('s3://public-ca30x30/conserved-areas-terrestrial-2025/hex/h0=*/data_0.parquet') u SEMI JOIN ({{CELLS}}) k ON u.h0 = k.h0 AND u.h10 = k.h10 GROUP BY u.h0, u.h10) m ON m.h0 = c.h0 AND m.h10 = c.h10",
 
     "statewide": {
         "id": "CA",

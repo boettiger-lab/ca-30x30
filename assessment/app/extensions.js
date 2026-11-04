@@ -9,19 +9,28 @@
  * overlay's tile URL, so nothing here may touch the DOM at load time.
  */
 
-import { fmt, escapeHtml } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.9.0/core/format.js';
-import { paramKey, statewideAoi } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.9.0/core/engine.js';
-import { polygonSource } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.9.0/sources/polygon-source.js';
+import { fmt, escapeHtml } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.10.0/core/format.js';
+import { paramKey, statewideAoi, matchesWhen } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.10.0/core/engine.js';
+import { polygonSource } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.10.0/sources/polygon-source.js';
 import { renderRepresentation, NEED, REP_CSS } from './represent.js';
 import { tokens } from './tokens.js';
 
 const shortName = s => String(s).replace(/^(Congressional|State Senate|Assembly) District /, (m, k) => ({ Congressional: 'CD ', 'State Senate': 'SD ', Assembly: 'AD ' }[k]));
 
-/** The selected manager option ({ value, label, levels }), or null for all managers. */
+/**
+ * The selected manager ({ value, label, levels }), or null for all managers.
+ * Under Federal with one agency chosen, the agency: { label, levels, agencies }
+ * or, for "Other federal", { label, levels, rest: the agencies it leaves out }.
+ */
 export function managerOf(app, params = {}) {
     const p = (app.params || []).find(x => x.id === 'manager');
     const o = p?.options.find(x => x.value === (params.manager ?? p.default));
-    return o?.levels ? o : null;
+    if (!o?.levels) return null;
+    const ap = (app.params || []).find(x => x.id === 'agency');
+    const a = ap && matchesWhen(ap.when, app, params) && ap.options.find(x => x.value === (params.agency ?? ap.default));
+    if (!a?.agencies && !a?.rest) return o;
+    return { value: a.value, label: a.label, levels: o.levels, agencies: a.agencies || null,
+        rest: a.rest ? ap.options.filter(x => x.agencies).map(x => x.label) : null };
 }
 
 /** The same area with every manager counted. */
@@ -120,14 +129,23 @@ function reportHead(aoi, { engine, reference, isRegion }) {
         </div></details>`;
 }
 
+/** Which units count, in words, with the inventory's own names where they differ from the label. */
+function who(mgr) {
+    const m = escapeHtml(mgr.label);
+    if (mgr.rest) return `a federal manager other than the ${escapeHtml(mgr.rest.join(', '))} (<b>${m}</b>)`;
+    const names = mgr.agencies || mgr.levels;
+    const field = mgr.agencies ? 'managing agency' : 'manager level';
+    return `a <b>${m}</b> manager${names.length > 1 || names[0] !== mgr.label
+        ? ` (${field} ${escapeHtml(names.join(', '))} in the 2025 Conserved Areas inventory)` : ''}`;
+}
+
 /** How to read the tables with one manager selected. */
 function managerNote(mgr, isRegion) {
     const m = escapeHtml(mgr.label);
     return `<details class="card framework" open>
         <summary><b>How to read this</b>: ${m} land only</summary>
         <div class="framework-body">
-        <p>Only conserved land with a <b>${m}</b> manager${mgr.levels.length > 1 || mgr.levels[0] !== mgr.label
-            ? ` (${escapeHtml(mgr.levels.join(', '))} in the 2025 Conserved Areas inventory)` : ''} counts as <span class="sw s12"></span> 30x30 (GAP 1–2) or <span class="sw s34"></span> GAP 3–4.
+        <p>Only conserved land with ${who(mgr)} counts as <span class="sw s12"></span> 30x30 (GAP 1–2) or <span class="sw s34"></span> GAP 3–4.
            Other managers’ conserved land is shown separately (<span class="sw sother"></span>), and
            <span class="sw snone"></span> non-conserved land is unchanged.</p>
         <p>Every share is still a share of the whole ${isRegion ? 'state' : 'area'}: a habitat at 5% in ${m} 30x30 has 5% of its
