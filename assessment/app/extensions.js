@@ -9,9 +9,9 @@
  * overlay's tile URL, so nothing here may touch the DOM at load time.
  */
 
-import { fmt, escapeHtml } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.10.0/core/format.js';
-import { paramKey, statewideAoi, matchesWhen } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.10.0/core/engine.js';
-import { polygonSource } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.10.0/sources/polygon-source.js';
+import { fmt, escapeHtml } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.11.0/core/format.js';
+import { paramKey, statewideAoi, matchesWhen } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.11.0/core/engine.js';
+import { polygonSource } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.11.0/sources/polygon-source.js';
 import { renderRepresentation, NEED, REP_CSS } from './represent.js';
 import { tokens } from './tokens.js';
 

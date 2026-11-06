@@ -22,7 +22,8 @@
             "detail_template": "{} in GAP 1–2",
             "when": {
                 "manager": "all"
-            }
+            },
+            "area_template": "of {}"
         },
         {
             "query": "protection",
@@ -40,7 +41,8 @@
             },
             "detail_field": "gap12_acres",
             "detail_format": "acres",
-            "detail_template": "{} in GAP 1–2"
+            "detail_template": "{} in GAP 1–2",
+            "area_template": "of {}"
         },
         {
             "query": "protection",
@@ -53,7 +55,8 @@
             "detail_template": "{}",
             "when": {
                 "manager": "all"
-            }
+            },
+            "area_template": "of {}"
         },
         {
             "query": "protection",
@@ -71,7 +74,8 @@
             },
             "detail_field": "gap34_acres",
             "detail_format": "acres",
-            "detail_template": "{}"
+            "detail_template": "{}",
+            "area_template": "of {}"
         },
         {
             "query": "protection",
@@ -89,7 +93,8 @@
             },
             "detail_field": "other_acres",
             "detail_format": "acres",
-            "detail_template": "{}"
+            "detail_template": "{}",
+            "area_template": "of {}"
         },
         {
             "query": "protection",
@@ -99,7 +104,8 @@
             "reference": "land.frac_none",
             "detail_field": "none_acres",
             "detail_format": "acres",
-            "detail_template": "{}"
+            "detail_template": "{}",
+            "area_template": "of {}"
         },
         {
             "query": "protection",
