@@ -1,7 +1,10 @@
 {
     "mcpServers": {
         "duckdb-geo": {
-            "url": "https://duckdb-mcp.nrp-nautilus.io/mcp"
+            "url": "https://duckdb-mcp.nrp-nautilus.io/mcp",
+            "headers": {
+                "Authorization": "Bearer ${env:MCP_AUTH_TOKEN}"
+            }
         }
     }
 }
