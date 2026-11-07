@@ -46,6 +46,10 @@ spec:
       labels:
         app: ca30x30-mcp
     spec:
+      # No Kubernetes API token in the pod. The server needs none, and a
+      # readable token is what leaked through DuckDB on 2026-11-06
+      # (geo-query#453).
+      automountServiceAccountToken: false
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -96,6 +100,18 @@ spec:
         # either.
         - name: MCP_PUBLIC_BASE_URL
           value: "https://ca30x30-mcp.nrp-nautilus.io"
+        # Bearer token for /mcp (geo-query#453). The app's nginx attaches it
+        # on /api/mcp, so the browser never holds it.
+        - name: MCP_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: duckdb-mcp-auth
+              key: MCP_AUTH_TOKEN
+        # Hex tiles stay public: the pyramid already sits in the anonymously
+        # readable s3://public-output, and the browser fetches tiles directly
+        # from MCP_PUBLIC_BASE_URL. Takes effect from the release after v0.9.1.
+        - name: MCP_AUTH_PUBLIC_TILES
+          value: "true"
         - name: POD_MEMORY_LIMIT
           valueFrom:
             resourceFieldRef:

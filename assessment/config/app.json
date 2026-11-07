@@ -1,7 +1,7 @@
 {
     "id": "ca30x30",
     "title": "30x30 Biodiversity Assessment Explorer",
-    "mcp_url": "https://duckdb-mcp.nrp-nautilus.io/mcp",
+    "mcp_url": "https://ca-30x30.nrp-nautilus.io/api/duckdb-mcp",
     "view": { "center": [-119.4, 37.2], "zoom": 5.4 },
     "project_url": "https://github.com/boettiger-lab/ca-30x30/tree/main/assessment",
     "extensions": "app/extensions.js",
