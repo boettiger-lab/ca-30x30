@@ -68,7 +68,7 @@ spec:
                 - nautilus-it-gpu06.fullerton.edu
       containers:
       - name: server
-        image: ghcr.io/schmidtdse/geo-query:v0.9.1@sha256:1dd614eba3e85ee3dfc96fea7bc7757ab690651833cc7caf474e516aabc7f5c6
+        image: ghcr.io/schmidtdse/geo-query:v0.9.3@sha256:12a9807b12a66d330d2b07b8af5d7193e4ecc99dfaf34c22948e5b4b2ad18394
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
@@ -109,7 +109,7 @@ spec:
               key: MCP_AUTH_TOKEN
         # Hex tiles stay public: the pyramid already sits in the anonymously
         # readable s3://public-output, and the browser fetches tiles directly
-        # from MCP_PUBLIC_BASE_URL. Takes effect from the release after v0.9.1.
+        # from MCP_PUBLIC_BASE_URL. Needs v0.9.3 or later.
         - name: MCP_AUTH_PUBLIC_TILES
           value: "true"
         - name: POD_MEMORY_LIMIT
