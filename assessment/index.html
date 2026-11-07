@@ -3,6 +3,14 @@
 
 <head>
     <meta charset="UTF-8">
+    <script>
+        // The site moved off GitHub Pages to NRP, where it can reach the MCP
+        // server's token (geo-query#453). Keep old links working.
+        if (location.hostname.endsWith('github.io')) {
+            location.replace('https://ca-30x30.nrp-nautilus.io' +
+                location.pathname.replace(/^\/ca-30x30/, '') + location.search + location.hash);
+        }
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>30x30 Assessment Explorer</title>
     <meta name="description" content="Explore California's 2025 30x30 Biodiversity Assessment for the whole state or any ecoregion, county, district or drawn area: habitats, species richness, connectivity, freshwater and climate features by conservation status, computed with fixed, reviewable SQL.">
