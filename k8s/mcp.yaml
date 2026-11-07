@@ -50,6 +50,21 @@ spec:
       # readable token is what leaked through DuckDB on 2026-11-06
       # (geo-query#453).
       automountServiceAccountToken: false
+      # Non-root, matching the image's app user (uid 10001), as in
+      # SchmidtDSE/geo-query's own Deployment from v0.9.5.
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      # Spill space: the root filesystem is read-only. Capped at NRP's default
+      # ephemeral-storage limit, stated here so the cap does not depend on it.
+      volumes:
+      - name: tmp
+        emptyDir:
+          sizeLimit: 50Gi
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -68,7 +83,15 @@ spec:
                 - nautilus-it-gpu06.fullerton.edu
       containers:
       - name: server
-        image: ghcr.io/schmidtdse/geo-query:v0.9.3@sha256:12a9807b12a66d330d2b07b8af5d7193e4ecc99dfaf34c22948e5b4b2ad18394
+        image: ghcr.io/schmidtdse/geo-query:v0.9.5@sha256:35c6028e99203b3ac091bb3458e32e221a4ea8004447fb5b016826651de3dffa
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: ["ALL"]
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
