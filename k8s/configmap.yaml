@@ -144,7 +144,10 @@ data:
         # catch-all below has `try_files ... /index.html`, which would hand
         # back the SPA instead of a 404 for a missing catalog — ca30x30-mcp
         # would then boot degraded with no visible cause.
+        # Open without the password: ca30x30-mcp reads it in-cluster, and the
+        # catalog is public in the repo anyway.
         location /stac/ {
+            auth_basic off;
             alias /usr/share/nginx/html/stac/;
         }
 
