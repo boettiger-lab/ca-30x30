@@ -17,50 +17,50 @@ data:
         "transcription_model": {
             "value": "gemma-small",
             "endpoint": "/api/llm",
-            "api_key": "unused"
+            "api_key": "${APP_TOKEN}"
         },
         "llm_models": [
             {
                 "value": "z-ai/glm-5.2",
                 "label": "GLM-5.2",
                 "endpoint": "/api/llm",
-                "api_key": "unused"
+                "api_key": "${APP_TOKEN}"
             },
             {
                 "value": "z-ai/glm-5.3",
                 "label": "GLM-5.3",
                 "endpoint": "/api/llm",
-                "api_key": "unused"
+                "api_key": "${APP_TOKEN}"
             },
             {
                 "value": "deepseek/deepseek-v4-flash-0731",
                 "label": "DeepSeek V4 Flash (0731)",
                 "endpoint": "/api/llm",
-                "api_key": "unused"
+                "api_key": "${APP_TOKEN}"
             },
             {
                 "value": "deepseek-v4-flash",
                 "label": "DeepSeek V4 Flash (NRP)",
                 "endpoint": "/api/llm",
-                "api_key": "unused"
+                "api_key": "${APP_TOKEN}"
             },
             {
                 "value": "xiaomi/mimo-v2.6-pro",
                 "label": "MiMo V2.6 Pro",
                 "endpoint": "/api/llm",
-                "api_key": "unused"
+                "api_key": "${APP_TOKEN}"
             },
             {
                 "value": "xiaomi/mimo-v2.6-flash",
                 "label": "MiMo V2.6 Flash",
                 "endpoint": "/api/llm",
-                "api_key": "unused"
+                "api_key": "${APP_TOKEN}"
             },
             {
                 "value": "moonshotai/kimi-k3",
                 "label": "Kimi K3",
                 "endpoint": "/api/llm",
-                "api_key": "unused"
+                "api_key": "${APP_TOKEN}"
             }
         ]
     }
@@ -83,6 +83,12 @@ data:
 
         root /usr/share/nginx/html;
         index index.html;
+
+        # Shared-password sign-in for the whole site, including /api/mcp and
+        # /api/llm/, except /health (probes). The htpasswd file comes from the
+        # ca-30x30-htpasswd Secret and is never committed.
+        auth_basic "California 30x30";
+        auth_basic_user_file /etc/nginx/auth/htpasswd;
 
         add_header Access-Control-Allow-Origin *;
         add_header Access-Control-Allow-Methods "GET, POST, OPTIONS";
@@ -111,6 +117,13 @@ data:
         # ClusterIP is reachable cluster-wide. The service lives only in the
         # biodiversity namespace: ClusterIP open-llm-proxy:8002 (http).
         location /api/llm/ {
+            # The chat sends Authorization: Bearer <api_key>, which replaces the
+            # browser's saved password, so this path checks APP_TOKEN instead. It is
+            # served only in config.json, which is behind the password.
+            auth_basic off;
+            if ($http_authorization != "Bearer ${APP_TOKEN}") {
+                return 403;
+            }
             proxy_pass http://open-llm-proxy.biodiversity.svc.cluster.local:8002/v1/;
             proxy_set_header Authorization "Bearer ${PROXY_KEY}";
 
@@ -171,6 +184,7 @@ data:
         }
 
         location /health {
+            auth_basic off;
             access_log off;
             return 200 "healthy\n";
             add_header Content-Type text/plain;
