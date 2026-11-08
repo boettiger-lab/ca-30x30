@@ -77,8 +77,8 @@ spec:
         - name: PROXY_KEY
           valueFrom:
             secretKeyRef:
-              name: open-llm-proxy-secrets
-              key: proxy-key
+              name: open-llm-proxy-app-keys
+              key: ca-30x30
         command:
         - sh
         - -c
