@@ -6,6 +6,10 @@ name: Sync app to GitHub Pages
 # logs/<uuid>/ pages, robots.txt, README.md) is left alone.
 # Without the k8s-injected config.json, the app falls back to the `llm` block in
 # layers-input.json: visitors supply their own OpenRouter key.
+#
+# The root copy redirects to NRP. `wasm/` is a browser-only copy built by
+# scripts/build-wasm-copy.py: the visitor's own LLM key, geo-query's tools running in
+# the browser on DuckDB-wasm (geo-query-wasm), and the data read from source.coop.
 
 on:
   push:
@@ -18,6 +22,8 @@ on:
       - stac/**
       - assets/**
       - assessment/**
+      - wasm/**
+      - scripts/build-wasm-copy.py
       - .github/workflows/gh-pages.yml
   workflow_dispatch:
 
@@ -43,18 +49,19 @@ jobs:
 
       - name: Copy app files
         run: |
-          rm -rf site/stac site/assets site/assessment
+          rm -rf site/stac site/assets site/assessment site/wasm
           cp app/index.html app/docs.html app/layers-input.json app/system-prompt.md site/
           cp -r app/stac site/stac
           cp -r app/assets site/assets
           cp -r app/assessment site/assessment
+          python3 app/scripts/build-wasm-copy.py site/wasm
 
       - name: Commit and push
         working-directory: site
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
-          git add -A index.html docs.html layers-input.json system-prompt.md stac assets assessment
+          git add -A index.html docs.html layers-input.json system-prompt.md stac assets assessment wasm
           if git diff --cached --quiet; then
             echo "gh-pages already up to date"
           else
