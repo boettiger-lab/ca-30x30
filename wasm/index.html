@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Browser-only copy (scripts/build-wasm-copy.py): GLEN's MCP client is
+         replaced by one that runs geo-query in a Web Worker. -->
+    <script type="importmap">{"imports": {"glen/": "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.37.0/app/", "geo-query-wasm/": "https://cdn.jsdelivr.net/gh/SchmidtDSE/geo-query-wasm@dffb0431e6445a15030b40224eee6eab81117e24/src/", "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.37.0/app/mcp-client.js": "./glen-wasm-mcp.js"}}</script>
+    <script type="application/json" id="geo-query-wasm-config">{"catalog": "stac/catalog.json", "discovery": false, "workers": 2, "rewrite": [{"from": "s3://public-", "to": "s3://us-west-2.opendata.source.coop/cboettig/"}, {"from": "https://s3-west.nrp-nautilus.io/public-", "to": "https://data.source.coop/cboettig/"}]}</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>California 30x30</title>
+    <link rel="icon" type="image/png" href="assets/cbn-mark.png">
+
+    <!--
+        Geo-Chat (GLEN) core modules loaded from CDN, pinned to a tagged release.
+        Bump the @v3.34.2 pin (4 occurrences below) to adopt a newer release;
+        verify jsDelivr serves the tag before deploying.
+    -->
+    <!-- MapLibre GL JS -->
+    <script src="https://unpkg.com/maplibre-gl@5.22.0/dist/maplibre-gl.js"
+        integrity="sha384-U054LTKiMIJKEecR8PKFiUZdvkGWHjfPBnen5hSmR9TwfOfgZmKbskC8Rs9dCm/1"
+        crossorigin="anonymous"></script>
+    <link href="https://unpkg.com/maplibre-gl@5.22.0/dist/maplibre-gl.css" rel="stylesheet"
+        integrity="sha384-MGCxhspF/+ufueUgol3FDkiAYQbpSNRhBT0VWHJt64U8qIy9qlnXWx8LAbj6niPH"
+        crossorigin="anonymous" />
+
+    <!-- PMTiles protocol -->
+    <script src="https://unpkg.com/pmtiles@3.0.7/dist/pmtiles.js"
+        integrity="sha384-MjejsnWXHmuz93aE35YWLh5AbS/6ceRB3Vb+ukOwqFzJRTpQ8vvbkLbNV7I0QK4f"
+        crossorigin="anonymous"></script>
+
+    <!-- h3-js (for hex grid overlay) -->
+    <script src="https://unpkg.com/h3-js@4.1.0/dist/h3-js.umd.js"
+        integrity="sha384-nKUDlg+fT0U/eEt4KWP9n034kLe/eVj6k7CVjbu6qfRhJdEyinlGajS9+9AU+UZ5"
+        crossorigin="anonymous"></script>
+
+    <!-- Markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@18.0.5/lib/marked.umd.js"
+        integrity="sha384-ZD0fTOwPMHi7zM6WTVIWJR21I07lq0ccnqz3J6WMvQKG9thh4y7TA1QE6PJu0Af8"
+        crossorigin="anonymous"></script>
+
+    <!-- HTML sanitizer — chat-ui.js (v3.10.0+) refuses to render markdown without it -->
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.8/dist/purify.min.js"
+        integrity="sha384-jrsBdrv4eDpEYIq32u13DPbvB6tRmqIDnA6UlgFBoexpetaiWi7g/VbfMEL1WVen"
+        crossorigin="anonymous"></script>
+
+    <!-- Code highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"
+        integrity="sha384-wH75j6z1lH97ZOpMOInqhgKzFkAInZPPSPlZpYKYTOqsaizPvhQZmAtLcPKXpLyH"
+        crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"
+        integrity="sha384-F/bZzf7p3Joyp5psL90p/p89AZJsndkSoGwRpXcZhleCWhd8SnRuoYo4d0yirjJp"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"
+        integrity="sha384-8q00eP+tyV9451aJYD5ML3ftuHKsGnDcezp7EXMEclDg1fZVSoj8O+3VyJTkXmWp"
+        crossorigin="anonymous"></script>
+
+    <!-- Core styles from CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.37.0/app/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.37.0/app/chat.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.37.0/app/sidebar.css">
+
+    <!-- Partner marks (CBN) are compact icons; the library's
+         24px default is sized for wide wordmarks. Phones keep the library size.
+         The partner slot sets no gap of its own, so two marks would touch. -->
+    <style>
+        .app-header-partner-slot { gap: 14px; }
+        /* Document icon for the report links (nav entries with "variant": "doc")
+           and a chart icon for the Assessment Explorer ("variant": "chart").
+           The library ships neither; these match its 14px stroke icons. */
+        .app-header-link--doc::before,
+        .app-header-menu-link--doc::before,
+        .app-header-link--chart::before,
+        .app-header-menu-link--chart::before {
+            content: "";
+            flex: 0 0 auto;
+            width: 14px;
+            height: 14px;
+            background-color: currentColor;
+            -webkit-mask: var(--doc-icon) center / contain no-repeat;
+            mask: var(--doc-icon) center / contain no-repeat;
+        }
+        .app-header-link--chart::before,
+        .app-header-menu-link--chart::before {
+            -webkit-mask-image: var(--chart-icon);
+            mask-image: var(--chart-icon);
+        }
+        :root {
+            --chart-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 3v18h18'/%3E%3Cpath d='M18 17V9'/%3E%3Cpath d='M13 17V5'/%3E%3Cpath d='M8 17v-3'/%3E%3C/svg%3E");
+            --doc-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/%3E%3Cpolyline points='14 2 14 8 20 8'/%3E%3Cline x1='16' y1='13' x2='8' y2='13'/%3E%3Cline x1='16' y1='17' x2='8' y2='17'/%3E%3C/svg%3E");
+        }
+        @media (min-width: 701px) {
+            .app-header-logo--partner { height: 34px; }
+        }
+    </style>
+
+    <!-- Splash / acknowledgement screen (#129) -->
+    <style>
+        #splash[open] {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            width: 100%;
+            height: 100%;
+            max-width: none;
+            max-height: none;
+            margin: 0;
+            padding: 16px;
+            border: 0;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(13, 38, 20, 0.72);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        }
+        #splash .splash-card {
+            max-width: 640px;
+            max-height: 100%;
+            overflow-y: auto;
+            background: #f6faf6;
+            color: #14241a;
+            border-radius: 10px;
+            padding: 1.75rem 2rem;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        #splash h1 {
+            margin: 0 0 0.9rem;
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: #1b5e20;
+        }
+        #splash p { margin: 0 0 0.9rem; }
+        #splash a { color: #2e7d32; }
+        #splash .splash-ack {
+            background: #e6f1e7;
+            border-left: 3px solid #2e7d32;
+            padding: 0.75rem 1rem;
+            border-radius: 0 6px 6px 0;
+        }
+        #splash .splash-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1.2rem;
+        }
+        #splash button {
+            background: #2e7d32;
+            color: #fff;
+            border: 0;
+            border-radius: 6px;
+            padding: 0.6rem 1.6rem;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+        }
+        #splash button:hover { background: #1b5e20; }
+        @media (max-width: 600px) {
+            #splash .splash-card { padding: 1.25rem; font-size: 14px; }
+        }
+    </style>
+</head>
+
+<body>
+    <!--
+        Splash screen: a non-modal <dialog open> covering the viewport. The AGREE
+        button submits a method="dialog" form, which closes the dialog natively.
+        The script below remembers acceptance in localStorage so the splash is
+        shown once per browser. Bump SPLASH_VERSION when the acknowledgement
+        text changes to ask everyone again. Candidate for an upstream geo-agent
+        option; this inline script is the stopgap.
+    -->
+    <dialog id="splash" open aria-labelledby="splash-title">
+        <div class="splash-card">
+            <h1 id="splash-title">30x30 Biodiversity Assessment Geospatial Companion Tool</h1>
+            <p>Welcome to the 30x30 Biodiversity Assessment Geospatial Companion Tool. This tool is designed to explore and analyze conservation status and distribution of habitats and other important ecological features across the state to enhance knowledge of biodiversity conservation in support of 30x30. It is intended to be a companion tool to the California Biodiversity Network's (CBN's) <a href="https://www.scienceforconservation.org/assets/downloads/AppendixC_TNC_CBN_Biodiversity_Assessment_2026_Final.pdf" target="_blank" rel="noopener">30x30 Biodiversity Assessment</a> and draws upon datasets vetted by the CBN Biodiversity Assessment working group. It is currently based upon the 2025 Conservation Area data.</p>
+            <p class="splash-ack">LLM interface tools are extremely difficult to comprehensively test (see <a href="https://github.com/boettiger-lab/ca-30x30/tree/main/validation/2025-biodiversity-assessment" target="_blank" rel="noopener">proposed tool benchmarks</a>). It is the responsibility of the user to review the results and methodological steps the tool provides and make their own judgements about the accuracy, value, and interpretation of the results. Click <strong>AGREE</strong> to acknowledge this responsibility and enter the application.</p>
+            <form method="dialog" class="splash-actions">
+                <a href="docs.html">About this tool</a>
+                <button type="submit" autofocus>AGREE</button>
+            </form>
+        </div>
+    </dialog>
+    <script>
+        (function () {
+            var KEY = 'ca30x30-splash-accepted';
+            var SPLASH_VERSION = '2026-09-24';
+            var splash = document.getElementById('splash');
+            try {
+                if (localStorage.getItem(KEY) === SPLASH_VERSION) splash.close();
+            } catch (e) { /* storage blocked: show the splash every time */ }
+            splash.addEventListener('close', function () {
+                try { localStorage.setItem(KEY, SPLASH_VERSION); } catch (e) {}
+            });
+        })();
+    </script>
+
+    <!-- Map -->
+    <div id="map"></div>
+
+    <!-- Layer controls — generated by MapManager.generateMenu() -->
+    <div id="menu"></div>
+
+    <!-- Chat scaffold is built dynamically by the sidebar layout manager (v3.2.0+). -->
+
+    <!-- Boot from CDN -->
+    <script type="module" src="https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.37.0/app/main.js"></script>
+</body>
+
+</html>
