@@ -1,7 +1,7 @@
 {
     "catalog": "stac/catalog.json",
     "titiler_url": "https://titiler.nrp-nautilus.io",
-    "mcp_url": "https://geo-query-wasm.invalid/mcp",
+    "mcp_url": "geo-query-wasm/mcp",
     "auto_approve": true,
     "draw_enabled": true,
     "geolocate": {
