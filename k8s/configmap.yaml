@@ -13,54 +13,66 @@ data:
   config.template.json: |
     {
         "mcp_server_url": "${MCP_SERVER_URL}",
-        "llm_model": "deepseek/deepseek-v4-flash-0731",
+        "llm_model": "deepseek-v4-flash",
         "transcription_model": {
             "value": "gemma-small",
             "endpoint": "/api/llm",
-            "api_key": "${APP_TOKEN}"
+            "api_key": "unused"
         },
         "llm_models": [
             {
-                "value": "z-ai/glm-5.2",
-                "label": "GLM-5.2",
-                "endpoint": "/api/llm",
-                "api_key": "${APP_TOKEN}"
-            },
-            {
-                "value": "z-ai/glm-5.3",
-                "label": "GLM-5.3",
-                "endpoint": "/api/llm",
-                "api_key": "${APP_TOKEN}"
-            },
-            {
-                "value": "deepseek/deepseek-v4-flash-0731",
-                "label": "DeepSeek V4 Flash (0731)",
-                "endpoint": "/api/llm",
-                "api_key": "${APP_TOKEN}"
-            },
-            {
                 "value": "deepseek-v4-flash",
-                "label": "DeepSeek V4 Flash (NRP)",
+                "label": "NRP DeepSeek V4 Flash",
                 "endpoint": "/api/llm",
-                "api_key": "${APP_TOKEN}"
+                "api_key": "unused"
             },
             {
-                "value": "xiaomi/mimo-v2.6-pro",
-                "label": "MiMo V2.6 Pro",
+                "value": "glm-5",
+                "label": "NRP GLM-5.2",
                 "endpoint": "/api/llm",
-                "api_key": "${APP_TOKEN}"
+                "api_key": "unused"
             },
             {
-                "value": "xiaomi/mimo-v2.6-flash",
-                "label": "MiMo V2.6 Flash",
+                "value": "kimi",
+                "label": "NRP Kimi",
                 "endpoint": "/api/llm",
-                "api_key": "${APP_TOKEN}"
+                "api_key": "unused"
             },
             {
-                "value": "moonshotai/kimi-k3",
-                "label": "Kimi K3",
+                "value": "qwen3",
+                "label": "NRP Qwen3",
                 "endpoint": "/api/llm",
-                "api_key": "${APP_TOKEN}"
+                "api_key": "unused"
+            },
+            {
+                "value": "qwen3-small",
+                "label": "NRP Qwen3 Small",
+                "endpoint": "/api/llm",
+                "api_key": "unused"
+            },
+            {
+                "value": "gpt-oss",
+                "label": "NRP GPT-OSS 120B",
+                "endpoint": "/api/llm",
+                "api_key": "unused"
+            },
+            {
+                "value": "minimax-m2",
+                "label": "NRP MiniMax M2",
+                "endpoint": "/api/llm",
+                "api_key": "unused"
+            },
+            {
+                "value": "gemma",
+                "label": "NRP Gemma",
+                "endpoint": "/api/llm",
+                "api_key": "unused"
+            },
+            {
+                "value": "gemma-small",
+                "label": "NRP Gemma Small",
+                "endpoint": "/api/llm",
+                "api_key": "unused"
             }
         ]
     }
@@ -77,18 +89,27 @@ metadata:
   namespace: biodiversity
 data:
   nginx.conf.template: |
+    # ── Per-client limits on the LLM and MCP paths (glen-ops#246) ──
+    # $client_addr is the last X-Forwarded-For entry, the one HAProxy appends
+    # from the connection it actually received, so a client cannot choose it by
+    # sending its own header. In-cluster callers have no XFF and fall back to
+    # $remote_addr. Values from proxy-log measurements (glen-template#50).
+    map $http_x_forwarded_for $client_addr {
+        "~(?:^|,)\s*(?<last>[^,\s]+)\s*$" $last;
+        default $remote_addr;
+    }
+    limit_req_zone $client_addr zone=llm:10m rate=60r/m;
+    limit_req_zone $client_addr zone=mcp:10m rate=60r/m;
+    limit_conn_zone $client_addr zone=addr:10m;
+    limit_req_status 429;
+    limit_conn_status 429;
+
     server {
         listen 80;
         server_name _;
 
         root /usr/share/nginx/html;
         index index.html;
-
-        # Shared-password sign-in for the whole site, including /api/mcp and
-        # /api/llm/, except /health (probes). The htpasswd file comes from the
-        # ca-30x30-htpasswd Secret and is never committed.
-        auth_basic "California 30x30";
-        auth_basic_user_file /etc/nginx/auth/htpasswd;
 
         add_header Access-Control-Allow-Origin *;
         add_header Access-Control-Allow-Methods "GET, POST, OPTIONS";
@@ -116,15 +137,15 @@ data:
         # Cross-namespace apps (e.g. schmidtdse) use this same FQDN; the
         # ClusterIP is reachable cluster-wide. The service lives only in the
         # biodiversity namespace: ClusterIP open-llm-proxy:8002 (http).
-        location /api/llm/ {
-            # The chat sends Authorization: Bearer <api_key>, which replaces the
-            # browser's saved password, so this path checks APP_TOKEN instead. It is
-            # served only in config.json, which is behind the password.
-            auth_basic off;
-            if ($http_authorization != "Bearer ${APP_TOKEN}") {
-                return 403;
-            }
-            proxy_pass http://open-llm-proxy.biodiversity.svc.cluster.local:8002/v1/;
+        # Only two calls are relayed (glen-ops#246): POST chat/completions
+        # (chat and transcription) and GET models. Any other path or method
+        # under /api/llm/ is answered here and never reaches the proxy.
+        location = /api/llm/chat/completions {
+            limit_except POST { deny all; }
+            proxy_set_header X-Real-IP $client_addr;
+            limit_req zone=llm burst=30 nodelay;
+            limit_conn addr 20;
+            proxy_pass http://open-llm-proxy.biodiversity.svc.cluster.local:8002/v1/chat/completions;
             proxy_set_header Authorization "Bearer ${PROXY_KEY}";
 
             # Allow long agent loops (multi-turn tool use). 600s keeps the
@@ -140,14 +161,27 @@ data:
             proxy_buffering off;
         }
 
+        location = /api/llm/models {
+            limit_except GET { deny all; }
+            proxy_set_header X-Real-IP $client_addr;
+            limit_req zone=llm burst=30 nodelay;
+            limit_conn addr 20;
+            proxy_pass http://open-llm-proxy.biodiversity.svc.cluster.local:8002/v1/models;
+            proxy_set_header Authorization "Bearer ${PROXY_KEY}";
+            proxy_read_timeout 600s;
+            proxy_send_timeout 600s;
+            proxy_buffering off;
+        }
+
+        location /api/llm/ {
+            return 404;
+        }
+
         # Curated STAC catalog (ca-30x30#126). Explicit block because the
         # catch-all below has `try_files ... /index.html`, which would hand
         # back the SPA instead of a 404 for a missing catalog — ca30x30-mcp
         # would then boot degraded with no visible cause.
-        # Open without the password: ca30x30-mcp reads it in-cluster, and the
-        # catalog is public in the repo anyway.
         location /stac/ {
-            auth_basic off;
             alias /usr/share/nginx/html/stac/;
         }
 
@@ -156,6 +190,8 @@ data:
         # so the browser never holds it, and proxies the in-cluster Service
         # rather than the public hostname (glen-ops#73).
         location /api/mcp {
+            proxy_set_header X-Real-IP $client_addr;
+            limit_req zone=mcp burst=120 nodelay;
             proxy_pass http://ca30x30-mcp.biodiversity.svc.cluster.local:8000/mcp;
             proxy_http_version 1.1;
             proxy_set_header Host ca30x30-mcp.nrp-nautilus.io;
@@ -169,6 +205,8 @@ data:
         # The assessment sub-app queries the shared duckdb-mcp rather than
         # this app's replica. Same token, same reason as /api/mcp above.
         location /api/duckdb-mcp {
+            proxy_set_header X-Real-IP $client_addr;
+            limit_req zone=mcp burst=120 nodelay;
             proxy_pass http://mcp-server-duckdb.biodiversity.svc.cluster.local:8000/mcp;
             proxy_http_version 1.1;
             proxy_set_header Host duckdb-mcp.nrp-nautilus.io;
@@ -187,7 +225,6 @@ data:
         }
 
         location /health {
-            auth_basic off;
             access_log off;
             return 200 "healthy\n";
             add_header Content-Type text/plain;
