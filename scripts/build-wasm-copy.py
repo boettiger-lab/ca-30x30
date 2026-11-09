@@ -81,7 +81,9 @@ def build(root, out):
 
     cfg = json.loads((root / "layers-input.json").read_text())
     cfg["catalog"] = "stac/catalog.json"
-    cfg["mcp_url"] = "https://geo-query-wasm.invalid/mcp"  # never fetched
+    # Never fetched. Same-origin, so GLEN (v3.42.0+) offers no "Data server
+    # token" field, which would do nothing here.
+    cfg["mcp_url"] = "geo-query-wasm/mcp"
     for c in cfg.get("collections", []):
         if isinstance(c, dict) and "collection_url" in c:
             c["collection_url"] = to_source_coop(c["collection_url"])
