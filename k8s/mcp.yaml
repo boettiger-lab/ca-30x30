@@ -103,6 +103,14 @@ spec:
         # base), which is what STAC_PUBLIC_CATALOG_URL reports to clients.
         - name: STAC_CATALOG_URL
           value: "http://ca-30x30.biodiversity.svc.cluster.local/stac/catalog.json"
+        # NRP Ceph through its external https endpoint, not the internal RGW:
+        # the egress NetworkPolicy on this pod (SchmidtDSE/geo-query
+        # k8s/mcp-egress-networkpolicy.yaml) allows only DNS, public https and
+        # this app's catalog. Drop these two when an internal-RGW rule is added.
+        - name: S3_DEFAULT_ENDPOINT
+          value: "s3-west.nrp-nautilus.io"
+        - name: S3_ENDPOINT_URL
+          value: "https://s3-west.nrp-nautilus.io"
         - name: STAC_PUBLIC_CATALOG_URL
           value: "https://ca-30x30.nrp-nautilus.io/stac/catalog.json"
         # No browse_stac_catalog / catalog://list. The app forwards each
