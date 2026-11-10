@@ -17,7 +17,7 @@ DSE is among the report's authors; the app follows its conventions (the same con
 
 [`assessment/`](assessment/) is a companion map + dashboard that shows the report's analyses for California or any ecoregion, county, district or
 drawn area, using fixed, reviewable SQL instead of an AI agent. Statewide, it reproduces the report's tables (74 of 85 values within half a
-percentage point). **Live:** <https://boettiger-lab.github.io/ca-30x30/assessment/>
+percentage point). **Live:** <https://ca-30x30.nrp-nautilus.io/assessment/>
 
 ## Repository contents
 

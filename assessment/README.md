@@ -9,7 +9,7 @@ public land (GAP 3–4) and non-conserved land, with the report's need classes a
 land to one kind of manager (federal, state, local, non-profit or other) while keeping every share a share of the whole area; see
 [Manager filter](#manager-filter).
 
-**Live:** <https://boettiger-lab.github.io/ca-30x30/assessment/>
+**Live:** <https://ca-30x30.nrp-nautilus.io/assessment/>
 
 There is **no LLM** in the loop. Every number comes from a fixed, reviewable SQL template run on the public
 [duckdb-geo MCP server](https://duckdb-mcp.nrp-nautilus.io/mcp) over H3-indexed GeoParquet. "Method & SQL" under each section shows the exact
