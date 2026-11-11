@@ -14,3 +14,8 @@ spec:
       port: 80
       targetPort: 80
       name: http
+    # STAC-only listener, used in-cluster by ca30x30-mcp.
+    - protocol: TCP
+      port: 8090
+      targetPort: 8090
+      name: stac

@@ -101,12 +101,13 @@ spec:
         # document itself keeps absolute public hrefs (STAC requires an
         # absolute `self`, and pystac resolves relative child hrefs against the
         # base), which is what STAC_PUBLIC_CATALOG_URL reports to clients.
+        # Port 8090 is the app's STAC-only listener, the only app port this
+        # pod's egress policy (k8s/mcp-egress-networkpolicy.yaml) lets it reach.
         - name: STAC_CATALOG_URL
-          value: "http://ca-30x30.biodiversity.svc.cluster.local/stac/catalog.json"
+          value: "http://ca-30x30.biodiversity.svc.cluster.local:8090/stac/catalog.json"
         # NRP Ceph through its external https endpoint, not the internal RGW:
-        # the egress NetworkPolicy on this pod (SchmidtDSE/geo-query
-        # k8s/mcp-egress-networkpolicy.yaml) allows only DNS, public https and
-        # this app's catalog. Drop these two when an internal-RGW rule is added.
+        # the egress NetworkPolicy on this pod (k8s/mcp-egress-networkpolicy.yaml)
+        # allows only DNS, public https and this app's catalog. Drop these two when an internal-RGW rule is added.
         - name: S3_DEFAULT_ENDPOINT
           value: "s3-west.nrp-nautilus.io"
         - name: S3_ENDPOINT_URL

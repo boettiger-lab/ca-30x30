@@ -240,3 +240,21 @@ data:
             add_header Content-Type text/plain;
         }
     }
+
+    # STAC-only listener for ca30x30-mcp, which reads this app's catalog
+    # in-cluster. Its egress policy (k8s/mcp-egress-networkpolicy.yaml) lets it
+    # reach this port only, not the server above. Serves /stac/ read-only and
+    # nothing else.
+    server {
+        listen 8090;
+        server_name _;
+
+        location /stac/ {
+            alias /usr/share/nginx/html/stac/;
+            limit_except GET HEAD { deny all; }
+        }
+
+        location / {
+            return 404;
+        }
+    }

@@ -59,6 +59,9 @@ spec:
         image: nginx:alpine
         ports:
         - containerPort: 80
+        # STAC-only listener for ca30x30-mcp (k8s/configmap.yaml).
+        - containerPort: 8090
+          name: stac
         env:
         - name: TMPDIR
           value: "/tmp"
