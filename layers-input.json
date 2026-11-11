@@ -152,8 +152,7 @@
                     "id": "ca-climate-zones-cog",
                     "display_name": "Climate Zones (Ackerly/Kling 10-class)",
                     "group": "Climate Zones",
-                    "visible": false,
-                    "legend_type": "categorical"
+                    "visible": false
                 }
             ]
         },
@@ -180,8 +179,7 @@
                     "id": "cwhr13-cog",
                     "display_name": "Major Habitat Types (CWHR 13-class)",
                     "group": "Habitat Types",
-                    "visible": false,
-                    "legend_type": "categorical"
+                    "visible": false
                 }
             ]
         },
@@ -193,8 +191,7 @@
                     "id": "cwhr-cog",
                     "display_name": "Habitat Types (CWHR 60+ class)",
                     "group": "Habitat Types",
-                    "visible": false,
-                    "legend_type": "categorical"
+                    "visible": false
                 }
             ]
         },
@@ -409,8 +406,6 @@
                     "display_name": "Plant Species Richness",
                     "group": "Biodiversity: Communities, Species & Richness",
                     "visible": false,
-                    "colormap": "greens",
-                    "rescale": "16,452",
                     "legend_label": "species"
                 }
             ]
@@ -424,8 +419,6 @@
                     "display_name": "Rarity-Weighted Endemic Plant Richness",
                     "group": "Biodiversity: Communities, Species & Richness",
                     "visible": false,
-                    "colormap": "magma",
-                    "rescale": "0,0.0115",
                     "legend_label": "endemism index"
                 }
             ]
@@ -456,8 +449,7 @@
                     "id": "present-day-connectivity-categories-cog",
                     "display_name": "Present-day Connectivity (categories)",
                     "group": "Connectivity & Resilience",
-                    "visible": false,
-                    "legend_type": "categorical"
+                    "visible": false
                 }
             ]
         },
@@ -469,8 +461,7 @@
                     "id": "climate-migration-routes-cog",
                     "display_name": "Climate Migration Routes",
                     "group": "Connectivity & Resilience",
-                    "visible": false,
-                    "legend_type": "categorical"
+                    "visible": false
                 }
             ]
         },
@@ -608,8 +599,6 @@
                     "display_name": "Mid-Century Habitat Climate Exposure (CNRM, warm-wet)",
                     "group": "Climate-Related Risks",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0.15,1",
                     "legend_label": "exposure index"
                 }
             ]
