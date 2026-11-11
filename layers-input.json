@@ -133,30 +133,6 @@
                     "display_name": "Conserved Areas, Terrestrial (2025)",
                     "group": "Progress Data",
                     "visible": true,
-                    "default_style": {
-                        "fill-color": [
-                            "match",
-                            [
-                                "get",
-                                "reGAP"
-                            ],
-                            1,
-                            "#26633A",
-                            2,
-                            "#3E9C47",
-                            3,
-                            "#7EB3D3",
-                            4,
-                            "#BDBDBD",
-                            "#888888"
-                        ],
-                        "fill-opacity": 0.7
-                    },
-                    "outline_style": {
-                        "line-color": "#4A4A4A",
-                        "line-width": 0.3,
-                        "line-opacity": 0.5
-                    },
                     "tooltip_fields": [
                         "UNIT_NAME",
                         "MNG_AGENCY",
@@ -164,25 +140,6 @@
                         "reGAP",
                         "ACCESS_TYP",
                         "Acres"
-                    ],
-                    "legend_type": "categorical",
-                    "legend_classes": [
-                        {
-                            "label": "GAP 1 \u2014 managed for biodiversity (strict)",
-                            "color": "#26633A"
-                        },
-                        {
-                            "label": "GAP 2 \u2014 managed for biodiversity",
-                            "color": "#3E9C47"
-                        },
-                        {
-                            "label": "GAP 3 \u2014 multiple use",
-                            "color": "#7EB3D3"
-                        },
-                        {
-                            "label": "GAP 4 \u2014 no protection mandate",
-                            "color": "#BDBDBD"
-                        }
                     ]
                 }
             ]
@@ -209,15 +166,6 @@
                     "display_name": "Ecoregions (20-class)",
                     "group": "Ecoregions",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": "#6A1B9A",
-                        "fill-opacity": 0.04
-                    },
-                    "outline_style": {
-                        "line-color": "#6A1B9A",
-                        "line-width": 1.2,
-                        "line-opacity": 0.8
-                    },
                     "tooltip_fields": [
                         "CA_Ecoregi"
                     ]
@@ -260,54 +208,11 @@
                     "display_name": "BioRank (Statewide)",
                     "group": "ACE Biodiversity",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "match",
-                            [
-                                "get",
-                                "BioRankSW"
-                            ],
-                            1,
-                            "#ffffb2",
-                            2,
-                            "#fecc5c",
-                            3,
-                            "#fd8d3c",
-                            4,
-                            "#f03b20",
-                            5,
-                            "#bd0026",
-                            "rgba(0,0,0,0)"
-                        ],
-                        "fill-opacity": 0.75
-                    },
+                    "style": "terrestrial-biodiversity-summary-bioranksw",
                     "tooltip_fields": [
                         "BioRankSW",
                         "County",
                         "Eco_Name"
-                    ],
-                    "legend_type": "categorical",
-                    "legend_classes": [
-                        {
-                            "label": "1 \u2014 lowest",
-                            "color": "#ffffb2"
-                        },
-                        {
-                            "label": "2",
-                            "color": "#fecc5c"
-                        },
-                        {
-                            "label": "3",
-                            "color": "#fd8d3c"
-                        },
-                        {
-                            "label": "4",
-                            "color": "#f03b20"
-                        },
-                        {
-                            "label": "5 \u2014 highest",
-                            "color": "#bd0026"
-                        }
                     ]
                 },
                 {
@@ -316,54 +221,11 @@
                     "display_name": "BioRank (Ecoregion)",
                     "group": "ACE Biodiversity",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "match",
-                            [
-                                "get",
-                                "BioRankEco"
-                            ],
-                            1,
-                            "#ffffb2",
-                            2,
-                            "#fecc5c",
-                            3,
-                            "#fd8d3c",
-                            4,
-                            "#f03b20",
-                            5,
-                            "#bd0026",
-                            "rgba(0,0,0,0)"
-                        ],
-                        "fill-opacity": 0.75
-                    },
+                    "style": "terrestrial-biodiversity-summary-biorankeco",
                     "tooltip_fields": [
                         "BioRankEco",
                         "County",
                         "Eco_Name"
-                    ],
-                    "legend_type": "categorical",
-                    "legend_classes": [
-                        {
-                            "label": "1 \u2014 lowest",
-                            "color": "#ffffb2"
-                        },
-                        {
-                            "label": "2",
-                            "color": "#fecc5c"
-                        },
-                        {
-                            "label": "3",
-                            "color": "#fd8d3c"
-                        },
-                        {
-                            "label": "4",
-                            "color": "#f03b20"
-                        },
-                        {
-                            "label": "5 \u2014 highest",
-                            "color": "#bd0026"
-                        }
                     ]
                 },
                 {
@@ -372,54 +234,11 @@
                     "display_name": "Rare Rank (Statewide)",
                     "group": "ACE Biodiversity",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "match",
-                            [
-                                "get",
-                                "RarRankSW"
-                            ],
-                            1,
-                            "#ffffb2",
-                            2,
-                            "#fecc5c",
-                            3,
-                            "#fd8d3c",
-                            4,
-                            "#f03b20",
-                            5,
-                            "#bd0026",
-                            "rgba(0,0,0,0)"
-                        ],
-                        "fill-opacity": 0.75
-                    },
+                    "style": "terrestrial-biodiversity-summary-rarranksw",
                     "tooltip_fields": [
                         "RarRankSW",
                         "County",
                         "Eco_Name"
-                    ],
-                    "legend_type": "categorical",
-                    "legend_classes": [
-                        {
-                            "label": "1 \u2014 lowest",
-                            "color": "#ffffb2"
-                        },
-                        {
-                            "label": "2",
-                            "color": "#fecc5c"
-                        },
-                        {
-                            "label": "3",
-                            "color": "#fd8d3c"
-                        },
-                        {
-                            "label": "4",
-                            "color": "#f03b20"
-                        },
-                        {
-                            "label": "5 \u2014 highest",
-                            "color": "#bd0026"
-                        }
                     ]
                 },
                 {
@@ -428,54 +247,11 @@
                     "display_name": "Rare Rank (Ecoregion)",
                     "group": "ACE Biodiversity",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "match",
-                            [
-                                "get",
-                                "RarRankEco"
-                            ],
-                            1,
-                            "#ffffb2",
-                            2,
-                            "#fecc5c",
-                            3,
-                            "#fd8d3c",
-                            4,
-                            "#f03b20",
-                            5,
-                            "#bd0026",
-                            "rgba(0,0,0,0)"
-                        ],
-                        "fill-opacity": 0.75
-                    },
+                    "style": "terrestrial-biodiversity-summary-rarrankeco",
                     "tooltip_fields": [
                         "RarRankEco",
                         "County",
                         "Eco_Name"
-                    ],
-                    "legend_type": "categorical",
-                    "legend_classes": [
-                        {
-                            "label": "1 \u2014 lowest",
-                            "color": "#ffffb2"
-                        },
-                        {
-                            "label": "2",
-                            "color": "#fecc5c"
-                        },
-                        {
-                            "label": "3",
-                            "color": "#fd8d3c"
-                        },
-                        {
-                            "label": "4",
-                            "color": "#f03b20"
-                        },
-                        {
-                            "label": "5 \u2014 highest",
-                            "color": "#bd0026"
-                        }
                     ]
                 },
                 {
@@ -484,23 +260,7 @@
                     "display_name": "Amphibian Richness",
                     "group": "ACE Biodiversity",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "interpolate",
-                            [
-                                "linear"
-                            ],
-                            [
-                                "get",
-                                "NtvAmph"
-                            ],
-                            0,
-                            "#edf8e9",
-                            16,
-                            "#005a32"
-                        ],
-                        "fill-opacity": 0.75
-                    },
+                    "style": "terrestrial-biodiversity-summary-ntvamph",
                     "tooltip_fields": [
                         "NtvAmph",
                         "County"
@@ -512,23 +272,7 @@
                     "display_name": "Reptile Richness",
                     "group": "ACE Biodiversity",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "interpolate",
-                            [
-                                "linear"
-                            ],
-                            [
-                                "get",
-                                "NtvRept"
-                            ],
-                            0,
-                            "#edf8e9",
-                            51,
-                            "#005a32"
-                        ],
-                        "fill-opacity": 0.75
-                    },
+                    "style": "terrestrial-biodiversity-summary-ntvrept",
                     "tooltip_fields": [
                         "NtvRept",
                         "County"
@@ -540,23 +284,7 @@
                     "display_name": "Bird Richness",
                     "group": "ACE Biodiversity",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "interpolate",
-                            [
-                                "linear"
-                            ],
-                            [
-                                "get",
-                                "NtvBird"
-                            ],
-                            0,
-                            "#edf8e9",
-                            242,
-                            "#005a32"
-                        ],
-                        "fill-opacity": 0.75
-                    },
+                    "style": "terrestrial-biodiversity-summary-ntvbird",
                     "tooltip_fields": [
                         "NtvBird",
                         "County"
@@ -568,23 +296,7 @@
                     "display_name": "Mammal Richness",
                     "group": "ACE Biodiversity",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "interpolate",
-                            [
-                                "linear"
-                            ],
-                            [
-                                "get",
-                                "NtvMamm"
-                            ],
-                            0,
-                            "#edf8e9",
-                            83,
-                            "#005a32"
-                        ],
-                        "fill-opacity": 0.75
-                    },
+                    "style": "terrestrial-biodiversity-summary-ntvmamm",
                     "tooltip_fields": [
                         "NtvMamm",
                         "County"
@@ -596,23 +308,7 @@
                     "display_name": "Rare Amphibian Richness",
                     "group": "ACE Biodiversity",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "interpolate",
-                            [
-                                "linear"
-                            ],
-                            [
-                                "get",
-                                "RarAmph"
-                            ],
-                            0,
-                            "#feedde",
-                            6,
-                            "#8c2d04"
-                        ],
-                        "fill-opacity": 0.75
-                    },
+                    "style": "terrestrial-biodiversity-summary-raramph",
                     "tooltip_fields": [
                         "RarAmph",
                         "County"
@@ -624,23 +320,7 @@
                     "display_name": "Rare Reptile Richness",
                     "group": "ACE Biodiversity",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "interpolate",
-                            [
-                                "linear"
-                            ],
-                            [
-                                "get",
-                                "RarRept"
-                            ],
-                            0,
-                            "#feedde",
-                            9,
-                            "#8c2d04"
-                        ],
-                        "fill-opacity": 0.75
-                    },
+                    "style": "terrestrial-biodiversity-summary-rarrept",
                     "tooltip_fields": [
                         "RarRept",
                         "County"
@@ -652,23 +332,7 @@
                     "display_name": "Rare Bird Richness",
                     "group": "ACE Biodiversity",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "interpolate",
-                            [
-                                "linear"
-                            ],
-                            [
-                                "get",
-                                "RarBird"
-                            ],
-                            0,
-                            "#feedde",
-                            30,
-                            "#8c2d04"
-                        ],
-                        "fill-opacity": 0.75
-                    },
+                    "style": "terrestrial-biodiversity-summary-rarbird",
                     "tooltip_fields": [
                         "RarBird",
                         "County"
@@ -680,23 +344,7 @@
                     "display_name": "Rare Mammal Richness",
                     "group": "ACE Biodiversity",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "interpolate",
-                            [
-                                "linear"
-                            ],
-                            [
-                                "get",
-                                "RarMamm"
-                            ],
-                            0,
-                            "#feedde",
-                            11,
-                            "#8c2d04"
-                        ],
-                        "fill-opacity": 0.75
-                    },
+                    "style": "terrestrial-biodiversity-summary-rarmamm",
                     "tooltip_fields": [
                         "RarMamm",
                         "County"
@@ -708,23 +356,7 @@
                     "display_name": "Endemic Amphibian Richness",
                     "group": "ACE Biodiversity",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "interpolate",
-                            [
-                                "linear"
-                            ],
-                            [
-                                "get",
-                                "AmphEndem"
-                            ],
-                            0,
-                            "#f2f0f7",
-                            5,
-                            "#54278f"
-                        ],
-                        "fill-opacity": 0.75
-                    },
+                    "style": "terrestrial-biodiversity-summary-amphendem",
                     "tooltip_fields": [
                         "AmphEndem",
                         "County"
@@ -736,23 +368,7 @@
                     "display_name": "Endemic Reptile Richness",
                     "group": "ACE Biodiversity",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "interpolate",
-                            [
-                                "linear"
-                            ],
-                            [
-                                "get",
-                                "ReptEndem"
-                            ],
-                            0,
-                            "#f2f0f7",
-                            6,
-                            "#54278f"
-                        ],
-                        "fill-opacity": 0.75
-                    },
+                    "style": "terrestrial-biodiversity-summary-reptendem",
                     "tooltip_fields": [
                         "ReptEndem",
                         "County"
@@ -764,23 +380,7 @@
                     "display_name": "Endemic Bird Richness",
                     "group": "ACE Biodiversity",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "interpolate",
-                            [
-                                "linear"
-                            ],
-                            [
-                                "get",
-                                "BirdEndem"
-                            ],
-                            0,
-                            "#f2f0f7",
-                            8,
-                            "#54278f"
-                        ],
-                        "fill-opacity": 0.75
-                    },
+                    "style": "terrestrial-biodiversity-summary-birdendem",
                     "tooltip_fields": [
                         "BirdEndem",
                         "County"
@@ -792,23 +392,7 @@
                     "display_name": "Endemic Mammal Richness",
                     "group": "ACE Biodiversity",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "interpolate",
-                            [
-                                "linear"
-                            ],
-                            [
-                                "get",
-                                "MammEndem"
-                            ],
-                            0,
-                            "#f2f0f7",
-                            7,
-                            "#54278f"
-                        ],
-                        "fill-opacity": 0.75
-                    },
+                    "style": "terrestrial-biodiversity-summary-mammendem",
                     "tooltip_fields": [
                         "MammEndem",
                         "County"
@@ -855,34 +439,6 @@
                     "display_name": "Freshwater Species Richness (HUC12)",
                     "group": "Freshwater Resources",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "interpolate",
-                            [
-                                "linear"
-                            ],
-                            [
-                                "get",
-                                "Freshwater_Species_Count"
-                            ],
-                            0,
-                            "#ffffcc",
-                            46,
-                            "#a1dab4",
-                            92,
-                            "#41b6c4",
-                            139,
-                            "#2c7fb8",
-                            185,
-                            "#253494"
-                        ],
-                        "fill-opacity": 0.7
-                    },
-                    "outline_style": {
-                        "line-color": "#253494",
-                        "line-width": 0.2,
-                        "line-opacity": 0.4
-                    },
                     "tooltip_fields": [
                         "Watershed_Name",
                         "Freshwater_Species_Count",
@@ -927,15 +483,6 @@
                     "display_name": "Regional Connectivity Linkages",
                     "group": "Connectivity & Resilience",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": "#00897B",
-                        "fill-opacity": 0.45
-                    },
-                    "outline_style": {
-                        "line-color": "#004D40",
-                        "line-width": 1.0,
-                        "line-opacity": 0.9
-                    },
                     "tooltip_fields": [
                         "Proj_Name",
                         "Area_acres",
@@ -967,42 +514,10 @@
                         true,
                         false
                     ],
-                    "default_style": {
-                        "fill-color": [
-                            "match",
-                            [
-                                "get",
-                                "WETLAND_TYPE"
-                            ],
-                            "Freshwater Emergent Wetland",
-                            "#7CB342",
-                            "Freshwater Forested/Shrub Wetland",
-                            "#33691E",
-                            "Estuarine and Marine Wetland",
-                            "#0277BD",
-                            "#888888"
-                        ],
-                        "fill-opacity": 0.6
-                    },
                     "tooltip_fields": [
                         "WETLAND_TYPE",
                         "ATTRIBUTE",
                         "state_code"
-                    ],
-                    "legend_type": "categorical",
-                    "legend_classes": [
-                        {
-                            "label": "Freshwater Emergent",
-                            "color": "#7CB342"
-                        },
-                        {
-                            "label": "Freshwater Forested/Shrub",
-                            "color": "#33691E"
-                        },
-                        {
-                            "label": "Estuarine & Marine",
-                            "color": "#0277BD"
-                        }
                     ]
                 }
             ]
@@ -1016,15 +531,6 @@
                     "display_name": "GDE: Vegetation",
                     "group": "Freshwater Resources",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": "#2E7D32",
-                        "fill-opacity": 0.6
-                    },
-                    "outline_style": {
-                        "line-color": "#1B5E20",
-                        "line-width": 0.4,
-                        "line-opacity": 0.6
-                    },
                     "tooltip_fields": [
                         "VEGETATION_NAME",
                         "COMMON_NAME",
@@ -1043,15 +549,6 @@
                     "display_name": "GDE: Wetlands",
                     "group": "Freshwater Resources",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": "#00838F",
-                        "fill-opacity": 0.6
-                    },
-                    "outline_style": {
-                        "line-color": "#006064",
-                        "line-width": 0.4,
-                        "line-opacity": 0.6
-                    },
                     "tooltip_fields": [
                         "WETLAND_NAME",
                         "ORIGINAL_CODE",
@@ -1069,15 +566,6 @@
                     "display_name": "Sea-Level Rise Inundation (5 ft)",
                     "group": "Climate-Related Risks",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": "#0288D1",
-                        "fill-opacity": 0.45
-                    },
-                    "outline_style": {
-                        "line-color": "#01579B",
-                        "line-width": 0.5,
-                        "line-opacity": 0.6
-                    },
                     "tooltip_fields": [
                         "state",
                         "region",
@@ -1102,47 +590,11 @@
                         false,
                         true
                     ],
-                    "default_style": {
-                        "fill-color": [
-                            "match",
-                            ["get", "FLD_ZONE"],
-                            ["A", "AE", "AH", "AO", "A99"], "#1565C0",
-                            ["V", "VE"], "#006064",
-                            "X", "#90CAF9",
-                            "D", "#B0BEC5",
-                            "rgba(0,0,0,0)"
-                        ],
-                        "fill-opacity": 0.55
-                    },
-                    "outline_style": {
-                        "line-color": "#0D47A1",
-                        "line-width": 0.3,
-                        "line-opacity": 0.4
-                    },
                     "tooltip_fields": [
                         "FLD_ZONE",
                         "ZONE_SUBTY",
                         "SFHA_TF",
                         "DFIRM_ID"
-                    ],
-                    "legend_type": "categorical",
-                    "legend_classes": [
-                        {
-                            "label": "Zone A/AE/AH/AO/A99 — 1% annual chance SFHA",
-                            "color": "#1565C0"
-                        },
-                        {
-                            "label": "Zone V/VE — Coastal high-hazard SFHA",
-                            "color": "#006064"
-                        },
-                        {
-                            "label": "Zone X — Minimal/moderate hazard",
-                            "color": "#90CAF9"
-                        },
-                        {
-                            "label": "Zone D — Undetermined hazard",
-                            "color": "#B0BEC5"
-                        }
                     ]
                 }
             ]
@@ -1171,34 +623,6 @@
                     "display_name": "Historic Fire Perimeters (1878\u20132025)",
                     "group": "Climate-Related Risks",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "interpolate",
-                            [
-                                "linear"
-                            ],
-                            [
-                                "get",
-                                "YEAR_"
-                            ],
-                            1878,
-                            "#fee5d9",
-                            1950,
-                            "#fcae91",
-                            1990,
-                            "#fb6a4a",
-                            2010,
-                            "#de2d26",
-                            2025,
-                            "#a50f15"
-                        ],
-                        "fill-opacity": 0.55
-                    },
-                    "outline_style": {
-                        "line-color": "#7f0000",
-                        "line-width": 0.3,
-                        "line-opacity": 0.5
-                    },
                     "tooltip_fields": [
                         "FIRE_NAME",
                         "YEAR_",
@@ -1217,29 +641,6 @@
                     "display_name": "CalEnviroScreen 5.0 (pollution burden)",
                     "group": "Progress Data",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "interpolate",
-                            [
-                                "linear"
-                            ],
-                            [
-                                "get",
-                                "CIscore_Pctl"
-                            ],
-                            0,
-                            "#2c7bb6",
-                            25,
-                            "#abd9e9",
-                            50,
-                            "#ffffbf",
-                            75,
-                            "#fdae61",
-                            100,
-                            "#d7191c"
-                        ],
-                        "fill-opacity": 0.7
-                    },
                     "tooltip_fields": [
                         "county",
                         "CIscore",
@@ -1258,15 +659,6 @@
                     "display_name": "State Boundaries",
                     "group": "Reference Boundaries",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": "#000000",
-                        "fill-opacity": 0
-                    },
-                    "outline_style": {
-                        "line-color": "#37474F",
-                        "line-width": 1.2,
-                        "line-opacity": 0.7
-                    },
                     "tooltip_fields": [
                         "NAME",
                         "STUSPS"
@@ -1283,15 +675,6 @@
                     "display_name": "County Boundaries",
                     "group": "Counties",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": "#000000",
-                        "fill-opacity": 0
-                    },
-                    "outline_style": {
-                        "line-color": "#455A64",
-                        "line-width": 0.7,
-                        "line-opacity": 0.7
-                    },
                     "tooltip_fields": [
                         "NAMELSAD",
                         "GEOID"
@@ -1308,15 +691,6 @@
                     "display_name": "Census Tracts",
                     "group": "Reference Boundaries",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": "#000000",
-                        "fill-opacity": 0
-                    },
-                    "outline_style": {
-                        "line-color": "#607D8B",
-                        "line-width": 0.3,
-                        "line-opacity": 0.6
-                    },
                     "tooltip_fields": [
                         "NAMELSAD",
                         "GEOID"
@@ -1333,15 +707,6 @@
                     "display_name": "Subbasins (HUC8)",
                     "group": "Freshwater Resources",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": "#1976D2",
-                        "fill-opacity": 0
-                    },
-                    "outline_style": {
-                        "line-color": "#1565C0",
-                        "line-width": 0.8,
-                        "line-opacity": 0.7
-                    },
                     "tooltip_fields": [
                         "name",
                         "huc8",
@@ -1359,15 +724,6 @@
                     "display_name": "Subwatersheds (HUC12)",
                     "group": "Freshwater Resources",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": "#0288D1",
-                        "fill-opacity": 0
-                    },
-                    "outline_style": {
-                        "line-color": "#0277BD",
-                        "line-width": 0.4,
-                        "line-opacity": 0.6
-                    },
                     "tooltip_fields": [
                         "name",
                         "huc12",
@@ -1386,26 +742,6 @@
                     "group": "Freshwater Resources",
                     "visible": false,
                     "layer_type": "line",
-                    "default_style": {
-                        "line-color": "#1E88E5",
-                        "line-width": [
-                            "interpolate",
-                            [
-                                "linear"
-                            ],
-                            [
-                                "get",
-                                "streamorde"
-                            ],
-                            1,
-                            0.3,
-                            4,
-                            1.2,
-                            7,
-                            2.5
-                        ],
-                        "line-opacity": 0.8
-                    },
                     "tooltip_fields": [
                         "gnis_name",
                         "streamorde",
@@ -1425,11 +761,6 @@
                     "group": "Freshwater Resources",
                     "visible": false,
                     "layer_type": "line",
-                    "default_style": {
-                        "line-color": "#64B5F6",
-                        "line-width": 0.5,
-                        "line-opacity": 0.8
-                    },
                     "tooltip_fields": [
                         "GNIS_NAME",
                         "FTYPE",
@@ -1448,11 +779,6 @@
                     "group": "Freshwater Resources",
                     "visible": false,
                     "layer_type": "line",
-                    "default_style": {
-                        "line-color": "#0277BD",
-                        "line-width": 0.6,
-                        "line-opacity": 0.8
-                    },
                     "tooltip_fields": [
                         "GNIS_NAME",
                         "FTYPE",
@@ -1478,31 +804,8 @@
                         true,
                         false
                     ],
-                    "default_style": {
-                        "fill-color": [
-                            "match",
-                            ["get", "polygon_ty"],
-                            "P", "#1b5e20",
-                            "U", "#2e7d32",
-                            "S", "#558b2f",
-                            "L", "#8bc34a",
-                            "rgba(0,0,0,0)"
-                        ],
-                        "fill-opacity": 0.65
-                    },
-                    "outline_style": {
-                        "line-color": "#1b5e20",
-                        "line-width": 0.3,
-                        "line-opacity": 0.5
-                    },
-                    "tooltip_fields": ["county_nam", "polygon_ty", "polygon_ac", "upd_year"],
-                    "legend_type": "categorical",
-                    "legend_classes": [
-                        {"label": "Prime Farmland (P)", "color": "#1b5e20"},
-                        {"label": "Unique Farmland (U)", "color": "#2e7d32"},
-                        {"label": "Statewide Importance (S)", "color": "#558b2f"},
-                        {"label": "Local Importance (L)", "color": "#8bc34a"}
-                    ]
+                    "style": "fmmp-2022-polygon-ty",
+                    "tooltip_fields": ["county_nam", "polygon_ty", "polygon_ac", "upd_year"]
                 },
                 {
                     "id": "fmmp-2022-pmtiles",
@@ -1517,15 +820,7 @@
                         true,
                         false
                     ],
-                    "default_style": {
-                        "fill-color": "#795548",
-                        "fill-opacity": 0.55
-                    },
-                    "outline_style": {
-                        "line-color": "#4e342e",
-                        "line-width": 0.3,
-                        "line-opacity": 0.5
-                    },
+                    "style": "fmmp-2022",
                     "tooltip_fields": ["county_nam", "polygon_ty", "polygon_ac", "upd_year"]
                 }
             ]
@@ -1539,42 +834,11 @@
                     "display_name": "Disadvantaged Communities (DAC, by tract)",
                     "group": "Progress Data",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "match",
-                            [
-                                "get",
-                                "DAC23"
-                            ],
-                            "Y",
-                            "#d84315",
-                            "N",
-                            "#bbdefb",
-                            "#cfd8dc"
-                        ],
-                        "fill-opacity": 0.55
-                    },
-                    "outline_style": {
-                        "line-color": "#90a4ae",
-                        "line-width": 0.2,
-                        "line-opacity": 0.4
-                    },
                     "tooltip_fields": [
                         "GEOID20",
                         "DAC23",
                         "MHI23",
                         "Pop23"
-                    ],
-                    "legend_type": "categorical",
-                    "legend_classes": [
-                        {
-                            "label": "Disadvantaged community",
-                            "color": "#d84315"
-                        },
-                        {
-                            "label": "Not disadvantaged",
-                            "color": "#bbdefb"
-                        }
                     ]
                 }
             ]
