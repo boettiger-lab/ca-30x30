@@ -6,7 +6,7 @@
 
     <!-- Browser-only copy (scripts/build-wasm-copy.py): GLEN's MCP client is
          replaced by one that runs geo-query in a Web Worker. -->
-    <script type="importmap">{"imports": {"glen/": "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.48.0/app/", "geo-query-wasm/": "https://cdn.jsdelivr.net/gh/SchmidtDSE/geo-query-wasm@dffb0431e6445a15030b40224eee6eab81117e24/src/", "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.48.0/app/mcp-client.js": "./glen-wasm-mcp.js"}}</script>
+    <script type="importmap">{"imports": {"glen/": "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.49.1/app/", "geo-query-wasm/": "https://cdn.jsdelivr.net/gh/SchmidtDSE/geo-query-wasm@dffb0431e6445a15030b40224eee6eab81117e24/src/", "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.49.1/app/mcp-client.js": "./glen-wasm-mcp.js"}}</script>
     <script type="application/json" id="geo-query-wasm-config">{"catalog": "stac/catalog.json", "discovery": false, "workers": 2, "rewrite": [{"from": "s3://public-", "to": "s3://us-west-2.opendata.source.coop/cboettig/"}, {"from": "https://s3-west.nrp-nautilus.io/public-", "to": "https://data.source.coop/cboettig/"}]}</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>California 30x30</title>
@@ -57,9 +57,9 @@
         crossorigin="anonymous"></script>
 
     <!-- Core styles from CDN -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.48.0/app/style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.48.0/app/chat.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.48.0/app/sidebar.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.49.1/app/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.49.1/app/chat.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.49.1/app/sidebar.css">
 
     <!-- Partner marks (CBN) are compact icons; the library's
          24px default is sized for wide wordmarks. Phones keep the library size.
@@ -210,7 +210,7 @@
     <!-- Chat scaffold is built dynamically by the sidebar layout manager (v3.2.0+). -->
 
     <!-- Boot from CDN -->
-    <script type="module" src="https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.48.0/app/main.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.49.1/app/main.js"></script>
 </body>
 
 </html>
