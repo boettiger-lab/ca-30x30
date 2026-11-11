@@ -1,0 +1,63 @@
+# Egress for ca30x30-mcp, this app's DuckDB MCP replica (k8s/mcp.yaml).
+#
+# The server runs SQL written by its callers, so what the pod can reach is what a
+# query can reach. It gets DNS, https to public addresses (NRP S3 and the other
+# public hosts it reads, through their external endpoints), and this app's STAC
+# catalog on the app's STAC-only port 8090 (k8s/configmap.yaml). Nothing else in
+# the cluster.
+#
+# Keep public 443 rather than pinning to the NRP ingress address: pinning broke
+# reads on 2026-11-10.
+#
+# Apply this file on its own (`kubectl apply -f k8s/mcp-egress-networkpolicy.yaml`).
+# Never apply k8s/mcp.yaml whole: it still holds an Ingress NRP removed.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ca30x30-mcp-egress
+  namespace: biodiversity
+spec:
+  podSelector:
+    matchLabels:
+      app: ca30x30-mcp
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+            except:
+              - 10.0.0.0/8
+              - 172.16.0.0/12
+              - 192.168.0.0/16
+              - 100.64.0.0/10
+              - 169.254.0.0/16
+              - 127.0.0.0/8
+        - ipBlock:
+            cidr: ::/0
+            except:
+              - fc00::/7
+              - fe80::/10
+              - ::1/128
+      ports:
+        - protocol: TCP
+          port: 443
+    - to:
+        - podSelector:
+            matchLabels:
+              app: ca-30x30
+      ports:
+        - protocol: TCP
+          port: 8090
