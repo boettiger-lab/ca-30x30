@@ -6,7 +6,7 @@
 
     <!-- Browser-only copy (scripts/build-wasm-copy.py): GLEN's MCP client is
          replaced by one that runs geo-query in a Web Worker. -->
-    <script type="importmap">{"imports": {"glen/": "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.49.1/app/", "geo-query-wasm/": "https://cdn.jsdelivr.net/gh/SchmidtDSE/geo-query-wasm@dffb0431e6445a15030b40224eee6eab81117e24/src/", "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.49.1/app/mcp-client.js": "./glen-wasm-mcp.js"}}</script>
+    <script type="importmap">{"imports": {"glen/": "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.49.1/app/", "geo-query-wasm/": "https://cdn.jsdelivr.net/gh/SchmidtDSE/geo-query-wasm@v0.6.0/src/", "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v3.49.1/app/mcp-client.js": "./glen-wasm-mcp.js"}}</script>
     <script type="application/json" id="geo-query-wasm-config">{"catalog": "stac/catalog.json", "discovery": false, "workers": 2, "rewrite": [{"from": "s3://public-", "to": "s3://us-west-2.opendata.source.coop/cboettig/"}, {"from": "https://s3-west.nrp-nautilus.io/public-", "to": "https://data.source.coop/cboettig/"}]}</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>California 30x30</title>
