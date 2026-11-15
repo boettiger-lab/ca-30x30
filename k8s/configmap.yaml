@@ -147,6 +147,7 @@ data:
             limit_conn addr 20;
             proxy_pass http://open-llm-proxy.biodiversity.svc.cluster.local:8002/v1/chat/completions;
             proxy_set_header Authorization "Bearer ${PROXY_KEY}";
+            proxy_set_header X-Glen-App "ca-30x30";
 
             # Allow long agent loops (multi-turn tool use). 600s keeps the
             # timeout uniform across the whole chain: the geo-agent client
@@ -168,6 +169,7 @@ data:
             limit_conn addr 20;
             proxy_pass http://open-llm-proxy.biodiversity.svc.cluster.local:8002/v1/models;
             proxy_set_header Authorization "Bearer ${PROXY_KEY}";
+            proxy_set_header X-Glen-App "ca-30x30";
             proxy_read_timeout 600s;
             proxy_send_timeout 600s;
             proxy_buffering off;
@@ -202,6 +204,7 @@ data:
             proxy_set_header Host duckdb-mcp.carlboettiger.info;
             proxy_set_header Connection "";
             proxy_set_header Authorization "Bearer ${MCP_AUTH_TOKEN}";
+            proxy_set_header X-Glen-App "ca-30x30";
             proxy_read_timeout 600s;
             proxy_send_timeout 600s;
             proxy_buffering off;
@@ -222,6 +225,7 @@ data:
             proxy_set_header Host duckdb-mcp.carlboettiger.info;
             proxy_set_header Connection "";
             proxy_set_header Authorization "Bearer ${MCP_AUTH_TOKEN}";
+            proxy_set_header X-Glen-App "ca-30x30";
             proxy_read_timeout 600s;
             proxy_send_timeout 600s;
             proxy_buffering off;
