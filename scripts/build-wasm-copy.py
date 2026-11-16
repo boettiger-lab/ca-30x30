@@ -8,9 +8,10 @@ source.coop mirror rather than NRP.
 
 It is generated from the app's own files, so it never drifts from them:
 
-    index.html         the NRP redirect removed; an import map that swaps GLEN's
-                       MCP client for wasm/glen-wasm-mcp.js, and the worker config
-    layers-input.json  collection URLs moved to source.coop, mcp_url unused
+    index.html         the NRP redirect removed
+    layers-input.json  collection URLs moved to source.coop; the mcp plugin runs
+                       geo-query-wasm in a worker (worker.js) instead of reaching
+                       a server, and the hex plugin loads its tile protocol
     stac/catalog.json  child links moved to source.coop
     worker.js          a same-origin wrapper around geo-query-wasm's worker
     system-prompt.md, docs.html, assets/   copied as they are
@@ -60,30 +61,30 @@ def build(root, out):
     pins = set(re.findall(r"cdn\.jsdelivr\.net/gh/SchmidtDSE/glen@([^/]+)/", html))
     if len(pins) != 1:
         sys.exit(f"index.html: expected one GLEN pin, found {sorted(pins)}")
-    glen = f"https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@{pins.pop()}/app/"
-    importmap = {"imports": {
-        "glen/": glen,
-        "geo-query-wasm/": GQW_BASE,
-        glen + "mcp-client.js": "./glen-wasm-mcp.js",
-    }}
-    head = (
-        "\n    <!-- Browser-only copy (scripts/build-wasm-copy.py): GLEN's MCP client is\n"
-        "         replaced by one that runs geo-query in a Web Worker. -->\n"
-        f'    <script type="importmap">{json.dumps(importmap)}</script>\n'
-        f'    <script type="application/json" id="geo-query-wasm-config">{json.dumps(WORKER_CONFIG)}</script>\n'
-    )
-    # The import map must come before any module script; the charset stays first.
-    charset = '<meta charset="UTF-8">\n'
-    if charset not in html:
-        sys.exit("index.html: no charset meta to place the import map after")
-    html = html.replace(charset, charset + head, 1)
+    if "/core/main.js" not in html:
+        sys.exit("index.html: expected glen core (core/main.js)")
     (out / "index.html").write_text(html)
 
     cfg = json.loads((root / "layers-input.json").read_text())
     cfg["catalog"] = "stac/catalog.json"
-    # Never fetched. Same-origin, so GLEN (v3.42.0+) offers no "Data server
-    # token" field, which would do nothing here.
-    cfg["mcp_url"] = "geo-query-wasm/mcp"
+    # GLEN core runs a worker server itself (core/README.md, "plugins"): the
+    # mcp plugin takes `worker` in place of `url`, and the hex plugin then
+    # reads geo-query-wasm's tiles through it.
+    cfg.pop("mcp_url", None)
+    plugins, mcp = [], 0
+    for p in cfg.get("plugins", []):
+        url = p if isinstance(p, str) else p["url"]
+        opts = {} if isinstance(p, str) else dict(p.get("options", {}))
+        if url.endswith("/core/plugins/mcp.js"):
+            mcp += 1
+            opts = {"worker": "worker.js", "worker_config": WORKER_CONFIG,
+                    **({"prompt": opts["prompt"]} if "prompt" in opts else {})}
+        elif url.endswith("/core/plugins/hex.js"):
+            opts["geo_query_wasm"] = GEO_QUERY_WASM
+        plugins.append({"url": url, "options": opts} if opts else url)
+    if mcp != 1:
+        sys.exit(f"layers-input.json: expected one mcp plugin, found {mcp}")
+    cfg["plugins"] = plugins
     for c in cfg.get("collections", []):
         if isinstance(c, dict) and "collection_url" in c:
             c["collection_url"] = to_source_coop(c["collection_url"])
@@ -103,7 +104,6 @@ def build(root, out):
         "// configuration from this file's URL (built by scripts/build-wasm-copy.py).\n"
         f"import '{GQW_BASE}worker.js';\n")
 
-    shutil.copy(root / "wasm/glen-wasm-mcp.js", out)
     shutil.copy(root / "system-prompt.md", out)
     shutil.copy(root / "docs.html", out)
     shutil.copytree(root / "assets", out / "assets", dirs_exist_ok=True)
