@@ -2,9 +2,6 @@
   "catalog": "https://ca-30x30.nrp-nautilus.io/stac/catalog.json",
   "titiler_url": "https://titiler.nrp-nautilus.io",
   "auto_approve": true,
-  "geolocate": {
-    "button": true
-  },
   "geocoder": {
     "search_box": false
   },
@@ -868,13 +865,21 @@
   ],
   "plugins": [
     {
-      "url": "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.0.0/core/plugins/mcp.js",
+      "url": "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.0.2/core/plugins/mcp.js",
       "options": {
         "url": "https://ca30x30-mcp.nrp-nautilus.io/mcp",
         "prompt": "geospatial-analyst"
       }
     },
-    "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.0.0/core/plugins/hex.js",
-    "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.0.0/core/plugins/draw.js"
-  ]
+    "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.0.2/core/plugins/hex.js",
+    "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.0.2/core/plugins/draw.js",
+    {
+      "url": "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.0.2/core/plugins/geolocate.js",
+      "options": {
+        "button": true,
+        "agent_tool": false
+      }
+    }
+  ],
+  "export": true
 }
