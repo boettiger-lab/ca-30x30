@@ -138,67 +138,55 @@
                 {
                     "field": "frac_gap12",
                     "label": "30x30 (GAP 1–2)",
-                    "color": "#1b6e3a",
-                    "when": {
-                        "manager": "all"
-                    }
-                },
-                {
-                    "field": "frac_gap12",
-                    "label": "This manager's 30x30 (GAP 1–2)",
-                    "color": "#1b6e3a",
-                    "when": {
-                        "manager": [
-                            "federal",
-                            "state",
-                            "local",
-                            "nonprofit",
-                            "other"
-                        ]
-                    }
+                    "color": "#1b6e3a"
                 },
                 {
                     "field": "frac_gap34",
                     "label": "Other conserved or public (GAP 3–4)",
-                    "color": "#7dbb63",
-                    "when": {
-                        "manager": "all"
-                    }
-                },
-                {
-                    "field": "frac_gap34",
-                    "label": "This manager's GAP 3–4",
-                    "color": "#7dbb63",
-                    "when": {
-                        "manager": [
-                            "federal",
-                            "state",
-                            "local",
-                            "nonprofit",
-                            "other"
-                        ]
-                    }
-                },
-                {
-                    "field": "frac_other",
-                    "label": "Other managers' conserved land",
-                    "color": "#b9b4ad",
-                    "when": {
-                        "manager": [
-                            "federal",
-                            "state",
-                            "local",
-                            "nonprofit",
-                            "other"
-                        ]
-                    }
+                    "color": "#7dbb63"
                 },
                 {
                     "field": "frac_none",
                     "label": "Non-conserved",
                     "color": "#ece3b5"
                 }
-            ]
+            ],
+            "when": {
+                "manager": "all"
+            }
+        },
+        {
+            "query": "protection",
+            "title": "This manager's land by conservation status",
+            "subtitle": "Share of this manager's conserved land here in 30x30 (GAP 1–2) and in GAP 3–4, beside the same split statewide.",
+            "statewide_row": true,
+            "category": "__label",
+            "stacked": true,
+            "format": "pct",
+            "domain_max": 1,
+            "show_total": false,
+            "wide": true,
+            "series": [
+                {
+                    "field": "own_frac_gap12",
+                    "label": "30x30 (GAP 1–2)",
+                    "color": "#1b6e3a"
+                },
+                {
+                    "field": "own_frac_gap34",
+                    "label": "GAP 3–4, could count with management changes",
+                    "color": "#7dbb63"
+                }
+            ],
+            "when": {
+                "manager": [
+                    "federal",
+                    "state",
+                    "local",
+                    "nonprofit",
+                    "other"
+                ]
+            }
         },
         {
             "query": "ecoregions",
@@ -214,60 +202,12 @@
                 {
                     "field": "frac_gap12",
                     "label": "30x30 (GAP 1–2)",
-                    "color": "#1b6e3a",
-                    "when": {
-                        "manager": "all"
-                    }
-                },
-                {
-                    "field": "frac_gap12",
-                    "label": "This manager's 30x30 (GAP 1–2)",
-                    "color": "#1b6e3a",
-                    "when": {
-                        "manager": [
-                            "federal",
-                            "state",
-                            "local",
-                            "nonprofit",
-                            "other"
-                        ]
-                    }
+                    "color": "#1b6e3a"
                 },
                 {
                     "field": "frac_gap34",
                     "label": "GAP 3–4",
-                    "color": "#7dbb63",
-                    "when": {
-                        "manager": "all"
-                    }
-                },
-                {
-                    "field": "frac_gap34",
-                    "label": "This manager's GAP 3–4",
-                    "color": "#7dbb63",
-                    "when": {
-                        "manager": [
-                            "federal",
-                            "state",
-                            "local",
-                            "nonprofit",
-                            "other"
-                        ]
-                    }
-                },
-                {
-                    "field": "frac_other",
-                    "label": "Other managers' conserved land",
-                    "color": "#b9b4ad",
-                    "when": {
-                        "manager": [
-                            "federal",
-                            "state",
-                            "local",
-                            "nonprofit",
-                            "other"
-                        ]
-                    }
+                    "color": "#7dbb63"
                 },
                 {
                     "field": "frac_none",
@@ -275,7 +215,43 @@
                     "color": "#ece3b5"
                 }
             ],
-            "wide": true
+            "wide": true,
+            "when": {
+                "manager": "all"
+            }
+        },
+        {
+            "query": "ecoregions",
+            "title": "This manager's land by ecoregion",
+            "subtitle": "Share of this manager's land in each ecoregion in 30x30 and in GAP 3–4, with the manager's acres there",
+            "category": "own_label",
+            "stacked": true,
+            "format": "pct",
+            "domain_max": 1,
+            "show_total": false,
+            "label_width": 260,
+            "series": [
+                {
+                    "field": "own_frac_gap12",
+                    "label": "30x30 (GAP 1–2)",
+                    "color": "#1b6e3a"
+                },
+                {
+                    "field": "own_frac_gap34",
+                    "label": "GAP 3–4, could count with management changes",
+                    "color": "#7dbb63"
+                }
+            ],
+            "wide": true,
+            "when": {
+                "manager": [
+                    "federal",
+                    "state",
+                    "local",
+                    "nonprofit",
+                    "other"
+                ]
+            }
         },
         {
             "query": "ecoregions",

@@ -1,6 +1,8 @@
 -- Conservation status within each ecoregion that overlaps the area, and each
 -- ecoregion's share of the area's 30x30 network (GAP 1-2 acres).
 -- A cell on an ecoregion boundary is assigned to one ecoregion.
+-- With a manager selected, own_* split the manager's land in each ecoregion
+-- between 30x30 and GAP 3-4, and own_label names the ecoregion with those acres.
 WITH land AS MATERIALIZED ({{LAND}}),
 eco AS (
   SELECT l.h10, any_value(l.area_km2) AS area_km2, any_value(l.w12) AS w12, any_value(l.w34) AS w34, any_value(l.wc) AS wc,
@@ -17,7 +19,15 @@ SELECT ecoregion AS feature, ecoregion AS label,
        SUM(area_km2 * w34) / SUM(area_km2) AS frac_gap34,
        1 - SUM(area_km2 * wc) / SUM(area_km2) AS frac_none,
        SUM(area_km2 * (wc - w12 - w34)) / SUM(area_km2) AS frac_other,
-       SUM(area_km2 * w12) / NULLIF(SUM(SUM(area_km2 * w12)) OVER (), 0) AS share_of_network
+       SUM(area_km2 * w12) / NULLIF(SUM(SUM(area_km2 * w12)) OVER (), 0) AS share_of_network,
+       SUM(area_km2 * (w12 + w34)) * 247.105 AS own_acres,
+       SUM(area_km2 * w12) / NULLIF(SUM(area_km2 * (w12 + w34)), 0) AS own_frac_gap12,
+       SUM(area_km2 * w34) / NULLIF(SUM(area_km2 * (w12 + w34)), 0) AS own_frac_gap34,
+       ecoregion || ' · ' || CASE
+           WHEN SUM(area_km2 * (w12 + w34)) * 247.105 >= 1e6 THEN printf('%.1fM ac', SUM(area_km2 * (w12 + w34)) * 247.105 / 1e6)
+           WHEN SUM(area_km2 * (w12 + w34)) * 247.105 >= 1e3 THEN printf('%.0fK ac', SUM(area_km2 * (w12 + w34)) * 247.105 / 1e3)
+           ELSE printf('%.0f ac', SUM(area_km2 * (w12 + w34)) * 247.105) END AS own_label
 FROM eco
 GROUP BY ecoregion
+HAVING SUM(area_km2 * (w12 + w34)) * 247.105 >= 0.5
 ORDER BY gap12_acres DESC
