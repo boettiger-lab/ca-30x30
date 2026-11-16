@@ -1,9 +1,7 @@
 {
     "catalog": "stac/catalog.json",
     "titiler_url": "https://titiler.nrp-nautilus.io",
-    "mcp_url": "geo-query-wasm/mcp",
     "auto_approve": true,
-    "draw_enabled": true,
     "geolocate": {
         "button": true
     },
@@ -867,5 +865,36 @@
                 }
             ]
         }
+    ],
+    "plugins": [
+        {
+            "url": "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.0.0/core/plugins/mcp.js",
+            "options": {
+                "worker": "worker.js",
+                "worker_config": {
+                    "catalog": "stac/catalog.json",
+                    "discovery": false,
+                    "workers": 2,
+                    "rewrite": [
+                        {
+                            "from": "s3://public-",
+                            "to": "s3://us-west-2.opendata.source.coop/cboettig/"
+                        },
+                        {
+                            "from": "https://s3-west.nrp-nautilus.io/public-",
+                            "to": "https://data.source.coop/cboettig/"
+                        }
+                    ]
+                },
+                "prompt": "geospatial-analyst"
+            }
+        },
+        {
+            "url": "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.0.0/core/plugins/hex.js",
+            "options": {
+                "geo_query_wasm": "v0.6.0"
+            }
+        },
+        "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.0.0/core/plugins/draw.js"
     ]
 }
