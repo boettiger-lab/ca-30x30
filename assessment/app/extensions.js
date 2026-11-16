@@ -94,6 +94,39 @@ const conserved = {
 };
 
 /**
+ * Show only the selected manager's units on the conserved-areas layer.
+ * glen-charts has no per-param overlay filter, so index.html hands over the
+ * explorer (attach) and each report draw (reportHead) sets the filter.
+ */
+let mapView = null;
+let shown = null;     // the manager whose units are drawn, or null for all
+function filterConserved(tries = 0) {
+    const m = mapView?.map;
+    if (!m) return;
+    const layer = `ov-${conserved.id}-fill`;
+    if (!m.getLayer(layer)) {
+        if (tries < 50) setTimeout(() => filterConserved(tries + 1), 200);
+        return;
+    }
+    const uniq = a => [...new Set(a)];
+    const f = !shown ? null
+        : shown.agencies ? ['match', ['get', 'MNG_AGENCY'], uniq(shown.agencies), true, false]
+            : ['match', ['get', 'MNG_AG_LEV'], uniq(shown.levels), true, false];
+    m.setFilter(layer, f);
+    const title = document.querySelector(`#overlay-legend .ov[data-ov="${conserved.id}"] .title`);
+    if (title) title.textContent = shown ? `2025 30x30 Conserved Areas: ${shown.label} only` : '2025 30x30 Conserved Areas';
+}
+function showManager(mgr) {
+    shown = mgr;
+    filterConserved();
+}
+/** Called by index.html with the explorer once it has started. */
+function attach(ex) {
+    mapView = ex?.mapView || null;
+    filterConserved();
+}
+
+/**
  * California's share in 30x30, all managers, into every .ca-level span once
  * it loads (precomputed, so at once); the note is written before it is known.
  */
@@ -136,6 +169,7 @@ function reportHead(aoi, { engine, reference, isRegion }) {
     // a drawn area never has a precomputed file (app.live_note covers named areas)
     const live = aoi.kind === 'polygon' ? '<p class="tile-note live-note">Results for this area are computed live from the source data; larger areas can take a minute or two.</p>' : '';
     const mgr = managerOf(engine.config.app, aoi.params);
+    showManager(mgr);
     if (mgr) return `${live}${managerNote(mgr, isRegion)}`;
     return `${live}<details class="card framework">
         <summary><b>How to read this</b> — the report's representation framework</summary>
@@ -196,4 +230,5 @@ export default {
     sources: [polygonSource()],
     reportHead,
     shortName,
+    attach,
 };

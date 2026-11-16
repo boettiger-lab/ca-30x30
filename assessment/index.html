@@ -50,7 +50,7 @@
     <script type="module">
         import { createExplorer } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.16.1/core/explorer.js';
         import extensions from './app/extensions.js';
-        createExplorer({ extensions });
+        createExplorer({ extensions }).then(ex => extensions.attach(ex));
     </script>
 </body>
 
