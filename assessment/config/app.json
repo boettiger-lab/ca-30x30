@@ -16,7 +16,7 @@
         "label": "Managed by",
         "token": "MANAGER",
         "default": "all",
-        "help": "Count one kind of manager's conserved land. Shares stay shares of the whole area.",
+        "help": "Show one kind of manager's land: how much of it is in 30x30, habitat by habitat.",
         "options": [
             {"value": "all", "label": "All"},
             {"value": "federal", "label": "Federal", "levels": ["Federal"]},

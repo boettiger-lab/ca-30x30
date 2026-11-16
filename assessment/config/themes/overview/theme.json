@@ -27,25 +27,6 @@
         },
         {
             "query": "protection",
-            "field": "frac_gap12",
-            "label": "This manager's land in 30x30 (GAP 1–2)",
-            "format": "pct",
-            "when": {
-                "manager": [
-                    "federal",
-                    "state",
-                    "local",
-                    "nonprofit",
-                    "other"
-                ]
-            },
-            "detail_field": "gap12_acres",
-            "detail_format": "acres",
-            "detail_template": "{} in GAP 1–2",
-            "area_template": "of {}"
-        },
-        {
-            "query": "protection",
             "field": "frac_gap34",
             "label": "Other conserved or public (GAP 3–4)",
             "format": "pct",
@@ -60,8 +41,46 @@
         },
         {
             "query": "protection",
-            "field": "frac_gap34",
-            "label": "This manager's GAP 3–4 land",
+            "field": "frac_own",
+            "label": "This manager's land",
+            "format": "pct",
+            "when": {
+                "manager": [
+                    "federal",
+                    "state",
+                    "local",
+                    "nonprofit",
+                    "other"
+                ]
+            },
+            "detail_field": "own_acres",
+            "detail_format": "acres",
+            "detail_template": "{}",
+            "area_template": "of {}"
+        },
+        {
+            "query": "protection",
+            "field": "own_frac_gap12",
+            "label": "In 30x30 (GAP 1–2)",
+            "format": "pct",
+            "when": {
+                "manager": [
+                    "federal",
+                    "state",
+                    "local",
+                    "nonprofit",
+                    "other"
+                ]
+            },
+            "detail_field": "gap12_acres",
+            "detail_format": "acres",
+            "detail_template": "{}",
+            "area_template": "of this manager's land in {}"
+        },
+        {
+            "query": "protection",
+            "field": "own_frac_gap34",
+            "label": "GAP 3–4, could count with management changes",
             "format": "pct",
             "when": {
                 "manager": [
@@ -75,26 +94,7 @@
             "detail_field": "gap34_acres",
             "detail_format": "acres",
             "detail_template": "{}",
-            "area_template": "of {}"
-        },
-        {
-            "query": "protection",
-            "field": "frac_other",
-            "label": "Other managers' conserved land",
-            "format": "pct",
-            "when": {
-                "manager": [
-                    "federal",
-                    "state",
-                    "local",
-                    "nonprofit",
-                    "other"
-                ]
-            },
-            "detail_field": "other_acres",
-            "detail_format": "acres",
-            "detail_template": "{}",
-            "area_template": "of {}"
+            "area_template": "of this manager's land in {}"
         },
         {
             "query": "protection",
@@ -105,14 +105,20 @@
             "detail_field": "none_acres",
             "detail_format": "acres",
             "detail_template": "{}",
-            "area_template": "of {}"
+            "area_template": "of {}",
+            "when": {
+                "manager": "all"
+            }
         },
         {
             "query": "protection",
             "field": "land_acres",
             "label": "Land area",
             "format": "acres",
-            "compare": false
+            "compare": false,
+            "detail_field": "frac_of_state",
+            "detail_format": "pct",
+            "detail_template": "{} of California"
         }
     ],
     "charts": [
