@@ -17,3 +17,8 @@
 .framework-body p { margin: 8px 0; }
 .need-legend { list-style: none; padding: 0; margin: 8px 0; display: grid; gap: 5px; }
 .need-legend .pct { min-width: 92px; font-size: 11.5px; margin-right: 6px; }
+
+/* The area's own acres before the California comparison: glen-charts writes
+   .tile-compare ahead of the detail notes, so reorder the tile's children. */
+.tile { display: flex; flex-direction: column; }
+.tile > .tile-compare { order: 1; }
