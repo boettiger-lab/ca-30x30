@@ -163,6 +163,10 @@ the manager's acres of the feature with their share of its whole extent. Need cl
 managers together, are not shown. Theme items that change meaning carry `"when": { "manager": ... }`
 (glen-charts ≥ 0.9), and the report comparison is limited to `manager: all`.
 
+The map's conserved-areas layer shows the selected manager's units only (filtered on `MNG_AG_LEV`, or on `MNG_AGENCY` once managers are
+picked in the menu), with the manager named in its legend. glen-charts has no per-param overlay filter, so `index.html` passes the
+explorer to the extensions' `attach`, and `reportHead` sets the filter at each report draw.
+
 Under each manager level, a menu lists every managing agency (`MNG_AGENCY`) the inventory has at that level, so any one manager, down to a
 single land trust, city or homeowners association, can be picked; picking several counts them together. The menus are params
 (`agency` under Federal, `agency_state`, `agency_local`, `agency_nonprofit`, `agency_other`) written into `config/app.json` by
