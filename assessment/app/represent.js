@@ -28,9 +28,12 @@
  *   source        { label, url } the dataset's citation, shown above the rows
  *
  * ctx: { stateLevel, areaLevel, report: {feature: {...}} | null, areaLabel,
- *        manager: { value, label } | null, all: rows for every manager | null }
- * The need class is always measured against California's level (the report's
- * framework); the area's own level is shown as a second reference tick.
+ *        manager: { value, label } | null, all: rows for every manager | null,
+ *        state: the same rows statewide (sub-state areas only) | null }
+ * The need class is measured against the level of the area in view: California's
+ * on the statewide view (the report's framework), the area's own share of land in
+ * 30x30 for a smaller area, where a California column gives each feature's
+ * statewide share for comparison.
  */
 
 import { fmt, escapeHtml } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.16.1/core/format.js';
@@ -63,10 +66,15 @@ export const NEED = {
 export const KEY_FEATURE = 'Key Features are rare (3% of the state or less), historically converted (such as wetlands), or critical ' +
     'to ecosystem function (such as connectivity linkages and groundwater-dependent ecosystems).';
 
-export function needClass(frac, stateLevel, applies = true) {
+/**
+ * The report's need class against a benchmark level: under 20%, between 20% and
+ * the level, at or above it. Where the level is itself under 20% (a sub-state
+ * area), a feature at or above the level is on par and anything below is under.
+ */
+export function needClass(frac, level, applies = true) {
     if (!applies || frac == null || !Number.isFinite(frac)) return 'not_applicable';
-    if (frac < 0.20) return 'under';
-    if (frac < stateLevel) return 'slightly_under';
+    if (frac < Math.min(0.20, level ?? 0.20)) return 'under';
+    if (frac < level) return 'slightly_under';
     return 'on_par';
 }
 
@@ -88,6 +96,10 @@ export function renderRepresentation(container, spec, rows, ctx) {
     const status = mgr ? managerStatus(mgr.label) : STATUS;
     const all12 = new Map((ctx.all || []).map(r => [r.feature, num(r.frac_gap12)]));
     const levelLabel = mgr ? `California in ${mgr.label} 30x30` : 'California in 30x30';
+    // the need-class benchmark: the area's own level when it has one
+    const bench = area ?? state;
+    const stateRows = ctx.state ? new Map(ctx.state.map(r => [r.feature, num(r.frac_gap12)])) : null;
+    const ncol = 5 + (showReport ? 1 : 0) + (stateRows ? 1 : 0);
 
     // legend: status colors, reference ticks, need classes
     const lg = document.createElement('div');
@@ -124,6 +136,7 @@ export function renderRepresentation(container, spec, rows, ctx) {
     table.innerHTML = `<thead><tr>
         <th class="c-feat">Feature</th>
         <th class="c-pct">${mgr ? `In ${escapeHtml(mgr.label)} 30x30` : 'In 30x30'}</th>
+        ${stateRows ? `<th class="c-ca" title="The feature's statewide share in ${mgr ? escapeHtml(mgr.label) + ' ' : ''}30x30">California</th>` : ''}
         <th class="c-bar">Conservation status</th>
         ${mgr ? `<th class="c-share" title="${escapeHtml(mgr.label)} land's share of the feature's acres in 30x30, all managers together">Share of 30x30</th>`
         : '<th class="c-pie" title="Of the feature outside 30x30: on other conserved or public land (GAP 3–4) vs non-conserved land">Pathway</th>'}
@@ -132,7 +145,7 @@ export function renderRepresentation(container, spec, rows, ctx) {
 
     for (const [g, list] of groups) {
         const tb = document.createElement('tbody');
-        if (g) tb.innerHTML = `<tr class="rep-group"><th colspan="${showReport ? 6 : 5}">${escapeHtml(g)}</th></tr>`;
+        if (g) tb.innerHTML = `<tr class="rep-group"><th colspan="${ncol}">${escapeHtml(g)}</th></tr>`;
         for (const r of list) tb.appendChild(row(r));
         table.appendChild(tb);
     }
@@ -142,7 +155,7 @@ export function renderRepresentation(container, spec, rows, ctx) {
         const tr = document.createElement('tr');
         const f12 = num(r.frac_gap12), f34 = num(r.frac_gap34), fn = num(r.frac_none);
         const isKey = !mgr && keys.has(r.feature);
-        const need = needClass(f12, state, !mgr && spec.need !== false && !isKey && !na.has(r.feature));
+        const need = needClass(f12, bench, !mgr && spec.need !== false && !isKey && !na.has(r.feature));
         const N = NEED[need];
         const rest = (f34 ?? 0) + (fn ?? 0);
         const green = rest > 0 ? (f34 ?? 0) / rest : null;
@@ -154,6 +167,7 @@ export function renderRepresentation(container, spec, rows, ctx) {
         tr.innerHTML = `
             <td class="c-feat">${escapeHtml(r.label)}${isKey ? ` <span class="key-badge" title="${escapeHtml(KEY_FEATURE)} The report recommends conserving all remaining extent.">Key feature</span>` : ''}</td>
             <td class="c-pct"><span class="pct ${N.cls}${isKey ? ' key' : ''}">${f12 == null ? '—' : fmt(f12, 'pct')}</span><span class="need-label">${need === 'not_applicable' ? '' : escapeHtml(N.label)}</span></td>
+            ${stateRows ? `<td class="c-ca">${stateRows.get(r.feature) == null ? '<span class="muted">—</span>' : fmt(stateRows.get(r.feature), 'pct')}</td>` : ''}
             <td class="c-bar"><div class="sbar">${status.map(s => `<span class="${s.cls}" style="width:${(100 * Math.max(0, num(r[s.key]) ?? 0)).toFixed(2)}%"></span>`).join('')}
                 ${state != null ? `<i class="tick state" style="left:${(100 * state).toFixed(2)}%"></i>` : ''}
                 ${area != null ? `<i class="tick area" style="left:${(100 * area).toFixed(2)}%"></i>` : ''}</div></td>
@@ -238,6 +252,7 @@ export const REP_CSS = `
 .rep-table .c-feat { min-width: 120px; }
 .rep-table .c-pct { white-space: nowrap; width: 1%; }
 .rep-table .c-bar { width: 38%; min-width: 120px; }
+.rep-table .c-ca { white-space: nowrap; width: 1%; text-align: right; color: #5d5852; }
 .rep-table .c-pie, .rep-table .c-share, .rep-table .c-rep, .rep-table .c-ext { white-space: nowrap; width: 1%; }
 .rep-table .c-share { text-align: right; }
 .rep-table .c-ext { color: #77706b; text-align: right; }
