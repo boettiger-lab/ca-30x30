@@ -160,8 +160,15 @@ The representation table then drops the need classes and the report's values, wh
 manager's share of the feature's 30x30 acres in their place. Theme items that change meaning carry `"when": { "manager": ... }`
 (glen-charts ≥ 0.9), and the report comparison is limited to `manager: all`.
 
-Statewide results are precomputed for every option (`--param manager=all`, then `--param manager=federal --param agency=all`). Named areas are precomputed for all managers only, so a
-county or ecoregion with a manager selected runs live.
+Under each manager level, a menu lists every managing agency (`MNG_AGENCY`) the inventory has at that level, so any one manager, down to a
+single land trust, city or homeowners association, can be picked; picking several counts them together. The menus are params
+(`agency` under Federal, `agency_state`, `agency_local`, `agency_nonprofit`, `agency_other`) written into `config/app.json` by
+`python3 scripts/build-manager-options.py`; re-run it when the inventory changes. Federal keeps merged options for the Forest Service, BLM,
+National Park Service and Fish and Wildlife Service, whose spellings vary in the inventory.
+
+Statewide results are precomputed for each level with its menu at "all" (`--param manager=all`, then `--param manager=<level>`) and for
+the four merged federal agencies (`--param manager=federal --param agency=all`). Named areas are precomputed for all managers only, so a
+county or ecoregion with a manager selected, or any single manager, runs live.
 
 ## Run locally
 

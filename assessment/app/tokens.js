@@ -9,9 +9,10 @@
  * With the `manager` param set, w12 and w34 count only the units whose
  * MNG_AG_LEV is in that option's `levels` (app.land_manager), and wc stays
  * every manager's, so wc - w12 - w34 is other managers' conserved land.
- * Under Federal, the `agency` param narrows that to the units whose
- * MNG_AGENCY is in its option's `agencies`; "rest" takes the federal units
- * no other agency option names, so the agencies partition Federal.
+ * Each level has a menu param of its managers (`agency` under Federal,
+ * `agency_state` and so on; scripts/build-manager-options.py writes them);
+ * picking any narrows that to the units whose MNG_AGENCY is in the picked
+ * options' `agencies`.
  *
  * Kept free of imports so scripts/run.mjs can load it without glen-charts.
  */
@@ -22,15 +23,31 @@ const option = (app, id, params) => {
     return p && { p, o: p.options.find(o => o.value === (params[id] ?? p.default)) };
 };
 
+/**
+ * The agency menu that applies under the chosen manager level and the options
+ * picked in it: { p, picked: [option] }, or null when none applies or it is at
+ * "all" (the whole level).
+ */
+export function agencyPick(app, params = {}) {
+    for (const p of app.params || []) {
+        if (!p.multiple || !p.id.startsWith('agency')) continue;
+        const applies = Object.entries(p.when || {}).every(([k, v]) => [].concat(v).includes(params[k] ?? option(app, k, {})?.o?.value));
+        if (!applies) continue;
+        const v = params[p.id] ?? p.default;
+        const want = (Array.isArray(v) ? v : String(v ?? '').split(',')).map(String);
+        const picked = p.options.filter(o => o.agencies && want.includes(String(o.value)));
+        return picked.length ? { p, picked } : null;
+    }
+    return null;
+}
+
 /** The SQL predicate on a conserved-areas unit row `u` for the chosen manager, or null for all managers. */
 export function unitFilter(app, params = {}) {
     const m = option(app, 'manager', params)?.o;
     if (!m?.levels) return null;
     const where = [`u.MNG_AG_LEV IN (${sqlList(m.levels)})`];
-    const a = option(app, 'agency', params);
-    const applies = a && Object.entries(a.p.when || {}).every(([k, v]) => [].concat(v).includes(params[k] ?? option(app, k, {})?.o?.value));
-    if (applies && a.o?.agencies) where.push(`u.MNG_AGENCY IN (${sqlList(a.o.agencies)})`);
-    if (applies && a.o?.rest) where.push(`COALESCE(u.MNG_AGENCY, '') NOT IN (${sqlList(a.p.options.flatMap(o => o.agencies || []))})`);
+    const a = agencyPick(app, params);
+    if (a) where.push(`u.MNG_AGENCY IN (${sqlList(a.picked.flatMap(o => o.agencies))})`);
     return `(${where.join(' AND ')})`;
 }
 

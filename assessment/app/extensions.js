@@ -13,24 +13,23 @@ import { fmt, escapeHtml } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-cha
 import { paramKey, statewideAoi, matchesWhen } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.16.1/core/engine.js';
 import { polygonSource } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.16.1/sources/polygon-source.js';
 import { renderRepresentation, NEED, REP_CSS } from './represent.js';
-import { tokens } from './tokens.js';
+import { tokens, agencyPick } from './tokens.js';
 
 const shortName = s => String(s).replace(/^(Congressional|State Senate|Assembly) District /, (m, k) => ({ Congressional: 'CD ', 'State Senate': 'SD ', Assembly: 'AD ' }[k]));
 
 /**
  * The selected manager ({ value, label, levels }), or null for all managers.
- * Under Federal with one agency chosen, the agency: { label, levels, agencies }
- * or, for "Other federal", { label, levels, rest: the agencies it leaves out }.
+ * With managers picked in the level's menu: { value, label, levels, agencies },
+ * labelled by the one manager, or by how many were picked.
  */
 export function managerOf(app, params = {}) {
     const p = (app.params || []).find(x => x.id === 'manager');
     const o = p?.options.find(x => x.value === (params.manager ?? p.default));
     if (!o?.levels) return null;
-    const ap = (app.params || []).find(x => x.id === 'agency');
-    const a = ap && matchesWhen(ap.when, app, params) && ap.options.find(x => x.value === (params.agency ?? ap.default));
-    if (!a?.agencies && !a?.rest) return o;
-    return { value: a.value, label: a.label, levels: o.levels, agencies: a.agencies || null,
-        rest: a.rest ? ap.options.filter(x => x.agencies).map(x => x.label) : null };
+    const a = agencyPick(app, params);
+    if (!a) return o;
+    const label = a.picked.length === 1 ? a.picked[0].label : `${a.picked.length} ${o.label.toLowerCase()} managers`;
+    return { value: a.picked.map(x => x.value).join(','), label, levels: o.levels, agencies: a.picked.flatMap(x => x.agencies) };
 }
 
 /** The same area with every manager counted. */
@@ -162,11 +161,12 @@ function reportHead(aoi, { engine, reference, isRegion }) {
 /** Which units count, in words, with the inventory's own names where they differ from the label. */
 function who(mgr) {
     const m = escapeHtml(mgr.label);
-    if (mgr.rest) return `a federal manager other than the ${escapeHtml(mgr.rest.join(', '))} (<b>${m}</b>)`;
-    const names = mgr.agencies || mgr.levels;
-    const field = mgr.agencies ? 'managing agency' : 'manager level';
+    if (mgr.agencies) return mgr.agencies.length === 1 && mgr.agencies[0] === mgr.label
+        ? `the managing agency <b>${m}</b> in the 2025 Conserved Areas inventory`
+        : `the managing ${mgr.agencies.length > 1 ? 'agencies' : 'agency'} ${escapeHtml(mgr.agencies.join('; '))} in the 2025 Conserved Areas inventory (<b>${m}</b>)`;
+    const names = mgr.levels;
     return `a <b>${m}</b> manager${names.length > 1 || names[0] !== mgr.label
-        ? ` (${field} ${escapeHtml(names.join(', '))} in the 2025 Conserved Areas inventory)` : ''}`;
+        ? ` (manager level ${escapeHtml(names.join(', '))} in the 2025 Conserved Areas inventory)` : ''}`;
 }
 
 /** How to read the tables with one manager selected. */
