@@ -171,5 +171,6 @@ python3 -m http.server 8000      # from this folder, then open http://localhost:
 
 ## Deploy
 
-`.github/workflows/gh-pages.yml` copies this folder to `assessment/` on the `gh-pages` branch on every push to `main` that touches it.
-The site is fully static, with no secrets, and the browser calls the public MCP endpoint in `config/app.json` directly.
+The `ca-30x30` pod (`k8s/deployment.yaml`) clones `main` at startup and serves this folder at `/assessment/`, so a change goes live
+after a push to `main` and `kubectl rollout restart deployment/ca-30x30 -n biodiversity`. `.github/workflows/gh-pages.yml` also copies
+it to `assessment/` on the `gh-pages` branch, but that copy only redirects to NRP. The site is fully static, with no secrets.

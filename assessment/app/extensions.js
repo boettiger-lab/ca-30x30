@@ -101,9 +101,23 @@ function fillLevel(engine) {
     }).catch(() => {});
 }
 
+/**
+ * Move the note from under the report title to just below the land summary
+ * (the overview card), above the first section. glen-charts writes the head
+ * and then appends the overview in the same task, so a microtask sees both.
+ */
+function placeNote() {
+    queueMicrotask(() => {
+        const note = document.querySelector('#report > details.framework');
+        const overview = document.querySelector('#report > .card:not(.theme-card):not(.framework)');
+        if (note && overview) overview.after(note);
+    });
+}
+
 /** How to read the tables: the report's framework, in one collapsible note. */
 function reportHead(aoi, { engine, reference, isRegion }) {
     fillLevel(engine);
+    placeNote();
     const lvl = '<span class="ca-level">California’s level</span>';
     // a drawn area never has a precomputed file (app.live_note covers named areas)
     const live = aoi.kind === 'polygon' ? '<p class="tile-note live-note">Results for this area are computed live from the source data; larger areas can take a minute or two.</p>' : '';
