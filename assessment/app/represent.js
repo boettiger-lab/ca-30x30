@@ -37,8 +37,8 @@
  * statewide share for comparison.
  */
 
-import { fmt, escapeHtml } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.16.1/core/format.js';
-import { hover } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.16.1/core/charts.js';
+import { fmt, escapeHtml } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.17.0/core/format.js';
+import { hover } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.17.0/core/charts.js';
 
 export const STATUS = [
     { key: 'frac_gap12', label: '30x30 Conservation Areas (GAP 1–2)', short: '30x30', cls: 's12' },
