@@ -42,8 +42,9 @@ function allManagers(app, aoi) {
 
 /**
  * The representation table needs, beside the feature rows: California's share
- * in 30x30 (the need-class benchmark), the area's own share (a second tick),
- * and on the statewide view the report's published values. With a manager
+ * in 30x30 (a tick), the area's own share (a second tick, and the need-class
+ * benchmark for a sub-state area), the same rows statewide for a sub-state
+ * area's California column, and on the statewide view the report's published values. With a manager
  * selected, both levels are that manager's, and the same rows for every
  * manager give the manager's share of each feature's 30x30 acres.
  */
@@ -57,13 +58,15 @@ const representation = {
             engine.runStatewide(overview, 'protection', params),
             isRegion ? null : engine.run(overview, 'protection', aoi),
             mgr ? engine.run(theme, chart.query, allManagers(app, aoi)) : null,
-        ]).then(([rows, st, ar, all]) => [rows, {
+            isRegion ? null : engine.runStatewide(theme, chart.query, params).catch(() => null),
+        ]).then(([rows, st, ar, all, state]) => [rows, {
             stateLevel: st?.[0]?.frac_gap12 ?? null,
             areaLevel: ar?.[0]?.frac_gap12 ?? null,
             areaLabel: shortName(aoi.label),
             report: isRegion ? opts.reference?.values?.features ?? null : null,
             manager: mgr,
             all,
+            state,
         }]);
     },
     render(el, chart, [rows, ctx]) {
@@ -114,11 +117,22 @@ function placeNote() {
     });
 }
 
+/** The area's own share in 30x30 into every .area-level span, as fillLevel. */
+function fillAreaLevel(engine, aoi) {
+    engine.run(engine.config.overview, 'protection', aoi).then(rows => {
+        const v = rows?.[0]?.frac_gap12;
+        if (v != null) document.querySelectorAll('.area-level').forEach(el => { el.textContent = fmt(v, 'pct'); });
+    }).catch(() => {});
+}
+
 /** How to read the tables: the report's framework, in one collapsible note. */
 function reportHead(aoi, { engine, reference, isRegion }) {
     fillLevel(engine);
     placeNote();
-    const lvl = '<span class="ca-level">California’s level</span>';
+    if (!isRegion) fillAreaLevel(engine, aoi);
+    const place = escapeHtml(shortName(aoi.label || 'this area'));
+    const lvl = isRegion ? '<span class="ca-level">California’s level</span>' : `<span class="area-level">${place}’s level</span>`;
+    const whose = isRegion ? 'California' : place;
     // a drawn area never has a precomputed file (app.live_note covers named areas)
     const live = aoi.kind === 'polygon' ? '<p class="tile-note live-note">Results for this area are computed live from the source data; larger areas can take a minute or two.</p>' : '';
     const mgr = managerOf(engine.config.app, aoi.params);
@@ -130,14 +144,16 @@ function reportHead(aoi, { engine, reference, isRegion }) {
            <b>other conserved or public land</b> (GAP 3–4), and on <b>non-conserved land</b>, following the
            <a href="${escapeHtml(reference?.values?.url || reference?.url || '#')}" target="_blank" rel="noopener">2025 Biodiversity Assessment</a>.</p>
         <ul class="need-legend">
-            <li><span class="pct need-under">&lt; 20%</span> ${NEED.under.label}</li>
+            <li><span class="pct need-under">&lt; 20%</span> ${NEED.under.label}${isRegion ? '' : ` (or below ${lvl}, where that is under 20%)`}</li>
             <li><span class="pct need-slight">20% – ${lvl}</span> ${NEED.slightly_under.label}</li>
-            <li><span class="pct need-par">≥ ${lvl}</span> ${NEED.on_par.label}: California's current share of land in 30x30</li>
+            <li><span class="pct need-par">≥ ${lvl}</span> ${NEED.on_par.label}: ${whose}’s current share of land in 30x30</li>
             <li><span class="pct need-na key">Key feature</span> rare or critical; the report recommends conserving all remaining extent</li>
         </ul>
         <p>The <b>pathway</b> pie splits what lies outside 30x30: <span class="sw s34"></span> other conserved or public land
            (improve management or durability) vs <span class="sw snone"></span> non-conserved land (acquisition or easement).
-           Need classes always compare with California's level${isRegion ? '' : ', even for a smaller area; the area’s own share in 30x30 is the second tick on each bar'}.
+           ${isRegion ? 'Need classes compare with California’s level.'
+        : `Need classes compare with ${place}’s own share of land in 30x30 (the dashed tick on each bar), not California’s (the solid tick);
+           the <b>California</b> column gives each feature’s statewide share in 30x30.`}
            ${isRegion ? 'The <b>Report</b> column gives the published value and this app’s difference from it, in percentage points.' : ''}</p>
         <p class="tile-note">No AI model is involved: every number is fixed, reviewable SQL over public data — see “Method &amp; SQL” under each section, or Export.</p>
         </div></details>`;
