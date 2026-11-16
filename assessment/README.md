@@ -107,8 +107,10 @@ and uses the report's proportional estimate. Value thresholds (ACE top 20% / 5%,
 before restricting to the area, so a feature means the same thing everywhere. Representation queries return
 `feature, label, acres|miles, frac_gap12, frac_gap34, frac_none`. `feature` is the key into `data/report.json`.
 
-Need classes are always measured against California's current share in 30x30, which is computed rather than hard-coded. For a sub-state area,
-the area's own share is drawn as a second reference tick.
+Need classes are measured against the current share in 30x30 of the area in view, computed rather than hard-coded: California's on the
+statewide view, the area's own for an ecoregion, county, district or drawn area. There the bar carries both ticks, labels name the
+benchmark ("On par with ecoregion level"), and a California column gives each feature's statewide share, coloured against California's
+level. Where an area's own level is under 20%, a feature at or above it is on par and anything below is under-represented.
 
 ### Adding a metric
 
@@ -137,8 +139,7 @@ Areas inventory:
 The five options partition the network: they sum to the statewide 26.52M ac in GAP 1–2 and 26.01M ac in GAP 3–4. The manager is the
 managing agency, not the owner; for an easement (CCED) it is the easement holder.
 
-Under Federal, the `agency` param (**Federal agency**, shown only when Federal is chosen) narrows to one agency by `MNG_AGENCY`,
-with the inventory's abbreviations folded in:
+Under Federal, the merged options fold in the inventory's abbreviations:
 
 | Option | Agencies | GAP 1–2 | GAP 3–4 |
 |---|---|---:|---:|
@@ -146,18 +147,20 @@ with the inventory's abbreviations folded in:
 | BLM | United States Bureau of Land Management, BLM | 6.73M ac | 8.18M ac |
 | National Park Service | United States National Park Service, National Park Service, NPS, Golden Gate National Recreation Area | 7.54M ac | 0.07M ac |
 | Fish and Wildlife Service | United States Fish and Wildlife Service | 0.46M ac | 0.02M ac |
-| Other federal | every other federal unit (Bureau of Reclamation, NRCS, Army Corps, multi-agency units …) | 0.14M ac | 0.21M ac |
 
-These sum to the Federal row. The agency param carries `"when": { "manager": "federal" }` (glen-charts ≥ 0.10), so it is left out of the
-file key elsewhere: `manager-state.json`, but `agency-usfs_manager-federal.json`.
+Each agency menu carries `"when": { "manager": <level> }`, so it is left out of the file key elsewhere: `manager-all.json`, but
+`agency_state-all_manager-state.json` and `agency-usfs_manager-federal.json`.
 
 `app.land_manager` builds the filtered `{{LAND}}`, with `{{UNITS}}` the unit predicate from `app/tokens.js`. Each cell's GAP 1–2 weight goes to the selected manager in proportion to its units'
 GAP 1–2 percentages among all units in that cell (GAP 3–4 alike), from the unit-level hex asset. 99.6% of conserved land lies in cells
 with a single unit, where the split is exact.
 
-The denominator does not change: a feature's share in a manager's 30x30 land is a share of the feature's whole extent in the area.
-The representation table then drops the need classes and the report's values, which describe all managers together, and shows each
-manager's share of the feature's 30x30 acres in their place. Theme items that change meaning carry `"when": { "manager": ... }`
+With a manager selected, the views read as that manager's land, so the charts keep one meaning at every setting. The summary tiles
+give the manager's land as a share of the area (the reference for the rest) and the split of that land between 30x30 and GAP 3–4.
+In each representation table, a bar is the manager's own land holding the feature, split into 30x30 and GAP 3–4; its one tick is the
+share of all the manager's land in the area in 30x30. Columns give the GAP 3–4 acres, which could be managed to count toward 30x30, and
+the manager's acres of the feature with their share of its whole extent. Need classes and the report's values, which describe all
+managers together, are not shown. Theme items that change meaning carry `"when": { "manager": ... }`
 (glen-charts ≥ 0.9), and the report comparison is limited to `manager: all`.
 
 Under each manager level, a menu lists every managing agency (`MNG_AGENCY`) the inventory has at that level, so any one manager, down to a
@@ -167,7 +170,8 @@ single land trust, city or homeowners association, can be picked; picking severa
 National Park Service and Fish and Wildlife Service, whose spellings vary in the inventory.
 
 Statewide results are precomputed for each level with its menu at "all" (`--param manager=all`, then `--param manager=<level>`) and for
-the four merged federal agencies (`--param manager=federal --param agency=all`). Named areas are precomputed for all managers only, so a
+the four merged federal agencies (`--param manager=federal --param agency=usfs`, and so on; `agency=all` would run every federal
+option on its own, since the menus take several picks). Named areas are precomputed for all managers only, so a
 county or ecoregion with a manager selected, or any single manager, runs live.
 
 ## Run locally

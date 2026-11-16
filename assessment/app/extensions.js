@@ -10,7 +10,6 @@
  */
 
 import { fmt, escapeHtml } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.16.1/core/format.js';
-import { paramKey, statewideAoi, matchesWhen } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.16.1/core/engine.js';
 import { polygonSource } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.16.1/sources/polygon-source.js';
 import { renderRepresentation, NEED, REP_CSS } from './represent.js';
 import { tokens, agencyPick } from './tokens.js';
@@ -32,12 +31,11 @@ export function managerOf(app, params = {}) {
     return { value: a.picked.map(x => x.value).join(','), label, levels: o.levels, agencies: a.picked.flatMap(x => x.agencies) };
 }
 
-/** The same area with every manager counted. */
-function allManagers(app, aoi) {
-    const params = { ...(aoi.params || {}), manager: 'all' };
-    if (aoi.kind === 'state') return statewideAoi(app, params);
-    return { ...aoi, key: `${aoi.key.split('@')[0]}@${paramKey(app, params)}`, params };
-}
+/** A manager's share of its own conserved land in 30x30, from a protection row. */
+const ownShare = r => {
+    const a = Number(r?.gap12_acres), b = Number(r?.gap34_acres);
+    return a + b > 0 ? a / (a + b) : null;
+};
 
 /** What a sub-state area is called in "on par with the ... level". */
 const KIND_WORD = { ecoregion: 'ecoregion', county: 'county', cd: 'district', sldu: 'district', sldl: 'district' };
@@ -59,16 +57,15 @@ const representation = {
             engine.run(theme, chart.query, aoi),
             engine.runStatewide(overview, 'protection', params),
             isRegion ? null : engine.run(overview, 'protection', aoi),
-            mgr ? engine.run(theme, chart.query, allManagers(app, aoi)) : null,
-            isRegion ? null : engine.runStatewide(theme, chart.query, params).catch(() => null),
-        ]).then(([rows, st, ar, all, state]) => [rows, {
+            isRegion || mgr ? null : engine.runStatewide(theme, chart.query, params).catch(() => null),
+        ]).then(([rows, st, ar, state]) => [rows, {
             stateLevel: st?.[0]?.frac_gap12 ?? null,
             areaLevel: ar?.[0]?.frac_gap12 ?? null,
             areaLabel: shortName(aoi.label),
             areaKind: KIND_WORD[aoi.kind] || 'area',
             report: isRegion ? opts.reference?.values?.features ?? null : null,
             manager: mgr,
-            all,
+            managerLevel: mgr ? ownShare((isRegion ? st : ar)?.[0]) : null,
             state,
         }]);
     },
@@ -179,13 +176,12 @@ function managerNote(mgr, isRegion) {
     return `<details class="card framework" open>
         <summary><b>How to read this</b>: ${m} land only</summary>
         <div class="framework-body">
-        <p>Only conserved land with ${who(mgr)} counts as <span class="sw s12"></span> 30x30 (GAP 1–2) or <span class="sw s34"></span> GAP 3–4.
-           Other managers’ conserved land is shown separately (<span class="sw sother"></span>), and
-           <span class="sw snone"></span> non-conserved land is unchanged.</p>
-        <p>Every share is still a share of the whole ${isRegion ? 'state' : 'area'}: a habitat at 5% in ${m} 30x30 has 5% of its
-           ${isRegion ? 'California' : 'local'} extent on ${m} GAP 1–2 land, not 5% of ${m} land. <b>Share of 30x30</b> is ${m}’s part
-           of each feature’s 30x30 acres, all managers together. The tick marks ${m}’s share of all land in 30x30, so a feature
-           right of the tick is better represented in ${m} 30x30 than land as a whole.</p>
+        <p>Only conserved land with ${who(mgr)} counts here.</p>
+        <p>In each table, a bar is ${m} land only: of what ${m} holds of a habitat or feature in this ${isRegion ? 'state' : 'area'},
+           the share in <span class="sw s12"></span> 30x30 (GAP 1–2) and in <span class="sw s34"></span> GAP 3–4.
+           The dashed tick is the share of all ${m} land here in 30x30, so a feature left of it is less protected than ${m}’s land as a whole.
+           <b>GAP 3–4</b> gives the acres that could be managed to count toward 30x30, and the last column what ${m} holds of each feature
+           and its share of the feature’s whole extent here.</p>
         <p>Need classes and the report’s published values describe all managers together, so they are not shown here.
            Choose <b>All</b> under “Managed by” to see them.</p>
         <p class="tile-note">The manager is each unit’s managing agency level (CPAD / CCED); for an easement it is the easement holder,

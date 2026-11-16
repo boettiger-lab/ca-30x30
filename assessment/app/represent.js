@@ -89,6 +89,7 @@ export function needClass(frac, level, applies = true) {
 export function renderRepresentation(container, spec, rows, ctx) {
     container.innerHTML = '';
     rows = (rows || []).filter(r => !spec.where || Object.entries(spec.where).every(([k, v]) => r[k] === v));
+    if (ctx.manager) return renderManager(container, spec, rows, ctx);
     rows = rows.filter(r => Number(r.acres ?? r.miles) > 0 || r.frac_gap12 != null);
     if (!rows.length) {
         container.innerHTML = '<div class="sub">None of these features occur in this area.</div>';
@@ -206,6 +207,87 @@ export function renderRepresentation(container, spec, rows, ctx) {
             `<br>This app: ${fmt(f12, 'pct')}`);
         return tr;
     }
+}
+
+/**
+ * One manager's table: each bar is the manager's own land holding the feature,
+ * split into 30x30 (GAP 1-2) and GAP 3-4, so it reads the same at every
+ * setting. The one tick is the manager's share of all its land here in 30x30
+ * (ctx.managerLevel): a feature left of it is less protected than the
+ * manager's land as a whole. GAP 3-4 acres are what could be managed to
+ * count toward 30x30. No need classes: they describe all managers together.
+ */
+function renderManager(container, spec, rows, ctx) {
+    const mgr = ctx.manager;
+    const m = escapeHtml(mgr.label);
+    const measure = spec.measure || 'acres';
+    const unit = measure === 'miles' ? 'miles' : 'acres';
+    const size = r => num(r[measure === 'miles' ? 'miles' : 'acres']) ?? 0;
+    const fmtSize = v => (measure === 'miles' ? fmtMiles(v) : fmt(v, 'acres'));
+    const held = rows.map(r => {
+        const f12 = num(r.frac_gap12) ?? 0, f34 = num(r.frac_gap34) ?? 0, own = f12 + f34;
+        return { r, own, in12: own > 0 ? f12 / own : null, mine: size(r) * own, gap34: size(r) * f34 };
+    }).filter(x => x.mine >= 0.5);   // under half an acre (or mile) rounds to nothing
+    if (!held.length) {
+        container.innerHTML = `<div class="sub">${m} land holds none of these features in this area.</div>`;
+        return;
+    }
+    if (spec.sort !== 'none') held.sort((a, b) => a.in12 - b.in12);
+    const level = ctx.managerLevel;
+
+    const lg = document.createElement('div');
+    lg.className = 'legend-row rep-legend';
+    lg.innerHTML = `<span><i class="s12"></i>${m} land in 30x30 (GAP 1–2)</span><span><i class="s34"></i>${m} GAP 3–4 land</span>` +
+        (level != null ? `<span><i class="tick area"></i>All ${m} land here in 30x30 (${fmt(level, 'pct')})</span>` : '');
+    container.appendChild(lg);
+    const sub = document.createElement('div');
+    sub.className = 'key-note';
+    sub.textContent = `Each bar is ${mgr.label} land only: how much of what it holds of each feature is in 30x30. ` +
+        `GAP 3–4 ${unit} could be managed to count toward 30x30.`;
+    container.appendChild(sub);
+    if (spec.source?.label) {
+        const sn = document.createElement('div');
+        sn.className = 'key-note source-note';
+        sn.innerHTML = 'Source: ' + (spec.source.url
+            ? `<a href="${escapeHtml(spec.source.url)}" target="_blank" rel="noopener">${escapeHtml(spec.source.label)}</a>`
+            : escapeHtml(spec.source.label));
+        container.appendChild(sn);
+    }
+
+    const groups = new Map();
+    for (const x of held) {
+        const g = spec.group_field ? x.r[spec.group_field] : '';
+        if (!groups.has(g)) groups.set(g, []);
+        groups.get(g).push(x);
+    }
+    const table = document.createElement('table');
+    table.className = 'rep-table rep-mgr';
+    table.innerHTML = `<thead><tr>
+        <th class="c-feat">Feature</th>
+        <th class="c-pct" title="Share of ${m}'s ${unit} of the feature in 30x30">In 30x30</th>
+        <th class="c-bar">${m} land</th>
+        <th class="c-ext" title="${m}'s GAP 3–4 ${unit} of the feature">GAP 3–4</th>
+        <th class="c-ext" title="All ${m} ${unit} of the feature, and its share of the feature here">${m} ${unit}</th></tr></thead>`;
+    for (const [g, list] of groups) {
+        const tb = document.createElement('tbody');
+        if (g) tb.innerHTML = `<tr class="rep-group"><th colspan="5">${escapeHtml(g)}</th></tr>`;
+        for (const x of list) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+            <td class="c-feat">${escapeHtml(x.r.label)}</td>
+            <td class="c-pct"><span class="pct need-na">${fmt(x.in12, 'pct')}</span></td>
+            <td class="c-bar"><div class="sbar"><span class="s12" style="width:${(100 * x.in12).toFixed(2)}%"></span><span class="s34" style="width:${(100 * (1 - x.in12)).toFixed(2)}%"></span>
+                ${level != null ? `<i class="tick area" style="left:${(100 * level).toFixed(2)}%"></i>` : ''}</div></td>
+            <td class="c-ext">${fmtSize(x.gap34)}</td>
+            <td class="c-ext">${fmtSize(x.mine)} <span class="muted">· ${fmt(x.own, 'pct')}</span></td>`;
+            hover(tr.querySelector('.sbar'), `<b>${escapeHtml(x.r.label)}</b> on ${m} land: ${fmtSize(x.mine)}<br>` +
+                `In 30x30 (GAP 1–2): ${fmt(x.in12, 'pct')}<br>GAP 3–4: ${fmt(1 - x.in12, 'pct')} (${fmtSize(x.gap34)})<br>` +
+                `${m} holds ${fmt(x.own, 'pct')} of the feature's ${fmtSize(size(x.r))} here`);
+            tb.appendChild(tr);
+        }
+        table.appendChild(tb);
+    }
+    container.appendChild(table);
 }
 
 /**
