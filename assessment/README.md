@@ -118,7 +118,7 @@ level. Where an area's own level is under 20%, a feature at or above it is on pa
    `node scripts/run.mjs <theme> <query> [ecoregion Mono]`.
 2. Reference it in that theme's `theme.json`: a `"type": "representation"` chart, a bar chart, or a headline.
 3. Regenerate the data with the glen-charts precompute CLI, from this folder:
-   `npx github:SchmidtDSE/glen-charts#v0.11.0 precompute statewide --param manager=all`, then `... precompute areas ecoregion --theme <id>`
+   `npx github:SchmidtDSE/glen-charts#v0.17.0 precompute statewide --param manager=all`, then `... precompute areas ecoregion --theme <id>`
    and the same for `county`, `cd`, `sldu` and `sldl`, which re-run only that theme (`--force` re-runs every theme, which takes
    hours).
 4. Check the result against the report with `python3 scripts/validate.py`.
@@ -163,9 +163,8 @@ the manager's acres of the feature with their share of its whole extent. Need cl
 managers together, are not shown. Theme items that change meaning carry `"when": { "manager": ... }`
 (glen-charts ≥ 0.9), and the report comparison is limited to `manager: all`.
 
-The map's conserved-areas layer shows the selected manager's units only (filtered on `MNG_AG_LEV`, or on `MNG_AGENCY` once managers are
-picked in the menu), with the manager named in its legend. glen-charts has no per-param overlay filter, so `index.html` passes the
-explorer to the extensions' `attach`, and `reportHead` sets the filter at each report draw.
+The map's conserved-areas layer shows the selected manager's units only, filtered on `MNG_AG_LEV`, or on `MNG_AGENCY` once managers are
+picked in the menu, through the overlay's `param_filters` (glen-charts ≥ 0.17); its legend names the manager.
 
 Under each manager level, a menu lists every managing agency (`MNG_AGENCY`) the inventory has at that level, so any one manager, down to a
 single land trust, city or homeowners association, can be picked; picking several counts them together. The menus are params
