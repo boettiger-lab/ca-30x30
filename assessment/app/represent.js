@@ -25,6 +25,7 @@
  *   group_field   field to split rows under sub-headings (e.g. "grp")
  *   sort          "asc" (by share in 30x30, as the report's tables) or "none"
  *   measure       "acres" (default) or "miles"
+ *   source        { label, url } the dataset's citation, shown above the rows
  *
  * ctx: { stateLevel, areaLevel, report: {feature: {...}} | null, areaLabel,
  *        manager: { value, label } | null, all: rows for every manager | null }
@@ -101,6 +102,14 @@ export function renderRepresentation(container, spec, rows, ctx) {
         kn.innerHTML = `<span class="key-badge">Key feature</span> ${escapeHtml(KEY_FEATURE)} The report recommends conserving all remaining ` +
             'extent wherever feasible, so these are not given a need class against the California level.';
         container.appendChild(kn);
+    }
+    if (spec.source?.label) {
+        const sn = document.createElement('div');
+        sn.className = 'key-note source-note';
+        sn.innerHTML = 'Source: ' + (spec.source.url
+            ? `<a href="${escapeHtml(spec.source.url)}" target="_blank" rel="noopener">${escapeHtml(spec.source.label)}</a>`
+            : escapeHtml(spec.source.label));
+        container.appendChild(sn);
     }
 
     const groups = new Map();
