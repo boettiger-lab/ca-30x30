@@ -29,7 +29,8 @@
  *
  * ctx: { stateLevel, areaLevel, report: {feature: {...}} | null, areaLabel,
  *        manager: { value, label } | null, all: rows for every manager | null,
- *        state: the same rows statewide (sub-state areas only) | null }
+ *        state: the same rows statewide (sub-state areas only) | null,
+ *        areaKind: 'ecoregion', 'county', 'district' or 'area', naming the benchmark }
  * The need class is measured against the level of the area in view: California's
  * on the statewide view (the report's framework), the area's own share of land in
  * 30x30 for a smaller area, where a California column gives each feature's
@@ -61,6 +62,13 @@ export const NEED = {
     on_par: { label: 'On par or above', cls: 'need-par', note: '≥ California level' },
     not_applicable: { label: 'Not applicable', cls: 'need-na', note: 'threshold features are not classed' },
 };
+
+/** A need class named against its benchmark: "On par with ecoregion level", "Slightly under statewide level". */
+export function needLabel(need, benchmark) {
+    if (need === 'on_par') return `On par with ${benchmark}`;
+    if (need === 'slightly_under') return `Slightly under ${benchmark}`;
+    return need === 'under' ? NEED.under.label : '';
+}
 
 /** The report's definition of a Key Feature (Methods, "Representation framework"). */
 export const KEY_FEATURE = 'Key Features are rare (3% of the state or less), historically converted (such as wetlands), or critical ' +
@@ -112,7 +120,7 @@ export function renderRepresentation(container, spec, rows, ctx) {
         const kn = document.createElement('div');
         kn.className = 'key-note';
         kn.innerHTML = `<span class="key-badge">Key feature</span> ${escapeHtml(KEY_FEATURE)} The report recommends conserving all remaining ` +
-            'extent wherever feasible, so these are not given a need class against the California level.';
+            `extent wherever feasible, so these are not given a need class against the ${area != null ? `${escapeHtml(ctx.areaKind || 'area')}` : 'California'} level.`;
         container.appendChild(kn);
     }
     if (spec.source?.label) {
@@ -155,8 +163,13 @@ export function renderRepresentation(container, spec, rows, ctx) {
         const tr = document.createElement('tr');
         const f12 = num(r.frac_gap12), f34 = num(r.frac_gap34), fn = num(r.frac_none);
         const isKey = !mgr && keys.has(r.feature);
-        const need = needClass(f12, bench, !mgr && spec.need !== false && !isKey && !na.has(r.feature));
+        const applies = !mgr && spec.need !== false && !isKey && !na.has(r.feature);
+        const need = needClass(f12, bench, applies);
         const N = NEED[need];
+        // name the benchmark where it is not California's (the report's own wording otherwise)
+        const needText = area != null ? needLabel(need, `${ctx.areaKind || 'area'} level`) : need === 'not_applicable' ? '' : N.label;
+        const sf = stateRows?.get(r.feature);
+        const sneed = needClass(sf, state, applies);
         const rest = (f34 ?? 0) + (fn ?? 0);
         const green = rest > 0 ? (f34 ?? 0) / rest : null;
         const rep = ctx.report?.[r.feature];
@@ -166,8 +179,9 @@ export function renderRepresentation(container, spec, rows, ctx) {
 
         tr.innerHTML = `
             <td class="c-feat">${escapeHtml(r.label)}${isKey ? ` <span class="key-badge" title="${escapeHtml(KEY_FEATURE)} The report recommends conserving all remaining extent.">Key feature</span>` : ''}</td>
-            <td class="c-pct"><span class="pct ${N.cls}${isKey ? ' key' : ''}">${f12 == null ? '—' : fmt(f12, 'pct')}</span><span class="need-label">${need === 'not_applicable' ? '' : escapeHtml(N.label)}</span></td>
-            ${stateRows ? `<td class="c-ca">${stateRows.get(r.feature) == null ? '<span class="muted">—</span>' : fmt(stateRows.get(r.feature), 'pct')}</td>` : ''}
+            <td class="c-pct"><span class="pct ${N.cls}${isKey ? ' key' : ''}">${f12 == null ? '—' : fmt(f12, 'pct')}</span><span class="need-label">${escapeHtml(needText)}</span></td>
+            ${stateRows ? `<td class="c-ca">${sf == null ? '<span class="muted">—</span>'
+                : `<span class="pct pct-sm ${NEED[sneed].cls}" title="California: ${escapeHtml(fmt(sf, 'pct'))} in 30x30${sneed === 'not_applicable' ? '' : ` (${escapeHtml(needLabel(sneed, 'statewide level'))})`}">${fmt(sf, 'pct')}</span>`}</td>` : ''}
             <td class="c-bar"><div class="sbar">${status.map(s => `<span class="${s.cls}" style="width:${(100 * Math.max(0, num(r[s.key]) ?? 0)).toFixed(2)}%"></span>`).join('')}
                 ${state != null ? `<i class="tick state" style="left:${(100 * state).toFixed(2)}%"></i>` : ''}
                 ${area != null ? `<i class="tick area" style="left:${(100 * area).toFixed(2)}%"></i>` : ''}</div></td>
@@ -252,7 +266,8 @@ export const REP_CSS = `
 .rep-table .c-feat { min-width: 120px; }
 .rep-table .c-pct { white-space: nowrap; width: 1%; }
 .rep-table .c-bar { width: 38%; min-width: 120px; }
-.rep-table .c-ca { white-space: nowrap; width: 1%; text-align: right; color: #5d5852; }
+.rep-table .c-ca { white-space: nowrap; width: 1%; text-align: center; }
+.pct.pct-sm { min-width: 38px; padding: 1px 4px; font-size: 11px; font-weight: 600; opacity: .85; }
 .rep-table .c-pie, .rep-table .c-share, .rep-table .c-rep, .rep-table .c-ext { white-space: nowrap; width: 1%; }
 .rep-table .c-share { text-align: right; }
 .rep-table .c-ext { color: #77706b; text-align: right; }

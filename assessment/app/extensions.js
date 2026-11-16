@@ -39,6 +39,9 @@ function allManagers(app, aoi) {
     return { ...aoi, key: `${aoi.key.split('@')[0]}@${paramKey(app, params)}`, params };
 }
 
+/** What a sub-state area is called in "on par with the ... level". */
+const KIND_WORD = { ecoregion: 'ecoregion', county: 'county', cd: 'district', sldu: 'district', sldl: 'district' };
+
 /**
  * The representation table needs, beside the feature rows: California's share
  * in 30x30 (a tick), the area's own share (a second tick, and the need-class
@@ -62,6 +65,7 @@ const representation = {
             stateLevel: st?.[0]?.frac_gap12 ?? null,
             areaLevel: ar?.[0]?.frac_gap12 ?? null,
             areaLabel: shortName(aoi.label),
+            areaKind: KIND_WORD[aoi.kind] || 'area',
             report: isRegion ? opts.reference?.values?.features ?? null : null,
             manager: mgr,
             all,
@@ -152,7 +156,7 @@ function reportHead(aoi, { engine, reference, isRegion }) {
            (improve management or durability) vs <span class="sw snone"></span> non-conserved land (acquisition or easement).
            ${isRegion ? 'Need classes compare with California’s level.'
         : `Need classes compare with ${place}’s own share of land in 30x30 (the dashed tick on each bar), not California’s (the solid tick);
-           the <b>California</b> column gives each feature’s statewide share in 30x30.`}
+           the <b>California</b> column gives each feature’s statewide share in 30x30, coloured against California’s level, so the statewide goal stays in view.`}
            ${isRegion ? 'The <b>Report</b> column gives the published value and this app’s difference from it, in percentage points.' : ''}</p>
         <p class="tile-note">No AI model is involved: every number is fixed, reviewable SQL over public data — see “Method &amp; SQL” under each section, or Export.</p>
         </div></details>`;

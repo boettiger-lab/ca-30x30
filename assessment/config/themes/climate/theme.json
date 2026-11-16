@@ -1,7 +1,7 @@
 {
     "label": "Climate & disturbance",
     "color": "#c2410c",
-    "blurb": "Recent fire, projected climate exposure and sea-level rise: how much of the 30x30 network they touch, and how much of each lies in 30x30.",
+    "blurb": "Recent fire, projected climate exposure and sea-level rise: how much of the 30x30 network each touches.",
     "queries": { "climate": { "file": "climate.sql" } },
     "headlines": [
         { "query": "climate", "row": { "feature": "clim:fire" }, "field": "share_of_network", "label": "30x30 network burned since 2015", "format": "pct", "reference": "network.burned_past_decade", "when": { "manager": "all" } },
@@ -10,11 +10,6 @@
         { "query": "climate", "row": { "feature": "clim:miroc" }, "field": "share_of_network", "label": "This manager's 30x30 land climate-exposed (MIROC5)", "format": "pct", "when": { "manager": ["federal", "state", "local", "nonprofit", "other"] } },
         { "query": "climate", "row": { "feature": "clim:slr" }, "field": "share_of_network", "label": "30x30 network in 5 ft sea-level rise zone", "format": "pct", "reference": "network.sea_level_rise", "when": { "manager": "all" } },
         { "query": "climate", "row": { "feature": "clim:slr" }, "field": "share_of_network", "label": "This manager's 30x30 land in 5 ft sea-level rise zone", "format": "pct", "when": { "manager": ["federal", "state", "local", "nonprofit", "other"] } }
-    ],
-    "charts": [
-        { "type": "representation", "query": "climate", "title": "Climate and disturbance features",
-          "subtitle": "Share of each feature's extent in this area by conservation status",
-          "need": false, "sort": "none", "wide": true }
     ],
     "method": "Burned area is every CAL FIRE fire perimeter from 2015 on (the report's 'past decade'), on resolution-10 cells; statewide this gives 13.9% of the 30x30 network burned (report: 14%). Climate exposure is Thorne et al. (2016) for mid-century, natural vegetation only (CWHR major-habitat classes other than agriculture and urban), with a mean exposure index of 0.9 or more on resolution-9 cells counted as exposed, separately for the MIROC5 and CNRM-CM5 models. The report does not state its cutoff; this one reproduces its extents (MIROC5 25.5 vs 26.7 million acres, CNRM-CM5 27.9 vs 28.5 million), its shares in 30x30 (32.7% vs 31.7%, 30.0% vs 29.8%) and its finding that about 32% of the network is projected to be climate-stressed (31.4% and 31.6% here). Sea-level rise is NOAA's 5-foot inundation layer, which includes existing open water and so does not match the report's extent (tracked in ca-30x30#104). The report publishes no need classes for these features."
 }
