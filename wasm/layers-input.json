@@ -865,7 +865,7 @@
     ],
     "plugins": [
         {
-            "url": "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.0.5/core/plugins/mcp.js",
+            "url": "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.0.6/core/plugins/mcp.js",
             "options": {
                 "worker": "worker.js",
                 "worker_config": {
@@ -887,14 +887,14 @@
             }
         },
         {
-            "url": "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.0.5/core/plugins/hex.js",
+            "url": "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.0.6/core/plugins/hex.js",
             "options": {
                 "geo_query_wasm": "v0.6.0"
             }
         },
-        "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.0.5/core/plugins/draw.js",
+        "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.0.6/core/plugins/draw.js",
         {
-            "url": "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.0.5/core/plugins/geolocate.js",
+            "url": "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.0.6/core/plugins/geolocate.js",
             "options": {
                 "button": true,
                 "agent_tool": false
