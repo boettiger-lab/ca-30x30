@@ -9,8 +9,8 @@
  * overlay's tile URL, so nothing here may touch the DOM at load time.
  */
 
-import { fmt, escapeHtml } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.17.0/core/format.js';
-import { polygonSource } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.17.0/sources/polygon-source.js';
+import { fmt, escapeHtml } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.19.0/core/format.js';
+import { polygonSource } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.19.0/sources/polygon-source.js';
 import { renderRepresentation, NEED, REP_CSS } from './represent.js';
 import { tokens, agencyPick } from './tokens.js';
 
@@ -195,6 +195,13 @@ function managerNote(mgr, isRegion) {
         </div></details>`;
 }
 
+/** The printed report's title: the manager's land, or 30x30, in the area. */
+function reportTitle(aoi, { engine }) {
+    const mgr = managerOf(engine.config.app, aoi.params);
+    const place = aoi.kind === 'state' ? 'California' : aoi.label;
+    return mgr ? `${mgr.label} land in ${place}` : `30x30 in ${place}`;
+}
+
 export default {
     tokens,
     charts: { representation },
@@ -202,4 +209,5 @@ export default {
     sources: [polygonSource()],
     reportHead,
     shortName,
+    reportTitle,
 };

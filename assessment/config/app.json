@@ -8,6 +8,7 @@
     "format": { "pct_decimals": 1 },
     "live_note": "Results for this area are computed live from the source data; larger areas can take a minute or two.",
     "export_css": ":root { --accent: #1b6e3a; --primary: #1b6e3a; --series-protected: #1b6e3a; }",
+    "report": { "org": "Boettiger Lab", "citation": "{org}{app}: {title}. Report generated {date}. {url}" },
 
     "overview": "overview",
     "themes": ["habitat", "richness", "connectivity", "freshwater", "climate"],
