@@ -76,7 +76,7 @@ spec:
         - name: MCP_AUTH_TOKEN
           valueFrom:
             secretKeyRef:
-              name: duckdb-mcp-mirror-auth
+              name: duckdb-mcp-auth
               key: MCP_AUTH_TOKEN
         - name: LLM_ENDPOINT
           value: "https://open-llm-proxy.nrp-nautilus.io/v1"
