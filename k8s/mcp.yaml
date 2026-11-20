@@ -83,7 +83,7 @@ spec:
                 - nautilus-it-gpu06.fullerton.edu
       containers:
       - name: server
-        image: ghcr.io/schmidtdse/geo-query:v0.9.5@sha256:35c6028e99203b3ac091bb3458e32e221a4ea8004447fb5b016826651de3dffa
+        image: ghcr.io/schmidtdse/geo-query:v0.9.10@sha256:d6c3637f4d7f1c3c63b46f587fb10150e730df16f07f5653ae758f3a94cc48db
         volumeMounts:
         - name: tmp
           mountPath: /tmp
@@ -96,6 +96,10 @@ spec:
         ports:
         - containerPort: 8000
         env:
+        # Release identity: the image's own ENV says "main"; keep this in step
+        # with the tag in `image:` above.
+        - name: APP_VERSION
+          value: "v0.9.10"
         # Read the catalog over the in-cluster Service, not the public ingress
         # — the same lesson as the /api/llm upstream in configmap.yaml. The
         # document itself keeps absolute public hrefs (STAC requires an
@@ -105,13 +109,9 @@ spec:
         # pod's egress policy (k8s/mcp-egress-networkpolicy.yaml) lets it reach.
         - name: STAC_CATALOG_URL
           value: "http://ca-30x30.biodiversity.svc.cluster.local:8090/stac/catalog.json"
-        # NRP Ceph through its external https endpoint, not the internal RGW:
-        # the egress NetworkPolicy on this pod (k8s/mcp-egress-networkpolicy.yaml)
-        # allows only DNS, public https and this app's catalog. Drop these two when an internal-RGW rule is added.
-        - name: S3_DEFAULT_ENDPOINT
-          value: "s3-west.nrp-nautilus.io"
-        - name: S3_ENDPOINT_URL
-          value: "https://s3-west.nrp-nautilus.io"
+        # NRP Ceph is read through the internal RGW, the server's default
+        # (rook-ceph-rgw-nautiluss3.rook, plain http). The egress policy
+        # (k8s/mcp-egress-networkpolicy.yaml) allows port 80 for it (glen-ops#324).
         - name: STAC_PUBLIC_CATALOG_URL
           value: "https://ca-30x30.nrp-nautilus.io/stac/catalog.json"
         # No browse_stac_catalog / catalog://list. The app forwards each

@@ -1,10 +1,14 @@
 # Egress for ca30x30-mcp, this app's DuckDB MCP replica (k8s/mcp.yaml).
 #
 # The server runs SQL written by its callers, so what the pod can reach is what a
-# query can reach. It gets DNS, https to public addresses (NRP S3 and the other
-# public hosts it reads, through their external endpoints), and this app's STAC
+# query can reach. It gets DNS, http(s) to public addresses, and this app's STAC
 # catalog on the app's STAC-only port 8090 (k8s/configmap.yaml). Nothing else in
 # the cluster.
+#
+# Port 80 is for the internal RGW (rook-ceph-rgw-nautiluss3.rook), where NRP Ceph
+# is read: its pods use hostNetwork, so after the Service address is translated
+# the traffic goes to public node IPs (NRP's advice, 2026-11-18; glen-ops#324).
+# 443 covers the other public hosts a query reads.
 #
 # Keep public 443 rather than pinning to the NRP ingress address: pinning broke
 # reads on 2026-11-10.
@@ -54,6 +58,8 @@ spec:
       ports:
         - protocol: TCP
           port: 443
+        - protocol: TCP
+          port: 80
     - to:
         - podSelector:
             matchLabels:
