@@ -78,10 +78,10 @@ data:
     }
 
 ---
-# Nginx configuration — reverse-proxies /api/llm/ to open-llm-proxy and
-# injects the Authorization header from ${PROXY_KEY} at container start
-# (the startup command runs envsubst over this file). The browser never
-# receives the key.
+# Nginx configuration. The shared parts (limits, chat, MCP, tiles, the page and
+# the health check) are the snippets in nginx/ of SchmidtDSE/glen-template at the
+# tag the Deployment clones, filled in from its env at start-up (glen-ops#340).
+# Only this app's own routes belong here.
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -89,141 +89,25 @@ metadata:
   namespace: biodiversity
 data:
   nginx.conf.template: |
-    # ── Per-client limits on the LLM and MCP paths (glen-ops#246) ──
-    # $client_addr is the last X-Forwarded-For entry, the one HAProxy appends
-    # from the connection it actually received, so a client cannot choose it by
-    # sending its own header. In-cluster callers have no XFF and fall back to
-    # $remote_addr. Values from proxy-log measurements (glen-template#50).
-    map $http_x_forwarded_for $client_addr {
-        "~(?:^|,)\s*(?<last>[^,\s]+)\s*$" $last;
-        default $remote_addr;
-    }
-    limit_req_zone $client_addr zone=llm:10m rate=60r/m;
-    limit_req_zone $client_addr zone=mcp:10m rate=60r/m;
-    limit_conn_zone $client_addr zone=addr:10m;
-    limit_req_status 429;
-    limit_conn_status 429;
+    include /etc/nginx/glen/limits.conf;
 
     server {
         listen 80;
         server_name _;
 
-        root /usr/share/nginx/html;
-        index index.html;
+        # /api/mcp and /tiles/ go to this app's own DuckDB MCP replica
+        # (ca30x30-mcp, the Deployment's MCP_UPSTREAM).
+        include /etc/nginx/glen/base.conf;
+        include /etc/nginx/glen/llm.conf;
+        include /etc/nginx/glen/mcp.conf;
+        include /etc/nginx/glen/spa.conf;
 
-        add_header Access-Control-Allow-Origin *;
-        add_header Access-Control-Allow-Methods "GET, POST, OPTIONS";
-        add_header Access-Control-Allow-Headers "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Accept";
-
-        # ── Reverse proxy to open-llm-proxy ─────────────
-        # Clients POST to /api/llm/chat/completions with a dummy bearer
-        # token; nginx rewrites the Authorization header using the
-        # ${PROXY_KEY} substituted in at container startup. The browser
-        # never receives the key.
-        #
-        # In-cluster upstream (geo-agent-ops#73): proxy the open-llm-proxy
-        # ClusterIP service directly over HTTP inside the cluster, NOT its
-        # public hostname (open-llm-proxy.nrp-nautilus.io). Routing through the
-        # public ingress exposed the app to NRP's heterogeneous edge: nginx
-        # latched onto a single flapping anycast VIP and hard-failed ~12% of
-        # /api/llm connects (502/504 "while connecting to upstream") for a
-        # resolver window — invisible in the proxy logs because the request
-        # died here, at the app's nginx, before reaching the proxy. It also
-        # subsumes the earlier IPv6-unreachable failure the #64 IPv4-forcing
-        # block worked around: an in-cluster ClusterIP is IPv4 and single-VIP,
-        # so both failure modes disappear. The Origin header still forwards by
-        # default, so proxy logging/routing is unchanged.
-        #
-        # Cross-namespace apps (e.g. schmidtdse) use this same FQDN; the
-        # ClusterIP is reachable cluster-wide. The service lives only in the
-        # biodiversity namespace: ClusterIP open-llm-proxy:8002 (http).
-        # Only two calls are relayed (glen-ops#246): POST chat/completions
-        # (chat and transcription) and GET models. Any other path or method
-        # under /api/llm/ is answered here and never reaches the proxy.
-        location = /api/llm/chat/completions {
-            limit_except POST { deny all; }
-            proxy_set_header X-Real-IP $client_addr;
-            limit_req zone=llm burst=30 nodelay;
-            limit_conn addr 20;
-            proxy_pass http://open-llm-proxy.biodiversity.svc.cluster.local:8002/v1/chat/completions;
-            proxy_set_header Authorization "Bearer ${PROXY_KEY}";
-            proxy_set_header X-Glen-App "ca-30x30";
-
-            # Allow long agent loops (multi-turn tool use). 600s keeps the
-            # timeout uniform across the whole chain: the geo-agent client
-            # defaults to 600s (app/agent.js _llmTimeoutMs) and open-llm-proxy's
-            # httpx timeout is 600s, so this sidecar was the odd hop at 300s —
-            # cutting off slow-decode models (e.g. glm-5.2) the rest of the
-            # chain would still wait for.
-            proxy_read_timeout 600s;
-            proxy_send_timeout 600s;
-
-            # Don't buffer streaming responses
-            proxy_buffering off;
-        }
-
-        location = /api/llm/models {
-            limit_except GET { deny all; }
-            proxy_set_header X-Real-IP $client_addr;
-            limit_req zone=llm burst=30 nodelay;
-            limit_conn addr 20;
-            proxy_pass http://open-llm-proxy.biodiversity.svc.cluster.local:8002/v1/models;
-            proxy_set_header Authorization "Bearer ${PROXY_KEY}";
-            proxy_set_header X-Glen-App "ca-30x30";
-            proxy_read_timeout 600s;
-            proxy_send_timeout 600s;
-            proxy_buffering off;
-        }
-
-        location /api/llm/ {
-            return 404;
-        }
-
-        # Curated STAC catalog (ca-30x30#126). Explicit block because the
-        # catch-all below has `try_files ... /index.html`, which would hand
-        # back the SPA instead of a 404 for a missing catalog — ca30x30-mcp
-        # would then boot degraded with no visible cause.
         location /stac/ {
             alias /usr/share/nginx/html/stac/;
         }
 
-        # Reverse proxy to this app's DuckDB MCP replica. The server requires a
-        # bearer token (geo-query#453); nginx attaches it from ${MCP_AUTH_TOKEN}
-        # so the browser never holds it, and proxies the in-cluster Service
-        # rather than the public hostname (glen-ops#73).
-        location /api/mcp {
-            proxy_set_header X-Real-IP $client_addr;
-            limit_req zone=mcp burst=120 nodelay;
-            proxy_pass http://ca30x30-mcp.biodiversity.svc.cluster.local:8000/mcp;
-            # Tile links name the server's public host, which is gone; send the
-            # browser to this app's /tiles/ instead.
-            proxy_set_header Accept-Encoding "";
-            sub_filter 'https://ca30x30-mcp.nrp-nautilus.io/tiles/' 'https://$host/tiles/';
-            sub_filter_once off;
-            sub_filter_types text/event-stream application/json;
-            proxy_http_version 1.1;
-            proxy_set_header Host ca30x30-mcp.nrp-nautilus.io;
-            proxy_set_header Connection "";
-            proxy_set_header Authorization "Bearer ${MCP_AUTH_TOKEN}";
-            proxy_set_header X-Glen-App "ca-30x30";
-            proxy_read_timeout 600s;
-            proxy_send_timeout 600s;
-            proxy_buffering off;
-        }
-
-        # Hex tiles from the same server (public there; MCP_AUTH_PUBLIC_TILES).
-        location /tiles/ {
-            limit_except GET { deny all; }
-            proxy_pass http://ca30x30-mcp.biodiversity.svc.cluster.local:8000/tiles/;
-            proxy_http_version 1.1;
-            proxy_set_header Host ca30x30-mcp.nrp-nautilus.io;
-            proxy_set_header Connection "";
-            proxy_set_header X-Real-IP $client_addr;
-            proxy_set_header X-Glen-App "ca-30x30";
-        }
-
         # The assessment sub-app queries the shared duckdb-mcp rather than
-        # this app's replica. Same token, same reason as /api/mcp above.
+        # this app's replica. Same token, same reason as /api/mcp.
         location /api/duckdb-mcp {
             proxy_set_header X-Real-IP $client_addr;
             limit_req zone=mcp burst=120 nodelay;
@@ -238,7 +122,7 @@ data:
             proxy_set_header Host duckdb-mcp.nrp-nautilus.io;
             proxy_set_header Connection "";
             proxy_set_header Authorization "Bearer ${MCP_AUTH_TOKEN}";
-            proxy_set_header X-Glen-App "ca-30x30";
+            proxy_set_header X-Glen-App "${GLEN_APP}";
             proxy_read_timeout 600s;
             proxy_send_timeout 600s;
             proxy_buffering off;
@@ -252,20 +136,7 @@ data:
             proxy_set_header Host duckdb-mcp.nrp-nautilus.io;
             proxy_set_header Connection "";
             proxy_set_header X-Real-IP $client_addr;
-            proxy_set_header X-Glen-App "ca-30x30";
-        }
-
-        location / {
-            try_files $uri $uri/ /index.html;
-            add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
-            add_header Pragma "no-cache";
-            add_header Expires "0";
-        }
-
-        location /health {
-            access_log off;
-            return 200 "healthy\n";
-            add_header Content-Type text/plain;
+            proxy_set_header X-Glen-App "${GLEN_APP}";
         }
     }
 
