@@ -865,16 +865,16 @@
   ],
   "plugins": [
     {
-      "url": "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.2.1/core/plugins/mcp.js",
+      "url": "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.7.0/core/plugins/mcp.js",
       "options": {
         "url": "https://ca30x30-mcp.nrp-nautilus.io/mcp",
         "prompt": "geospatial-analyst"
       }
     },
-    "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.2.1/core/plugins/hex.js",
-    "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.2.1/core/plugins/draw.js",
+    "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.7.0/core/plugins/hex.js",
+    "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.7.0/core/plugins/draw.js",
     {
-      "url": "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.2.1/core/plugins/geolocate.js",
+      "url": "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.7.0/core/plugins/geolocate.js",
       "options": {
         "button": true,
         "agent_tool": false

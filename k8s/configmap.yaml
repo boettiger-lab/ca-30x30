@@ -13,68 +13,7 @@ data:
   config.template.json: |
     {
         "mcp_server_url": "${MCP_SERVER_URL}",
-        "llm_model": "deepseek-v4-flash",
-        "transcription_model": {
-            "value": "gemma-small",
-            "endpoint": "/api/llm",
-            "api_key": "unused"
-        },
-        "llm_models": [
-            {
-                "value": "deepseek-v4-flash",
-                "label": "NRP DeepSeek V4 Flash",
-                "endpoint": "/api/llm",
-                "api_key": "unused"
-            },
-            {
-                "value": "glm-5",
-                "label": "NRP GLM-5.2",
-                "endpoint": "/api/llm",
-                "api_key": "unused"
-            },
-            {
-                "value": "kimi",
-                "label": "NRP Kimi",
-                "endpoint": "/api/llm",
-                "api_key": "unused"
-            },
-            {
-                "value": "qwen3",
-                "label": "NRP Qwen3",
-                "endpoint": "/api/llm",
-                "api_key": "unused"
-            },
-            {
-                "value": "qwen3-small",
-                "label": "NRP Qwen3 Small",
-                "endpoint": "/api/llm",
-                "api_key": "unused"
-            },
-            {
-                "value": "gpt-oss",
-                "label": "NRP GPT-OSS 120B",
-                "endpoint": "/api/llm",
-                "api_key": "unused"
-            },
-            {
-                "value": "minimax-m2",
-                "label": "NRP MiniMax M2",
-                "endpoint": "/api/llm",
-                "api_key": "unused"
-            },
-            {
-                "value": "gemma",
-                "label": "NRP Gemma",
-                "endpoint": "/api/llm",
-                "api_key": "unused"
-            },
-            {
-                "value": "gemma-small",
-                "label": "NRP Gemma Small",
-                "endpoint": "/api/llm",
-                "api_key": "unused"
-            }
-        ]
+        "llm_endpoint": "/api/llm"
     }
 
 ---
