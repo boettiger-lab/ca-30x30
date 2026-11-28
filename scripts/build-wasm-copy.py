@@ -25,7 +25,7 @@ import sys
 from pathlib import Path
 
 # geo-query-wasm at a pinned release. Bump deliberately, and check the copy.
-GEO_QUERY_WASM = "v0.7.0"
+GEO_QUERY_WASM = "v0.8.0"
 GQW_BASE = f"https://cdn.jsdelivr.net/gh/SchmidtDSE/geo-query-wasm@{GEO_QUERY_WASM}/src/"
 
 # An NRP bucket `public-<repo>` is mirrored to source.coop as `cboettig/<repo>`.
